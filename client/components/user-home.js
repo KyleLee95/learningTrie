@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Row, Col} from 'react-bootstrap'
-import {ConnectedSidebar} from '.'
+import {ConnectedSidebar, TrieVisualization} from '.'
 /**
  * COMPONENT
  */
@@ -17,8 +17,9 @@ export const UserHome = props => {
           <h1>Sidebar here</h1>
           <ConnectedSidebar />
         </Col>
-        <Col xs={8}>
+        <Col xs={8} id="cy">
           <h1>Learning Trie goes here</h1>
+          <TrieVisualization />
         </Col>
       </Row>
     </div>
