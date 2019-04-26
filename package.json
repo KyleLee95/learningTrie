@@ -40,6 +40,8 @@
     "compression": "^1.7.3",
     "connect-session-sequelize": "^6.0.0",
     "cytoscape": "^3.5.4",
+    "cytoscape-cola": "^2.3.0",
+    "cytoscape-dagre": "^2.2.2",
     "express": "^4.16.4",
     "express-session": "^1.15.1",
     "history": "^4.9.0",

@@ -13,13 +13,19 @@ export const UserHome = props => {
     <div>
       {/* <h3>Welcome, {email}</h3> */}
       <Row>
-        <Col xs={4}>
+        <Col xs={2}>
           <h1>Sidebar here</h1>
           <ConnectedSidebar />
         </Col>
-        <Col xs={8} id="cy">
-          <h1>Learning Trie goes here</h1>
-          <TrieVisualization />
+        <Col xs={10} id="cy">
+          <Row>
+            <Col xs={{span: 6, offset: 3}}>
+              <h1>Learning Trie Title</h1>
+            </Col>
+          </Row>
+          <Row>
+            <TrieVisualization />
+          </Row>
         </Col>
       </Row>
     </div>
