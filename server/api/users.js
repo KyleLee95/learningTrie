@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const {User, LearningTree} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -9,6 +9,14 @@ router.get('/', async (req, res, next) => {
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
       attributes: ['id', 'email']
+      // include: [
+      //   {
+      //     model: LearningTree,
+      //     where: {
+      //       Userid: req.body.id
+      //     }
+      //   }
+      // ]
     })
     res.json(users)
   } catch (err) {

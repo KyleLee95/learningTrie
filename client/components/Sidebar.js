@@ -7,11 +7,23 @@ import {connect} from 'react-redux'
 //Thunk + reducer for getting all tries.
 
 class Sidebar extends Component {
+  componentDidMount() {
+    console.log(this.props.trees)
+  }
   render() {
     return (
       <div>
         <DropdownButton id="dropdown-basic-button" title="Learning Tries">
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+          {this.props.trees
+            .filter(tree => tree.userId === this.props.user.id)
+            .map(tree => {
+              return (
+                <Dropdown.Item key={tree.id} href="#/action-1">
+                  {tree.title}
+                </Dropdown.Item>
+              )
+            })}
+
           <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
         </DropdownButton>
@@ -27,4 +39,11 @@ class Sidebar extends Component {
   }
 }
 
-export const ConnectedSidebar = connect(null, null)(Sidebar)
+const mapState = state => {
+  return {
+    user: state.user,
+    trees: state.trees
+  }
+}
+
+export const ConnectedSidebar = connect(mapState, null)(Sidebar)

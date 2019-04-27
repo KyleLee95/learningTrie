@@ -3,6 +3,7 @@ const LearningTree = require('./learningTree')
 const Review = require('./review')
 const Comment = require('./comment')
 const Resource = require('./resource')
+const Node = require('./node')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -13,21 +14,29 @@ const Resource = require('./resource')
 //User
 User.hasMany(LearningTree)
 User.hasMany(Comment)
+User.hasMany(Review)
 
 //Learning Tree
-LearningTree.hasMany(Review)
-// LearningTree.hasMany(CoreConcept)
+LearningTree.hasMany(Review, {as: 'review'})
+LearningTree.hasMany(Node, {as: 'node'})
 LearningTree.belongsTo(User)
 
 //Comment
 Comment.belongsTo(LearningTree)
 Comment.belongsTo(User)
+Comment.belongsTo(Resource)
 
-//Core Concept
-// CoreConcept.hasMany(subConcept)
+//Node
+Node.hasMany(Node)
+Node.belongsToMany(Node, {as: 'child', through: 'Child Node'})
+Node.hasMany(Resource)
 
-//Sub Concept
+//Resource
+Resource.belongsToMany(Node, {through: 'Learning Resource'})
+Resource.hasMany(Comment, {as: 'comment'})
 
+//Review
+Review.belongsTo(User)
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'
@@ -39,5 +48,6 @@ module.exports = {
   Resource,
   Comment,
   LearningTree,
-  Review
+  Review,
+  Node
 }

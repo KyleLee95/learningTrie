@@ -4,13 +4,14 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome} from './components'
 import {me} from './store'
-
+import {fetchTrees} from './store/learningTree'
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
+    this.props.fetchTrees()
   }
 
   render() {
@@ -49,7 +50,8 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
-    }
+    },
+    fetchTrees: () => dispatch(fetchTrees())
   }
 }
 

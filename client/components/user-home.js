@@ -1,35 +1,43 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Row, Col} from 'react-bootstrap'
-import {ConnectedSidebar, ConnectedTrieVisualization} from '.'
+import {Row, Col, Button} from 'react-bootstrap'
+import {ConnectedSidebar, ConnectedTreeVisualization} from '.'
+// import {fetchTrees} from '../store/learningTree'
+
 /**
  * COMPONENT
  */
-export const UserHome = props => {
-  const {email} = props
+class UserHome extends Component {
+  // const {email} = props
 
-  return (
-    <div>
-      {/* <h3>Welcome, {email}</h3> */}
-      <Row>
-        <Col xs={2}>
-          <h1>Sidebar here</h1>
-          <ConnectedSidebar />
-        </Col>
-        <Col xs={10} id="cy">
-          <Row>
-            <Col xs={{span: 6, offset: 3}}>
-              <h1>Learning Trie Title</h1>
-            </Col>
-          </Row>
-          <Row>
-            <ConnectedTrieVisualization />
-          </Row>
-        </Col>
-      </Row>
-    </div>
-  )
+  componentDidMount() {
+    // this.props.fetchTrees()
+    // console.log(this.props)
+  }
+  render() {
+    return (
+      <div>
+        {/* <h3>Welcome, {email}</h3> */}
+        <Row>
+          <Col xs={2}>
+            <h1>Sidebar here</h1>
+            <ConnectedSidebar />
+          </Col>
+          <Col xs={10} id="cy">
+            {/* <Row> */}
+            {/* <Col xs={{span: 6, offset: 3}}> */}
+            <h1>Learning Trie Title</h1>
+            {/* </Col> */}
+            {/* </Row> */}
+            {/* <Row> */}
+            <ConnectedTreeVisualization />
+            {/* </Row> */}
+          </Col>
+        </Row>
+      </div>
+    )
+  }
 }
 
 /**
@@ -37,15 +45,14 @@ export const UserHome = props => {
  */
 const mapState = state => {
   return {
-    email: state.user.email
+    user: state.user,
+    trees: state.trees
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    fetchTrees: () => dispatch(fetchTrees())
   }
 }
 
-export default connect(mapState)(UserHome)
-
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  email: PropTypes.string
-}
+export default connect(mapState, mapDispatch)(UserHome)
