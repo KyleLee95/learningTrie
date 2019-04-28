@@ -11,27 +11,12 @@ import {
 } from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {fetchTrees} from '../store/learningTree'
-import {Link, Route} from 'react-router-dom'
+// import {Link, Route} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
-import {NewTree} from '.'
+import {NewTree} from './NewTree'
 class Sidebar extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      show: false
-    }
-    //Bindings
-    this.handleShow = this.handleShow.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-  }
-
-  //Handles Modal
-  handleClose() {
-    this.setState({show: false})
-  }
-
-  handleShow() {
-    this.setState({show: true})
   }
 
   render() {
@@ -56,26 +41,7 @@ class Sidebar extends Component {
                 })
             : ''}
           <Dropdown.Divider />
-          {/* <LinkContainer to={`/new`}> */}
-          <Dropdown.Item onClick={this.handleShow}> New Tree</Dropdown.Item>
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <NewTree />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={this.handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          {/* </LinkContainer> */}
+          <NewTree />
         </SplitButton>
       </div>
     )

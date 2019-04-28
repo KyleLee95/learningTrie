@@ -7,7 +7,8 @@ const LearningTree = db.define('learningTree', {
     allowNull: false
   },
   description: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    allowNull: false
   }
 })
 

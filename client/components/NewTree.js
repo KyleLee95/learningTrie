@@ -1,37 +1,83 @@
 import React, {Component} from 'react'
-import {Row, Col, Form, Button} from 'react-bootstrap'
+import {Row, Col, Form, Button, Modal, Dropdown} from 'react-bootstrap'
+import axios from 'axios'
 
 export class NewTree extends Component {
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      show: false,
+      title: '',
+      description: ''
+    }
+    //Bindings
+    this.handleShow = this.handleShow.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  //Handles Modal
+  async handleClose() {
+    //AXIOS POST
+    await axios.post(`/api/learningTrees/`, {
+      title: this.state.title,
+      description: this.state.description
+    })
+    this.setState({show: false})
+  }
+
+  handleShow() {
+    this.setState({show: true})
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value})
   }
 
   render() {
     return (
-      <Row>
-        <Col xs={{offset: 4, span: 4}}>
-          <Form>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group controlId="formBasicChecbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+      <div>
+        <Form>
+          <Dropdown.Item onClick={this.handleShow}>New Tree</Dropdown.Item>
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>New Learning Tree</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Modal.Body>
+                <Form.Group controlId="title">
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    name="title"
+                    type="title"
+                    value={this.state.title}
+                    placeholder="Ex. Machine Learning for Beginners"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="description">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    name="description"
+                    as="textarea"
+                    value={this.state.description}
+                    rows="3"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+              </Modal.Body>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleClose}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
+      </div>
     )
   }
 }
