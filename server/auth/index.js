@@ -1,10 +1,13 @@
 const router = require('express').Router()
-const User = require('../db/models/user')
+const {User, LearningTree} = require('../db/models')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
   try {
-    const user = await User.findOne({where: {email: req.body.email}})
+    const user = await User.findOne({
+      where: {email: req.body.email},
+      include: [{model: LearningTree}]
+    })
     if (!user) {
       console.log('No such user found:', req.body.email)
       res.status(401).send('Wrong username and/or password')
@@ -38,8 +41,17 @@ router.post('/logout', (req, res) => {
   res.redirect('/')
 })
 
-router.get('/me', (req, res) => {
-  res.json(req.user)
+router.get('/me', async (req, res) => {
+  console.log(req.user.id)
+  const users = await User.findByPk(req.user.id, {
+    // explicitly select only the id and email fields - even though
+    // users' passwords are encrypted, it won't help if we just
+    // send everything to anyone who asks!
+    attributes: ['id', 'email'],
+    include: [{model: LearningTree}]
+  })
+  console.log(users)
+  res.json(users)
 })
 
 router.use('/google', require('./google'))

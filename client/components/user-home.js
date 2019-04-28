@@ -16,7 +16,7 @@ class UserHome extends Component {
       <div>
         <Row>
           <Col xs={2}>
-            <ConnectedSidebar trees={this.props.trees} />
+            <ConnectedSidebar />
           </Col>
           <Col xs={10} id="cy" />
         </Row>

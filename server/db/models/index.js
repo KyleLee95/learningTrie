@@ -12,7 +12,7 @@ const Node = require('./node')
  */
 
 //User
-User.hasMany(LearningTree)
+User.hasMany(LearningTree, {foreignKey: 'userId'})
 User.hasMany(Comment)
 User.hasMany(Review)
 
@@ -28,11 +28,11 @@ Comment.belongsTo(Resource)
 
 //Node
 Node.hasMany(Node)
-Node.belongsToMany(Node, {as: 'child', through: 'Child Node'})
+Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
 Node.hasMany(Resource)
 
 //Resource
-Resource.belongsToMany(Node, {through: 'Learning Resource'})
+Resource.belongsToMany(Node, {through: 'LearningResource'})
 Resource.hasMany(Comment, {as: 'comment'})
 
 //Review
