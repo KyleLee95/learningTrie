@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {Row, Col} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {ConnectedTreeVisualization} from '.'
-import {fetchSelectedTree} from '../store/learningTree'
+import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
+import {fetchSelectedTree, fetchTrees} from '../store/learningTree'
 
 class LearningTree extends Component {
   constructor(props) {
@@ -10,6 +10,7 @@ class LearningTree extends Component {
   }
 
   componentDidMount() {
+    // this.props.fetchTrees()
     this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
@@ -24,7 +25,10 @@ class LearningTree extends Component {
     return (
       <div>
         <Row>
-          <Col xs={12}>
+          <Col xs={2}>
+            {/* <ConnectedSidebar trees={this.props.trees} /> */}
+          </Col>
+          <Col xs={10}>
             {this.props.selectedTree && this.props.selectedTree.title ? (
               <h1> {this.props.selectedTree.title} </h1>
             ) : (
@@ -52,7 +56,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchSelectedTree: treeId => dispatch(fetchSelectedTree(treeId))
+    fetchSelectedTree: treeId => dispatch(fetchSelectedTree(treeId)),
+    fetchTrees: () => dispatch(fetchTrees())
   }
 }
 
