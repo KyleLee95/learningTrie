@@ -10,7 +10,7 @@ class LearningTree extends Component {
   }
 
   async componentDidMount() {
-    await this.props.fetchTrees()
+    // await this.props.fetchTrees()
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
@@ -19,7 +19,6 @@ class LearningTree extends Component {
     const curTree = this.props.match.params.id
     if (prevTree !== curTree) {
       await this.props.fetchSelectedTree(Number(this.props.match.params.id))
-      // await this.props.fetchTrees()
     }
   }
   render() {
@@ -27,16 +26,16 @@ class LearningTree extends Component {
       <div>
         <Row>
           <Col xs={2}>
-            <ConnectedSidebar trees={this.props.trees} />
+            <ConnectedSidebar />
           </Col>
           <Col xs={10}>
-            {this.props.selectedTree && this.props.selectedTree.title ? (
-              <h1> {this.props.selectedTree.title} </h1>
+            {this.props.tree && this.props.tree.title ? (
+              <h1> {this.props.tree.title} </h1>
             ) : (
               <h1 />
             )}
 
-            <ConnectedTreeVisualization tree={this.props.trees} />
+            <ConnectedTreeVisualization />
           </Col>
         </Row>
       </div>
@@ -47,8 +46,7 @@ class LearningTree extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    trees: state.trees,
-    selectedTree: state.trees.selectedTree
+    tree: state.tree
   }
 }
 

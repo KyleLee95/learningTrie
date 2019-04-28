@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {Row, Col, Form, Button, Modal, Dropdown} from 'react-bootstrap'
-import axios from 'axios'
+import {postTree} from '../store/learningTree'
+import {connect} from 'react-redux'
 
-export class NewTree extends Component {
+class NewTree extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -17,13 +18,17 @@ export class NewTree extends Component {
   }
 
   //Handles Modal
-  async handleClose() {
+  handleClose() {
     //AXIOS POST
-    await axios.post(`/api/learningTrees/`, {
+    this.props.postTree({
       title: this.state.title,
       description: this.state.description
     })
-    this.setState({show: false})
+    this.setState({
+      title: '',
+      description: '',
+      show: false
+    })
   }
 
   handleShow() {
@@ -81,3 +86,11 @@ export class NewTree extends Component {
     )
   }
 }
+
+const mapDispatch = dispatch => {
+  return {
+    postTree: data => dispatch(postTree(data))
+  }
+}
+
+export const ConnectedNewTree = connect(null, mapDispatch)(NewTree)

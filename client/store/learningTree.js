@@ -4,8 +4,9 @@ import history from '../history'
 /**
  * ACTION TYPES
  */
-const GET_TREES = 'GET_TREES'
-const SET_SELECTED_TREE = 'SET_SELETED_TREE'
+const GET_TREE = 'GET_TREE'
+const SET_SELECTED_TREE = 'SET_SELECTED_TREE'
+const CREATE_TREE = 'CREATE_TREE'
 
 /**
  * INITIAL STATE
@@ -15,14 +16,19 @@ const defaultTrees = {}
 /**
  * ACTION CREATORS
  */
-const getTrees = trees => ({
-  type: GET_TREES,
-  trees
+const getTrees = tree => ({
+  type: GET_TREE,
+  tree
 })
 
-const setSelectedTree = trees => ({
+const setSelectedTree = tree => ({
   type: SET_SELECTED_TREE,
-  trees
+  tree
+})
+
+const createTree = tree => ({
+  type: CREATE_TREE,
+  tree
 })
 
 /**
@@ -46,15 +52,27 @@ export const fetchSelectedTree = treeId => async dispatch => {
   }
 }
 
+export const postTree = data => async dispatch => {
+  try {
+    const res = await axios.post('/api/learningTrees/', data)
+    history.push(`/learningTree/${res.data.id}`)
+    return dispatch(createTree(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */
 export default function(state = defaultTrees, action) {
   switch (action.type) {
-    case GET_TREES:
-      return action.trees
+    case GET_TREE:
+      return action.tree
     case SET_SELECTED_TREE:
-      return {...state, selectedTree: action.trees}
+      return action.tree
+    case CREATE_TREE:
+      return action.tree
     default:
       return state
   }

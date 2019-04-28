@@ -2,13 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {
-  Login,
-  Signup,
-  UserHome,
-  ConnectedLearningTree,
-  NewTree
-} from './components'
+import {Login, Signup, UserHome, ConnectedLearningTree} from './components'
 import {me} from './store'
 import {fetchTrees} from './store/learningTree'
 /**
@@ -17,7 +11,6 @@ import {fetchTrees} from './store/learningTree'
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
-    this.props.fetchTrees()
   }
 
   render() {
@@ -57,8 +50,7 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
-    },
-    fetchTrees: () => dispatch(fetchTrees())
+    }
   }
 }
 

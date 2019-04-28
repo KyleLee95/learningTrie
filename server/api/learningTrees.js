@@ -23,10 +23,11 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   console.log(req.body)
   try {
-    const learningTree = await LearningTree.create(req.body)
+    const learningTree = await LearningTree.create({
+      title: req.body.title,
+      description: req.body.description
+    })
     const user = await User.findByPk(req.user.id)
-    // console.log(Object.keys(learningTree.__proto__))
-    // console.log(user)
     learningTree.setUser(user)
     res.status(200).send({id: learningTree.id})
   } catch (err) {

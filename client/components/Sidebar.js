@@ -13,7 +13,7 @@ import {connect} from 'react-redux'
 import {fetchTrees} from '../store/learningTree'
 // import {Link, Route} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
-import {NewTree} from './NewTree'
+import {ConnectedNewTree} from './NewTree'
 class Sidebar extends Component {
   constructor(props, context) {
     super(props, context)
@@ -41,7 +41,7 @@ class Sidebar extends Component {
                 })
             : ''}
           <Dropdown.Divider />
-          <NewTree />
+          <ConnectedNewTree />
         </SplitButton>
       </div>
     )
