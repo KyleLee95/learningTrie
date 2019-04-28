@@ -50,7 +50,6 @@ router.get('/me', async (req, res) => {
     attributes: ['id', 'email'],
     include: [{model: LearningTree}]
   })
-  console.log(users)
   res.json(users)
 })
 
