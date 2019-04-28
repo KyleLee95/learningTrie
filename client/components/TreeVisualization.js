@@ -14,11 +14,6 @@ class TreeVisualization extends Component {
     super(props)
   }
 
-  componentDidMount() {
-    // console.log(this.props)
-    // axios.get()
-    console.log(this.props)
-  }
   render() {
     const elements = [
       {data: {id: 'one', label: 'Root'}, position: {x: 550, y: 350}},

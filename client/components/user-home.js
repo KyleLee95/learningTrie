@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Row, Col, Button} from 'react-bootstrap'
-import {ConnectedSidebar, ConnectedTreeVisualization} from '.'
-// import {fetchTrees} from '../store/learningTree'
-
+import {ConnectedSidebar} from '.'
+import {fetchTrees} from '../store/learningTree'
 /**
  * COMPONENT
  */
@@ -13,7 +12,6 @@ class UserHome extends Component {
 
   componentDidMount() {
     // this.props.fetchTrees()
-    // console.log(this.props)
   }
   render() {
     return (
@@ -27,12 +25,6 @@ class UserHome extends Component {
           <Col xs={10} id="cy">
             {/* <Row> */}
             {/* <Col xs={{span: 6, offset: 3}}> */}
-            <h1>Learning Trie Title</h1>
-            {/* </Col> */}
-            {/* </Row> */}
-            {/* <Row> */}
-            <ConnectedTreeVisualization />
-            {/* </Row> */}
           </Col>
         </Row>
       </div>

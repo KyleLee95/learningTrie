@@ -1,20 +1,20 @@
 import React, {Component} from 'react'
 import {Row, Col, DropdownButton, Dropdown} from 'react-bootstrap'
 import {connect} from 'react-redux'
+import {fetchTrees} from '../store/learningTree'
 
 //Can refactor into function component and get everything from state.
 //TODO:
 //Thunk + reducer for getting all tries.
 
 class Sidebar extends Component {
-  componentDidMount() {
-    console.log(this.props.trees)
-  }
+  componentDidMount() {}
   render() {
     return (
       <div>
         <DropdownButton id="dropdown-basic-button" title="Learning Tries">
-          {this.props.trees
+          {// this.props.trees ?
+          this.props.trees
             .filter(tree => tree.userId === this.props.user.id)
             .map(tree => {
               return (
@@ -22,7 +22,9 @@ class Sidebar extends Component {
                   {tree.title}
                 </Dropdown.Item>
               )
-            })}
+            })
+          // : ''
+          }
 
           <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
