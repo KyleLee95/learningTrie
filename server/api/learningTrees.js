@@ -20,6 +20,29 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.put('/:id', async (req, res, next) => {
+  try {
+    const tree = await LearningTree.findByPk(req.params.id)
+    const updatedTree = tree.update({
+      title: req.body.title,
+      description: req.body.description
+    })
+    res.status(200).json(updatedTree)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const tree = await LearningTree.findByPk(req.params.id)
+    tree.destroy()
+    res.status(200)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   console.log(req.body)
   try {
@@ -29,7 +52,7 @@ router.post('/', async (req, res, next) => {
     })
     const user = await User.findByPk(req.user.id)
     learningTree.setUser(user)
-    res.status(200).send({id: learningTree.id})
+    res.status(201).send({id: learningTree.id})
   } catch (err) {
     next(err)
   }

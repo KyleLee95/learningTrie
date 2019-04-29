@@ -5,9 +5,6 @@ import {connect} from 'react-redux'
 import CytoscapeComponent from 'react-cytoscapejs'
 // import cola from 'cytoscape-cola'
 import ScrollLock from 'react-scrolllock'
-import axios from 'axios'
-
-// cytoscape.use(cola)
 
 class TreeVisualization extends Component {
   constructor(props) {

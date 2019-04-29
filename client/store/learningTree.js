@@ -7,7 +7,8 @@ import history from '../history'
 const GET_TREE = 'GET_TREE'
 const SET_SELECTED_TREE = 'SET_SELECTED_TREE'
 const CREATE_TREE = 'CREATE_TREE'
-
+const UPDATE_TREE = 'UPDATE_TREE'
+const DELETE_TREE = 'DELETE_TREE'
 /**
  * INITIAL STATE
  */
@@ -31,6 +32,14 @@ const createTree = tree => ({
   tree
 })
 
+const updateTree = tree => ({
+  type: UPDATE_TREE,
+  tree
+})
+
+const deleteTree = () => ({
+  type: DELETE_TREE
+})
 /**
  * THUNK CREATORS
  */
@@ -62,6 +71,25 @@ export const postTree = data => async dispatch => {
   }
 }
 
+export const putTree = data => async dispatch => {
+  try {
+    const res = await axios.put(`/api/learningTrees/${data.id}`, data)
+    return dispatch(updateTree(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const delTree = treeId => async dispatch => {
+  try {
+    history.push('/home')
+    await axios.delete(`/api/learningTrees/${treeId}`)
+    return dispatch(deleteTree())
+  } catch (err) {
+    console.err(err)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -73,6 +101,10 @@ export default function(state = defaultTrees, action) {
       return action.tree
     case CREATE_TREE:
       return action.tree
+    case UPDATE_TREE:
+      return action.tree
+    case DELETE_TREE:
+      return {...state}
     default:
       return state
   }

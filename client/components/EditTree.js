@@ -1,16 +1,17 @@
 import React, {Component} from 'react'
-import {Row, Col, Form, Button, Modal, Dropdown} from 'react-bootstrap'
+import {Form, Button, Modal, Dropdown} from 'react-bootstrap'
 import {postTree} from '../store/learningTree'
 import {me} from '../store/user'
 import {connect} from 'react-redux'
 
-class NewTree extends Component {
+class EditTree extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
       show: false,
-      title: '',
-      description: ''
+      title: this.props.tree.title !== '' ? this.props.tree.title : '',
+      description:
+        this.props.tree.description !== '' ? this.props.tree.description : ''
     }
     //Bindings
     this.handleShow = this.handleShow.bind(this)
@@ -21,12 +22,12 @@ class NewTree extends Component {
 
   //Handles Modal
   async handleSubmit() {
+    this.handleClose()
     await this.props.postTree({
       title: this.state.title,
       description: this.state.description
     })
     await this.props.me()
-    this.handleClose()
   }
 
   handleClose() {
@@ -49,10 +50,10 @@ class NewTree extends Component {
     return (
       <div>
         <Form>
-          <Dropdown.Item onClick={this.handleShow}>New Tree</Dropdown.Item>
+          <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>New Learning Tree</Modal.Title>
+              <Modal.Title>Edit Learning Tree</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Modal.Body>
@@ -106,4 +107,4 @@ const mapState = state => {
   }
 }
 
-export const ConnectedNewTree = connect(mapState, mapDispatch)(NewTree)
+export const ConnectedEditTree = connect(mapState, mapDispatch)(EditTree)

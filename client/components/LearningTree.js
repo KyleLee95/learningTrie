@@ -1,8 +1,17 @@
 import React, {Component} from 'react'
-import {Row, Col} from 'react-bootstrap'
+import {Row, Col, Dropdown} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
-import {fetchSelectedTree, fetchTrees} from '../store/learningTree'
+import {
+  ConnectedTreeVisualization,
+  ConnectedSidebar,
+  ConnectedEditTree
+} from '.'
+import {
+  fetchSelectedTree,
+  fetchTrees,
+  putTree,
+  delTree
+} from '../store/learningTree'
 
 class LearningTree extends Component {
   constructor(props) {
@@ -10,7 +19,6 @@ class LearningTree extends Component {
   }
 
   async componentDidMount() {
-    // await this.props.fetchTrees()
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
@@ -22,6 +30,7 @@ class LearningTree extends Component {
     }
   }
   render() {
+    const id = Number(this.props.match.params.id)
     return (
       <div>
         <Row>
@@ -30,7 +39,23 @@ class LearningTree extends Component {
           </Col>
           <Col xs={10}>
             {this.props.tree && this.props.tree.title ? (
-              <h1> {this.props.tree.title} </h1>
+              <div>
+                <h1>
+                  {this.props.tree.title}{' '}
+                  <Dropdown>
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                      Options
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => this.props.delTree(id)}>
+                        {' '}
+                        Delete Tree
+                      </Dropdown.Item>
+                      <ConnectedEditTree />
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </h1>
+              </div>
             ) : (
               <h1 />
             )}
@@ -53,7 +78,9 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     fetchSelectedTree: treeId => dispatch(fetchSelectedTree(treeId)),
-    fetchTrees: () => dispatch(fetchTrees())
+    fetchTrees: () => dispatch(fetchTrees()),
+    putTree: data => dispatch(putTree(data)),
+    delTree: treeId => dispatch(delTree(treeId))
   }
 }
 
