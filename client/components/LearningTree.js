@@ -33,6 +33,7 @@ class LearningTree extends Component {
     this.handleCloseEdit = this.handleCloseEdit.bind(this)
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   async componentDidMount() {
@@ -63,6 +64,12 @@ class LearningTree extends Component {
       description: '',
       showEdit: false
     })
+  }
+
+  async handleDelete() {
+    this.handleClose()
+    await this.props.delTree(Number(this.props.match.params.id))
+    await this.props.me()
   }
 
   handleShowEdit() {
@@ -108,6 +115,7 @@ class LearningTree extends Component {
           </Col>
         </Row>
 
+        {/* Edit Form Modal */}
         <Form>
           {/* <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item> */}
           <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
@@ -148,6 +156,28 @@ class LearningTree extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
+        {/* Delete Check Modal */}
+
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Tree</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Modal.Body>
+              <Form.Text>
+                Are you sure you want to delete {this.props.tree.title}?
+              </Form.Text>
+            </Modal.Body>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              No
+            </Button>
+            <Button variant="primary" onClick={this.handleDelete}>
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }

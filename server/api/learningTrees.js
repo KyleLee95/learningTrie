@@ -21,7 +21,6 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.put('/:id', async (req, res, next) => {
-  console.log(req.params.id)
   try {
     const tree = await LearningTree.findByPk(req.params.id)
     const updatedTree = await tree.update({
@@ -36,9 +35,12 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.findByPk(req.params.id)
-    tree.destroy()
-    res.status(200)
+    const tree = await LearningTree.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json(tree)
   } catch (err) {
     next(err)
   }

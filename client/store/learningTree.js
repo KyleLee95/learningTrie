@@ -12,7 +12,7 @@ const DELETE_TREE = 'DELETE_TREE'
 /**
  * INITIAL STATE
  */
-const defaultTrees = {}
+const defaultTree = {}
 
 /**
  * ACTION CREATORS
@@ -37,7 +37,7 @@ const updateTree = tree => ({
   tree
 })
 
-const deleteTree = () => ({
+const deleteTree = tree => ({
   type: DELETE_TREE
 })
 /**
@@ -83,17 +83,17 @@ export const putTree = data => async dispatch => {
 export const delTree = treeId => async dispatch => {
   try {
     history.push('/home')
-    await axios.delete(`/api/learningTrees/${treeId}`)
-    return dispatch(deleteTree())
+    const res = await axios.delete(`/api/learningTrees/${treeId}`)
+    return dispatch(deleteTree(res.data))
   } catch (err) {
-    console.err(err)
+    console.error(err)
   }
 }
 
 /**
  * REDUCER
  */
-export default function(state = defaultTrees, action) {
+export default function(state = defaultTree, action) {
   switch (action.type) {
     case GET_TREE:
       return action.tree
@@ -104,7 +104,7 @@ export default function(state = defaultTrees, action) {
     case UPDATE_TREE:
       return action.tree
     case DELETE_TREE:
-      return {...state}
+      return state
     default:
       return state
   }
