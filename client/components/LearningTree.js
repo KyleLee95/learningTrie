@@ -1,11 +1,7 @@
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {
-  ConnectedTreeVisualization,
-  ConnectedSidebar,
-  ConnectedEditTree
-} from '.'
+import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
 import {
   fetchSelectedTree,
   fetchTrees,
@@ -15,17 +11,16 @@ import {
 import {me} from '../store/user'
 
 //TODO:
-//Fix Modals so that Edit modal pre-populates + auto updates after submit
-//Implement Modal for Delete to check if you're "sure" you want to delete the modal
+//Forms are only prefilled the first time you edit. After that the forms empty.
+
 class LearningTree extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
       showEdit: false,
       show: false,
-      title: this.props.tree.title !== '' ? this.props.tree.title : '',
-      description:
-        this.props.tree.description !== '' ? this.props.tree.description : ''
+      title: this.props.tree.title,
+      description: this.props.tree.description
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -38,6 +33,10 @@ class LearningTree extends Component {
 
   async componentDidMount() {
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
+    this.setState({
+      title: this.props.tree.title,
+      description: this.props.tree.description
+    })
   }
 
   async componentDidUpdate(prevProps) {
@@ -91,7 +90,12 @@ class LearningTree extends Component {
   }
 
   render() {
-    const id = Number(this.props.match.params.id)
+    const {description, title} = this.state
+    let enabled
+    if (description !== undefined && title !== undefined) {
+      enabled = description.length > 0 && title.length > 0
+    }
+
     return (
       <div>
         <Row>
@@ -117,29 +121,27 @@ class LearningTree extends Component {
 
         {/* Edit Form Modal */}
         <Form>
-          {/* <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item> */}
           <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
             <Modal.Header closeButton>
               <Modal.Title>Edit Learning Tree</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Modal.Body>
-                <Form.Group>
+                <Form.Group controlId="title">
                   <Form.Label>Title</Form.Label>
                   <Form.Control
                     name="title"
                     type="title"
-                    value={this.state.title}
-                    // placeholder="Ex. Machine Learning for Beginners"
+                    value={this.state.title || ''}
                     onChange={this.handleChange}
                   />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group controlId="description">
                   <Form.Label>Description</Form.Label>
                   <Form.Control
                     name="description"
                     as="textarea"
-                    value={this.state.description}
+                    value={this.state.description || ''}
                     rows="3"
                     onChange={this.handleChange}
                   />
@@ -150,14 +152,18 @@ class LearningTree extends Component {
               <Button variant="secondary" onClick={this.handleCloseEdit}>
                 Close
               </Button>
-              <Button variant="primary" onClick={this.handleSubmit}>
+              <Button
+                variant="primary"
+                disabled={!enabled}
+                onClick={this.handleSubmit}
+              >
                 Submit
               </Button>
             </Modal.Footer>
           </Modal>
         </Form>
-        {/* Delete Check Modal */}
 
+        {/* Delete Check Modal */}
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Delete Tree</Modal.Title>

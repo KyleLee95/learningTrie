@@ -25,8 +25,8 @@ class NewTree extends Component {
       title: this.state.title,
       description: this.state.description
     })
+    await this.handleClose()
     await this.props.me()
-    this.handleClose()
   }
 
   handleClose() {
