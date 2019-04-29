@@ -38,7 +38,8 @@ const updateTree = tree => ({
 })
 
 const deleteTree = tree => ({
-  type: DELETE_TREE
+  type: DELETE_TREE,
+  tree
 })
 /**
  * THUNK CREATORS

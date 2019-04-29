@@ -9,7 +9,15 @@ import ScrollLock from 'react-scrolllock'
 class TreeVisualization extends Component {
   constructor(props) {
     super(props)
+
+    // this.addNode = this.addNode.bind(this)
   }
+
+  // addNode() {
+  //   cy.add({
+
+  //   })
+  // }
 
   render() {
     const elements = [

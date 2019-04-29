@@ -47,7 +47,7 @@ class EditTree extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Form>
           {/* <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item> */}
           <Modal show={this.state.show} onHide={this.handleClose}>
@@ -88,7 +88,7 @@ class EditTree extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
-      </div>
+      </React.Fragment>
     )
   }
 }

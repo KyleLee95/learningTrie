@@ -21,10 +21,10 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <SplitButton
           id="dropdown-split-variants-Primary"
-          title="Learning Trees"
+          title="Select Learning Tree"
         >
           {this.props.user.learningTrees && this.props.user.learningTrees.length
             ? this.props.user.learningTrees
@@ -43,7 +43,7 @@ class Sidebar extends Component {
           <Dropdown.Divider />
           <ConnectedNewTree />
         </SplitButton>
-      </div>
+      </React.Fragment>
     )
   }
 }

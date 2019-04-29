@@ -47,6 +47,7 @@ class LearningTree extends Component {
     }
   }
 
+  //BEGIN MODAL METHODS
   async handleSubmit() {
     this.handleCloseEdit()
     await this.props.putTree({
@@ -85,9 +86,13 @@ class LearningTree extends Component {
     this.setState({show: true})
   }
 
+  //END MODAL METHODS
+
+  //FORM METHODS
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value})
   }
+  //END FORM METHODS
 
   render() {
     const {description, title} = this.state
@@ -97,7 +102,7 @@ class LearningTree extends Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Row>
           <Col xs={2}>
             <ConnectedSidebar />
@@ -114,7 +119,6 @@ class LearningTree extends Component {
             ) : (
               <h1 />
             )}
-
             <ConnectedTreeVisualization />
           </Col>
         </Row>
@@ -184,7 +188,7 @@ class LearningTree extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </React.Fragment>
     )
   }
 }

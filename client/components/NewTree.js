@@ -52,7 +52,7 @@ class NewTree extends Component {
       enabled = description.length > 0 && title.length > 0
     }
     return (
-      <div>
+      <React.Fragment>
         <Form>
           <Dropdown.Item onClick={this.handleShow}>New Tree</Dropdown.Item>
           <Modal show={this.state.show} onHide={this.handleClose}>
@@ -97,7 +97,7 @@ class NewTree extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
-      </div>
+      </React.Fragment>
     )
   }
 }
