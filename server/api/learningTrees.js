@@ -21,9 +21,10 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.put('/:id', async (req, res, next) => {
+  console.log(req.params.id)
   try {
     const tree = await LearningTree.findByPk(req.params.id)
-    const updatedTree = tree.update({
+    const updatedTree = await tree.update({
       title: req.body.title,
       description: req.body.description
     })
@@ -44,7 +45,6 @@ router.delete('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log(req.body)
   try {
     const learningTree = await LearningTree.create({
       title: req.body.title,

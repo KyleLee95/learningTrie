@@ -9,9 +9,8 @@ class EditTree extends Component {
     super(props, context)
     this.state = {
       show: false,
-      title: this.props.tree.title !== '' ? this.props.tree.title : '',
-      description:
-        this.props.tree.description !== '' ? this.props.tree.description : ''
+      title: this.props.tree.title,
+      description: this.props.tree.description
     }
     //Bindings
     this.handleShow = this.handleShow.bind(this)
@@ -50,7 +49,7 @@ class EditTree extends Component {
     return (
       <div>
         <Form>
-          <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item>
+          {/* <Dropdown.Item onClick={this.handleShow}>Edit Tree</Dropdown.Item> */}
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Edit Learning Tree</Modal.Title>
