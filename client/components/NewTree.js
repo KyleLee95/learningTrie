@@ -46,6 +46,11 @@ class NewTree extends Component {
   }
 
   render() {
+    const {description, title} = this.state
+    let enabled
+    if (description !== undefined && title !== undefined) {
+      enabled = description.length > 0 && title.length > 0
+    }
     return (
       <div>
         <Form>
@@ -82,7 +87,11 @@ class NewTree extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={this.handleSubmit}>
+              <Button
+                variant="primary"
+                disabled={!enabled}
+                onClick={this.handleSubmit}
+              >
                 Submit
               </Button>
             </Modal.Footer>
