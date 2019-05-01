@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 // import ReactCytoscape from 'react-cytoscape'
 import {connect} from 'react-redux'
-// import cytoscape from 'cytoscape'
+import cytoscape from 'cytoscape'
 import CytoscapeComponent from 'react-cytoscapejs'
-// import cola from 'cytoscape-cola'
+import cola from 'cytoscape-cola'
 import ScrollLock from 'react-scrolllock'
+import {Graph} from './Graph'
 
 class TreeVisualization extends Component {
   constructor(props) {
@@ -28,11 +29,12 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
-        <CytoscapeComponent
+        {/* <CytoscapeComponent
           elements={elements}
-          style={{width: '100vw', height: '100vw', backgroundColor: 'fffcfc'}}
+          style={{width: '68vw', height: '100vw', backgroundColor: '#607393'}}
           // layout={{name: 'dagre'}}
-        />
+        /> */}
+        <Graph style={{width: '68vw', height: '40vw'}} />
       </ScrollLock>
     )
   }
