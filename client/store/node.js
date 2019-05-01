@@ -27,6 +27,7 @@ const updateNode = node => ({type: UPDATE_NODE, node})
 export const getNodes = () => async dispatch => {
   try {
     const res = await axios.get('/api/nodes')
+    console.log(res)
     dispatch(fetchNodes(res.data))
   } catch (err) {
     console.error(err)

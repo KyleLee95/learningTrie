@@ -18,6 +18,7 @@ import {
 } from 'react-digraph'
 import axios from 'axios'
 import {Button} from 'react-bootstrap'
+import {postNode, putNode, getNodes, delNode} from '../store/node'
 
 const GraphConfig = {
   NodeTypes: {
@@ -122,6 +123,10 @@ class TreeVisualization extends Component {
 
   /* Define custom graph editing methods here */
 
+  async componentDidMount() {
+    await this.props.getNodes()
+  }
+
   onUpdateNode(node) {
     console.log('update node', node)
     // console.log(y)
@@ -173,25 +178,25 @@ class TreeVisualization extends Component {
     const type = 'empty'
 
     const viewNode = {
-      //Use Graph Id to reference the Node.
-      //Default db id is used strictly for
-
-      title: '',
+      title: 'A',
+      nodeType: 'Root',
       type,
       x: 0,
-      y: 0
+      y: 0,
+      treeId: this.props.tree.id
     }
 
-    await axios.post('/api/nodes/', viewNode)
+    await this.props.postNode(viewNode)
 
     graph.nodes = [...graph.nodes, viewNode]
     this.setState({graph})
   }
   render() {
+    console.log(this.props)
     const nodes = this.state.graph.nodes
     const edges = this.state.graph.edges
     const selected = this.state.selected
-
+    console.log(this.props)
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
@@ -230,8 +235,8 @@ class TreeVisualization extends Component {
             <GraphView
               ref="GraphView"
               nodeKey={NODE_KEY}
-              nodes={nodes}
-              edges={edges}
+              nodes={[]}
+              edges={[]}
               selected={selected}
               nodeTypes={NodeTypes}
               nodeSubtypes={NodeSubtypes}
@@ -253,13 +258,25 @@ class TreeVisualization extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapState = state => {
   return {
     user: state.user,
-    tree: state.tree
+    tree: state.tree,
+    //TODO:
+    //Figure out how to load nodes and edges. should I eager load them
+    //with the tree or load them on their own?
+    nodes: state.node
+    // edges: state.edge
   }
 }
 
-export const ConnectedTreeVisualization = connect(mapStateToProps, null)(
+const mapDispatch = dispatch => {
+  return {
+    postNode: node => dispatch(postNode(node)),
+    getNodes: () => dispatch(getNodes())
+  }
+}
+
+export const ConnectedTreeVisualization = connect(mapState, mapDispatch)(
   TreeVisualization
 )

@@ -118,7 +118,7 @@ class LearningTree extends Component {
           </Col>
           <Col xs={10}>
             <ConnectedTreeVisualization
-              nodes={this.props.tree.nodes}
+              // nodes={this.props.tree.nodes}
               edges={this.props.tree.edges}
             />
           </Col>

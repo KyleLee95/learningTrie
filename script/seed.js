@@ -70,6 +70,7 @@ async function seed() {
   await learningTrees[0].addNode(nodes[3])
   await learningTrees[0].addEdge(edges[0])
   await learningTrees[0].addEdge(edges[1])
+  await users[0].addLearningTree(learningTrees[0])
   console.log(`seeded ${learningTrees.length} learningTrees`)
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${nodes.length} nodes`)
