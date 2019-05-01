@@ -22,7 +22,7 @@ const GraphConfig = {
   NodeTypes: {
     empty: {
       // required to show empty nodes
-      typeText: 'None',
+      typeText: '',
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -119,27 +119,26 @@ class TreeVisualization extends Component {
   /* Define custom graph editing methods here */
 
   onUpdateNode(node) {
-    console.log(node)
+    console.log('update node', node)
     // console.log(y)
-    console.log('UPDATING NODE')
   }
-  onSelectNode() {
-    console.log('SELECT NODE')
+  onSelectNode(node) {
+    console.log('SELECT NODE', node)
   }
   async onSwapEdge(sourceNode, targetNode, edge) {
     //find targetNode
     // console.log('before', this.state.graphs.edges[0])
-    console.log('source', sourceNode)
-    console.log('target', targetNode)
-    console.log('edge', edge)
+    // console.log('source', sourceNode)
+    // console.log('target', targetNode)
+    // console.log('edge', edge)
     edge.target = targetNode.id
     await axios.put('/api/edges/', {edge})
     //TODO:
     //Create API route to post edge information to database
     //Write axios update call
-    console.log('after source', sourceNode)
-    console.log('after target', targetNode)
-    console.log('after edge', edge)
+    // console.log('after source', sourceNode)
+    // console.log('after target', targetNode)
+    // console.log('after edge', edge)
     // console.log('after', this.state.graphs.edges[0])
   }
 
