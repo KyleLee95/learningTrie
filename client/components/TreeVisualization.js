@@ -66,48 +66,50 @@ class TreeVisualization extends Component {
 
     this.state = {
       graph: {
-        nodes: [
-          {
-            id: 1,
-            title: 'Node A',
-            x: 258.3976135253906,
-            y: 331.9783248901367,
-            type: 'empty'
-          },
-          {
-            id: 2,
-            title: 'Node B',
-            x: 593.9393920898438,
-            y: 260.6060791015625,
-            type: 'empty'
-          },
-          {
-            id: 3,
-            title: 'Node C',
-            x: 237.5757598876953,
-            y: 61.81818389892578,
-            type: 'custom'
-          },
-          {
-            id: 4,
-            title: 'Node C',
-            x: 600.5757598876953,
-            y: 600.81818389892578,
-            type: 'custom'
-          }
-        ],
-        edges: [
-          {
-            source: 1,
-            target: 4,
-            type: 'emptyEdge'
-          },
-          {
-            source: 2,
-            target: 4,
-            type: 'emptyEdge'
-          }
-        ]
+        nodes: [],
+        // [
+        //   {
+        //     id: 1,
+        //     title: 'Node A',
+        //     x: 258.3976135253906,
+        //     y: 331.9783248901367,
+        //     type: 'empty'
+        //   },
+        //   {
+        //     id: 2,
+        //     title: 'Node B',
+        //     x: 593.9393920898438,
+        //     y: 260.6060791015625,
+        //     type: 'empty'
+        //   },
+        //   {
+        //     id: 3,
+        //     title: 'Node C',
+        //     x: 237.5757598876953,
+        //     y: 61.81818389892578,
+        //     type: 'custom'
+        //   },
+        //   {
+        //     id: 4,
+        //     title: 'Node C',
+        //     x: 600.5757598876953,
+        //     y: 600.81818389892578,
+        //     type: 'custom'
+        //   }
+        // ]
+        edges: []
+        // [
+        //   {
+        //     source: 1,
+        //     target: 4,
+        //     type: 'emptyEdge'
+        //   },
+        //   {
+        //     source: 2,
+        //     target: 4,
+        //     type: 'emptyEdge'
+        //   }
+        // ]
       },
       selected: {}
     }
@@ -204,25 +206,47 @@ class TreeVisualization extends Component {
         /> */}
         {/* <Graph style={{width: '68vw', height: '40vw'}} /> */}
         <div id="graph" style={{width: '100%', height: '40vw'}}>
-          <GraphView
-            ref="GraphView"
-            nodeKey={NODE_KEY}
-            nodes={nodes}
-            edges={edges}
-            selected={selected}
-            nodeTypes={NodeTypes}
-            nodeSubtypes={NodeSubtypes}
-            edgeTypes={EdgeTypes}
-            onSelectNode={this.onSelectNode}
-            onCreateNode={this.onCreateNode}
-            onUpdateNode={this.onUpdateNode}
-            onDeleteNode={this.onDeleteNode}
-            onSelectEdge={this.onSelectEdge}
-            onCreateEdge={this.onCreateEdge}
-            onSwapEdge={this.onSwapEdge}
-            onDeleteEdge={this.onDeleteEdge}
-            canCreateEdge={this.canCreateEdge}
-          />
+          {this.props.nodes && this.props.nodes[0] !== undefined ? (
+            <GraphView
+              ref="GraphView"
+              nodeKey={NODE_KEY}
+              nodes={this.props.nodes}
+              edges={this.props.edges}
+              selected={selected}
+              nodeTypes={NodeTypes}
+              nodeSubtypes={NodeSubtypes}
+              edgeTypes={EdgeTypes}
+              onSelectNode={this.onSelectNode}
+              onCreateNode={this.onCreateNode}
+              onUpdateNode={this.onUpdateNode}
+              onDeleteNode={this.onDeleteNode}
+              onSelectEdge={this.onSelectEdge}
+              onCreateEdge={this.onCreateEdge}
+              onSwapEdge={this.onSwapEdge}
+              onDeleteEdge={this.onDeleteEdge}
+              canCreateEdge={this.canCreateEdge}
+            />
+          ) : (
+            <GraphView
+              ref="GraphView"
+              nodeKey={NODE_KEY}
+              nodes={nodes}
+              edges={edges}
+              selected={selected}
+              nodeTypes={NodeTypes}
+              nodeSubtypes={NodeSubtypes}
+              edgeTypes={EdgeTypes}
+              onSelectNode={this.onSelectNode}
+              onCreateNode={this.onCreateNode}
+              onUpdateNode={this.onUpdateNode}
+              onDeleteNode={this.onDeleteNode}
+              onSelectEdge={this.onSelectEdge}
+              onCreateEdge={this.onCreateEdge}
+              onSwapEdge={this.onSwapEdge}
+              onDeleteEdge={this.onDeleteEdge}
+              canCreateEdge={this.canCreateEdge}
+            />
+          )}
         </div>
       </ScrollLock>
     )
@@ -231,7 +255,8 @@ class TreeVisualization extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    tree: state.tree
   }
 }
 

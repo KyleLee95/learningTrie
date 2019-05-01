@@ -100,7 +100,6 @@ class LearningTree extends Component {
     if (description !== undefined && title !== undefined) {
       enabled = description.length > 0 && title.length > 0
     }
-
     return (
       <React.Fragment>
         <Row>
@@ -118,7 +117,10 @@ class LearningTree extends Component {
             )}
           </Col>
           <Col xs={10}>
-            <ConnectedTreeVisualization />
+            <ConnectedTreeVisualization
+              nodes={this.props.tree.nodes}
+              edges={this.props.tree.edges}
+            />
           </Col>
         </Row>
 
