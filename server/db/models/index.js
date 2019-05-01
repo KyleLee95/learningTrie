@@ -4,6 +4,7 @@ const Review = require('./review')
 const Comment = require('./comment')
 const Resource = require('./resource')
 const Node = require('./node')
+const Edge = require('./edge')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -49,5 +50,6 @@ module.exports = {
   Comment,
   LearningTree,
   Review,
-  Node
+  Node,
+  Edge
 }

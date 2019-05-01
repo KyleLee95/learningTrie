@@ -8,6 +8,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
+import axios from 'axios'
 import React, {Component} from 'react'
 
 const GraphConfig = {
@@ -110,7 +111,9 @@ export class Graph extends Component {
 
   /* Define custom graph editing methods here */
 
-  onUpdateNode() {
+  onUpdateNode(node) {
+    console.log(node)
+    // console.log(y)
     console.log('UPDATING NODE')
   }
   onSelectNode() {
@@ -123,6 +126,9 @@ export class Graph extends Component {
     console.log('target', targetNode)
     console.log('edge', edge)
     edge.target = targetNode.id
+    //TODO:
+    //Create API route to post edge information to database
+    //Write axios update call
     console.log('after source', sourceNode)
     console.log('after target', targetNode)
     console.log('after edge', edge)
@@ -147,7 +153,7 @@ export class Graph extends Component {
     const EdgeTypes = GraphConfig.EdgeTypes
 
     return (
-      <div id="graph" style={this.props.style}>
+      <div id="graph" style={{width: '68vw', height: '40vw'}}>
         <GraphView
           // onClick={this.onSelectNode}
           ref="GraphView"
