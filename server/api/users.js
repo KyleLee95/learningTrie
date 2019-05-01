@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
       attributes: ['id', 'email'],
       include: [{model: LearningTree}]
     })
-    console.log(users)
+
     res.json(users)
   } catch (err) {
     next(err)
