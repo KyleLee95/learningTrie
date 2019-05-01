@@ -105,9 +105,6 @@ class LearningTree extends Component {
       <React.Fragment>
         <Row>
           <Col xs={2}>
-            <ConnectedSidebar />
-          </Col>
-          <Col xs={8}>
             {this.props.tree && this.props.tree.title ? (
               <div>
                 <h1>
@@ -119,9 +116,10 @@ class LearningTree extends Component {
             ) : (
               <h1 />
             )}
+          </Col>
+          <Col xs={10}>
             <ConnectedTreeVisualization />
           </Col>
-          <Col xs={2} />
         </Row>
 
         {/* Edit Form Modal */}

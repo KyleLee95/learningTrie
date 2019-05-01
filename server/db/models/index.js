@@ -21,6 +21,8 @@ User.hasMany(Review)
 LearningTree.hasMany(Review, {as: 'review'})
 LearningTree.hasMany(Node, {as: 'node'})
 LearningTree.belongsTo(User)
+LearningTree.hasMany(Node)
+LearningTree.hasMany(Edge)
 
 //Comment
 Comment.belongsTo(LearningTree)
@@ -31,6 +33,10 @@ Comment.belongsTo(Resource)
 Node.hasMany(Node)
 Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
 Node.hasMany(Resource)
+Node.belongsTo(LearningTree)
+
+//Edge
+Edge.belongsTo(LearningTree)
 
 //Resource
 Resource.belongsToMany(Node, {through: 'LearningResource'})

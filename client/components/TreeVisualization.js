@@ -153,13 +153,15 @@ class TreeVisualization extends Component {
     console.log('Source', targetNode)
   }
 
-  onCreateNode(x, y) {
+  async onCreateNode(x, y) {
     //TODO:
     //Create axios POST request for new node
     //Set to state?
     //PROBLEM:
     //How do I initialize the id?
     //Keep count
+    //Node ID by date.now()
+
     const graph = this.state.graph
 
     // This is just an example - any sort of logic
@@ -169,23 +171,21 @@ class TreeVisualization extends Component {
     const type = 'empty'
 
     const viewNode = {
-      id: Date.now(),
+      //Use Graph Id to reference the Node.
+      //Default db id is used strictly for
+
       title: '',
       type,
-      x,
-      y
+      x: 0,
+      y: 0
     }
+
+    await axios.post('/api/nodes/', viewNode)
 
     graph.nodes = [...graph.nodes, viewNode]
     this.setState({graph})
   }
   render() {
-    // const elements = [
-    //   {data: {id: 'one', label: 'Root'}, position: {x: 550, y: 350}},
-    //   {data: {id: 'two', label: 'Node '}, position: {x: 500, y: 300}},
-    //   {data: {source: 'one', target: 'two', label: 'Edge from Node1 to Node2'}}
-    // ]
-
     const nodes = this.state.graph.nodes
     const edges = this.state.graph.edges
     const selected = this.state.selected
@@ -203,7 +203,7 @@ class TreeVisualization extends Component {
           // layout={{name: 'dagre'}}
         /> */}
         {/* <Graph style={{width: '68vw', height: '40vw'}} /> */}
-        <div id="graph" style={{width: '68vw', height: '40vw'}}>
+        <div id="graph" style={{width: '100%', height: '40vw'}}>
           <GraphView
             ref="GraphView"
             nodeKey={NODE_KEY}

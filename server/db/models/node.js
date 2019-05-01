@@ -9,10 +9,10 @@ const Node = db.define('node', {
   description: {
     type: Sequelize.TEXT
   },
-  type: {
+  nodeType: {
     type: Sequelize.ENUM('Root', 'Core Concept', 'Sub-Concept')
   },
-  nodeType: {
+  type: {
     type: Sequelize.STRING
   },
   x: {

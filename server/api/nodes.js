@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const node = await Node.create(req.body)
-    res.send('HIT IT')
+    res.status(201).json(node)
   } catch (err) {
     next(err)
     console.error(err)
