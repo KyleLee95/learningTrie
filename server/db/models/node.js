@@ -13,16 +13,13 @@ const Node = db.define('node', {
     type: Sequelize.ENUM('Root', 'Core Concept', 'Sub-Concept')
   },
   nodeType: {
-    type: Sequelize.STRING,
-    defaultValue: 'empty'
+    type: Sequelize.STRING
   },
   x: {
-    type: Sequelize.FLOAT,
-    defaultValue: 377.367431640625
+    type: Sequelize.FLOAT
   },
   y: {
-    type: Sequelize.FLOAT,
-    defaultValue: 397.5807800292969
+    type: Sequelize.FLOAT
   }
 })
 

@@ -115,6 +115,7 @@ class TreeVisualization extends Component {
     this.onSelectNode = this.onSelectNode.bind(this)
     this.onSwapEdge = this.onSwapEdge.bind(this)
     this.onCreateEdge = this.onCreateEdge.bind(this)
+    this.onCreateNode = this.onCreateNode.bind(this)
   }
 
   /* Define custom graph editing methods here */
@@ -151,6 +152,33 @@ class TreeVisualization extends Component {
     console.log('Source', sourceNode)
     console.log('Source', targetNode)
   }
+
+  onCreateNode(x, y) {
+    //TODO:
+    //Create axios POST request for new node
+    //Set to state?
+    //PROBLEM:
+    //How do I initialize the id?
+    //Keep count
+    const graph = this.state.graph
+
+    // This is just an example - any sort of logic
+    // could be used here to determine node type
+    // There is also support for subtypes. (see 'sample' above)
+    // The subtype geometry will underlay the 'type' geometry for a node
+    const type = 'empty'
+
+    const viewNode = {
+      id: Date.now(),
+      title: '',
+      type,
+      x,
+      y
+    }
+
+    graph.nodes = [...graph.nodes, viewNode]
+    this.setState({graph})
+  }
   render() {
     // const elements = [
     //   {data: {id: 'one', label: 'Root'}, position: {x: 550, y: 350}},
@@ -168,7 +196,7 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
-        <Button>Hello World</Button>
+        <Button onClick={this.onCreateNode}>Hello World</Button>
         {/* <CytoscapeComponent
           elements={elements}
           style={{width: '68vw', height: '100vw', backgroundColor: '#607393'}}
