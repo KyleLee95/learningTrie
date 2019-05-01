@@ -126,13 +126,14 @@ class TreeVisualization extends Component {
   onSelectNode() {
     console.log('SELECT NODE')
   }
-  onSwapEdge(sourceNode, targetNode, edge) {
+  async onSwapEdge(sourceNode, targetNode, edge) {
     //find targetNode
     // console.log('before', this.state.graphs.edges[0])
     console.log('source', sourceNode)
     console.log('target', targetNode)
     console.log('edge', edge)
     edge.target = targetNode.id
+    await axios.put('/api/edges/', {edge})
     //TODO:
     //Create API route to post edge information to database
     //Write axios update call
