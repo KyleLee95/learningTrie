@@ -17,6 +17,7 @@ import {
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
 import axios from 'axios'
+import {Button} from 'react-bootstrap'
 
 const GraphConfig = {
   NodeTypes: {
@@ -167,6 +168,7 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
+        <Button>Hello World</Button>
         {/* <CytoscapeComponent
           elements={elements}
           style={{width: '68vw', height: '100vw', backgroundColor: '#607393'}}

@@ -14,7 +14,6 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const edge = await Edge.create(req.body)
-    // res.send('HIT IT')
     res.json(edge)
   } catch (err) {
     next(err)
@@ -22,10 +21,8 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/', async (req, res, next) => {
-  console.log(req.body)
   try {
     const edge = await Edge.findByPk(req.body.edge.source)
-    console.log(edge)
     const updatedEdge = await edge.update({
       target: req.body.edge.target
     })
