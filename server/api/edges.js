@@ -31,3 +31,16 @@ router.put('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Edge.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json(req.params.id)
+  } catch (err) {
+    next(err)
+  }
+})

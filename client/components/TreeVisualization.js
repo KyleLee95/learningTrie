@@ -69,15 +69,18 @@ class TreeVisualization extends Component {
         nodes: [],
         edges: []
       },
-      selected: {}
+      selected: {},
+      selectedEdge: {}
     }
     this.onUpdateNode = this.onUpdateNode.bind(this)
     this.onSelectNode = this.onSelectNode.bind(this)
     this.onDeleteNode = this.onDeleteNode.bind(this)
     this.onSwapEdge = this.onSwapEdge.bind(this)
+    this.onSelectEdge = this.onSelectEdge.bind(this)
     this.onCreateEdge = this.onCreateEdge.bind(this)
     this.onCreateNode = this.onCreateNode.bind(this)
     this.canCreateEdge = this.canCreateEdge.bind(this)
+    this.onDeleteEdge = this.onDeleteEdge.bind(this)
   }
 
   /* Define custom graph editing methods here */
@@ -90,7 +93,6 @@ class TreeVisualization extends Component {
   //START NODE HANDLERS
   async onUpdateNode(node) {
     await this.props.putNode(node)
-    // console.log(y)
   }
   onSelectNode(node) {
     this.setState({
@@ -102,7 +104,6 @@ class TreeVisualization extends Component {
     this.setState({
       selected: node
     })
-    console.log('delete node', this.state.selected)
     await this.props.delNode(this.state.selected)
   }
 
@@ -115,9 +116,21 @@ class TreeVisualization extends Component {
   }
 
   onSelectEdge(selectedEdge) {
-    console.log('selected edge', selectedEdge)
+    console.log(selectedEdge)
+    this.setState({
+      selected: selectedEdge
+    })
+    console.log('selected edge', this.state.selectedEdge)
   }
 
+  async onDeleteEdge(edge) {
+    this.setState({
+      selected: edge
+    })
+    console.log(this.state.selectedEdge)
+
+    await this.props.delEdge(this.state.selectedEdge)
+  }
   canCreateEdge(startNode, endNode) {
     console.log(startNode, 'start node')
     console.log(endNode, 'endNode')
@@ -129,15 +142,17 @@ class TreeVisualization extends Component {
 
   //END EDGE HANDLERS
 
-  async onCreateNode(x, y) {
+  async onCreateNode(x = 0, y = 0, mouseEvent) {
+    console.log(mouseEvent)
+
     const type = 'empty'
 
     const viewNode = {
       title: 'A',
       nodeType: 'Root',
       type,
-      x: 0,
-      y: 0,
+      x,
+      y,
       treeId: this.props.tree.id
     }
     await this.props.postNode(viewNode)
@@ -204,7 +219,9 @@ const mapDispatch = dispatch => {
     delNode: node => dispatch(delNode(node)),
     putNode: node => dispatch(putNode(node)),
     postEdge: edge => dispatch(postEdge(edge)),
-    getEdges: () => dispatch(getEdges())
+    getEdges: () => dispatch(getEdges()),
+    delEdge: edge => dispatch(delEdge(edge)),
+    putEdge: edge => dispatch(putEdge(edge))
   }
 }
 

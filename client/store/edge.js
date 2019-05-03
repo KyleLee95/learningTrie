@@ -26,17 +26,18 @@ const updateEdge = edge => ({type: UPDATE_EDGE, edge})
 
 export const getEdges = () => async dispatch => {
   try {
-    const res = await axios.get('/api/Edges')
+    const res = await axios.get('/api/edges')
     dispatch(fetchEdges(res.data))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const delEdge = edgeId => async dispatch => {
+export const delEdge = edge => async dispatch => {
+  console.log(edge)
   try {
-    await axios.delete('/api/Edges', edgeId)
-    dispatch(removeEdge(edgeId))
+    await axios.delete(`/api/edges${edge.id}`)
+    dispatch(removeEdge(edge))
   } catch (err) {
     console.error(err)
   }
@@ -44,7 +45,7 @@ export const delEdge = edgeId => async dispatch => {
 
 export const postEdge = edge => async dispatch => {
   try {
-    const res = await axios.post('/api/Edges', edge)
+    const res = await axios.post('/api/edges', edge)
     dispatch(createEdge(res.data))
   } catch (err) {
     console.error(err)
@@ -53,7 +54,7 @@ export const postEdge = edge => async dispatch => {
 
 export const putEdge = edge => async dispatch => {
   try {
-    const res = await axios.put('/api/Edges', edge)
+    const res = await axios.put('/api/edges', edge)
     dispatch(updateEdge(res.data))
   } catch (err) {
     console.error(err)
@@ -68,11 +69,16 @@ export default function(state = defaultEdges, action) {
     case GET_EDGES:
       return action.edge
     case REMOVE_EDGE:
-      return state
+      return state.filter(edge => edge.id !== action.edge.id)
     case UPDATE_EDGE:
-      return action.edge
+      return [
+        ...state.filter(edge => {
+          return edge.id !== action.edge.id
+        }),
+        action.edge
+      ]
     case CREATE_EDGE:
-      return action.edge
+      return [...state, action.edge]
     default:
       return state
   }
