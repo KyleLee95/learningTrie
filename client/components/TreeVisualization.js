@@ -81,17 +81,46 @@ class TreeVisualization extends Component {
     this.onCreateNode = this.onCreateNode.bind(this)
     this.canCreateEdge = this.canCreateEdge.bind(this)
     this.onDeleteEdge = this.onDeleteEdge.bind(this)
+    this.createNode = this.createNode.bind(this)
   }
 
   /* Define custom graph editing methods here */
 
   async componentDidMount() {
-    await this.props.getNodes()
-    await this.props.getEdges()
+    await this.props.getNodes(Number(this.props.match.params.id))
+    await this.props.getEdges(Number(this.props.match.params.id))
   }
 
   //START NODE HANDLERS
+
+  async createNode() {
+    const type = 'empty'
+    const viewNode = {
+      title: 'A',
+      nodeType: 'Root',
+      type,
+      x: 0,
+      y: 0,
+      treeId: this.props.tree.id
+    }
+    await this.props.postNode(viewNode)
+  }
+
+  async onCreateNode(x, y) {
+    const type = 'empty'
+    const viewNode = {
+      title: 'A',
+      nodeType: 'Root',
+      type,
+      x: x,
+      y: y,
+      treeId: this.props.tree.id
+    }
+    await this.props.postNode(viewNode)
+  }
+
   async onUpdateNode(node) {
+    console.log(node)
     await this.props.putNode(node)
   }
   onSelectNode(node) {
@@ -142,21 +171,6 @@ class TreeVisualization extends Component {
 
   //END EDGE HANDLERS
 
-  async onCreateNode(x = 0, y = 0, mouseEvent) {
-    console.log(mouseEvent)
-
-    const type = 'empty'
-
-    const viewNode = {
-      title: 'A',
-      nodeType: 'Root',
-      type,
-      x,
-      y,
-      treeId: this.props.tree.id
-    }
-    await this.props.postNode(viewNode)
-  }
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -165,7 +179,7 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
-        <Button onClick={this.onCreateNode}>Add Node</Button>
+        <Button onClick={this.createNode}>Add Node</Button>
         <div id="graph" style={{width: '100%', height: '40vw'}}>
           {this.props.nodes &&
           this.props.nodes[0] !== undefined &&
@@ -215,11 +229,11 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     postNode: node => dispatch(postNode(node)),
-    getNodes: () => dispatch(getNodes()),
+    getNodes: treeId => dispatch(getNodes(treeId)),
     delNode: node => dispatch(delNode(node)),
     putNode: node => dispatch(putNode(node)),
     postEdge: edge => dispatch(postEdge(edge)),
-    getEdges: () => dispatch(getEdges()),
+    getEdges: treeId => dispatch(getEdges(treeId)),
     delEdge: edge => dispatch(delEdge(edge)),
     putEdge: edge => dispatch(putEdge(edge))
   }

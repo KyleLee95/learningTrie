@@ -33,7 +33,6 @@ class LearningTree extends Component {
   }
 
   async componentDidMount() {
-    // await this.props.getNodes()
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     this.setState({
       title: this.props.tree.title,
@@ -120,7 +119,7 @@ class LearningTree extends Component {
           </Col>
           <Col xs={10}>
             {/* {this.props.edges && this.props.edges[0] !== undefined ? ( */}
-            <ConnectedTreeVisualization />
+            <ConnectedTreeVisualization match={this.props.match} />
             {/* ) : (
               ''
             )} */}

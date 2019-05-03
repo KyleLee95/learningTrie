@@ -2,9 +2,11 @@ const router = require('express').Router()
 const {Node, LearningTree} = require('../db/models')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const node = await Node.findAll()
+    const node = await Node.findAll({
+      where: {learningTreeId: req.params.id}
+    })
     res.json(node)
   } catch (err) {
     next(err)

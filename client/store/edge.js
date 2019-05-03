@@ -24,9 +24,9 @@ const updateEdge = edge => ({type: UPDATE_EDGE, edge})
  * THUNK CREATORS
  */
 
-export const getEdges = () => async dispatch => {
+export const getEdges = treeId => async dispatch => {
   try {
-    const res = await axios.get('/api/edges')
+    const res = await axios.get(`/api/edges/${treeId}`)
     dispatch(fetchEdges(res.data))
   } catch (err) {
     console.error(err)

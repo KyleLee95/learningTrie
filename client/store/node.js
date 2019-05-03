@@ -24,9 +24,9 @@ const updateNode = node => ({type: UPDATE_NODE, node})
  * THUNK CREATORS
  */
 
-export const getNodes = () => async dispatch => {
+export const getNodes = treeId => async dispatch => {
   try {
-    const res = await axios.get('/api/nodes')
+    const res = await axios.get(`/api/nodes/${treeId}`)
     dispatch(fetchNodes(res.data))
   } catch (err) {
     console.error(err)
