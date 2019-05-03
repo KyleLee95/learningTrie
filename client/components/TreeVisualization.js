@@ -9,7 +9,7 @@ import {
   Edge, // optional
   // type IEdge, // optional
   Node, // optional
-  // type INode, // optional
+  INode,
   // type LayoutEngineType, // required to change the layoutEngineType, otherwise optional
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
@@ -161,12 +161,37 @@ class TreeVisualization extends Component {
     await this.props.delEdge(this.state.selectedEdge)
   }
   canCreateEdge(startNode, endNode) {
-    console.log(startNode, 'start node')
-    console.log(endNode, 'endNode')
+    console.log('can create edge')
+    console.log('create Edge start', startNode)
+    console.log('create Edge end', endNode)
+    return true
   }
-  onCreateEdge(sourceNode, targetNode) {
-    console.log('Source', sourceNode)
-    console.log('Source', targetNode)
+
+  onCreateEdge(sourceViewNode, targetViewNode) {
+    const type = 'emptyEdge'
+    // const viewEdge = {
+    //   type,
+    //   source: sourceNode,
+    //   targetNode: targetNode,
+    //   treeId: this.props.tree.id
+    // }
+    const graph = this.state.graph
+    const viewEdge = {
+      source: sourceViewNode,
+      target: targetViewNode,
+      type
+    }
+    console.log(viewEdge)
+    // Only add the edge when the source node is not the same as the target
+    if (viewEdge.source !== viewEdge.target) {
+      console.log('AAA')
+      graph.edges = [...graph.edges, viewEdge]
+      this.setState({
+        graph,
+        selected: viewEdge
+      })
+    }
+    this.props.postEdge(viewEdge)
   }
 
   //END EDGE HANDLERS
