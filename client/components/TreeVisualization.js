@@ -88,15 +88,14 @@ class TreeVisualization extends Component {
   }
 
   //START NODE HANDLERS
-  onUpdateNode(node) {
-    console.log('update node', node)
+  async onUpdateNode(node) {
+    await this.props.putNode(node)
     // console.log(y)
   }
   onSelectNode(node) {
     this.setState({
       selected: node
     })
-    console.log('SELECT NODE', this.state.selected)
   }
 
   async onDeleteNode(node) {
@@ -203,6 +202,7 @@ const mapDispatch = dispatch => {
     postNode: node => dispatch(postNode(node)),
     getNodes: () => dispatch(getNodes()),
     delNode: node => dispatch(delNode(node)),
+    putNode: node => dispatch(putNode(node)),
     postEdge: edge => dispatch(postEdge(edge)),
     getEdges: () => dispatch(getEdges())
   }

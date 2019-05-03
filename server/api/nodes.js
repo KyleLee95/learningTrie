@@ -29,6 +29,21 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+router.put('/', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.body.id)
+    const updatedNode = await node.update({
+      title: req.body.title,
+      description: req.body.description,
+      x: req.body.x,
+      y: req.body.y
+    })
+    res.status(200).json(updatedNode)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.delete('/:id', async (req, res, next) => {
   try {
     await Node.destroy({

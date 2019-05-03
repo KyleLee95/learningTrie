@@ -70,7 +70,12 @@ export default function(state = defaultNodes, action) {
     case REMOVE_NODE:
       return state.filter(node => node.id !== action.node.id)
     case UPDATE_NODE:
-      return action.node
+      return [
+        ...state.filter(node => {
+          return node.id !== action.node.id
+        }),
+        action.node
+      ]
     case CREATE_NODE:
       return [...state, action.node]
     default:
