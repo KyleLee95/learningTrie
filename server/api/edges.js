@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Edge} = require('../db/models')
+const {Edge, LearningTree} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -16,8 +16,15 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  console.log('req.body', req.body)
   try {
-    const edge = await Edge.create(req.body)
+    const edge = await Edge.create({
+      source: req.body.source.id,
+      target: req.body.targetNode.id,
+      type: req.body.type
+    })
+    const learningTree = await LearningTree.findByPk(req.body.treeId)
+    await learningTree.addEdge(edge)
     res.json(edge)
   } catch (err) {
     next(err)

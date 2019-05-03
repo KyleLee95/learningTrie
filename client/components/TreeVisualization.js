@@ -167,24 +167,23 @@ class TreeVisualization extends Component {
     return true
   }
 
-  onCreateEdge(sourceViewNode, targetViewNode) {
+  onCreateEdge(sourceNode, targetNode) {
     const type = 'emptyEdge'
-    // const viewEdge = {
-    //   type,
-    //   source: sourceNode,
-    //   targetNode: targetNode,
-    //   treeId: this.props.tree.id
-    // }
-    const graph = this.state.graph
     const viewEdge = {
-      source: sourceViewNode,
-      target: targetViewNode,
-      type
+      type,
+      source: sourceNode,
+      targetNode: targetNode,
+      treeId: this.props.tree.id
     }
+    const graph = this.state.graph
+    // const viewEdge = {
+    //   source: sourceViewNode,
+    //   target: targetViewNode,
+    //   type
+    // }
     console.log(viewEdge)
     // Only add the edge when the source node is not the same as the target
     if (viewEdge.source !== viewEdge.target) {
-      console.log('AAA')
       graph.edges = [...graph.edges, viewEdge]
       this.setState({
         graph,
