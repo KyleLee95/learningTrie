@@ -145,7 +145,6 @@ class TreeVisualization extends Component {
   }
 
   onSelectEdge(selectedEdge) {
-    console.log(selectedEdge)
     this.setState({
       selected: selectedEdge
     })
@@ -154,16 +153,11 @@ class TreeVisualization extends Component {
 
   async onDeleteEdge(edge) {
     this.setState({
-      selected: edge
+      selectedEdge: edge
     })
-    console.log(this.state.selectedEdge)
-
     await this.props.delEdge(this.state.selectedEdge)
   }
   canCreateEdge(startNode, endNode) {
-    console.log('can create edge')
-    console.log('create Edge start', startNode)
-    console.log('create Edge end', endNode)
     return true
   }
 
@@ -176,11 +170,6 @@ class TreeVisualization extends Component {
       treeId: this.props.tree.id
     }
     const graph = this.state.graph
-    // const viewEdge = {
-    //   source: sourceViewNode,
-    //   target: targetViewNode,
-    //   type
-    // }
     console.log(viewEdge)
     // Only add the edge when the source node is not the same as the target
     if (viewEdge.source !== viewEdge.target) {

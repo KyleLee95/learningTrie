@@ -32,8 +32,9 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/', async (req, res, next) => {
+  console.log(req.body.edge)
   try {
-    const edge = await Edge.findByPk(req.body.edge.source)
+    const edge = await Edge.findByPk(req.body.edge.id)
     const updatedEdge = await edge.update({
       target: req.body.edge.target
     })
@@ -44,6 +45,7 @@ router.put('/', async (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
+  console.log('req.params.id', req.params.id)
   try {
     await Edge.destroy({
       where: {
