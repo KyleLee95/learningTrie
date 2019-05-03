@@ -205,7 +205,25 @@ class TreeVisualization extends Component {
               canCreateEdge={this.canCreateEdge}
             />
           ) : (
-            ''
+            <GraphView
+              ref="GraphView"
+              nodeKey={NODE_KEY}
+              nodes={this.props.nodes}
+              edges={this.props.edges}
+              selected={selected}
+              nodeTypes={NodeTypes}
+              nodeSubtypes={NodeSubtypes}
+              edgeTypes={EdgeTypes}
+              onSelectNode={this.onSelectNode}
+              onCreateNode={this.onCreateNode}
+              onUpdateNode={this.onUpdateNode}
+              onDeleteNode={this.onDeleteNode}
+              onSelectEdge={this.onSelectEdge}
+              onCreateEdge={this.onCreateEdge}
+              onSwapEdge={this.onSwapEdge}
+              onDeleteEdge={this.onDeleteEdge}
+              canCreateEdge={this.canCreateEdge}
+            />
           )}
         </div>
       </ScrollLock>
