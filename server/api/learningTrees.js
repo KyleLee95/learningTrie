@@ -13,12 +13,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.findByPk(req.params.id, {
-      include: [
-        {model: Edge, where: {learningTreeId: req.params.id}},
-        {model: Node, where: {learningTreeId: req.params.id}}
-      ]
-    })
+    const tree = await LearningTree.findByPk(req.params.id)
     res.json(tree)
   } catch (err) {
     next(err)

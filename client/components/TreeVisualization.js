@@ -17,6 +17,7 @@ import {
 import axios from 'axios'
 import {Button} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
+import {getEdges, putEdge, postEdge, delEdge} from '../store/edge'
 
 const GraphConfig = {
   NodeTypes: {
@@ -72,24 +73,43 @@ class TreeVisualization extends Component {
     }
     this.onUpdateNode = this.onUpdateNode.bind(this)
     this.onSelectNode = this.onSelectNode.bind(this)
+    this.onDeleteNode = this.onDeleteNode.bind(this)
     this.onSwapEdge = this.onSwapEdge.bind(this)
     this.onCreateEdge = this.onCreateEdge.bind(this)
     this.onCreateNode = this.onCreateNode.bind(this)
+    this.canCreateEdge = this.canCreateEdge.bind(this)
   }
 
   /* Define custom graph editing methods here */
 
-  // async componentDidMount() {
-  //   await this.props.getNodes()
-  // }
+  async componentDidMount() {
+    await this.props.getNodes()
+    await this.props.getEdges()
+  }
 
+  //START NODE HANDLERS
   onUpdateNode(node) {
     console.log('update node', node)
     // console.log(y)
   }
   onSelectNode(node) {
-    console.log('SELECT NODE', node)
+    this.setState({
+      selected: node
+    })
+    console.log('SELECT NODE', this.state.selected)
   }
+
+  async onDeleteNode(node) {
+    this.setState({
+      selected: node
+    })
+    console.log('delete node', this.state.selected)
+    await this.props.delNode(this.state.selected)
+  }
+
+  //END NODE HANDLERs
+
+  //START EDGE HANDLERS
   async onSwapEdge(sourceNode, targetNode, edge) {
     edge.target = targetNode.id
     await axios.put('/api/edges/', {edge})
@@ -99,14 +119,18 @@ class TreeVisualization extends Component {
     console.log('selected edge', selectedEdge)
   }
 
+  canCreateEdge(startNode, endNode) {
+    console.log(startNode, 'start node')
+    console.log(endNode, 'endNode')
+  }
   onCreateEdge(sourceNode, targetNode) {
     console.log('Source', sourceNode)
     console.log('Source', targetNode)
   }
 
-  async onCreateNode(x, y) {
-    const graph = this.state.graph
+  //END EDGE HANDLERS
 
+  async onCreateNode(x, y) {
     const type = 'empty'
 
     const viewNode = {
@@ -117,15 +141,9 @@ class TreeVisualization extends Component {
       y: 0,
       treeId: this.props.tree.id
     }
-
     await this.props.postNode(viewNode)
-
-    graph.nodes = [...graph.nodes, viewNode]
-    this.setState({graph})
   }
   render() {
-    const nodes = this.state.graph.nodes
-    const edges = this.state.graph.edges
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
@@ -133,9 +151,12 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
-        <Button onClick={this.onCreateNode}>Hello World</Button>
+        <Button onClick={this.onCreateNode}>Add Node</Button>
         <div id="graph" style={{width: '100%', height: '40vw'}}>
-          {this.props.nodes && this.props.nodes[0] !== undefined ? (
+          {this.props.nodes &&
+          this.props.nodes[0] !== undefined &&
+          this.props.edges &&
+          this.props.edges[0] !== undefined ? (
             <GraphView
               ref="GraphView"
               nodeKey={NODE_KEY}
@@ -156,25 +177,7 @@ class TreeVisualization extends Component {
               canCreateEdge={this.canCreateEdge}
             />
           ) : (
-            <GraphView
-              ref="GraphView"
-              nodeKey={NODE_KEY}
-              nodes={nodes}
-              edges={[edges]}
-              selected={selected}
-              nodeTypes={NodeTypes}
-              nodeSubtypes={NodeSubtypes}
-              edgeTypes={EdgeTypes}
-              onSelectNode={this.onSelectNode}
-              onCreateNode={this.onCreateNode}
-              onUpdateNode={this.onUpdateNode}
-              onDeleteNode={this.onDeleteNode}
-              onSelectEdge={this.onSelectEdge}
-              onCreateEdge={this.onCreateEdge}
-              onSwapEdge={this.onSwapEdge}
-              onDeleteEdge={this.onDeleteEdge}
-              canCreateEdge={this.canCreateEdge}
-            />
+            ''
           )}
         </div>
       </ScrollLock>
@@ -185,20 +188,23 @@ class TreeVisualization extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    tree: state.tree
+    tree: state.tree,
     //TODO:
     //Figure out how to load nodes and edges. should I eager load them
     //with the tree or load them on their own?
     //Breaks when you use state.node because it doesn't get edges for some reason.
-    // nodes: state.node
-    // edges: state.edge
+    nodes: state.node,
+    edges: state.edge
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     postNode: node => dispatch(postNode(node)),
-    getNodes: () => dispatch(getNodes())
+    getNodes: () => dispatch(getNodes()),
+    delNode: node => dispatch(delNode(node)),
+    postEdge: edge => dispatch(postEdge(edge)),
+    getEdges: () => dispatch(getEdges())
   }
 }
 

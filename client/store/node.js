@@ -27,17 +27,16 @@ const updateNode = node => ({type: UPDATE_NODE, node})
 export const getNodes = () => async dispatch => {
   try {
     const res = await axios.get('/api/nodes')
-    console.log(res)
     dispatch(fetchNodes(res.data))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const delNode = nodeId => async dispatch => {
+export const delNode = node => async dispatch => {
   try {
-    await axios.delete('/api/nodes', nodeId)
-    dispatch(removeNode(nodeId))
+    await axios.delete(`/api/nodes/${node.id}`)
+    dispatch(removeNode(node))
   } catch (err) {
     console.error(err)
   }
@@ -69,11 +68,11 @@ export default function(state = defaultNodes, action) {
     case GET_NODES:
       return action.node
     case REMOVE_NODE:
-      return state
+      return state.filter(node => node.id !== action.node.id)
     case UPDATE_NODE:
       return action.node
     case CREATE_NODE:
-      return action.node
+      return [...state, action.node]
     default:
       return state
   }

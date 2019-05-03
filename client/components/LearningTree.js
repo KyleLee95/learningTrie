@@ -8,7 +8,6 @@ import {
   putTree,
   delTree
 } from '../store/learningTree'
-import {postNode, putNode, getNodes, delNode} from '../store/node'
 
 import {me} from '../store/user'
 
@@ -34,7 +33,7 @@ class LearningTree extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getNodes()
+    // await this.props.getNodes()
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     this.setState({
       title: this.props.tree.title,
@@ -120,10 +119,11 @@ class LearningTree extends Component {
             )}
           </Col>
           <Col xs={10}>
-            <ConnectedTreeVisualization
-              nodes={this.props.tree.nodes}
-              edges={this.props.tree.edges}
-            />
+            {/* {this.props.edges && this.props.edges[0] !== undefined ? ( */}
+            <ConnectedTreeVisualization />
+            {/* ) : (
+              ''
+            )} */}
           </Col>
         </Row>
 
@@ -200,8 +200,7 @@ class LearningTree extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    tree: state.tree,
-    nodes: state.node
+    tree: state.tree
   }
 }
 
@@ -211,8 +210,7 @@ const mapDispatch = dispatch => {
     fetchTrees: () => dispatch(fetchTrees()),
     putTree: data => dispatch(putTree(data)),
     delTree: treeId => dispatch(delTree(treeId)),
-    me: () => dispatch(me()),
-    getNodes: () => dispatch(getNodes())
+    me: () => dispatch(me())
   }
 }
 

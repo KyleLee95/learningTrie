@@ -5,7 +5,6 @@ module.exports = router
 router.get('/', async (req, res, next) => {
   try {
     const node = await Node.findAll()
-    console.log(node)
     res.json(node)
   } catch (err) {
     next(err)
@@ -27,5 +26,18 @@ router.post('/', async (req, res, next) => {
   } catch (err) {
     next(err)
     console.error(err)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Node.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json(req.params.id)
+  } catch (err) {
+    next(err)
   }
 })
