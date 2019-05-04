@@ -72,15 +72,18 @@ class TreeVisualization extends Component {
       selected: {},
       selectedEdge: {}
     }
-    this.onUpdateNode = this.onUpdateNode.bind(this)
-    this.onSelectNode = this.onSelectNode.bind(this)
-    this.onDeleteNode = this.onDeleteNode.bind(this)
+    //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
     this.onSelectEdge = this.onSelectEdge.bind(this)
     this.onCreateEdge = this.onCreateEdge.bind(this)
-    this.onCreateNode = this.onCreateNode.bind(this)
+    this.canDeleteEdge = this.canDeleteEdge.bind(this)
     this.canCreateEdge = this.canCreateEdge.bind(this)
     this.onDeleteEdge = this.onDeleteEdge.bind(this)
+    //Node method bindings
+    this.onCreateNode = this.onCreateNode.bind(this)
+    this.onUpdateNode = this.onUpdateNode.bind(this)
+    this.onSelectNode = this.onSelectNode.bind(this)
+    this.onDeleteNode = this.onDeleteNode.bind(this)
     this.createNode = this.createNode.bind(this)
   }
 
@@ -120,9 +123,9 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    console.log(node)
     await this.props.putNode(node)
   }
+
   onSelectNode(node) {
     this.setState({
       selected: node
@@ -133,7 +136,11 @@ class TreeVisualization extends Component {
     this.setState({
       selected: node
     })
+    //Need to send the edge id with it so that it deletes the proper edge
+    // await this.props.delEdge(this.state.selected)
+
     await this.props.delNode(this.state.selected)
+    await this.props.getEdges(Number(this.props.match.params.id))
   }
 
   //END NODE HANDLERs
@@ -141,14 +148,23 @@ class TreeVisualization extends Component {
   //START EDGE HANDLERS
   async onSwapEdge(sourceNode, targetNode, edge) {
     edge.target = targetNode.id
-    await axios.put('/api/edges/', {edge})
+    await this.props.putEdge({edge})
   }
 
   onSelectEdge(selectedEdge) {
     this.setState({
-      selected: selectedEdge
+      // selected: selectedEdge,
+      selectedEdge: selectedEdge
     })
-    console.log('selected edge', this.state.selectedEdge)
+    console.log('after select edge. this.state.selected', this.state.selected)
+    console.log(
+      'selected edge. this.state.selectedEdge',
+      this.state.selectedEdge
+    )
+  }
+
+  canDeleteEdge() {
+    return true
   }
 
   async onDeleteEdge(edge) {

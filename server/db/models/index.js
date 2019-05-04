@@ -34,9 +34,11 @@ Node.hasMany(Node)
 Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
 Node.hasMany(Resource)
 Node.belongsTo(LearningTree)
+Node.hasMany(Edge)
 
 //Edge
 Edge.belongsTo(LearningTree)
+Edge.belongsTo(Node)
 
 //Resource
 Resource.belongsToMany(Node, {through: 'LearningResource'})

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Edge, LearningTree} = require('../db/models')
+const {Edge, LearningTree, Node} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -16,13 +16,14 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log('req.body', req.body)
   try {
     const edge = await Edge.create({
       source: req.body.source.id,
       target: req.body.targetNode.id,
       type: req.body.type
     })
+    const node = await Node.findByPk(req.body.source.id)
+    await node.addEdge(edge)
     const learningTree = await LearningTree.findByPk(req.body.treeId)
     await learningTree.addEdge(edge)
     res.json(edge)
@@ -32,7 +33,6 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/', async (req, res, next) => {
-  console.log(req.body.edge)
   try {
     const edge = await Edge.findByPk(req.body.edge.id)
     const updatedEdge = await edge.update({
@@ -45,7 +45,6 @@ router.put('/', async (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-  console.log('req.params.id', req.params.id)
   try {
     await Edge.destroy({
       where: {

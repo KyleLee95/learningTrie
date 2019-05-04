@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Node, LearningTree} = require('../db/models')
+const {Node, LearningTree, Edge} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -48,6 +48,9 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
+    await Edge.destroy({
+      where: {target: req.params.id}
+    })
     await Node.destroy({
       where: {
         id: req.params.id
