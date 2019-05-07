@@ -44,11 +44,16 @@ router.put('/', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
     await Edge.destroy({
       where: {
-        id: req.params.id
+        source: req.body.edge.id
+      }
+    })
+    await Edge.destroy({
+      where: {
+        target: req.body.edge.id
       }
     })
     res.status(200).json(req.params.id)

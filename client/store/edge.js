@@ -35,8 +35,8 @@ export const getEdges = treeId => async dispatch => {
 
 export const delEdge = edge => async dispatch => {
   try {
-    await axios.delete(`/api/edges/${edge.id}`, {
-      data: {foo: 'bar'}
+    await axios.delete(`/api/edges/`, {
+      data: {edge: edge}
     })
     dispatch(removeEdge(edge))
   } catch (err) {

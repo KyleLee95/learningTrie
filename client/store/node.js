@@ -35,7 +35,7 @@ export const getNodes = treeId => async dispatch => {
 
 export const delNode = node => async dispatch => {
   try {
-    await axios.delete(`/api/nodes/${node.id}`)
+    await axios.delete(`/api/nodes/${node.id}`, {data: {node: node}})
     dispatch(removeNode(node))
   } catch (err) {
     console.error(err)

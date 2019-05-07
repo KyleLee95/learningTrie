@@ -30,15 +30,15 @@ Comment.belongsTo(User)
 Comment.belongsTo(Resource)
 
 //Node
-Node.hasMany(Node)
-Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
+// Node.hasMany(Node)
+// Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
 Node.hasMany(Resource)
 Node.belongsTo(LearningTree)
-Node.hasMany(Edge)
+Node.hasMany(Edge, {onDelete: 'CASCADE'})
 
 //Edge
 Edge.belongsTo(LearningTree)
-Edge.belongsTo(Node)
+Edge.belongsToMany(Node, {through: 'nodeEdge'})
 
 //Resource
 Resource.belongsToMany(Node, {through: 'LearningResource'})

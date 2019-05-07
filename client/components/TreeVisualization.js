@@ -87,12 +87,33 @@ class TreeVisualization extends Component {
     this.createNode = this.createNode.bind(this)
   }
 
-  /* Define custom graph editing methods here */
+  //COMPONENT METHODS
 
   async componentDidMount() {
     await this.props.getNodes(Number(this.props.match.params.id))
     await this.props.getEdges(Number(this.props.match.params.id))
+    this.setState({
+      nodes: this.props.nodes,
+      edges: this.props.edges
+    })
   }
+
+  async componentWillUnmount() {
+    console.log('A')
+    // const type = 'empty'
+    // const viewNode = {
+    //   title: 'A',
+    //   nodeType: 'Root',
+    //   type,
+    //   x: 0,
+    //   y: 0,
+    //   treeId: this.props.tree.id
+    // }
+    // await this.props.postNode(viewNode)
+    console.log('After')
+  }
+
+  //END COMPONENT METHODS
 
   //START NODE HANDLERS
 
@@ -138,8 +159,19 @@ class TreeVisualization extends Component {
     })
     //Need to send the edge id with it so that it deletes the proper edge
     // await this.props.delEdge(this.state.selected)
+    //Can create thunk to filter out:
+    // this.props.edges.filter(edge => {
+    //   return edge.source !== node[NODE_KEY] && edge.target !== node[NODE_KEY]
+    // })
 
+    await this.props.delEdge(this.state.selected)
     await this.props.delNode(this.state.selected)
+    await this.setState({
+      selected: null
+    })
+
+    //if node is source
+
     await this.props.getEdges(Number(this.props.match.params.id))
   }
 
@@ -152,15 +184,15 @@ class TreeVisualization extends Component {
   }
 
   onSelectEdge(selectedEdge) {
-    this.setState({
-      // selected: selectedEdge,
-      selectedEdge: selectedEdge
-    })
-    console.log('after select edge. this.state.selected', this.state.selected)
-    console.log(
-      'selected edge. this.state.selectedEdge',
-      this.state.selectedEdge
-    )
+    //   this.setState({
+    //     // selected: selectedEdge,
+    //     selectedEdge: selectedEdge
+    //   })
+    //   console.log('after select edge. this.state.selected', this.state.selected)
+    //   console.log(
+    //     'selected edge. this.state.selectedEdge',
+    //     this.state.selectedEdge
+    //   )
   }
 
   canDeleteEdge() {
