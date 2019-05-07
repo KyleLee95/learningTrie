@@ -15,6 +15,20 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Edge.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+
+    res.status(200).json(req.params.id)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   try {
     const edge = await Edge.create({
@@ -56,7 +70,7 @@ router.delete('/', async (req, res, next) => {
         target: req.body.edge.id
       }
     })
-    res.status(200).json(req.params.id)
+    res.status(200).json(req.body.edge.id)
   } catch (err) {
     next(err)
   }

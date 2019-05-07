@@ -17,7 +17,13 @@ import {
 import axios from 'axios'
 import {Button} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
-import {getEdges, putEdge, postEdge, delEdge} from '../store/edge'
+import {
+  getEdges,
+  putEdge,
+  postEdge,
+  delEdge,
+  delSelectedEdge
+} from '../store/edge'
 
 const GraphConfig = {
   NodeTypes: {
@@ -183,16 +189,13 @@ class TreeVisualization extends Component {
     await this.props.putEdge({edge})
   }
 
-  onSelectEdge(selectedEdge) {
-    //   this.setState({
-    //     // selected: selectedEdge,
-    //     selectedEdge: selectedEdge
-    //   })
-    //   console.log('after select edge. this.state.selected', this.state.selected)
-    //   console.log(
-    //     'selected edge. this.state.selectedEdge',
-    //     this.state.selectedEdge
-    //   )
+  async onSelectEdge(edge) {
+    this.setState({
+      // selected: selectedEdge,
+      selected: edge
+    })
+    console.log('after select edge. this.state.selected', this.state.selected)
+    console.log('selected edge. this.state.selectedEdge', this.state.selected)
   }
 
   canDeleteEdge() {
@@ -201,10 +204,11 @@ class TreeVisualization extends Component {
 
   async onDeleteEdge(edge) {
     this.setState({
-      selectedEdge: edge
+      selected: edge
     })
-    await this.props.delEdge(this.state.selectedEdge)
+    await this.props.delSelectedEdge(this.state.selected)
   }
+
   canCreateEdge(startNode, endNode) {
     return true
   }
@@ -314,6 +318,7 @@ const mapDispatch = dispatch => {
     postEdge: edge => dispatch(postEdge(edge)),
     getEdges: treeId => dispatch(getEdges(treeId)),
     delEdge: edge => dispatch(delEdge(edge)),
+    delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
     putEdge: edge => dispatch(putEdge(edge))
   }
 }

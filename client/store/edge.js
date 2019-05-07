@@ -44,6 +44,15 @@ export const delEdge = edge => async dispatch => {
   }
 }
 
+export const delSelectedEdge = edge => async dispatch => {
+  try {
+    await axios.delete(`/api/edges/${edge.id}`)
+    dispatch(removeEdge(edge))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const postEdge = edge => async dispatch => {
   try {
     const res = await axios.post('/api/edges', edge)

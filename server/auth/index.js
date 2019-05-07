@@ -42,7 +42,6 @@ router.post('/logout', (req, res) => {
 })
 
 router.get('/me', async (req, res) => {
-  console.log(req.user.id)
   const users = await User.findByPk(req.user.id, {
     // explicitly select only the id and email fields - even though
     // users' passwords are encrypted, it won't help if we just
