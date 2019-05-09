@@ -1,9 +1,9 @@
 # Learning Tree
 
-*Fork and Clone
+* Fork and Clone
 
-*npm i
+* npm i
 
-*npm start
+* npm start
 
 Still under development
