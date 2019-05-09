@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 // import ReactCytoscape from 'react-cytoscape'
 import {connect} from 'react-redux'
-
 import ScrollLock from 'react-scrolllock'
-
 import {
   GraphView, // required
   Edge, // optional
@@ -14,7 +12,6 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import axios from 'axios'
 import {Button} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
@@ -24,12 +21,13 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
+import {ConnectedNewNode} from './NewNode'
 
 const GraphConfig = {
   NodeTypes: {
     empty: {
       // required to show empty nodes
-      typeText: '',
+      // typeText: <Button>Hello World</Button>,
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -91,6 +89,10 @@ class TreeVisualization extends Component {
     this.onSelectNode = this.onSelectNode.bind(this)
     this.onDeleteNode = this.onDeleteNode.bind(this)
     this.createNode = this.createNode.bind(this)
+    //Modal method bindings
+
+    // this.handleShow = this.handleShow.bind(this)
+    // this.handleClose = this.handleClose.bind(this)
   }
 
   //COMPONENT METHODS
@@ -98,25 +100,6 @@ class TreeVisualization extends Component {
   async componentDidMount() {
     await this.props.getNodes(Number(this.props.match.params.id))
     await this.props.getEdges(Number(this.props.match.params.id))
-    this.setState({
-      nodes: this.props.nodes,
-      edges: this.props.edges
-    })
-  }
-
-  async componentWillUnmount() {
-    console.log('A')
-    // const type = 'empty'
-    // const viewNode = {
-    //   title: 'A',
-    //   nodeType: 'Root',
-    //   type,
-    //   x: 0,
-    //   y: 0,
-    //   treeId: this.props.tree.id
-    // }
-    // await this.props.postNode(viewNode)
-    console.log('After')
   }
 
   //END COMPONENT METHODS
@@ -163,12 +146,6 @@ class TreeVisualization extends Component {
     this.setState({
       selected: node
     })
-    //Need to send the edge id with it so that it deletes the proper edge
-    // await this.props.delEdge(this.state.selected)
-    //Can create thunk to filter out:
-    // this.props.edges.filter(edge => {
-    //   return edge.source !== node[NODE_KEY] && edge.target !== node[NODE_KEY]
-    // })
 
     await this.props.delEdge(this.state.selected)
     await this.props.delNode(this.state.selected)
@@ -194,8 +171,6 @@ class TreeVisualization extends Component {
       // selected: selectedEdge,
       selected: edge
     })
-    console.log('after select edge. this.state.selected', this.state.selected)
-    console.log('selected edge. this.state.selectedEdge', this.state.selected)
   }
 
   canDeleteEdge() {
@@ -221,20 +196,21 @@ class TreeVisualization extends Component {
       targetNode: targetNode,
       treeId: this.props.tree.id
     }
-    const graph = this.state.graph
-    console.log(viewEdge)
-    // Only add the edge when the source node is not the same as the target
-    if (viewEdge.source !== viewEdge.target) {
-      graph.edges = [...graph.edges, viewEdge]
-      this.setState({
-        graph,
-        selected: viewEdge
-      })
-    }
     this.props.postEdge(viewEdge)
   }
 
   //END EDGE HANDLERS
+
+  //MODAL HANDLERS
+
+  // handleClose() {
+  //   this.setState({show: false})
+  // }
+
+  // handleShow() {
+  //   this.setState({show: true})
+  // }
+  //END MODAL HANDLERS
 
   render() {
     const selected = this.state.selected
