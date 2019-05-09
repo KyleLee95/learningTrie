@@ -8,11 +8,17 @@ class NewNode extends Component {
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
       show: false
     }
   }
 
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
   handleClose() {
     this.setState({show: false})
   }
@@ -21,9 +27,9 @@ class NewNode extends Component {
     this.setState({show: true})
   }
 
-  handleSubmit(e) {
+  async handleSubmit() {
     this.setState({show: false})
-    this.props.createNode()
+    await this.props.createNode(this.state.title, this.state.description)
   }
 
   render() {
@@ -38,30 +44,43 @@ class NewNode extends Component {
               <Modal.Title>New Node</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group>
+                {/* Title */}
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
+                <Form.Control
+                  name="title"
+                  type="title"
+                  placeholder="Enter title"
+                  onChange={this.handleChange}
+                />
 
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                {/* Description */}
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  name="description"
+                  type="description"
+                  placeholder="Add Description"
+                  onChange={this.handleChange}
+                />
+
+                <Form.Label>Resource</Form.Label>
+                <Form.Control
+                  name="resource"
+                  type="resource"
+                  placeholder="Add Resoure"
+                  onChange={this.handleChange}
+                />
               </Form.Group>
-              <Form.Group controlId="formBasicChecbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
               </Button>
-              <Button variant="submit" onClick={this.handleSubmit}>
+              <Button
+                variant="submit"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
                 Submit
               </Button>
             </Modal.Footer>

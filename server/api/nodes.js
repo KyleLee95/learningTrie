@@ -17,6 +17,7 @@ router.post('/', async (req, res, next) => {
   try {
     const node = await Node.create({
       title: req.body.title,
+      description: req.body.description,
       type: req.body.type,
       x: req.body.x,
       y: req.body.y,

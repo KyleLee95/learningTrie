@@ -106,10 +106,11 @@ class TreeVisualization extends Component {
 
   //START NODE HANDLERS
 
-  async createNode() {
+  async createNode(title, description) {
     const type = 'empty'
     const viewNode = {
-      title: 'A',
+      title,
+      description,
       nodeType: 'Root',
       type,
       x: 0,
