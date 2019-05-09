@@ -1,7 +1,9 @@
 # Learning Tree
 
-Form and Clone
+*Fork and Clone
 
-Npm i
+*npm i
 
-npm start
+*npm start
+
+Still underdevelopment
