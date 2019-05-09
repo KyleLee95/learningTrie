@@ -201,17 +201,6 @@ class TreeVisualization extends Component {
 
   //END EDGE HANDLERS
 
-  //MODAL HANDLERS
-
-  // handleClose() {
-  //   this.setState({show: false})
-  // }
-
-  // handleShow() {
-  //   this.setState({show: true})
-  // }
-  //END MODAL HANDLERS
-
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -220,7 +209,11 @@ class TreeVisualization extends Component {
 
     return (
       <ScrollLock>
-        <Button onClick={this.createNode}>Add Node</Button>
+        <ConnectedNewNode
+          handleShow={this.handleShow}
+          handleClose={this.handleClose}
+          createNode={this.createNode}
+        />
         <div id="graph" style={{width: '100%', height: '40vw'}}>
           {this.props.nodes &&
           this.props.nodes[0] !== undefined &&
