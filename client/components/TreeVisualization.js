@@ -12,7 +12,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Button} from 'react-bootstrap'
+import {Modal, Button, Popover, Overlay, OverlayTrigger} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -27,7 +27,7 @@ const GraphConfig = {
   NodeTypes: {
     empty: {
       // required to show empty nodes
-      // typeText: <Button>Hello World</Button>,
+      typeText: 'Hello',
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -65,8 +65,8 @@ const GraphConfig = {
 const NODE_KEY = 'id' // Allows D3 to correctly update DOM
 
 class TreeVisualization extends Component {
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
 
     this.state = {
       graph: {
@@ -74,7 +74,7 @@ class TreeVisualization extends Component {
         edges: []
       },
       selected: {},
-      selectedEdge: {}
+      show: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -90,9 +90,8 @@ class TreeVisualization extends Component {
     this.onDeleteNode = this.onDeleteNode.bind(this)
     this.createNode = this.createNode.bind(this)
     //Modal method bindings
-
-    // this.handleShow = this.handleShow.bind(this)
-    // this.handleClose = this.handleClose.bind(this)
+    this.handleShow = this.handleShow.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   //COMPONENT METHODS
@@ -134,13 +133,22 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
+    console.log(node)
+    // this.handleShow()
     await this.props.putNode(node)
   }
 
+  //Kinda works. Once a noce is selected you can click it again to trigger the modal.
+  //This works for now but we can do better.
   onSelectNode(node) {
-    this.setState({
-      selected: node
-    })
+    if (this.state.selected.id === node.id) {
+      console.log('A')
+      this.handleShow()
+    } else {
+      this.setState({
+        selected: node
+      })
+    }
   }
 
   async onDeleteNode(node) {
@@ -153,8 +161,6 @@ class TreeVisualization extends Component {
     await this.setState({
       selected: null
     })
-
-    //if node is source
 
     await this.props.getEdges(Number(this.props.match.params.id))
   }
@@ -202,17 +208,29 @@ class TreeVisualization extends Component {
 
   //END EDGE HANDLERS
 
+  //MODAL HANDLERS
+
+  handleClose() {
+    this.setState({show: false})
+  }
+
+  handleShow() {
+    this.setState({show: true})
+  }
+  //
+
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
+    //popover for select node
 
     return (
       <ScrollLock>
         <ConnectedNewNode
-          handleShow={this.handleShow}
-          handleClose={this.handleClose}
+          // handleShow={this.handleShow}
+          // handleClose={this.handleClose}
           createNode={this.createNode}
         />
         <div id="graph" style={{width: '100%', height: '40vw'}}>
@@ -238,6 +256,7 @@ class TreeVisualization extends Component {
               onSwapEdge={this.onSwapEdge}
               onDeleteEdge={this.onDeleteEdge}
               canCreateEdge={this.canCreateEdge}
+              renderNode={this.renderNode}
             />
           ) : (
             <GraphView
@@ -261,6 +280,20 @@ class TreeVisualization extends Component {
             />
           )}
         </div>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </ScrollLock>
     )
   }
