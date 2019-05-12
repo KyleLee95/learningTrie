@@ -29,7 +29,11 @@ class NewNode extends Component {
 
   async handleSubmit() {
     this.setState({show: false})
-    await this.props.createNode(this.state.title, this.state.description)
+    await this.props.createNode(
+      this.state.title,
+      this.state.description,
+      this.props.nodes.length + 100000
+    )
   }
 
   render() {
@@ -95,4 +99,8 @@ class NewNode extends Component {
 //   return {}
 // }
 
-export const ConnectedNewNode = connect(null, null)(NewNode)
+const mapState = state => {
+  return {nodes: state.node}
+}
+
+export const ConnectedNewNode = connect(mapState, null)(NewNode)

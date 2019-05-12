@@ -105,9 +105,10 @@ class TreeVisualization extends Component {
 
   //START NODE HANDLERS
 
-  async createNode(title, description) {
+  async createNode(title, description, id) {
     const type = 'empty'
     const viewNode = {
+      id,
       title,
       description,
       nodeType: 'Root',
@@ -122,7 +123,8 @@ class TreeVisualization extends Component {
   async onCreateNode(x, y) {
     const type = 'empty'
     const viewNode = {
-      title: 'A',
+      id: this.props.nodes.length + 100000,
+      title: '',
       nodeType: 'Root',
       type,
       x: x,
@@ -133,7 +135,6 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    console.log(node)
     // this.handleShow()
     await this.props.putNode(node)
   }
@@ -141,10 +142,17 @@ class TreeVisualization extends Component {
   //Kinda works. Once a noce is selected you can click it again to trigger the modal.
   //This works for now but we can do better.
   onSelectNode(node) {
-    if (this.state.selected.id === node.id) {
-      console.log('A')
+    if (node === null) {
+      //'return' prevents null error message when clicking on the grid to deselect a node.
+      //by setting selected to an empty object
+      this.setState({
+        selected: {}
+      })
+      // return
+    } else if (this.state.selected.id === node.id) {
+      console.log('B')
       this.handleShow()
-    } else {
+    } else if (this.state.selected.id !== node.id) {
       this.setState({
         selected: node
       })
@@ -173,11 +181,16 @@ class TreeVisualization extends Component {
     await this.props.putEdge({edge})
   }
 
-  async onSelectEdge(edge) {
+  onSelectEdge(edge) {
+    console.log(edge)
     this.setState({
-      // selected: selectedEdge,
+      selected: null
+    })
+    //select edge also selects the node that has the same ID as the edge
+    this.setState({
       selected: edge
     })
+    console.log('selected', this.state.selected)
   }
 
   canDeleteEdge() {
@@ -224,7 +237,6 @@ class TreeVisualization extends Component {
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
-    //popover for select node
 
     return (
       <ScrollLock>
@@ -284,7 +296,11 @@ class TreeVisualization extends Component {
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>
+            TODO: * Eager Load Resources so that they show up here. Possibly
+            Catagorize them? * Add an edit/add resources Button *add Tags for
+            resources
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
               Close

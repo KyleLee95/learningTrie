@@ -43,6 +43,7 @@ export const delNode = node => async dispatch => {
 }
 
 export const postNode = node => async dispatch => {
+  console.log(node)
   try {
     const res = await axios.post('/api/nodes', node)
     dispatch(createNode(res.data))
