@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button, Form} from 'react-bootstrap'
 
-class NewNode extends Component {
+class EditNode extends Component {
   constructor(props, context) {
     super(props, context)
     this.handleShow = this.handleShow.bind(this)
@@ -40,13 +40,10 @@ class NewNode extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="primary" onClick={this.handleShow}>
-          Add Node
-        </Button>
         <Form>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>New Node</Modal.Title>
+              <Modal.Title>Edit Node</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group>
@@ -78,14 +75,10 @@ class NewNode extends Component {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
+              <Button variant="submit" onClick={this.handleClose}>
                 Close
               </Button>
-              <Button
-                variant="submit"
-                type="submit"
-                onClick={this.handleSubmit}
-              >
+              <Button variant="submit" onClick={this.handleSubmit}>
                 Submit
               </Button>
             </Modal.Footer>
@@ -100,4 +93,4 @@ const mapState = state => {
   return {nodes: state.node}
 }
 
-export const ConnectedNewNode = connect(mapState, null)(NewNode)
+export const ConnectedEditNode = connect(mapState, null)(EditNode)

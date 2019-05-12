@@ -12,7 +12,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Modal, Button, Popover, Overlay, OverlayTrigger} from 'react-bootstrap'
+import {Modal, Button, Form} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -21,7 +21,7 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
-import {ConnectedNewNode} from './NewNode'
+import {ConnectedNewNode, ConnectedEditNode} from './index'
 
 const GraphConfig = {
   NodeTypes: {
@@ -74,7 +74,8 @@ class TreeVisualization extends Component {
         edges: []
       },
       selected: {},
-      show: false
+      show: false,
+      EditShow: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -92,6 +93,8 @@ class TreeVisualization extends Component {
     //Modal method bindings
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
   }
 
   //COMPONENT METHODS
@@ -123,6 +126,7 @@ class TreeVisualization extends Component {
   async onCreateNode(x, y) {
     const type = 'empty'
     const viewNode = {
+      //prevents the node and edge with the same ID from being selected
       id: this.props.nodes.length + 100000,
       title: '',
       nodeType: 'Root',
@@ -150,7 +154,6 @@ class TreeVisualization extends Component {
       })
       // return
     } else if (this.state.selected.id === node.id) {
-      console.log('B')
       this.handleShow()
     } else if (this.state.selected.id !== node.id) {
       this.setState({
@@ -163,13 +166,11 @@ class TreeVisualization extends Component {
     this.setState({
       selected: node
     })
-
     await this.props.delEdge(this.state.selected)
     await this.props.delNode(this.state.selected)
     await this.setState({
-      selected: null
+      selected: {}
     })
-
     await this.props.getEdges(Number(this.props.match.params.id))
   }
 
@@ -182,26 +183,21 @@ class TreeVisualization extends Component {
   }
 
   onSelectEdge(edge) {
-    console.log(edge)
-    this.setState({
-      selected: null
-    })
     //select edge also selects the node that has the same ID as the edge
     this.setState({
       selected: edge
     })
-    console.log('selected', this.state.selected)
   }
 
   canDeleteEdge() {
     return true
   }
 
-  async onDeleteEdge(edge) {
-    this.setState({
-      selected: edge
-    })
+  async onDeleteEdge() {
     await this.props.delSelectedEdge(this.state.selected)
+    this.setState({
+      selected: {}
+    })
   }
 
   canCreateEdge(startNode, endNode) {
@@ -230,6 +226,7 @@ class TreeVisualization extends Component {
   handleShow() {
     this.setState({show: true})
   }
+
   //
 
   render() {
@@ -292,24 +289,36 @@ class TreeVisualization extends Component {
             />
           )}
         </div>
+
+        {/* Node Resource Modal */}
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Resources</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            TODO: * Eager Load Resources so that they show up here. Possibly
-            Catagorize them? * Add an edit/add resources Button *add Tags for
-            resources
+            <strong>Description:</strong>
+            {this.state.selected.description}
+          </Modal.Body>
+          <Modal.Body>
+            <strong>Resources:</strong>
+            {/* {this.state.selected.resources} */}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
+            <Button variant="submit" onClick={this.handleEdit}>
+              Edit
+            </Button>
+            <Button variant="submit" onClick={this.handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={this.handleClose}>
-              Save Changes
-            </Button>
+            {/* <Button variant="submit" onClick={this.handleSubmit}>
+              Submit
+            </Button> */}
           </Modal.Footer>
         </Modal>
+
+        {/* TO DO:
+        Edit node form
+        */}
       </ScrollLock>
     )
   }
