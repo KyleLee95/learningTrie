@@ -28,12 +28,19 @@ class NewNode extends Component {
   }
 
   async handleSubmit() {
+    let id
+    if (this.props.nodes[this.props.nodes.length - 1] === undefined) {
+      id = 10000
+    } else {
+      id = this.props.nodes[this.props.nodes.length - 1].id + 1
+    }
+
     this.setState({show: false})
     await this.props.createNode(
       this.state.title,
       this.state.description,
       //prevents the node and edge with the same ID from being selected
-      this.props.nodes.length + 100000,
+      id,
       this.state.resource
     )
   }

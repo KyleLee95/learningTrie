@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React, {Component} from 'react'
-// import ReactCytoscape from 'react-cytoscape'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import ScrollLock from 'react-scrolllock'
 import {
@@ -22,12 +22,7 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
-import {
-  getResources,
-  putResource,
-  postResource,
-  delResource
-} from '../store/resource'
+import {getResources, postResource} from '../store/resource'
 import {ConnectedNewNode, ConnectedEditNode} from './index'
 
 const GraphConfig = {
@@ -126,6 +121,7 @@ class TreeVisualization extends Component {
   async createNode(title, description, id, resource) {
     //passed to new Node component
     const type = 'empty'
+
     const viewNode = {
       id,
       title,
@@ -142,9 +138,11 @@ class TreeVisualization extends Component {
 
   async onCreateNode(x, y) {
     const type = 'empty'
+    let id = this.props.nodes[this.props.nodes.length - 1].id + 100000
+    console.log(id)
     const viewNode = {
       //prevents the node and edge with the same ID from being selected
-      id: this.props.nodes.length + 100000,
+      id: id,
       title: '',
       nodeType: 'Root',
       type,
@@ -181,14 +179,12 @@ class TreeVisualization extends Component {
   }
 
   async onDeleteNode(node) {
-    this.setState({
-      selected: node
-    })
-    await this.props.delEdge(this.state.selected)
-    await this.props.delNode(this.state.selected)
     await this.setState({
       selected: {}
     })
+    await this.props.delEdge(node)
+    await this.props.delNode(node)
+
     await this.props.getEdges(Number(this.props.match.params.id))
   }
 
@@ -378,13 +374,11 @@ class TreeVisualization extends Component {
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
-            {/* {this.props.nodes &&
-            this.props.nodes[0] &&
-            this.state.selected.id !== undefined
+            {this.props.nodes && this.state.selected.id !== undefined
               ? this.props.nodes.find(node => {
                   return node.id === this.state.selected.id
                 }).description
-              : ''} */}
+              : ''}
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
@@ -392,14 +386,12 @@ class TreeVisualization extends Component {
               {this.props.resources
                 ? this.props.resources.map(resource => {
                     return (
-                      <li key={resource.id}>
-                        {resource.title}{' '}
-                        <Button
-                          variant="submit"
-                          onClick={() => this.props.delResource(resource.id)}
-                        >
-                          remove
-                        </Button>
+                      <li
+                        key={resource.id}
+                        // onClick={trigger modal}
+                      >
+                        {' '}
+                        {resource.title}
                       </li>
                     )
                   })
@@ -527,9 +519,7 @@ const mapDispatch = dispatch => {
     delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
     putEdge: edge => dispatch(putEdge(edge)),
     getResources: nodeId => dispatch(getResources(nodeId)),
-    putResource,
-    postResource: resource => dispatch(postResource(resource)),
-    delResource: resourceId => dispatch(delResource(resourceId))
+    postResource: resource => dispatch(postResource(resource))
   }
 }
 
