@@ -159,6 +159,7 @@ class TreeVisualization extends Component {
       })
       // return
     } else if (this.state.selected.id === node.id) {
+      console.log(this.state.selected)
       this.handleShow()
     } else if (this.state.selected.id !== node.id) {
       this.setState({
@@ -334,7 +335,12 @@ class TreeVisualization extends Component {
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
-            {/* {this.state.selected.resources} */}
+            {this.state.selected.resources !== undefined &&
+            this.state.selected.resources !== undefined
+              ? this.state.selected.resources.map(resource => {
+                  return resource.title
+                })
+              : ''}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="submit" onClick={this.handleEditShow}>

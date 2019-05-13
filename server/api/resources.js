@@ -1,14 +1,13 @@
 const router = require('express').Router()
-const {Node, LearningTree, Resource} = require('../db/models')
+const {Resource, LearningTree, Node} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const node = await Node.findAll({
-      where: {learningTreeId: req.params.id},
-      include: [{model: Resource}]
+    const resource = await Resource.findAll({
+      where: {learningTreeId: req.params.id}
     })
-    res.json(node)
+    res.json(resource)
   } catch (err) {
     next(err)
   }
@@ -16,7 +15,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const node = await Node.create({
+    const node = await Resource.create({
       id: req.body.id,
       title: req.body.title,
       description: req.body.description,
