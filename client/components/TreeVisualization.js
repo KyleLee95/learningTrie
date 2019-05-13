@@ -284,9 +284,14 @@ class TreeVisualization extends Component {
     })
   }
 
-  handleResourceSubmit() {
+  async handleResourceSubmit() {
+    await this.props.postResource({
+      title: this.state.title,
+      description: this.state.description,
+      type: this.state.type,
+      nodeId: this.state.selected.id
+    })
     this.setState({resourceShow: false})
-    console.log('A')
   }
   //
 
@@ -512,7 +517,7 @@ const mapDispatch = dispatch => {
     putEdge: edge => dispatch(putEdge(edge)),
     getResources: nodeId => dispatch(getResources(nodeId)),
     putResource,
-    postResource,
+    postResource: resource => dispatch(postResource(resource)),
     delResource
   }
 }

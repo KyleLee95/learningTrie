@@ -88,7 +88,7 @@ export default function(state = defaultResources, action) {
         action.edge
       ]
     case CREATE_RESOURCE:
-      return [...state, action.edge]
+      return [...state, action.resource]
     default:
       return state
   }

@@ -13,33 +13,23 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-// router.post('/', async (req, res, next) => {
-//   try {
-//     const node = await Resource.create({
-//       id: req.body.id,
-//       title: req.body.title,
-//       description: req.body.description,
-//       type: req.body.type,
-//       x: req.body.x,
-//       y: req.body.y,
-//       nodeType: req.body.nodeType
-//     })
-//     if (req.body.resource !== undefined) {
-//       // Add Resource
-//       const resource = await Resource.create({
-//         title: req.body.resource,
-//         description: ''
-//       })
-//       await node.addResource(resource)
-//     }
-//     const learningTree = await LearningTree.findByPk(req.body.treeId)
-//     await learningTree.addNode(node)
-//     res.status(201).json(node)
-//   } catch (err) {
-//     next(err)
-//     console.error(err)
-//   }
-// })
+router.post('/', async (req, res, next) => {
+  console.log('req.body.nodeId', req.body.nodeId)
+  try {
+    const resource = await Resource.create({
+      title: req.body.title,
+      description: req.body.description,
+      type: req.body.type
+    })
+    const node = await Node.findByPk(Number(req.body.nodeId))
+    console.log(Object.keys(node.__proto__))
+    await node.addResource(resource)
+    res.status(201).json(resource)
+  } catch (err) {
+    next(err)
+    console.error(err)
+  }
+})
 
 // router.put('/', async (req, res, next) => {
 //   try {
