@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Node, LearningTree} = require('../db/models')
+const {Node, LearningTree, Resource} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -14,7 +14,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log(req.body)
+  console.log('req.body', req.body)
   try {
     const node = await Node.create({
       id: req.body.id,
@@ -25,6 +25,14 @@ router.post('/', async (req, res, next) => {
       y: req.body.y,
       nodeType: req.body.nodeType
     })
+    if (req.body.resource !== undefined) {
+      // Add Resource
+      const resource = await Resource.create({
+        title: req.body.resource,
+        description: ''
+      })
+      await node.addResource(resource)
+    }
     const learningTree = await LearningTree.findByPk(req.body.treeId)
     await learningTree.addNode(node)
     res.status(201).json(node)
@@ -37,12 +45,20 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.body.id)
+    if (req.body.resource !== undefined) {
+      // Add Resource
+      const resource = await Resource.create({
+        title: req.body.resource,
+        description: ''
+      })
+      await node.addResource(resource)
+    }
     const updatedNode = await node.update({
       title: req.body.title,
-      description: req.body.description,
       x: req.body.x,
       y: req.body.y
     })
+
     res.status(200).json(updatedNode)
   } catch (err) {
     next(err)

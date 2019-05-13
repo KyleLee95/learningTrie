@@ -39,52 +39,48 @@ class EditNode extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Form>
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Node</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group>
-                {/* Title */}
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  name="title"
-                  type="title"
-                  placeholder="Enter title"
-                  onChange={this.handleChange}
-                />
+      <div>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Node</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group>
+            {/* Title */}
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              name="title"
+              type="title"
+              placeholder="Enter title"
+              onChange={this.handleChange}
+            />
 
-                {/* Description */}
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  name="description"
-                  type="description"
-                  placeholder="Add Description"
-                  onChange={this.handleChange}
-                />
+            {/* Description */}
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              name="description"
+              type="description"
+              placeholder="Add Description"
+              onChange={this.handleChange}
+            />
 
-                <Form.Label>Resource</Form.Label>
-                <Form.Control
-                  name="resource"
-                  type="resource"
-                  placeholder="Add Resoure"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="submit" onClick={this.handleClose}>
-                Close
-              </Button>
-              <Button variant="submit" onClick={this.handleSubmit}>
-                Submit
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </Form>
-      </React.Fragment>
+            <Form.Label>Resource</Form.Label>
+            <Form.Control
+              name="resource"
+              type="resource"
+              placeholder="Add Resoure"
+              onChange={this.handleChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="submit" onClick={this.props.close}>
+            Close
+          </Button>
+          <Button variant="submit" onClick={this.handleSubmit}>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </div>
     )
   }
 }

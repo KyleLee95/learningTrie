@@ -33,7 +33,8 @@ class NewNode extends Component {
       this.state.title,
       this.state.description,
       //prevents the node and edge with the same ID from being selected
-      this.props.nodes.length + 100000
+      this.props.nodes.length + 100000,
+      this.state.resource
     )
   }
 
@@ -78,7 +79,7 @@ class NewNode extends Component {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
+              <Button variant="submit" onClick={this.handleClose}>
                 Close
               </Button>
               <Button

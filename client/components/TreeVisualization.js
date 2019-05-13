@@ -27,7 +27,7 @@ const GraphConfig = {
   NodeTypes: {
     empty: {
       // required to show empty nodes
-      typeText: 'Hello',
+      // typeText: 'Hello',
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -75,7 +75,7 @@ class TreeVisualization extends Component {
       },
       selected: {},
       show: false,
-      EditShow: false
+      editShow: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -93,8 +93,11 @@ class TreeVisualization extends Component {
     //Modal method bindings
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
-    // this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleEdit = this.handleEdit.bind(this)
+    //Edit Modal
+    this.handleEditSubmit = this.handleEditSubmit.bind(this)
+    this.handleEditShow = this.handleEditShow.bind(this)
+    this.handleEditClose = this.handleEditClose.bind(this)
+    this.handleEditChange = this.handleEditChange.bind(this)
   }
 
   //COMPONENT METHODS
@@ -108,7 +111,8 @@ class TreeVisualization extends Component {
 
   //START NODE HANDLERS
 
-  async createNode(title, description, id) {
+  async createNode(title, description, id, resource) {
+    //passed to new Node component
     const type = 'empty'
     const viewNode = {
       id,
@@ -118,7 +122,8 @@ class TreeVisualization extends Component {
       type,
       x: 0,
       y: 0,
-      treeId: this.props.tree.id
+      treeId: this.props.tree.id,
+      resource
     }
     await this.props.postNode(viewNode)
   }
@@ -227,6 +232,34 @@ class TreeVisualization extends Component {
     this.setState({show: true})
   }
 
+  //Edit Modal Handlers
+  handleEditShow() {
+    this.setState({editShow: true})
+  }
+
+  handleEditClose() {
+    this.setState({editShow: false})
+  }
+
+  handleEditChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  async handleEditSubmit() {
+    //need to add a resource update property
+    this.setState({editShow: false})
+    await this.props.putNode({
+      title: this.state.title,
+      resource: this.state.resource,
+      id: this.state.selected.id,
+      x: this.state.selectedx,
+      y: this.state.selected.y
+      //prevents the node and edge with the same ID from being selected
+    })
+  }
+
   //
 
   render() {
@@ -304,7 +337,7 @@ class TreeVisualization extends Component {
             {/* {this.state.selected.resources} */}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="submit" onClick={this.handleEdit}>
+            <Button variant="submit" onClick={this.handleEditShow}>
               Edit
             </Button>
             <Button variant="submit" onClick={this.handleClose}>
@@ -315,10 +348,44 @@ class TreeVisualization extends Component {
             </Button> */}
           </Modal.Footer>
         </Modal>
+        {/* End Resource Modal */}
 
-        {/* TO DO:
-        Edit node form
-        */}
+        {/* Node Edit Modal */}
+        <Form>
+          <Modal show={this.state.editShow} onHide={this.handleEditClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Node</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group>
+                {/* Title */}
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  name="title"
+                  type="title"
+                  placeholder="Enter title"
+                  onChange={this.handleEditChange}
+                />
+                <Form.Label>Resource</Form.Label>
+                <Form.Control
+                  name="resource"
+                  type="resource"
+                  placeholder="Add Resoure"
+                  onChange={this.handleEditChange}
+                />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="submit" onClick={this.handleEditClose}>
+                Close
+              </Button>
+              <Button variant="submit" onClick={this.handleEditSubmit}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
+        {/* End Edit Description */}
       </ScrollLock>
     )
   }
@@ -328,10 +395,6 @@ const mapState = state => {
   return {
     user: state.user,
     tree: state.tree,
-    //TODO:
-    //Figure out how to load nodes and edges. should I eager load them
-    //with the tree or load them on their own?
-    //Breaks when you use state.node because it doesn't get edges for some reason.
     nodes: state.node,
     edges: state.edge
   }
