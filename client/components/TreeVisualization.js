@@ -249,11 +249,10 @@ class TreeVisualization extends Component {
   }
 
   async handleEditSubmit() {
-    //need to add a resource update property
     this.setState({editShow: false})
     await this.props.putNode({
       title: this.state.title,
-      resource: this.state.resource,
+      description: this.state.description,
       id: this.state.selected.id,
       x: this.state.selectedx,
       y: this.state.selected.y
@@ -331,18 +330,18 @@ class TreeVisualization extends Component {
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
-            {this.state.selected.description}
+            {this.props.nodes &&
+            this.props.nodes[0] &&
+            this.state.selected.id !== undefined
+              ? this.props.nodes.find(node => {
+                  return node.id === this.state.selected.id
+                }).description
+              : ''}
+            {/* {this.state.selected.description} */}
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
-            <ul>
-              {this.state.selected.resources !== undefined &&
-              this.state.selected.resources !== undefined
-                ? this.state.selected.resources.map(resource => {
-                    return <li key={resource.title}>{resource.title}</li>
-                  })
-                : ''}
-            </ul>
+            <ul />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="submit" onClick={this.handleEditShow}>
@@ -374,11 +373,11 @@ class TreeVisualization extends Component {
                   placeholder="Enter title"
                   onChange={this.handleEditChange}
                 />
-                <Form.Label>Resource</Form.Label>
+                <Form.Label>Description</Form.Label>
                 <Form.Control
-                  name="resource"
-                  type="resource"
-                  placeholder="Add Resoure"
+                  name="description"
+                  type="description"
+                  placeholder="Enter description"
                   onChange={this.handleEditChange}
                 />
               </Form.Group>
