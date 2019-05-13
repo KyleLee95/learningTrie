@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component} from 'react'
 // import ReactCytoscape from 'react-cytoscape'
 import {connect} from 'react-redux'
@@ -390,7 +391,17 @@ class TreeVisualization extends Component {
             <ul>
               {this.props.resources
                 ? this.props.resources.map(resource => {
-                    return <li key={resource.id}>{resource.title}</li>
+                    return (
+                      <li key={resource.id}>
+                        {resource.title}{' '}
+                        <Button
+                          variant="submit"
+                          onClick={() => this.props.delResource(resource.id)}
+                        >
+                          remove
+                        </Button>
+                      </li>
+                    )
                   })
                 : ''}
             </ul>
@@ -518,7 +529,7 @@ const mapDispatch = dispatch => {
     getResources: nodeId => dispatch(getResources(nodeId)),
     putResource,
     postResource: resource => dispatch(postResource(resource)),
-    delResource
+    delResource: resourceId => dispatch(delResource(resourceId))
   }
 }
 

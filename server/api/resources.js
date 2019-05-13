@@ -22,7 +22,6 @@ router.post('/', async (req, res, next) => {
       type: req.body.type
     })
     const node = await Node.findByPk(Number(req.body.nodeId))
-    console.log(Object.keys(node.__proto__))
     await node.addResource(resource)
     res.status(201).json(resource)
   } catch (err) {
@@ -54,15 +53,15 @@ router.post('/', async (req, res, next) => {
 //   }
 // })
 
-// router.delete('/:id', async (req, res, next) => {
-//   try {
-//     await Node.destroy({
-//       where: {
-//         id: req.params.id
-//       }
-//     })
-//     res.status(200).json(req.params.id)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Resource.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json(req.params.id)
+  } catch (err) {
+    next(err)
+  }
+})

@@ -33,12 +33,10 @@ export const getResources = nodeId => async dispatch => {
   }
 }
 
-export const delResource = resource => async dispatch => {
+export const delResource = resourceId => async dispatch => {
   try {
-    await axios.delete(`/api/edges/`, {
-      data: {resource: resource}
-    })
-    dispatch(removeResource(resource))
+    await axios.delete(`/api/resources/${resourceId}`)
+    dispatch(removeResource(resourceId))
   } catch (err) {
     console.error(err)
   }
@@ -79,7 +77,7 @@ export default function(state = defaultResources, action) {
     case GET_RESOURCES:
       return action.resource
     case REMOVE_RESOURCE:
-      return state.filter(edge => edge.id !== action.edge.id)
+      return state.filter(resource => resource.id !== action.resource)
     case UPDATE_RESOURCE:
       return [
         ...state.filter(edge => {
