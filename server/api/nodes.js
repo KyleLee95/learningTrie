@@ -53,10 +53,14 @@ router.put('/', async (req, res, next) => {
       })
       await node.addResource(resource)
     }
-    const updatedNode = await node.update({
+    await node.update({
       title: req.body.title,
       x: req.body.x,
       y: req.body.y
+    })
+
+    const updatedNode = await Node.findByPk(req.body.id, {
+      include: [{model: Resource}]
     })
 
     res.status(200).json(updatedNode)

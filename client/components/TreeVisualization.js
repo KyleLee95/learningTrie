@@ -335,12 +335,14 @@ class TreeVisualization extends Component {
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
-            {this.state.selected.resources !== undefined &&
-            this.state.selected.resources !== undefined
-              ? this.state.selected.resources.map(resource => {
-                  return resource.title
-                })
-              : ''}
+            <ul>
+              {this.state.selected.resources !== undefined &&
+              this.state.selected.resources !== undefined
+                ? this.state.selected.resources.map(resource => {
+                    return <li key={resource.title}>{resource.title}</li>
+                  })
+                : ''}
+            </ul>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="submit" onClick={this.handleEditShow}>
