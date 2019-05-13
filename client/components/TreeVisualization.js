@@ -75,7 +75,8 @@ class TreeVisualization extends Component {
       },
       selected: {},
       show: false,
-      editShow: false
+      editShow: false,
+      resourceShow: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -98,6 +99,11 @@ class TreeVisualization extends Component {
     this.handleEditShow = this.handleEditShow.bind(this)
     this.handleEditClose = this.handleEditClose.bind(this)
     this.handleEditChange = this.handleEditChange.bind(this)
+    //Resource Modal
+    this.handleResourceShow = this.handleResourceShow.bind(this)
+    this.handleResourceClose = this.handleResourceClose.bind(this)
+    this.handleResourceSubmit = this.handleResourceSubmit.bind(this)
+    this.handleResourceChange = this.handleResourceChange.bind(this)
   }
 
   //COMPONENT METHODS
@@ -110,7 +116,6 @@ class TreeVisualization extends Component {
   //END COMPONENT METHODS
 
   //START NODE HANDLERS
-
   async createNode(title, description, id, resource) {
     //passed to new Node component
     const type = 'empty'
@@ -159,7 +164,6 @@ class TreeVisualization extends Component {
       })
       // return
     } else if (this.state.selected.id === node.id) {
-      console.log(this.state.selected)
       this.handleShow()
     } else if (this.state.selected.id !== node.id) {
       this.setState({
@@ -224,7 +228,6 @@ class TreeVisualization extends Component {
   //END EDGE HANDLERS
 
   //MODAL HANDLERS
-
   handleClose() {
     this.setState({show: false})
   }
@@ -233,7 +236,7 @@ class TreeVisualization extends Component {
     this.setState({show: true})
   }
 
-  //Edit Modal Handlers
+  //EDIT MODAL HANDLERS
   handleEditShow() {
     this.setState({editShow: true})
   }
@@ -260,6 +263,24 @@ class TreeVisualization extends Component {
     })
   }
 
+  //ADD RESOURCE HANDLERS
+
+  handleResourceShow() {
+    this.setState({resourceShow: true})
+  }
+  handleResourceClose() {
+    this.setState({resourceShow: false})
+  }
+  handleResourceChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleResourceSubmit() {
+    this.setState({resourceShow: false})
+    console.log('A')
+  }
   //
 
   render() {
@@ -267,7 +288,21 @@ class TreeVisualization extends Component {
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
-
+    const options = [
+      'Paper',
+      'Essay',
+      'Video',
+      'Full Course',
+      'Blog',
+      'Website',
+      'Article',
+      'Podcast',
+      'Graph',
+      'Textbook',
+      'Book',
+      'Practice Problem Set',
+      'Exercise'
+    ]
     return (
       <ScrollLock>
         <ConnectedNewNode
@@ -337,13 +372,15 @@ class TreeVisualization extends Component {
                   return node.id === this.state.selected.id
                 }).description
               : ''}
-            {/* {this.state.selected.description} */}
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
             <ul />
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="submit" onClick={this.handleResourceShow}>
+              Add Resource
+            </Button>
             <Button variant="submit" onClick={this.handleEditShow}>
               Edit
             </Button>
@@ -392,6 +429,50 @@ class TreeVisualization extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
+        {/* Add Resource Modal  */}
+        <Form>
+          <Modal
+            show={this.state.resourceShow}
+            onHide={this.handleResourceClose}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Add Resource</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group>
+                {/* Title */}
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  name="title"
+                  type="title"
+                  placeholder="Enter title"
+                  onChange={this.handleResourceChange}
+                />
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  name="description"
+                  type="description"
+                  placeholder="Enter description"
+                  onChange={this.handleResourceChange}
+                />
+                <Form.Label>Type</Form.Label>
+                <Form.Control as="select" onChange={this.handleEditChange}>
+                  {options.map(option => {
+                    return <option key={option}>{option}</option>
+                  })}
+                </Form.Control>
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="submit" onClick={this.handleResourceClose}>
+                Close
+              </Button>
+              <Button variant="submit" onClick={this.handleResourceSubmit}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
         {/* End Edit Description */}
       </ScrollLock>
     )
@@ -404,6 +485,7 @@ const mapState = state => {
     tree: state.tree,
     nodes: state.node,
     edges: state.edge
+    // resouces: state.resources
   }
 }
 

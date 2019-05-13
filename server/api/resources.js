@@ -5,7 +5,7 @@ module.exports = router
 router.get('/:id', async (req, res, next) => {
   try {
     const resource = await Resource.findAll({
-      where: {learningTreeId: req.params.id}
+      where: {nodeId: req.params.id}
     })
     res.json(resource)
   } catch (err) {
