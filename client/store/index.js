@@ -6,12 +6,14 @@ import user from './user'
 import tree from './learningTree'
 import edge from './edge'
 import node from './node'
+import resource from './resource'
 
 const reducer = combineReducers({
   user,
   tree,
   edge,
-  node
+  node,
+  resource
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -23,3 +25,4 @@ export * from './user'
 export * from './learningTree'
 export * from './edge'
 export * from './node'
+export * from './resource'

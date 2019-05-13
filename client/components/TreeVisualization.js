@@ -21,6 +21,12 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
+import {
+  getResources,
+  putResource,
+  postResource,
+  delResource
+} from '../store/resource'
 import {ConnectedNewNode, ConnectedEditNode} from './index'
 
 const GraphConfig = {
@@ -155,7 +161,7 @@ class TreeVisualization extends Component {
 
   //Kinda works. Once a noce is selected you can click it again to trigger the modal.
   //This works for now but we can do better.
-  onSelectNode(node) {
+  async onSelectNode(node) {
     if (node === null) {
       //'return' prevents null error message when clicking on the grid to deselect a node.
       //by setting selected to an empty object
@@ -169,6 +175,7 @@ class TreeVisualization extends Component {
       this.setState({
         selected: node
       })
+      await this.props.getResources(Number(this.state.selected.id))
     }
   }
 
@@ -257,7 +264,7 @@ class TreeVisualization extends Component {
       title: this.state.title,
       description: this.state.description,
       id: this.state.selected.id,
-      x: this.state.selectedx,
+      x: this.state.selected.x,
       y: this.state.selected.y
       //prevents the node and edge with the same ID from being selected
     })
@@ -365,17 +372,23 @@ class TreeVisualization extends Component {
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
-            {this.props.nodes &&
+            {/* {this.props.nodes &&
             this.props.nodes[0] &&
             this.state.selected.id !== undefined
               ? this.props.nodes.find(node => {
                   return node.id === this.state.selected.id
                 }).description
-              : ''}
+              : ''} */}
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
-            <ul />
+            <ul>
+              {this.props.resources
+                ? this.props.resources.map(resource => {
+                    return <li key={resource.id}>{resource.title}</li>
+                  })
+                : ''}
+            </ul>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="submit" onClick={this.handleResourceShow}>
@@ -387,9 +400,6 @@ class TreeVisualization extends Component {
             <Button variant="submit" onClick={this.handleClose}>
               Close
             </Button>
-            {/* <Button variant="submit" onClick={this.handleSubmit}>
-              Submit
-            </Button> */}
           </Modal.Footer>
         </Modal>
         {/* End Resource Modal */}
@@ -484,8 +494,8 @@ const mapState = state => {
     user: state.user,
     tree: state.tree,
     nodes: state.node,
-    edges: state.edge
-    // resouces: state.resources
+    edges: state.edge,
+    resources: state.resource
   }
 }
 
@@ -499,7 +509,11 @@ const mapDispatch = dispatch => {
     getEdges: treeId => dispatch(getEdges(treeId)),
     delEdge: edge => dispatch(delEdge(edge)),
     delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
-    putEdge: edge => dispatch(putEdge(edge))
+    putEdge: edge => dispatch(putEdge(edge)),
+    getResources: nodeId => dispatch(getResources(nodeId)),
+    putResource,
+    postResource,
+    delResource
   }
 }
 
