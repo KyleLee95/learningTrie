@@ -20,31 +20,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <SplitButton
-          id="dropdown-split-variants-Primary"
-          title="Select Learning Tree"
-        >
-          {this.props.user.learningTrees && this.props.user.learningTrees.length
-            ? this.props.user.learningTrees
-                .filter(tree => tree.userId === this.props.user.id)
-                .map(tree => {
-                  return (
-                    <LinkContainer
-                      key={tree.id}
-                      to={`/learningTree/${tree.id}`}
-                    >
-                      <Dropdown.Item>{tree.title}</Dropdown.Item>
-                    </LinkContainer>
-                  )
-                })
-            : ''}
-          <Dropdown.Divider />
-          <ConnectedNewTree />
-        </SplitButton>
-      </React.Fragment>
-    )
+    return <div />
   }
 }
 

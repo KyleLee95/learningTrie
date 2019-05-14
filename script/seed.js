@@ -17,10 +17,15 @@ async function seed() {
       title: 'Machine Learning for Beginners',
       description:
         'The impetus of this whole project started because I wanted to learn Machine Learning on my own'
+    }),
+    LearningTree.create({
+      title: 'Introduction to Philip Johnson & Machine Art',
+      description: 'An Architect and Staff Member of MoMA'
     })
   ])
 
   await users[0].addLearningTree(learningTrees[0])
+  await users[0].addLearningTree(learningTrees[1])
   console.log(`seeded ${learningTrees.length} learningTrees`)
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)

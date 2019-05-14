@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Row, Col, Form, Button, Modal, Dropdown} from 'react-bootstrap'
+import {Row, Col, Form, Button, Modal, Card} from 'react-bootstrap'
 import {postTree} from '../store/learningTree'
 import {me} from '../store/user'
 import {connect} from 'react-redux'
@@ -54,7 +54,7 @@ class NewTree extends Component {
     return (
       <React.Fragment>
         <Form>
-          <Dropdown.Item onClick={this.handleShow}>New Tree</Dropdown.Item>
+          <Button onClick={this.handleShow}>New Tree</Button>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>New Learning Tree</Modal.Title>

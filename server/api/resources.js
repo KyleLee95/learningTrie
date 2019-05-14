@@ -43,7 +43,7 @@ router.put('/', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.body.id)
 
-    const updatedResource = await resource.update({
+    await resource.update({
       title: req.body.title,
       description: req.body.description,
       link: req.body.link,
