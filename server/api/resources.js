@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Resource, Node} = require('../db/models')
+const {Resource, Node, LearningTree} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -13,7 +13,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const resource = await Resource.findByPk(req.params.id)
+    const resource = await Resource.findByPk(req.params.id, {
+      include: [{model: Node}]
+    })
     res.json(resource)
   } catch (err) {
     next(err)
@@ -62,12 +64,16 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
+    const node = await Node.findByPk(req.body.resource.resource.nodeId, {
+      include: [{model: LearningTree}]
+    })
     await Resource.destroy({
       where: {
         id: req.params.id
       }
     })
-    res.status(200).json(req.params.id)
+
+    res.status(200).json(node)
   } catch (err) {
     next(err)
   }

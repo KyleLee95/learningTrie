@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import history from '../history'
 /**
  * ACTION TYPES
  */
@@ -42,23 +42,19 @@ export const getSingleResource = resourceId => async dispatch => {
   }
 }
 
-export const delResource = resourceId => async dispatch => {
+export const delResource = resource => async dispatch => {
+  console.log(resource)
   try {
-    await axios.delete(`/api/resources/${resourceId}`)
-    dispatch(removeResource(resourceId))
+    const res = await axios.delete(`/api/resources/${resource.resource.id}`, {
+      data: {resource: resource}
+    })
+    console.log(res.data)
+    dispatch(removeResource(resource))
+    history.push(`/learningTree/${res.data.learningTreeId}`)
   } catch (err) {
     console.error(err)
   }
 }
-
-// export const delSelectedEdge = edge => async dispatch => {
-//   try {
-//     await axios.delete(`/api/edges/${edge.id}`)
-//     dispatch(removeEdge(edge))
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
 
 export const postResource = resource => async dispatch => {
   try {
@@ -86,7 +82,7 @@ export default function(state = defaultResources, action) {
     case GET_RESOURCES:
       return action.resource
     case REMOVE_RESOURCE:
-      return state.filter(resource => resource.id !== action.resource)
+      return action.resource
     case UPDATE_RESOURCE:
       return [
         ...state.filter(edge => {

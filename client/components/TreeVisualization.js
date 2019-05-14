@@ -370,7 +370,7 @@ class TreeVisualization extends Component {
         {/* Node Resource Modal */}
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Resources</Modal.Title>
+            <Modal.Title>{this.state.selected.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
@@ -408,9 +408,8 @@ class TreeVisualization extends Component {
             </ul>
           </Modal.Body>
           <Modal.Footer>
-            {this.props.user.id === this.props.tree.userId 
-            // || is an approved ID
-            ? (
+            {this.props.user.id === this.props.tree.userId ? (
+              // || is an approved ID
               <React.Fragment>
                 <Button variant="submit" onClick={this.handleClose}>
                   Close

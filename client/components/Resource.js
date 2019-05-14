@@ -1,8 +1,12 @@
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
-import {getSingleResource, postResource} from '../store/resource'
+import {
+  getSingleResource,
+  delResource,
+  putResource,
+  postResource
+} from '../store/resource'
 
 class Resource extends Component {
   constructor(props, context) {
@@ -16,6 +20,14 @@ class Resource extends Component {
     return (
       <div>
         <Row>
+          <Button
+            onClick={() =>
+              this.props.delResource({resource: this.props.resource})
+            }
+          >
+            Delete
+          </Button>
+          <Button>Edit</Button>
           <Col xs={12}>
             <Col xs={5}>
               <Row>
@@ -60,7 +72,9 @@ class Resource extends Component {
 const mapDispatch = dispatch => {
   return {
     getSingleResource: resourceId => dispatch(getSingleResource(resourceId)),
-    postResource: resource => dispatch(postResource(resource))
+    postResource: resource => dispatch(postResource(resource)),
+    delResource: resource => dispatch(delResource(resource)),
+    putResource: resource => dispatch(putResource(resource))
   }
 }
 
