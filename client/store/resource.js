@@ -82,7 +82,7 @@ export default function(state = defaultResources, action) {
     case GET_RESOURCES:
       return action.resource
     case REMOVE_RESOURCE:
-      return action.resource
+      return []
     case UPDATE_RESOURCE:
       return [
         ...state.filter(edge => {

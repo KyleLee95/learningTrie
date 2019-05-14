@@ -104,25 +104,29 @@ class LearningTree extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={2}>
-            {this.props.tree && this.props.tree.title ? (
-              <div>
-                <h1>
-                  {this.props.tree.title}
-                  <Button onClick={this.handleShowEdit}>Edit</Button>
-                  <Button onClick={this.handleShow}>Delete</Button>
-                </h1>
-              </div>
-            ) : (
-              <h1 />
-            )}
-          </Col>
-          <Col xs={10}>
-            {/* {this.props.edges && this.props.edges[0] !== undefined ? ( */}
-            <ConnectedTreeVisualization match={this.props.match} />
-            {/* ) : (
-              ''
-            )} */}
+          <Col xs={12}>
+            <Row>
+              <h1>
+                {this.props.tree.title}
+                {this.props.user.id === this.props.tree.userId ? (
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleShowEdit}>
+                      Edit
+                    </Button>
+                    <Button variant="submit" onClick={this.handleShow}>
+                      Delete
+                    </Button>
+                  </React.Fragment>
+                ) : (
+                  ''
+                )}
+              </h1>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <ConnectedTreeVisualization match={this.props.match} />
+              </Col>
+            </Row>
           </Col>
         </Row>
 

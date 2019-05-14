@@ -11,12 +11,56 @@ import {
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {}
+    this.state = {
+      show: false
+    }
+    this.handleShow = this.handleShow.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
     await this.props.getSingleResource(Number(this.props.match.params.id))
   }
+
+  handleShow() {
+    this.setState({
+      show: true
+    })
+  }
+
+  handleClose() {
+    this.setState({
+      show: false
+    })
+  }
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit() {
+    console.log('A')
+  }
+
   render() {
+    const options = [
+      'Select Type',
+      'Paper',
+      'Essay',
+      'Video',
+      'Full Course',
+      'Blog',
+      'Website',
+      'Article',
+      'Podcast',
+      'Graph',
+      'Textbook',
+      'Book',
+      'Practice Problem Set',
+      'Exercise'
+    ]
     return (
       <div>
         <Row>
@@ -27,7 +71,7 @@ class Resource extends Component {
           >
             Delete
           </Button>
-          <Button>Edit</Button>
+          <Button onClick={this.handleShow}>Edit</Button>
           <Col xs={12}>
             <Col xs={5}>
               <Row>
@@ -64,6 +108,51 @@ class Resource extends Component {
             <strong>Comments here</strong>
           </Col>
         </Row>
+        {/* Edit Modal */}
+        <Form>
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Node</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group>
+                {/* Title */}
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  name="title"
+                  type="title"
+                  placeholder="Enter title"
+                  onChange={this.handleChange}
+                />
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  name="description"
+                  type="description"
+                  placeholder="Enter description"
+                  onChange={this.handleChange}
+                />
+                <Form.Label>Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="type"
+                  onChange={this.handleEditChange}
+                >
+                  {options.map(option => {
+                    return <option key={option}>{option}</option>
+                  })}
+                </Form.Control>
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="submit" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="submit" onClick={this.handleSubmit}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
       </div>
     )
   }

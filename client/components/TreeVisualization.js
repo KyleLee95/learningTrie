@@ -13,7 +13,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Modal, Button, Form} from 'react-bootstrap'
+import {Modal, Button, Form, Row, Col, Tab} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -23,7 +23,7 @@ import {
   delSelectedEdge
 } from '../store/edge'
 import {getResources, postResource} from '../store/resource'
-import {ConnectedNewNode, ConnectedResource} from './index'
+import {ConnectedNewNode, ConnectedResource, ConnectedNewReview} from './index'
 
 const GraphConfig = {
   NodeTypes: {
@@ -314,220 +314,232 @@ class TreeVisualization extends Component {
     ]
     return (
       <ScrollLock>
-        <ConnectedNewNode
-          // handleShow={this.handleShow}
-          // handleClose={this.handleClose}
-          createNode={this.createNode}
-        />
-        <div id="graph" style={{width: '100%', height: '40vw'}}>
-          {this.props.nodes &&
-          this.props.nodes[0] !== undefined &&
-          this.props.edges &&
-          this.props.edges[0] !== undefined ? (
-            <GraphView
-              ref="GraphView"
-              nodeKey={NODE_KEY}
-              nodes={this.props.nodes}
-              edges={this.props.edges}
-              selected={selected}
-              nodeTypes={NodeTypes}
-              nodeSubtypes={NodeSubtypes}
-              edgeTypes={EdgeTypes}
-              onSelectNode={this.onSelectNode}
-              onCreateNode={this.onCreateNode}
-              onUpdateNode={this.onUpdateNode}
-              onDeleteNode={this.onDeleteNode}
-              onSelectEdge={this.onSelectEdge}
-              onCreateEdge={this.onCreateEdge}
-              onSwapEdge={this.onSwapEdge}
-              onDeleteEdge={this.onDeleteEdge}
-              canCreateEdge={this.canCreateEdge}
-              renderNode={this.renderNode}
-            />
-          ) : (
-            <GraphView
-              ref="GraphView"
-              nodeKey={NODE_KEY}
-              nodes={this.props.nodes}
-              edges={this.props.edges}
-              selected={selected}
-              nodeTypes={NodeTypes}
-              nodeSubtypes={NodeSubtypes}
-              edgeTypes={EdgeTypes}
-              onSelectNode={this.onSelectNode}
-              onCreateNode={this.onCreateNode}
-              onUpdateNode={this.onUpdateNode}
-              onDeleteNode={this.onDeleteNode}
-              onSelectEdge={this.onSelectEdge}
-              onCreateEdge={this.onCreateEdge}
-              onSwapEdge={this.onSwapEdge}
-              onDeleteEdge={this.onDeleteEdge}
-              canCreateEdge={this.canCreateEdge}
-            />
-          )}
-        </div>
-
-        {/* Node Resource Modal */}
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.selected.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <strong>Description:</strong>
-            {this.props.nodes &&
-            this.state.selected.id !== undefined &&
-            this.state.selected.description !== undefined
-              ? this.props.nodes.find(node => {
-                  return node.id === this.state.selected.id
-                }).description
-              : ''}
-          </Modal.Body>
-          <Modal.Body>
-            <strong>Resources:</strong>
-            <ul>
-              {this.props.resources &&
-              this.props.resources[0] &&
-              this.props.resources[0].id !== undefined
-                ? this.props.resources
-                    .filter(resource => {
-                      return (
-                        resource.nodeId === this.state.selected.id ||
-                        resource.nodeId === null
-                      )
-                    })
-                    .map(resource => {
-                      return (
-                        <li key={resource.id}>
-                          <Link to={`/resource/${resource.id}`}>
-                            {resource.title}
-                          </Link>
-                        </li>
-                      )
-                    })
-                : ''}
-            </ul>
-          </Modal.Body>
-          <Modal.Footer>
+        <Row>
+          <Col xs={1}>
             {this.props.user.id === this.props.tree.userId ? (
-              // || is an approved ID
-              <React.Fragment>
-                <Button variant="submit" onClick={this.handleClose}>
-                  Close
-                </Button>
-
-                <Button variant="submit" onClick={this.handleEditShow}>
-                  Edit
-                </Button>
-                <Button variant="submit" onClick={this.handleResourceShow}>
-                  Add Resource
-                </Button>
-              </React.Fragment>
+              <ConnectedNewNode createNode={this.createNode} />
             ) : (
-              ''
+              <ConnectedNewReview />
             )}
-          </Modal.Footer>
-        </Modal>
-        {/* End Resource Modal */}
+          </Col>
+          <Col xs={11}>
+            <div id="graph" style={{width: '100%', height: '40vw'}}>
+              {this.props.nodes &&
+              this.props.nodes[0] !== undefined &&
+              this.props.edges &&
+              this.props.edges[0] !== undefined ? (
+                <GraphView
+                  ref="GraphView"
+                  nodeKey={NODE_KEY}
+                  nodes={this.props.nodes}
+                  edges={this.props.edges}
+                  selected={selected}
+                  nodeTypes={NodeTypes}
+                  nodeSubtypes={NodeSubtypes}
+                  edgeTypes={EdgeTypes}
+                  onSelectNode={this.onSelectNode}
+                  onCreateNode={this.onCreateNode}
+                  onUpdateNode={this.onUpdateNode}
+                  onDeleteNode={this.onDeleteNode}
+                  onSelectEdge={this.onSelectEdge}
+                  onCreateEdge={this.onCreateEdge}
+                  onSwapEdge={this.onSwapEdge}
+                  onDeleteEdge={this.onDeleteEdge}
+                  canCreateEdge={this.canCreateEdge}
+                  renderNode={this.renderNode}
+                />
+              ) : (
+                <GraphView
+                  ref="GraphView"
+                  nodeKey={NODE_KEY}
+                  nodes={this.props.nodes}
+                  edges={this.props.edges}
+                  selected={selected}
+                  nodeTypes={NodeTypes}
+                  nodeSubtypes={NodeSubtypes}
+                  edgeTypes={EdgeTypes}
+                  onSelectNode={this.onSelectNode}
+                  onCreateNode={this.onCreateNode}
+                  onUpdateNode={this.onUpdateNode}
+                  onDeleteNode={this.onDeleteNode}
+                  onSelectEdge={this.onSelectEdge}
+                  onCreateEdge={this.onCreateEdge}
+                  onSwapEdge={this.onSwapEdge}
+                  onDeleteEdge={this.onDeleteEdge}
+                  canCreateEdge={this.canCreateEdge}
+                />
+              )}
+            </div>
 
-        {/* Node Edit Modal */}
-        <Form>
-          <Modal show={this.state.editShow} onHide={this.handleEditClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Node</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group>
-                {/* Title */}
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  name="title"
-                  type="title"
-                  placeholder="Enter title"
-                  onChange={this.handleEditChange}
-                />
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  name="description"
-                  type="description"
-                  placeholder="Enter description"
-                  onChange={this.handleEditChange}
-                />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="submit" onClick={this.handleEditClose}>
-                Close
-              </Button>
-              <Button variant="submit" onClick={this.handleEditSubmit}>
-                Submit
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </Form>
-        {/* Add Resource Modal  */}
-        <Form>
-          <Modal
-            show={this.state.resourceShow}
-            onHide={this.handleResourceClose}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Add Resource</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group>
-                {/* Title */}
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  name="title"
-                  type="title"
-                  placeholder="Enter title"
-                  onChange={this.handleResourceChange}
-                />
-                <Form.Label>Link</Form.Label>
-                <Form.Control
-                  name="link"
-                  type="link"
-                  placeholder="Enter link"
-                  onChange={this.handleResourceChange}
-                />
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  name="description"
-                  type="description"
-                  as="textarea"
-                  rows="3"
-                  placeholder="Enter description"
-                  onChange={this.handleResourceChange}
-                />
-                <Form.Label>Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="type"
-                  onChange={this.handleEditChange}
-                >
-                  {options.map(option => {
-                    return <option key={option}>{option}</option>
-                  })}
-                </Form.Control>
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              {this.props.user.id === this.props.tree.userId ? (
-                <React.Fragment>
-                  <Button variant="submit" onClick={this.handleResourceClose}>
+            {/* Node Resource Modal */}
+            <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{this.state.selected.title}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <strong>Description:</strong>
+                {this.props.nodes &&
+                this.state.selected.id !== undefined &&
+                this.state.selected.description !== undefined
+                  ? this.props.nodes.find(node => {
+                      return node.id === this.state.selected.id
+                    }).description
+                  : ''}
+              </Modal.Body>
+              <Modal.Body>
+                <strong>Resources:</strong>
+                <ul>
+                  {this.props.resources &&
+                  this.props.resources[0] &&
+                  this.props.resources[0].id !== undefined
+                    ? this.props.resources
+                        .filter(resource => {
+                          return (
+                            resource.nodeId === this.state.selected.id ||
+                            resource.nodeId === null
+                          )
+                        })
+                        .map(resource => {
+                          return (
+                            <li key={resource.id}>
+                              <Link to={`/resource/${resource.id}`}>
+                                {resource.title}
+                              </Link>
+                            </li>
+                          )
+                        })
+                    : ''}
+                </ul>
+              </Modal.Body>
+              <Modal.Footer>
+                {this.props.user.id === this.props.tree.userId ? (
+                  // || is an approved ID
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleClose}>
+                      Close
+                    </Button>
+
+                    <Button variant="submit" onClick={this.handleEditShow}>
+                      Edit
+                    </Button>
+                    <Button variant="submit" onClick={this.handleResourceShow}>
+                      Add Resource
+                    </Button>
+                  </React.Fragment>
+                ) : (
+                  ''
+                )}
+              </Modal.Footer>
+            </Modal>
+            {/* End Resource Modal */}
+
+            {/* Node Edit Modal */}
+            <Form>
+              <Modal show={this.state.editShow} onHide={this.handleEditClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Edit Node</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form.Group>
+                    {/* Title */}
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control
+                      name="title"
+                      type="title"
+                      placeholder="Enter title"
+                      onChange={this.handleEditChange}
+                    />
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      name="description"
+                      type="description"
+                      placeholder="Enter description"
+                      onChange={this.handleEditChange}
+                    />
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="submit" onClick={this.handleEditClose}>
                     Close
                   </Button>
-                  <Button variant="submit" onClick={this.handleResourceSubmit}>
+                  <Button variant="submit" onClick={this.handleEditSubmit}>
                     Submit
                   </Button>
-                </React.Fragment>
-              ) : (
-                ''
-              )}
-            </Modal.Footer>
-          </Modal>
-        </Form>
-        {/* End Edit Description */}
+                </Modal.Footer>
+              </Modal>
+            </Form>
+            {/* Add Resource Modal  */}
+            <Form>
+              <Modal
+                show={this.state.resourceShow}
+                onHide={this.handleResourceClose}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Add Resource</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form.Group>
+                    {/* Title */}
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control
+                      name="title"
+                      type="title"
+                      placeholder="Enter title"
+                      onChange={this.handleResourceChange}
+                    />
+                    <Form.Label>Link</Form.Label>
+                    <Form.Control
+                      name="link"
+                      type="link"
+                      placeholder="Enter link"
+                      onChange={this.handleResourceChange}
+                    />
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      name="description"
+                      type="description"
+                      as="textarea"
+                      rows="3"
+                      placeholder="Enter description"
+                      onChange={this.handleResourceChange}
+                    />
+                    <Form.Label>Type</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="type"
+                      onChange={this.handleEditChange}
+                    >
+                      {options.map(option => {
+                        return <option key={option}>{option}</option>
+                      })}
+                    </Form.Control>
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  {this.props.user.id === this.props.tree.userId ? (
+                    <React.Fragment>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceClose}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </React.Fragment>
+                  ) : (
+                    ''
+                  )}
+                </Modal.Footer>
+              </Modal>
+            </Form>
+            {/* End Edit Description */}
+          </Col>
+        </Row>
       </ScrollLock>
     )
   }
