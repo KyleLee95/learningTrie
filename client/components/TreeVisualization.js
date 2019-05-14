@@ -23,7 +23,7 @@ import {
   delSelectedEdge
 } from '../store/edge'
 import {getResources, postResource} from '../store/resource'
-import {ConnectedNewNode, ConnectedEditNode} from './index'
+import {ConnectedNewNode, ConnectedResource} from './index'
 
 const GraphConfig = {
   NodeTypes: {
@@ -174,7 +174,7 @@ class TreeVisualization extends Component {
       this.setState({
         selected: node
       })
-      await this.props.getResources(Number(this.state.selected.id))
+      await this.props.getResources()
     }
   }
 
@@ -290,7 +290,6 @@ class TreeVisualization extends Component {
     })
     this.setState({resourceShow: false})
   }
-  //
 
   render() {
     const selected = this.state.selected
@@ -383,18 +382,25 @@ class TreeVisualization extends Component {
           <Modal.Body>
             <strong>Resources:</strong>
             <ul>
-              {this.props.resources
-                ? this.props.resources.map(resource => {
-                    return (
-                      <li
-                        key={resource.id}
-                        // onClick={trigger modal}
-                      >
-                        {' '}
-                        {resource.title}
-                      </li>
-                    )
-                  })
+              {this.props.resources &&
+              this.props.resources[0] &&
+              this.props.resources[0].id !== undefined
+                ? this.props.resources
+                    .filter(resource => {
+                      return (
+                        resource.nodeId === this.state.selected.id ||
+                        resource.nodeId === null
+                      )
+                    })
+                    .map(resource => {
+                      return (
+                        <li key={resource.id}>
+                          <Link to={`/resource/${resource.id}`}>
+                            {resource.title}
+                          </Link>
+                        </li>
+                      )
+                    })
                 : ''}
             </ul>
           </Modal.Body>
@@ -518,7 +524,7 @@ const mapDispatch = dispatch => {
     delEdge: edge => dispatch(delEdge(edge)),
     delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
     putEdge: edge => dispatch(putEdge(edge)),
-    getResources: nodeId => dispatch(getResources(nodeId)),
+    getResources: () => dispatch(getResources()),
     postResource: resource => dispatch(postResource(resource))
   }
 }

@@ -24,9 +24,18 @@ const updateResource = resource => ({type: UPDATE_RESOURCE, resource})
  * THUNK CREATORS
  */
 
-export const getResources = nodeId => async dispatch => {
+export const getResources = () => async dispatch => {
   try {
-    const res = await axios.get(`/api/resources/${nodeId}`)
+    const res = await axios.get(`/api/resources/`)
+    dispatch(fetchResources(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getSingleResource = resourceId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/resources/${resourceId}`)
     dispatch(fetchResources(res.data))
   } catch (err) {
     console.error(err)
@@ -86,6 +95,7 @@ export default function(state = defaultResources, action) {
         action.edge
       ]
     case CREATE_RESOURCE:
+      console.log(action.resource)
       return [...state, action.resource]
     default:
       return state
