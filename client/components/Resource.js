@@ -48,6 +48,7 @@ class Resource extends Component {
       link: this.state.link,
       type: this.state.type
     })
+    this.handleClose()
   }
 
   render() {
