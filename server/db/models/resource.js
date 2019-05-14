@@ -9,6 +9,9 @@ const Resource = db.define('resource', {
   description: {
     type: Sequelize.TEXT
   },
+  link: {
+    type: Sequelize.STRING
+  },
   type: {
     type: Sequelize.ENUM(
       'Paper',

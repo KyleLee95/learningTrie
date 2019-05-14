@@ -30,16 +30,27 @@ class Resource extends Component {
                 {this.props.resource.description}
               </Row>
             </Col>
-            <Col xs={12}>
-              {' '}
-              <strong>Type:</strong> {this.props.resource.type}
-            </Col>
+            <Row>
+              <Col xs={5}>
+                {' '}
+                <strong>Type:</strong> {this.props.resource.type}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={5}>
+                {' '}
+                <strong>Link:</strong>{' '}
+                <a href={this.props.resource.link} target="_blank">
+                  {this.props.resource.link}
+                </a>
+              </Col>
+            </Row>
           </Col>
-          <Row>
-            <Col xs={{span: 12, offset: 4}}>
-              <strong>Comments here</strong>
-            </Col>
-          </Row>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <strong>Comments here</strong>
+          </Col>
         </Row>
       </div>
     )

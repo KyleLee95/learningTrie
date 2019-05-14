@@ -28,18 +28,19 @@ class NewNode extends Component {
   }
 
   async handleSubmit() {
+    const counter = 1000
     let id
-    if (this.props.nodes[this.props.nodes.length - 1] === undefined) {
-      id = 10000
+    if (this.props.nodes.length === 0) {
+      id = counter
     } else {
-      id = this.props.nodes[this.props.nodes.length - 1].id + 1
+      id = this.props.nodes.length + counter
     }
-
-    this.setState({show: false})
+    this.setState({
+      show: false
+    })
     await this.props.createNode(
       this.state.title,
       this.state.description,
-      //prevents the node and edge with the same ID from being selected
       id,
       this.state.resource
     )
@@ -76,13 +77,13 @@ class NewNode extends Component {
                   onChange={this.handleChange}
                 />
 
-                <Form.Label>Resource</Form.Label>
+                {/* <Form.Label>Resource</Form.Label>
                 <Form.Control
                   name="resource"
                   type="resource"
                   placeholder="Add Resoure"
                   onChange={this.handleChange}
-                />
+                /> */}
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>

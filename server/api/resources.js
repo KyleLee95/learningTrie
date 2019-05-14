@@ -24,6 +24,7 @@ router.post('/', async (req, res, next) => {
   try {
     const resource = await Resource.create({
       title: req.body.title,
+      link: req.body.link,
       description: req.body.description,
       type: req.body.type
     })

@@ -95,7 +95,6 @@ export default function(state = defaultResources, action) {
         action.edge
       ]
     case CREATE_RESOURCE:
-      console.log(action.resource)
       return [...state, action.resource]
     default:
       return state

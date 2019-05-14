@@ -297,6 +297,7 @@ class TreeVisualization extends Component {
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
     const options = [
+      'Select Type',
       'Paper',
       'Essay',
       'Video',
@@ -373,7 +374,9 @@ class TreeVisualization extends Component {
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
-            {this.props.nodes && this.state.selected.id !== undefined
+            {this.props.nodes &&
+            this.state.selected.id !== undefined &&
+            this.state.selected.description !== undefined
               ? this.props.nodes.find(node => {
                   return node.id === this.state.selected.id
                 }).description
@@ -405,15 +408,24 @@ class TreeVisualization extends Component {
             </ul>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="submit" onClick={this.handleResourceShow}>
-              Add Resource
-            </Button>
-            <Button variant="submit" onClick={this.handleEditShow}>
-              Edit
-            </Button>
-            <Button variant="submit" onClick={this.handleClose}>
-              Close
-            </Button>
+            {this.props.user.id === this.props.tree.userId 
+            // || is an approved ID
+            ? (
+              <React.Fragment>
+                <Button variant="submit" onClick={this.handleClose}>
+                  Close
+                </Button>
+
+                <Button variant="submit" onClick={this.handleEditShow}>
+                  Edit
+                </Button>
+                <Button variant="submit" onClick={this.handleResourceShow}>
+                  Add Resource
+                </Button>
+              </React.Fragment>
+            ) : (
+              ''
+            )}
           </Modal.Footer>
         </Modal>
         {/* End Resource Modal */}
@@ -472,15 +484,28 @@ class TreeVisualization extends Component {
                   placeholder="Enter title"
                   onChange={this.handleResourceChange}
                 />
+                <Form.Label>Link</Form.Label>
+                <Form.Control
+                  name="link"
+                  type="link"
+                  placeholder="Enter link"
+                  onChange={this.handleResourceChange}
+                />
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   name="description"
                   type="description"
+                  as="textarea"
+                  rows="3"
                   placeholder="Enter description"
                   onChange={this.handleResourceChange}
                 />
                 <Form.Label>Type</Form.Label>
-                <Form.Control as="select" onChange={this.handleEditChange}>
+                <Form.Control
+                  as="select"
+                  name="type"
+                  onChange={this.handleEditChange}
+                >
                   {options.map(option => {
                     return <option key={option}>{option}</option>
                   })}
@@ -488,12 +513,18 @@ class TreeVisualization extends Component {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="submit" onClick={this.handleResourceClose}>
-                Close
-              </Button>
-              <Button variant="submit" onClick={this.handleResourceSubmit}>
-                Submit
-              </Button>
+              {this.props.user.id === this.props.tree.userId ? (
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleResourceClose}>
+                    Close
+                  </Button>
+                  <Button variant="submit" onClick={this.handleResourceSubmit}>
+                    Submit
+                  </Button>
+                </React.Fragment>
+              ) : (
+                ''
+              )}
             </Modal.Footer>
           </Modal>
         </Form>
