@@ -39,28 +39,22 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-// router.put('/', async (req, res, next) => {
-//   try {
-//     const node = await Node.findByPk(req.body.id)
-//     if (req.body.resource !== undefined) {
-//       // Add Resource
-//       const resource = await Resource.create({
-//         title: req.body.resource,
-//         description: ''
-//       })
-//       await node.addResource(resource)
-//     }
-//     const updatedNode = await node.update({
-//       title: req.body.title,
-//       x: req.body.x,
-//       y: req.body.y
-//     })
+router.put('/', async (req, res, next) => {
+  try {
+    const resource = await Resource.findByPk(req.body.id)
 
-//     res.status(200).json(updatedNode)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
+    const updatedResource = await resource.update({
+      title: req.body.title,
+      description: req.body.description,
+      link: req.body.link,
+      type: req.body.type
+    })
+
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.delete('/:id', async (req, res, next) => {
   try {

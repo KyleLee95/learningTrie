@@ -67,7 +67,7 @@ export const postResource = resource => async dispatch => {
 
 export const putResource = resource => async dispatch => {
   try {
-    const res = await axios.put('/api/resourcess', resource)
+    const res = await axios.put('/api/resources', resource)
     dispatch(updateResource(res.data))
   } catch (err) {
     console.error(err)
@@ -84,12 +84,7 @@ export default function(state = defaultResources, action) {
     case REMOVE_RESOURCE:
       return []
     case UPDATE_RESOURCE:
-      return [
-        ...state.filter(edge => {
-          return edge.id !== action.edge.id
-        }),
-        action.edge
-      ]
+      return action.resource
     case CREATE_RESOURCE:
       return [...state, action.resource]
     default:

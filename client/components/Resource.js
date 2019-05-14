@@ -41,7 +41,13 @@ class Resource extends Component {
   }
 
   handleSubmit() {
-    console.log('A')
+    this.props.putResource({
+      id: Number(this.props.match.params.id),
+      title: this.state.title,
+      description: this.state.description,
+      link: this.state.link,
+      type: this.state.type
+    })
   }
 
   render() {
@@ -112,7 +118,7 @@ class Resource extends Component {
         <Form>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Node</Modal.Title>
+              <Modal.Title>Edit Resource</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group>
@@ -121,14 +127,21 @@ class Resource extends Component {
                 <Form.Control
                   name="title"
                   type="title"
-                  placeholder="Enter title"
+                  placeholder="Enter Title"
                   onChange={this.handleChange}
                 />
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   name="description"
                   type="description"
-                  placeholder="Enter description"
+                  placeholder="Enter Description"
+                  onChange={this.handleChange}
+                />
+                <Form.Label>Link</Form.Label>
+                <Form.Control
+                  name="link"
+                  type="link"
+                  placeholder="Enter Link"
                   onChange={this.handleChange}
                 />
                 <Form.Label>Type</Form.Label>

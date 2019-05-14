@@ -286,6 +286,7 @@ class TreeVisualization extends Component {
       title: this.state.title,
       description: this.state.description,
       type: this.state.type,
+      link: this.state.link,
       nodeId: this.state.selected.id
     })
     this.setState({resourceShow: false})
