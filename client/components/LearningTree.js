@@ -104,11 +104,17 @@ class LearningTree extends Component {
     const filteredReviews = this.props.reviews.filter(review => {
       return review.learningTreeId === Number(this.props.match.params.id)
     })
-
-    const rating =
+    //Sets rating
+    const checkRating =
       filteredReviews.reduce((acc, review) => {
         return acc + review.rating
       }, 0) / filteredReviews.length
+    let rating = 0
+    if (isNaN(checkRating) === true) {
+      rating = 0
+    } else {
+      rating = checkRating
+    }
 
     return (
       <React.Fragment>
@@ -140,9 +146,7 @@ class LearningTree extends Component {
                     </Button>
                   }
                 </React.Fragment>
-              ) : this.props.tree &&
-              this.props.tree.reviews &&
-              this.props.tree.reviews.length ? (
+              ) : (
                 <Button variant="submit">
                   <Link
                     to={`/learningTree/${this.props.tree.id}/review`}
@@ -155,8 +159,6 @@ class LearningTree extends Component {
                     / 5. All Reviews
                   </Link>
                 </Button>
-              ) : (
-                ''
               )}
             </Row>
             <Row>
