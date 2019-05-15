@@ -9,7 +9,7 @@ import {fetchTrees, fetchMyTrees} from '../store/learningTree'
  */
 class UserHome extends Component {
   componentDidMount() {
-    this.props.fetchTrees()
+    // this.props.fetchTrees()
   }
   render() {
     return (
@@ -18,9 +18,7 @@ class UserHome extends Component {
           <Col xs={2}>
             <React.Fragment>
               <Card>
-                <Button onClick={this.props.fetchTrees} variant="submit">
-                  All Trees
-                </Button>
+                <Button variant="submit">All Trees</Button>
               </Card>
               <Card>
                 <Button
@@ -56,8 +54,9 @@ class UserHome extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.trees && this.props.trees.length
-              ? this.props.trees.map(tree => {
+            {this.props.user.learningTrees &&
+            this.props.user.learningTrees.length
+              ? this.props.user.learningTrees.map(tree => {
                   return (
                     <Card key={tree.id}>
                       <Card.Body>
@@ -96,7 +95,7 @@ class UserHome extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    trees: state.tree
+    trees: state.trees
   }
 }
 const mapDispatch = dispatch => {

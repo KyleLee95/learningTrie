@@ -131,26 +131,15 @@ export const delTree = treeId => async dispatch => {
 export default function(state = defaultTree, action) {
   switch (action.type) {
     case GET_TREE:
-      return [...action.tree]
-    case SET_MY_TREES:
-      return action.tree.data.filter(tree => {
-        return tree.userId === action.tree.userId
-      })
-    case SET_FAV_TREES:
-      return //TODO: filter for favorite
-    case SET_SHARED_TREES:
-      return //TODO: filter for shared
-    case SET_SELECTED_TREE:
       return action.tree
     case CREATE_TREE:
       return action.tree
     case UPDATE_TREE:
       return action.tree
+    case SET_SELECTED_TREE:
+      return action.tree
     case DELETE_TREE:
-      console.log(state)
-      return state.filter(tree => {
-        return tree.id !== Number(action.tree)
-      })
+      return {}
     default:
       return state
   }

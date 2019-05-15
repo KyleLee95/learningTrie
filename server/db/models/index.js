@@ -20,7 +20,7 @@ User.hasMany(Review)
 //Learning Tree
 LearningTree.hasMany(Review, {as: 'review'})
 LearningTree.hasMany(Node, {as: 'node'})
-LearningTree.belongsTo(User)
+LearningTree.belongsToMany(User, {through: 'UserTree'})
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
 
