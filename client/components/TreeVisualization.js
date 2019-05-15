@@ -130,7 +130,7 @@ class TreeVisualization extends Component {
       type,
       x: 0,
       y: 0,
-      treeId: this.props.tree.id,
+      treeId: this.props.tree[0].id,
       resource
     }
     await this.props.postNode(viewNode)
@@ -153,7 +153,7 @@ class TreeVisualization extends Component {
       type,
       x: x,
       y: y,
-      treeId: this.props.tree.id
+      treeId: this.props.tree[0].id
     }
     await this.props.postNode(viewNode)
   }

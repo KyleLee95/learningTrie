@@ -3,13 +3,13 @@ import {ConnectedUserHomeTab, ConnectedSidebar, ConnectedNewTree} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import {fetchTrees} from '../store/learningTree'
+import {fetchTrees, fetchMyTrees} from '../store/learningTree'
 /**
  * COMPONENT
  */
 class UserHome extends Component {
   componentDidMount() {
-    // this.props.fetchTrees()
+    this.props.fetchTrees()
   }
   render() {
     return (
@@ -17,8 +17,26 @@ class UserHome extends Component {
         <Row>
           <Col xs={2}>
             <React.Fragment>
-              <Button>Trees Shared With Me</Button>
-              <Button>Favorite Trees</Button>
+              <Card>
+                <Button onClick={this.props.fetchTrees} variant="submit">
+                  All Trees
+                </Button>
+              </Card>
+              <Card>
+                <Button
+                  onClick={() => this.props.fetchMyTrees(this.props.user.id)}
+                  variant="submit"
+                >
+                  My Trees
+                </Button>
+              </Card>
+              <Card>
+                <Button variant="submit">Favorite Trees</Button>
+              </Card>
+              <Card>
+                <Button variant="submit">Trees Shared With Me</Button>
+              </Card>
+
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
@@ -38,31 +56,32 @@ class UserHome extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.user.learningTrees &&
-            this.props.user.learningTrees.length
-              ? this.props.user.learningTrees
-                  .filter(tree => tree.userId === this.props.user.id)
-                  .map(tree => {
-                    return (
-                      <Card key={tree.id}>
-                        <Card.Body>
-                          <Link to={`/learningTree/${tree.id}`}>
-                            <Row>
-                              <Col xs={4}>
-                                <Card.Title>{tree.title} </Card.Title>
-                              </Col>
-                              <Col xs={2}>
-                                <Card.Title>{tree.userId} </Card.Title>
-                              </Col>
-                              <Col xs={6}>
-                                <Card.Title>{tree.description} </Card.Title>
-                              </Col>
-                            </Row>
-                          </Link>
-                        </Card.Body>
-                      </Card>
-                    )
-                  })
+            {this.props.trees && this.props.trees.length
+              ? this.props.trees.map(tree => {
+                  return (
+                    <Card key={tree.id}>
+                      <Card.Body>
+                        <Link to={`/learningTree/${tree.id}`}>
+                          <Row>
+                            <Col xs={4}>
+                              <Card.Title>{tree.title} </Card.Title>
+                            </Col>
+                            <Col xs={2}>
+                              {tree.userId === this.props.user.id ? (
+                                <Card.Title>Me</Card.Title>
+                              ) : (
+                                ''
+                              )}
+                            </Col>
+                            <Col xs={6}>
+                              <Card.Title>{tree.description} </Card.Title>
+                            </Col>
+                          </Row>
+                        </Link>
+                      </Card.Body>
+                    </Card>
+                  )
+                })
               : ''}
           </Col>
           <Col xs={3}>
@@ -77,12 +96,13 @@ class UserHome extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    trees: state.trees
+    trees: state.tree
   }
 }
 const mapDispatch = dispatch => {
   return {
-    fetchTrees: () => dispatch(fetchTrees())
+    fetchTrees: () => dispatch(fetchTrees()),
+    fetchMyTrees: userId => dispatch(fetchMyTrees(userId))
   }
 }
 

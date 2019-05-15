@@ -35,12 +35,12 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.destroy({
+    await LearningTree.destroy({
       where: {
         id: req.params.id
       }
     })
-    res.status(200).json(tree)
+    res.status(200).send(req.params.id)
   } catch (err) {
     next(err)
   }

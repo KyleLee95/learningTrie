@@ -53,8 +53,12 @@ class NewTree extends Component {
     }
     return (
       <React.Fragment>
+        <Card>
+          <Button variant="submit" onClick={this.handleShow}>
+            New Tree
+          </Button>
+        </Card>
         <Form>
-          <Button onClick={this.handleShow}>New Tree</Button>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>New Learning Tree</Modal.Title>
@@ -66,7 +70,7 @@ class NewTree extends Component {
                   <Form.Control
                     name="title"
                     type="title"
-                    value={this.state.title}
+                    // value={this.state.title}
                     placeholder="Ex. Machine Learning for Beginners"
                     onChange={this.handleChange}
                   />
@@ -76,7 +80,7 @@ class NewTree extends Component {
                   <Form.Control
                     name="description"
                     as="textarea"
-                    value={this.state.description}
+                    // value={this.state.description}
                     rows="3"
                     onChange={this.handleChange}
                   />
