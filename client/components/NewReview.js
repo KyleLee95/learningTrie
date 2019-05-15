@@ -28,7 +28,7 @@ class NewReview extends Component {
   }
 
   async handleSubmit() {
-    console.log('A')
+    await console.log('A')
   }
 
   render() {

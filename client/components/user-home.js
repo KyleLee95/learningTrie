@@ -60,7 +60,13 @@ class UserHome extends Component {
                   return (
                     <Card key={tree.id}>
                       <Card.Body>
-                        <Link to={`/learningTree/${tree.id}`}>
+                        <Link
+                          style={{
+                            textDecoration: 'none',
+                            color: '#000000'
+                          }}
+                          to={`/learningTree/${tree.id}`}
+                        >
                           <Row>
                             <Col xs={4}>
                               <Card.Title>{tree.title} </Card.Title>
@@ -94,8 +100,7 @@ class UserHome extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
-    trees: state.trees
+    user: state.user
   }
 }
 const mapDispatch = dispatch => {

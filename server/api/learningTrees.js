@@ -53,6 +53,7 @@ router.post('/', async (req, res, next) => {
       description: req.body.description
     })
     const user = await User.findByPk(req.user.id)
+    // console.log(Object.keys(learningTree.__proto__))
     learningTree.setUser(user)
     res.status(201).send({id: learningTree.id})
   } catch (err) {
