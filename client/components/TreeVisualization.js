@@ -322,7 +322,9 @@ class TreeVisualization extends Component {
       <ScrollLock>
         <Row>
           <Col xs={1}>
-            {this.props.user.id === this.props.tree.userId ? (
+            {this.props.tree &&
+            this.props.tree.userId &&
+            this.props.user.id === this.props.tree.userId ? (
               <ConnectedNewNode createNode={this.createNode} />
             ) : (
               <ConnectedNewReview />
@@ -418,7 +420,9 @@ class TreeVisualization extends Component {
                 </ul>
               </Modal.Body>
               <Modal.Footer>
-                {this.props.user.id === this.props.tree.userId ? (
+                {this.props.tree &&
+                this.props.tree.userId &&
+                this.props.user.id === this.props.tree.userId ? (
                   // || is an approved ID
                   <React.Fragment>
                     <Button variant="submit" onClick={this.handleClose}>
@@ -522,7 +526,9 @@ class TreeVisualization extends Component {
                   </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                  {this.props.user.id === this.props.tree.userId ? (
+                  {this.props.tree &&
+                  this.props.tree.userId &&
+                  this.props.user.id === this.props.tree.userId ? (
                     <React.Fragment>
                       <Button
                         variant="submit"

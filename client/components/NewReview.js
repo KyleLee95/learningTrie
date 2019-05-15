@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button, Form} from 'react-bootstrap'
-
+import {
+  getReviews,
+  getSingleReview,
+  delReview,
+  postReview,
+  putReview
+} from '../store/review'
 class NewReview extends Component {
   constructor(props, context) {
     super(props, context)
@@ -12,6 +18,10 @@ class NewReview extends Component {
     this.state = {
       show: false
     }
+  }
+
+  componentDidMount() {
+    console.log(this.props)
   }
 
   handleChange(e) {
@@ -28,13 +38,19 @@ class NewReview extends Component {
   }
 
   async handleSubmit() {
-    await console.log('A')
+    await this.props.postReview({
+      title: this.state.title,
+      content: this.state.content,
+      rating: this.state.rating,
+      userId: this.props.user.id,
+      treeId: this.props.tree.id
+    })
   }
 
   render() {
     const options = [1, 2, 3, 4, 5]
     return (
-      <React.Fragment>
+      <div>
         <Button variant="primary" onClick={this.handleShow}>
           Add Review
         </Button>
@@ -65,7 +81,7 @@ class NewReview extends Component {
                 <Form.Label>Rating</Form.Label>
                 <Form.Control
                   as="select"
-                  multipl
+                  multiple
                   name="rating"
                   type="rating"
                   placeholder="Add Rating"
@@ -91,13 +107,26 @@ class NewReview extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
-      </React.Fragment>
+      </div>
     )
   }
 }
 
 const mapState = state => {
-  return {tree: state.tree}
+  return {
+    tree: state.tree,
+    user: state.user
+  }
 }
 
-export const ConnectedNewReview = connect(mapState, null)(NewReview)
+const mapDispatch = dispatch => {
+  return {
+    getReviews: learningTreeId => dispatch(getReviews(learningTreeId)),
+    getSingleReview,
+    delReview,
+    postReview: review => dispatch(postReview(review)),
+    putReview
+  }
+}
+
+export const ConnectedNewReview = connect(mapState, mapDispatch)(NewReview)

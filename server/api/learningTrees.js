@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, LearningTree, Node, Edge} = require('../db/models')
+const {User, LearningTree, Review} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {

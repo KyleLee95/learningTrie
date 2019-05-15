@@ -24,7 +24,7 @@ const updateReview = review => ({type: UPDATE_REVIEW, review})
  * THUNK CREATORS
  */
 
-export const getResources = () => async dispatch => {
+export const getReviews = () => async dispatch => {
   try {
     const res = await axios.get(`/api/reviews/`)
     dispatch(fetchReview(res.data))
@@ -63,7 +63,7 @@ export const postReview = review => async dispatch => {
   }
 }
 
-export const putResource = review => async dispatch => {
+export const putReview = review => async dispatch => {
   try {
     const res = await axios.put('/api/reviews', review)
     dispatch(updateReview(res.data))

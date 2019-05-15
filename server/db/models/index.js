@@ -18,7 +18,7 @@ User.hasMany(Comment)
 User.hasMany(Review)
 
 //Learning Tree
-LearningTree.hasMany(Review, {as: 'review'})
+LearningTree.hasMany(Review)
 LearningTree.hasMany(Node, {as: 'node'})
 LearningTree.belongsTo(User)
 LearningTree.hasMany(Node)
@@ -46,6 +46,7 @@ Resource.hasMany(Comment, {as: 'comment'})
 
 //Review
 Review.belongsTo(User)
+Review.belongsTo(LearningTree)
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'

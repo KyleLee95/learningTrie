@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
@@ -8,7 +9,8 @@ import {
   putTree,
   delTree
 } from '../store/learningTree'
-
+import {getReviews} from '../store/review'
+import {Link} from 'react-router-dom'
 import {me} from '../store/user'
 
 //TODO:
@@ -34,10 +36,7 @@ class LearningTree extends Component {
 
   async componentDidMount() {
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
-    this.setState({
-      title: this.props.tree.title,
-      description: this.props.tree.description
-    })
+    await this.props.getReviews(Number(this.props.match.params.id))
   }
 
   async componentDidUpdate(prevProps) {
@@ -101,26 +100,64 @@ class LearningTree extends Component {
     if (description !== undefined && title !== undefined) {
       enabled = description.length > 0 && title.length > 0
     }
+
+    const filteredReviews = this.props.reviews.filter(review => {
+      return review.learningTreeId === Number(this.props.match.params.id)
+    })
+
+    const rating =
+      filteredReviews.reduce((acc, review) => {
+        return acc + review.rating
+      }, 0) / filteredReviews.length
+
     return (
       <React.Fragment>
         <Row>
           <Col xs={12}>
             <Row>
-              <h1>
-                {this.props.tree.title}
-                {this.props.user.id === this.props.tree.userId ? (
-                  <React.Fragment>
-                    <Button variant="submit" onClick={this.handleShowEdit}>
-                      Edit
+              {this.props.tree !== null && this.props.tree.title !== null ? (
+                <h1>{this.props.tree.title} </h1>
+              ) : (
+                ''
+              )}
+              {this.props.tree &&
+              this.props.user.id === this.props.tree.userId ? (
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleShowEdit}>
+                    Edit
+                  </Button>
+                  <Button variant="submit" onClick={this.handleShow}>
+                    Delete
+                  </Button>
+                  {
+                    <Button variant="submit">
+                      <Link
+                        to={`/learningTree/${this.props.tree.id}/review`}
+                        style={{textDecoration: 'none', color: 'black'}}
+                      >
+                        Rating: {rating}/ 5
+                      </Link>
                     </Button>
-                    <Button variant="submit" onClick={this.handleShow}>
-                      Delete
-                    </Button>
-                  </React.Fragment>
-                ) : (
-                  ''
-                )}
-              </h1>
+                  }
+                </React.Fragment>
+              ) : this.props.tree &&
+              this.props.tree.reviews &&
+              this.props.tree.reviews.length ? (
+                <Button variant="submit">
+                  <Link
+                    to={`/learningTree/${this.props.tree.id}/review`}
+                    style={{textDecoration: 'none', color: 'black'}}
+                  >
+                    Rating:{' '}
+                    {this.props.reviews.reduce((acc, review) => {
+                      return acc + review.rating
+                    }, 0) / this.props.reviews.length}{' '}
+                    / 5. All Reviews
+                  </Link>
+                </Button>
+              ) : (
+                ''
+              )}
             </Row>
             <Row>
               <Col xs={12}>
@@ -173,28 +210,31 @@ class LearningTree extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
-
         {/* Delete Check Modal */}
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Tree</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        {this.props.tree ? (
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Delete Tree</Modal.Title>
+            </Modal.Header>
             <Modal.Body>
-              <Form.Text>
-                Are you sure you want to delete {this.props.tree.title}?
-              </Form.Text>
+              <Modal.Body>
+                <Form.Text>
+                  Are you sure you want to delete {this.props.tree.title}?
+                </Form.Text>
+              </Modal.Body>
             </Modal.Body>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              No
-            </Button>
-            <Button variant="primary" onClick={this.handleDelete}>
-              Yes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                No
+              </Button>
+              <Button variant="primary" onClick={this.handleDelete}>
+                Yes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ) : (
+          ''
+        )}
       </React.Fragment>
     )
   }
@@ -203,7 +243,8 @@ class LearningTree extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    tree: state.tree
+    tree: state.tree,
+    reviews: state.review
   }
 }
 
@@ -213,7 +254,8 @@ const mapDispatch = dispatch => {
     fetchTrees: () => dispatch(fetchTrees()),
     putTree: data => dispatch(putTree(data)),
     delTree: treeId => dispatch(delTree(treeId)),
-    me: () => dispatch(me())
+    me: () => dispatch(me()),
+    getReviews: treeId => dispatch(getReviews(treeId))
   }
 }
 
