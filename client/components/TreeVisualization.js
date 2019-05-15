@@ -138,13 +138,13 @@ class TreeVisualization extends Component {
 
   async onCreateNode(x, y) {
     const type = 'empty'
-    const counter = 1000
-    let id
-    if (this.props.nodes.length === 0) {
-      id = counter
-    } else {
-      id = this.props.nodes.length + counter
-    }
+    // const counter = 1000
+    let id = Date.now()
+    // if (this.props.nodes.length === 0) {
+    //   id = Date.now()
+    // } else {
+    //   id = Date.now()
+    // }
     const viewNode = {
       //prevents the node and edge with the same ID from being selected
       id: id,

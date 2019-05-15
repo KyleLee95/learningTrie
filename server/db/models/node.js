@@ -2,6 +2,11 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Node = db.define('node', {
+  id: {
+    type: Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement: true
+  },
   title: {
     type: Sequelize.STRING,
     allowNull: false

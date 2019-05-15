@@ -28,13 +28,14 @@ class NewNode extends Component {
   }
 
   async handleSubmit() {
-    const counter = 1000
-    let id
-    if (this.props.nodes.length === 0) {
-      id = counter
-    } else {
-      id = this.props.nodes.length + counter
-    }
+    // const counter = 1000
+    // let id
+    // if (this.props.nodes.length === 0) {
+    //   id = Date.now()
+    // } else {
+    const id = Date.now()
+    // this.props.nodes.length + counter
+    // }
     this.setState({
       show: false
     })
