@@ -21,68 +21,47 @@ class Review extends Component {
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
-  // handleShow() {
-  //   this.setState({
-  //     show: true
-  //   })
-  // }
-
-  // handleClose() {
-  //   this.setState({
-  //     show: false
-  //   })
-  // }
-  // handleChange(e) {
-  //   this.setState({
-  //     [e.target.name]: e.target.value
-  //   })
-  // }
-
-  // async handleSubmit() {
-  //   await this.setState({
-  //     show: false
-  //   })
-  //   await this.props.putResource({
-  //     id: Number(this.props.match.params.id),
-  //     title: this.state.title,
-  //     description: this.state.description,
-  //     link: this.state.link,
-  //     type: this.state.type
-  //   })
-  // }
-
   render() {
-    const filteredReviews = this.props.reviews.filter(review => {
-      return review.learningTreeId === Number(this.props.match.params.id)
-    })
-
     return (
       <div>
         {this.props.tree && this.props.tree.title ? (
           <Row>
-            {' '}
-            <h1>Reviews For: {this.props.tree.title}</h1>
+            <Row>
+              <h1>Reviews For: {this.props.tree.title}</h1>
+              {this.props.user.id !== this.props.tree.userId ? (
+                <ConnectedNewReview />
+              ) : (
+                ''
+              )}
+            </Row>
           </Row>
         ) : (
           ''
         )}
         <Row>
           <Col xs={{span: 8, offset: 2}}>
+            {/* Logic is broken. Needs to reset based on state and not filtered reviews */}
             {this.props.reviews.length !== 0 ? (
-              filteredReviews.map(review => {
-                return (
-                  <Card key={review.id}>
-                    <Card.Title>
-                      Title: {review.title} | Rating: {review.rating}
-                    </Card.Title>
+              this.props.reviews
+                .filter(review => {
+                  return (
+                    review.learningTreeId === Number(this.props.match.params.id)
+                  )
+                })
+                .map(review => {
+                  return (
+                    <Card key={review.id}>
+                      <Card.Title>
+                        Title: {review.title} | Rating: {review.rating}
+                      </Card.Title>
 
-                    <Card.Title>
-                      {review.user.firstName} {review.user.lastName} says:{' '}
-                    </Card.Title>
-                    <Card.Body>{review.content}</Card.Body>
-                  </Card>
-                )
-              })
+                      <Card.Title>
+                        {review.user.firstName} {review.user.lastName} says:{' '}
+                      </Card.Title>
+                      <Card.Body>{review.content}</Card.Body>
+                    </Card>
+                  )
+                })
             ) : (
               <React.Fragment>
                 No Reviews Yet. Would you like to add one?
@@ -110,6 +89,7 @@ const mapDispatch = dispatch => {
 
 const mapState = state => {
   return {
+    user: state.user,
     reviews: state.review,
     tree: state.tree
   }
