@@ -141,7 +141,7 @@ class LearningTree extends Component {
                         to={`/learningTree/${this.props.tree.id}/review`}
                         style={{textDecoration: 'none', color: 'black'}}
                       >
-                        Rating: {rating}/ 5
+                        Rating: {rating}/ 5 All Reviews
                       </Link>
                     </Button>
                   }

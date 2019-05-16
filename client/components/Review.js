@@ -47,6 +47,9 @@ class Review extends Component {
   }
 
   render() {
+    const filteredReviews = this.props.reviews.filter(review => {
+      return review.id === Number(this.props.match.params.id)
+    })
     return (
       <div>
         {this.props.reviews[0] && this.props.reviews[0].learningTree ? (
@@ -59,7 +62,7 @@ class Review extends Component {
         )}
         <Row>
           <Col xs={{span: 8, offset: 2}}>
-            {this.props.reviews.map(review => {
+            {filteredReviews.map(review => {
               return (
                 <Card key={review.id}>
                   <Card.Title>
