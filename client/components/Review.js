@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {getReviews} from '../store/review'
+import {fetchSelectedTree} from '../store/LearningTree'
+import {ConnectedNewReview} from './NewReview'
 
 class Review extends Component {
   constructor(props, context) {
@@ -16,6 +18,7 @@ class Review extends Component {
   }
   async componentDidMount() {
     await this.props.getReviews(Number(this.props.match.params.id))
+    await this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
   // handleShow() {
@@ -50,34 +53,42 @@ class Review extends Component {
 
   render() {
     const filteredReviews = this.props.reviews.filter(review => {
-      return review.id === Number(this.props.match.params.id)
+      return review.learningTreeId === Number(this.props.match.params.id)
     })
+
     return (
       <div>
-        {this.props.reviews[0] && this.props.reviews[0].learningTree ? (
+        {this.props.tree && this.props.tree.title ? (
           <Row>
             {' '}
-            <h1>Reviews For: {this.props.reviews[0].learningTree.title}</h1>
+            <h1>Reviews For: {this.props.tree.title}</h1>
           </Row>
         ) : (
           ''
         )}
         <Row>
           <Col xs={{span: 8, offset: 2}}>
-            {filteredReviews.map(review => {
-              return (
-                <Card key={review.id}>
-                  <Card.Title>
-                    Title: {review.title} | Rating: {review.rating}
-                  </Card.Title>
+            {this.props.reviews.length !== 0 ? (
+              filteredReviews.map(review => {
+                return (
+                  <Card key={review.id}>
+                    <Card.Title>
+                      Title: {review.title} | Rating: {review.rating}
+                    </Card.Title>
 
-                  <Card.Title>
-                    {review.user.firstName} {review.user.lastName} says:{' '}
-                  </Card.Title>
-                  <Card.Body>{review.content}</Card.Body>
-                </Card>
-              )
-            })}
+                    <Card.Title>
+                      {review.user.firstName} {review.user.lastName} says:{' '}
+                    </Card.Title>
+                    <Card.Body>{review.content}</Card.Body>
+                  </Card>
+                )
+              })
+            ) : (
+              <React.Fragment>
+                No Reviews Yet. Would you like to add one?
+                <ConnectedNewReview />
+              </React.Fragment>
+            )}
           </Col>
         </Row>
       </div>
@@ -87,7 +98,9 @@ class Review extends Component {
 
 const mapDispatch = dispatch => {
   return {
-    getReviews: learningTreeId => dispatch(getReviews(learningTreeId))
+    getReviews: learningTreeId => dispatch(getReviews(learningTreeId)),
+    fetchSelectedTree: learningTreeId =>
+      dispatch(fetchSelectedTree(learningTreeId))
     // getSingleReview,
     // delReview,
     // postReview: review => dispatch(postReview(review)),
