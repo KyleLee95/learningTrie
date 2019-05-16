@@ -113,7 +113,7 @@ class LearningTree extends Component {
     if (isNaN(checkRating) === true) {
       rating = 0
     } else {
-      rating = checkRating
+      rating = checkRating.toString().slice(0, 4)
     }
 
     return (
@@ -152,11 +152,8 @@ class LearningTree extends Component {
                     to={`/learningTree/${this.props.tree.id}/review`}
                     style={{textDecoration: 'none', color: 'black'}}
                   >
-                    Rating:{' '}
-                    {this.props.reviews.reduce((acc, review) => {
-                      return acc + review.rating
-                    }, 0) / this.props.reviews.length}{' '}
-                    / 5. All Reviews
+                    Rating: {rating}
+                    / 5 All Reviews
                   </Link>
                 </Button>
               )}

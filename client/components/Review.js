@@ -6,45 +6,47 @@ import {getReviews} from '../store/review'
 class Review extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      show: false
-    }
-    this.handleShow = this.handleShow.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    // this.state = {
+    //   show: false
+    // }
+    // this.handleShow = this.handleShow.bind(this)
+    // this.handleClose = this.handleClose.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
     await this.props.getReviews(Number(this.props.match.params.id))
   }
 
-  handleShow() {
-    this.setState({
-      show: true
-    })
-  }
+  // handleShow() {
+  //   this.setState({
+  //     show: true
+  //   })
+  // }
 
-  handleClose() {
-    this.setState({
-      show: false
-    })
-  }
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
+  // handleClose() {
+  //   this.setState({
+  //     show: false
+  //   })
+  // }
+  // handleChange(e) {
+  //   this.setState({
+  //     [e.target.name]: e.target.value
+  //   })
+  // }
 
-  handleSubmit() {
-    this.props.putResource({
-      id: Number(this.props.match.params.id),
-      title: this.state.title,
-      description: this.state.description,
-      link: this.state.link,
-      type: this.state.type
-    })
-    this.handleClose()
-  }
+  // async handleSubmit() {
+  //   await this.setState({
+  //     show: false
+  //   })
+  //   await this.props.putResource({
+  //     id: Number(this.props.match.params.id),
+  //     title: this.state.title,
+  //     description: this.state.description,
+  //     link: this.state.link,
+  //     type: this.state.type
+  //   })
+  // }
 
   render() {
     const filteredReviews = this.props.reviews.filter(review => {

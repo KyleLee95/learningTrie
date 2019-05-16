@@ -20,10 +20,6 @@ class NewReview extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log(this.props)
-  }
-
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -38,6 +34,7 @@ class NewReview extends Component {
   }
 
   async handleSubmit() {
+    this.handleClose()
     await this.props.postReview({
       title: this.state.title,
       content: this.state.content,
