@@ -8,7 +8,8 @@ import {
   UserHome,
   ConnectedLearningTree,
   ConnectedResource,
-  ConnectedReview
+  ConnectedReview,
+  ConnectedExplore
 } from './components'
 import {me} from './store'
 
@@ -39,6 +40,7 @@ class Routes extends Component {
           path="/learningTree/:id/review"
           component={ConnectedReview}
         />
+        <Route path="/explore" component={ConnectedExplore} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
