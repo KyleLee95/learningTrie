@@ -35,6 +35,7 @@ class Resource extends Component {
     })
   }
   handleChange(e) {
+    console.log(e.target.value)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -149,7 +150,7 @@ class Resource extends Component {
                 <Form.Control
                   as="select"
                   name="type"
-                  onChange={this.handleEditChange}
+                  onChange={this.handleChange}
                 >
                   {options.map(option => {
                     return <option key={option}>{option}</option>

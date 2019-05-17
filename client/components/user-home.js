@@ -51,7 +51,9 @@ class UserHome extends Component {
                   <Col xs={4}>
                     <Card.Title>Description</Card.Title>
                   </Col>
-                  <Col xs={2}>Rating</Col>
+                  <Col xs={2}>
+                    <Card.Title>Rating</Card.Title>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -89,7 +91,8 @@ class UserHome extends Component {
                                     accumulator +
                                     review.rating / tree.reviews.length
                                   )
-                                }, 0)}
+                                }, 0)}{' '}
+                                / 5
                               </Card.Title>
                             </Col>
                           </Row>

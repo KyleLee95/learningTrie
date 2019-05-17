@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.body.id)
-
+    console.log(req.body.type)
     await resource.update({
       title: req.body.title,
       description: req.body.description,
