@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const {User, LearningTree} = require('../db/models')
+const {User, LearningTree, Review} = require('../db/models')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
+  console.log('HIT IT')
   try {
     const user = await User.findOne({
       where: {email: req.body.email},
@@ -47,7 +48,7 @@ router.get('/me', async (req, res) => {
     // users' passwords are encrypted, it won't help if we just
     // send everything to anyone who asks!
     attributes: ['id', 'email'],
-    include: [{model: LearningTree}]
+    include: [{model: LearningTree, include: [{model: Review}]}]
   })
   res.json(users)
 })
