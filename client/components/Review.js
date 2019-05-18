@@ -40,7 +40,7 @@ class Review extends Component {
         )}
         <Row>
           <Col xs={{span: 8, offset: 2}}>
-            {/* Logic is broken. Needs to reset based on state and not filtered reviews */}
+            <ConnectedNewReview />
             {this.props.reviews.length > 0 &&
             this.props.reviews.filter(review => {
               return (
@@ -51,8 +51,6 @@ class Review extends Component {
                 .filter(review => {
                   return (
                     review.learningTreeId === Number(this.props.match.params.id)
-                    //  ||
-                    // review.learningTreeId === null
                   )
                 })
                 .map(review => {
@@ -75,6 +73,7 @@ class Review extends Component {
                 <ConnectedNewReview />
               </React.Fragment>
             )}
+            <ConnectedNewReview />
           </Col>
         </Row>
       </div>
