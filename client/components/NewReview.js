@@ -42,6 +42,7 @@ class NewReview extends Component {
       userId: this.props.user.id,
       treeId: this.props.tree.id
     })
+    await this.props.getReviews(this.props.tree.id)
   }
 
   render() {

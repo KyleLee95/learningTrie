@@ -381,9 +381,6 @@ class TreeVisualization extends Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {/* <Col xs={1}>
-              <ConnectedNewNode createNode={this.createNode} />
-              </Col> */}
               <Col xs={12}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>
                   {this.props.nodes &&
