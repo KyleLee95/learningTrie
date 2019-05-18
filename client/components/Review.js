@@ -27,12 +27,14 @@ class Review extends Component {
         {this.props.tree && this.props.tree.title ? (
           <Row>
             <Row>
-              <h1>Reviews For: {this.props.tree.title}</h1>
-              {this.props.user.id !== this.props.tree.userId ? (
-                <ConnectedNewReview />
-              ) : (
-                ''
-              )}
+              <Col xs={12}>
+                <h2>Reviews For: {this.props.tree.title}</h2>
+                {this.props.user.id !== this.props.tree.userId ? (
+                  <ConnectedNewReview />
+                ) : (
+                  ''
+                )}
+              </Col>
             </Row>
           </Row>
         ) : (
