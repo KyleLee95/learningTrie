@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, LearningTree, Review} = require('../db/models')
+const {User, LearningTree, Tag} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -54,7 +54,12 @@ router.post('/', async (req, res, next) => {
     })
     const user = await User.findByPk(req.user.id)
     // console.log(Object.keys(learningTree.__proto__))
-    learningTree.setUser(user)
+    await learningTree.setUser(user)
+    req.body.tags.forEach(async tag => {
+      let newTag = await Tag.create({title: tag})
+      await learningTree.addTag(newTag)
+    })
+
     res.status(201).send({id: learningTree.id})
   } catch (err) {
     next(err)

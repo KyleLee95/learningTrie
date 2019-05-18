@@ -35,7 +35,6 @@ class Resource extends Component {
     })
   }
   handleChange(e) {
-    console.log(e.target.value)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -51,7 +50,6 @@ class Resource extends Component {
     })
     this.handleClose()
   }
-
   render() {
     const options = [
       'Select Type',

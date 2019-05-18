@@ -4,7 +4,6 @@ module.exports = router
 //da fuq am I using this for? I think this ileftover from boilerplate lmao. probably delete this at some poiint but I'm too afraid to.
 router.get('/', async (req, res, next) => {
   try {
-    console.log('HIT THIS')
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just

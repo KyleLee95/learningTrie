@@ -5,6 +5,7 @@ const Comment = require('./comment')
 const Resource = require('./resource')
 const Node = require('./node')
 const Edge = require('./edge')
+const Tag = require('./tag')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -23,7 +24,7 @@ LearningTree.hasMany(Node, {as: 'node'})
 LearningTree.belongsTo(User)
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
-
+LearningTree.hasMany(Tag)
 //Comment
 Comment.belongsTo(LearningTree)
 Comment.belongsTo(User)
@@ -47,6 +48,9 @@ Resource.hasMany(Comment, {as: 'comment'})
 //Review
 Review.belongsTo(User)
 Review.belongsTo(LearningTree)
+
+//Tag
+Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'
@@ -60,5 +64,6 @@ module.exports = {
   LearningTree,
   Review,
   Node,
-  Edge
+  Edge,
+  Tag
 }

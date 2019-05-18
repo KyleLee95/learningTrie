@@ -8,8 +8,8 @@ import {fetchTrees} from '../store/learningTree'
  * COMPONENT
  */
 class Explore extends Component {
-  componentDidMount() {
-    // this.props.fetchTrees()
+  async componentDidMount() {
+    await this.props.fetchTrees()
   }
   render() {
     return <div>HELLO WORLD</div>
@@ -18,7 +18,8 @@ class Explore extends Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    trees: state.tree
   }
 }
 const mapDispatch = dispatch => {

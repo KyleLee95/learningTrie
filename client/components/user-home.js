@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ConnectedUserHomeTab, ConnectedSidebar, ConnectedNewTree} from '.'
+import {ConnectedNewTree} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
@@ -38,21 +38,25 @@ class UserHome extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col xs={7}>
+          <Col xs={9}>
             <Card>
               <Card.Body>
                 <Row>
                   <Col xs={4}>
                     <Card.Title>Title </Card.Title>
                   </Col>
-                  <Col xs={2}>
+                  <Col xs={1}>
                     <Card.Title>Owner</Card.Title>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={3}>
+                    {' '}
                     <Card.Title>Description</Card.Title>
                   </Col>
-                  <Col xs={2}>
+                  <Col xs={1}>
                     <Card.Title>Rating</Card.Title>
+                  </Col>
+                  <Col xs={3}>
+                    <Card.Title>Tags</Card.Title>
                   </Col>
                 </Row>
               </Card.Body>
@@ -74,17 +78,17 @@ class UserHome extends Component {
                             <Col xs={4}>
                               <Card.Title>{tree.title} </Card.Title>
                             </Col>
-                            <Col xs={2}>
+                            <Col xs={1}>
                               {tree.userId === this.props.user.id ? (
                                 <Card.Title>Me</Card.Title>
                               ) : (
                                 ''
                               )}
                             </Col>
-                            <Col xs={4}>
+                            <Col xs={3}>
                               <Card.Title>{tree.description} </Card.Title>
                             </Col>
-                            <Col xs={2}>
+                            <Col xs={1}>
                               <Card.Title>
                                 {tree.reviews.reduce((accumulator, review) => {
                                   return (
@@ -95,6 +99,9 @@ class UserHome extends Component {
                                 / 5
                               </Card.Title>
                             </Col>
+                            <Col xs={3}>
+                              <Card.Title>Some tags go here </Card.Title>
+                            </Col>
                           </Row>
                         </Link>
                       </Card.Body>
@@ -102,9 +109,6 @@ class UserHome extends Component {
                   )
                 })
               : ''}
-          </Col>
-          <Col xs={3}>
-            <ConnectedUserHomeTab />
           </Col>
         </Row>
       </div>

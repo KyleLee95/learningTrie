@@ -7,6 +7,7 @@ router.use('/nodes', require('./nodes'))
 router.use('/edges', require('./edges'))
 router.use('/resources', require('./resources'))
 router.use('/reviews', require('./reviews'))
+router.use('/tags', require('./tags'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')

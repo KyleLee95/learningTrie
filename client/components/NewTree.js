@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Row, Col, Form, Button, Modal, Card} from 'react-bootstrap'
 import {postTree} from '../store/learningTree'
+import {postTag} from '../store/tag'
 import {me} from '../store/user'
 import {connect} from 'react-redux'
 
@@ -21,10 +22,14 @@ class NewTree extends Component {
 
   //Handles Modal
   async handleSubmit() {
+    const tags = this.state.tags.split(', ')
+    console.log(tags)
     await this.props.postTree({
       title: this.state.title,
-      description: this.state.description
+      description: this.state.description,
+      tags: tags
     })
+
     await this.handleClose()
     await this.props.me()
   }
@@ -85,6 +90,10 @@ class NewTree extends Component {
                     onChange={this.handleChange}
                   />
                 </Form.Group>
+                <Form.Group controlId="tags">
+                  <Form.Label>Tags</Form.Label>
+                  <Form.Control name="tags" onChange={this.handleChange} />
+                </Form.Group>
               </Modal.Body>
             </Modal.Body>
             <Modal.Footer>
@@ -109,6 +118,7 @@ class NewTree extends Component {
 const mapDispatch = dispatch => {
   return {
     postTree: data => dispatch(postTree(data)),
+    postTag: data => dispatch(postTag(data)),
     me: () => dispatch(me())
   }
 }
