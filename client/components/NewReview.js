@@ -47,8 +47,8 @@ class NewReview extends Component {
   render() {
     const options = [1, 2, 3, 4, 5]
     return (
-      <div>
-        <Button variant="primary" onClick={this.handleShow}>
+      <React.Fragment>
+        <Button variant="submit" onClick={this.handleShow}>
           Add Review
         </Button>
         <Form>
@@ -104,7 +104,7 @@ class NewReview extends Component {
             </Modal.Footer>
           </Modal>
         </Form>
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -12,6 +12,7 @@ import {
 import {getReviews} from '../store/review'
 import {Link} from 'react-router-dom'
 import {me} from '../store/user'
+import {ConnectedNewReview} from './NewReview'
 
 //TODO:
 //Forms are only prefilled the first time you edit. After that the forms empty.
@@ -147,15 +148,18 @@ class LearningTree extends Component {
                   }
                 </React.Fragment>
               ) : (
-                <Button variant="submit">
-                  <Link
-                    to={`/learningTree/${this.props.tree.id}/review`}
-                    style={{textDecoration: 'none', color: 'black'}}
-                  >
-                    Rating: {rating}
-                    / 5 All Reviews
-                  </Link>
-                </Button>
+                <React.Fragment>
+                  <Button variant="submit">
+                    <Link
+                      to={`/learningTree/${this.props.tree.id}/review`}
+                      style={{textDecoration: 'none', color: 'black'}}
+                    >
+                      Rating: {rating}
+                      / 5 All Reviews
+                    </Link>
+                  </Button>
+                  <ConnectedNewReview />
+                </React.Fragment>
               )}
             </Row>
             <Row>
