@@ -67,28 +67,53 @@ class UserHome extends Component {
                   return (
                     <Card key={tree.id}>
                       <Card.Body>
-                        <Link
-                          style={{
-                            textDecoration: 'none',
-                            color: '#000000'
-                          }}
-                          to={`/learningTree/${tree.id}`}
-                        >
-                          <Row>
-                            <Col xs={4}>
+                        <Row>
+                          <Col xs={4}>
+                            <Link
+                              style={{
+                                textDecoration: 'none',
+                                color: '#000000'
+                              }}
+                              to={`/learningTree/${tree.id}`}
+                            >
                               <Card.Title>{tree.title} </Card.Title>
-                            </Col>
-                            <Col xs={1}>
-                              {tree.userId === this.props.user.id ? (
+                            </Link>
+                          </Col>
+                          <Col xs={1}>
+                            {tree.userId === this.props.user.id ? (
+                              <Link
+                                style={{
+                                  textDecoration: 'none',
+                                  color: '#000000'
+                                }}
+                                to={`/learningTree/${tree.id}`}
+                              >
+                                {' '}
                                 <Card.Title>Me</Card.Title>
-                              ) : (
-                                ''
-                              )}
-                            </Col>
-                            <Col xs={3}>
+                              </Link>
+                            ) : (
+                              ''
+                            )}
+                          </Col>
+                          <Col xs={3}>
+                            <Link
+                              style={{
+                                textDecoration: 'none',
+                                color: '#000000'
+                              }}
+                              to={`/learningTree/${tree.id}`}
+                            >
                               <Card.Title>{tree.description} </Card.Title>
-                            </Col>
-                            <Col xs={1}>
+                            </Link>
+                          </Col>
+                          <Col xs={1}>
+                            <Link
+                              style={{
+                                textDecoration: 'none',
+                                color: '#000000'
+                              }}
+                              to={`/learningTree/${tree.id}`}
+                            >
                               <Card.Title>
                                 {tree.reviews.reduce((accumulator, review) => {
                                   return (
@@ -98,12 +123,20 @@ class UserHome extends Component {
                                 }, 0)}{' '}
                                 / 5
                               </Card.Title>
-                            </Col>
-                            <Col xs={3}>
-                              <Card.Title>Some tags go here </Card.Title>
-                            </Col>
-                          </Row>
-                        </Link>
+                            </Link>
+                          </Col>
+                          <Col xs={3}>
+                            <Card.Title>
+                              {tree.tags.map(tag => {
+                                return (
+                                  <Link to={`/tag/${tag.id}`} key={tag.id}>
+                                    {tag.title}{' '}
+                                  </Link>
+                                )
+                              })}{' '}
+                            </Card.Title>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   )

@@ -23,7 +23,6 @@ class NewTree extends Component {
   //Handles Modal
   async handleSubmit() {
     const tags = this.state.tags.split(', ')
-    console.log(tags)
     await this.props.postTree({
       title: this.state.title,
       description: this.state.description,

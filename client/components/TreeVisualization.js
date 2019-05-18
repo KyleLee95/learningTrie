@@ -13,7 +13,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Modal, Button, Form, Row, Col, Tab} from 'react-bootstrap'
+import {Modal, Button, Form, Row, Col, Tabs, Tab} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -320,17 +320,35 @@ class TreeVisualization extends Component {
     ]
     return (
       <ScrollLock>
+        {/* TABS */}
         <Row>
-          <Col xs={1}>
+          <Col xs={2}>
             {this.props.tree &&
             this.props.tree.userId &&
             this.props.user.id === this.props.tree.userId ? (
-              <ConnectedNewNode createNode={this.createNode} />
+              <Tabs defaultActiveKey="controls">
+                <Tab eventKey="controls" title="controls">
+                  <ConnectedNewNode createNode={this.createNode} />
+                </Tab>
+                <Tab eventKey="description" title="description">
+                  {this.props.tree.description}
+                </Tab>
+                <Tab>
+                  <ConnectedNewNode createNode={this.createNode} />
+                </Tab>
+              </Tabs>
             ) : (
-              <ConnectedNewReview />
+              <Tabs>
+                <Tab eventKey="description" title="description">
+                  {this.props.tree.description}
+                </Tab>
+                <Tab eventKey="controls" title="Controls">
+                  <ConnectedNewReview />
+                </Tab>
+              </Tabs>
             )}
           </Col>
-          <Col xs={11}>
+          <Col xs={10}>
             <div id="graph" style={{width: '100%', height: '40vw'}}>
               {this.props.nodes &&
               this.props.nodes[0] !== undefined &&

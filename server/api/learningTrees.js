@@ -4,7 +4,7 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const trees = await LearningTree.findAll()
+    const trees = await LearningTree.findAll({include: [{model: Tag}]})
     res.json(trees)
   } catch (err) {
     next(err)
