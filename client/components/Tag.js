@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {getReviews} from '../store/review'
 import {fetchSelectedTree} from '../store/LearningTree'
 
 class Tag extends Component {
@@ -38,7 +37,8 @@ const mapState = state => {
   return {
     user: state.user,
     reviews: state.review,
-    tree: state.tree
+    tree: state.tree,
+    tag: state.tag
   }
 }
 

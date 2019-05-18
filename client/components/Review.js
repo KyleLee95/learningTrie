@@ -41,7 +41,12 @@ class Review extends Component {
         <Row>
           <Col xs={{span: 8, offset: 2}}>
             {/* Logic is broken. Needs to reset based on state and not filtered reviews */}
-            {this.props.reviews.length > 0 ? (
+            {this.props.reviews.length > 0 &&
+            this.props.reviews.filter(review => {
+              return (
+                review.learningTreeId === Number(this.props.match.params.id)
+              )
+            }).length > 0 ? (
               this.props.reviews
                 .filter(review => {
                   return (
