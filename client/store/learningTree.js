@@ -6,6 +6,7 @@ import history from '../history'
  * ACTION TYPES
  */
 const GET_TREE = 'GET_TREE'
+const SEARCH_TREE = 'SEARCH_TREE'
 const SET_MY_TREES = 'SET_MY_TREES'
 const SET_FAV_TREES = 'SET_FAV_TREES'
 const SET_SHARED_TREES = 'SET_SHARED_TREES'
@@ -23,6 +24,11 @@ const defaultTree = []
  */
 const getTrees = tree => ({
   type: GET_TREE,
+  tree
+})
+
+const searchTrees = tree => ({
+  type: SEARCH_TREE,
   tree
 })
 
@@ -69,6 +75,16 @@ export const fetchTrees = () => async dispatch => {
     return dispatch(getTrees(res.data))
   } catch (err) {
     console.error(err)
+  }
+}
+
+export const fetchSearchTrees = search => async dispatch => {
+  try {
+    const res = await axios.get(`/api/learningTrees/search?${search}`)
+    history.push('/search')
+    return dispatch(searchTrees(res.data))
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -131,6 +147,8 @@ export const delTree = treeId => async dispatch => {
 export default function(state = defaultTree, action) {
   switch (action.type) {
     case GET_TREE:
+      return action.tree
+    case SEARCH_TREE:
       return action.tree
     case CREATE_TREE:
       return action.tree

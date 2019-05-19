@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const tag = await Tag.findByPk(req.params.id)
-    console.log(Object.keys(tag.__proto__))
+    // console.log(Object.keys(tag.__proto__))
     const trees = await tag.getLearningTrees()
     console.log('get trees', trees.data)
     const learningTrees = await LearningTree.findAll({

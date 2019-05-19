@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Form, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import {fetchSearchTrees} from '../store/learningTree'
 
 class Search extends Component {
   constructor(props, context) {
@@ -9,6 +10,7 @@ class Search extends Component {
     this.state = {}
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(e) {
@@ -19,6 +21,7 @@ class Search extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
+    this.props.fetchSearchTrees(`search=${this.state.search}`)
   }
 
   render() {
@@ -33,12 +36,19 @@ class Search extends Component {
               placeholder="Search"
             />
           </Form.Group>
-
-          <Button variant="submit">Submit</Button>
+          <Button variant="submit" onClick={this.handleSubmit}>
+            Submit
+          </Button>
         </Form>
       </React.Fragment>
     )
   }
 }
 
-export const ConnectedSearch = connect(null, null)(Search)
+const mapDispatch = dispatch => {
+  return {
+    fetchSearchTrees: search => dispatch(fetchSearchTrees(search))
+  }
+}
+
+export const ConnectedSearch = connect(null, mapDispatch)(Search)

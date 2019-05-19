@@ -1,38 +1,35 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Navbar, Form, FormControl, Button} from 'react-bootstrap'
 import {logout} from '../store'
+import {Navbar, Row, Col} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
-class Nav extends Component {
-  render() {
-    return (
-      <Navbar>
-        <h1>Learning 🌳 Tree</h1>
-
-        {this.isLoggedIn ? (
-          <React.Fragment>
-            {/* The navbar will show these links after you log in */}
-            <Link to="/home">Home</Link>
-            <Link to="/explore">Explore</Link>
-            <a href="#" onClick={this.handleClick}>
-              Logout
-            </a>
-            <ConnectedSearch />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            {/* The navbar will show these links before you log in */}
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
-            <ConnectedSearch />
-          </React.Fragment>
-        )}
-      </Navbar>
-    )
-  }
-}
+const Nav = ({handleClick, isLoggedIn}) => (
+  <Navbar>
+    <Navbar.Brand href="/">Learning 🌳 Tree</Navbar.Brand>
+    <Navbar.Collapse id="basic-navbar-nav">
+      {isLoggedIn ? (
+        <React.Fragment>
+          {/* The navbar will show these links after you log in */}
+          <Link to="/">Home</Link>
+          <Link to="/explore">Explore</Link>
+          <a href="#" onClick={handleClick}>
+            Logout
+          </a>
+          <ConnectedSearch />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          {/* The navbar will show these links before you log in */}
+          <Link to="/login">Login</Link>
+          <Link to="/signup">Sign Up</Link>
+          <ConnectedSearch />
+        </React.Fragment>
+      )}
+    </Navbar.Collapse>
+  </Navbar>
+)
 
 /**
  * CONTAINER
@@ -51,12 +48,12 @@ const mapDispatch = dispatch => {
   }
 }
 
-export const ConnectedNav = connect(mapState, mapDispatch)(Nav)
+export default connect(mapState, mapDispatch)(Nav)
 
 /**
  * PROP TYPES
  */
-// Navbar.propTypes = {
-//   handleClick: PropTypes.func.isRequired,
-//   isLoggedIn: PropTypes.bool.isRequired
-// }
+Nav.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
+}

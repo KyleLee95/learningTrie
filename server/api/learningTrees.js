@@ -1,11 +1,28 @@
 const router = require('express').Router()
 const {User, LearningTree, Tag} = require('../db/models')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
     const trees = await LearningTree.findAll({include: [{model: Tag}]})
-    res.json(trees)
+    res.status(200).json(trees)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/search', async (req, res, next) => {
+  try {
+    console.log(req.query)
+    const trees = await LearningTree.findAll({
+      include: [{model: Tag}],
+      where: {
+        title: {[Op.iLike]: `%${req.query.search}%`}
+      }
+    })
+    res.status(200).json(trees)
   } catch (err) {
     next(err)
   }

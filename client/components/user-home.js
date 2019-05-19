@@ -116,25 +116,32 @@ class UserHome extends Component {
                               to={`/learningTree/${tree.id}`}
                             >
                               <Card.Title>
-                                {tree.reviews.reduce((accumulator, review) => {
-                                  return (
-                                    accumulator +
-                                    review.rating / tree.reviews.length
-                                  )
-                                }, 0)}{' '}
+                                {tree.reviews !== undefined
+                                  ? tree.reviews.reduce(
+                                      (accumulator, review) => {
+                                        return (
+                                          accumulator +
+                                          review.rating / tree.reviews.length
+                                        )
+                                      },
+                                      0
+                                    )
+                                  : 0}{' '}
                                 / 5
                               </Card.Title>
                             </Link>
                           </Col>
                           <Col xs={3}>
                             <Card.Title>
-                              {tree.tags.map(tag => {
-                                return (
-                                  <Link to={`/tag/${tag.id}`} key={tag.id}>
-                                    {tag.title}{' '}
-                                  </Link>
-                                )
-                              })}{' '}
+                              {tree.tags !== undefined
+                                ? tree.tags.map(tag => {
+                                    return (
+                                      <Link to={`/tag/${tag.id}`} key={tag.id}>
+                                        {tag.title}{' '}
+                                      </Link>
+                                    )
+                                  })
+                                : ''}{' '}
                             </Card.Title>
                           </Col>
                         </Row>
