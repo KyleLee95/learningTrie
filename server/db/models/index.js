@@ -24,7 +24,7 @@ LearningTree.hasMany(Node, {as: 'node'})
 LearningTree.belongsTo(User)
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
-LearningTree.hasMany(Tag)
+LearningTree.belongsToMany(Tag, {through: 'treeTag'})
 //Comment
 Comment.belongsTo(LearningTree)
 Comment.belongsTo(User)

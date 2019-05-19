@@ -14,11 +14,19 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const tag = await Tag.findByPk(req.params.id)
+    console.log(Object.keys(tag.__proto__))
+    const trees = await tag.getLearningTrees()
+    console.log('get trees', trees.data)
     const learningTrees = await LearningTree.findAll({
-      where: {id: tag.learningTreeId},
-      include: [{model: Tag}]
+      include: [
+        {
+          model: Tag,
+          where: {id: req.params.id}
+        }
+      ]
     })
     res.json({
+      someShit: trees,
       tag: tag,
       learningTrees: learningTrees
     })
@@ -54,12 +62,11 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log(Tag)
     const tag = await Tag.create({
       title: req.body.title
     })
     const learningTree = await LearningTree.findByPk(req.body.treeId)
-    console.log(Object.keys(learningTree.__proto__))
+    // console.log(Object.keys(learningTree.__proto__))
     // learningTree.setT(user)
     res.status(201).send(tag)
   } catch (err) {

@@ -27,6 +27,10 @@ router.put('/:id', async (req, res, next) => {
       title: req.body.title,
       description: req.body.description
     })
+    req.body.tags.forEach(async tag => {
+      let newTag = await Tag.create({title: tag})
+      await tree.addTag(newTag)
+    })
     res.status(200).json(updatedTree)
   } catch (err) {
     next(err)
@@ -56,9 +60,11 @@ router.post('/', async (req, res, next) => {
     // console.log(Object.keys(learningTree.__proto__))
     await learningTree.setUser(user)
     req.body.tags.forEach(async tag => {
-      let newTag = await Tag.create({title: tag})
-      await learningTree.addTag(newTag)
+      let newTag = await Tag.findOrCreate({where: {title: tag}})
+      await learningTree.addTag(newTag[0])
     })
+    const tagCheck = await learningTree.getTags()
+    console.log(tagCheck)
 
     res.status(201).send({id: learningTree.id})
   } catch (err) {

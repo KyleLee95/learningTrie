@@ -1,3 +1,4 @@
+/*eslint-disable complexity */
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
@@ -17,6 +18,7 @@ class Tag extends Component {
     // this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
+    await this.props.fetchTrees()
     await this.props.getSingleTag(Number(this.props.match.params.id))
     await this.props.getReviews()
   }
@@ -35,6 +37,7 @@ class Tag extends Component {
     } else {
       rating = checkRating.toString().slice(0, 4)
     }
+
     return (
       //Proably wrong and I hate this but it works
       <React.Fragment>
