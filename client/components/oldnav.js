@@ -2,10 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Navbar, Form, FormControl, Button} from 'react-bootstrap'
 import {logout} from '../store'
 // import {ConnectedSearch} from '.'
-const Nav = (isLoggedIn, handleClick) => (
+const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
     <h1>Learning 🌳 Tree</h1>
     <nav>
@@ -49,7 +48,7 @@ const mapDispatch = dispatch => {
   }
 }
 
-export const ConnectedNav = connect(mapState, mapDispatch)(Nav)
+export default connect(mapState, mapDispatch)(Navbar)
 
 /**
  * PROP TYPES
