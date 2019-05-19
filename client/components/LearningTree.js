@@ -9,6 +9,7 @@ import {
   putTree,
   delTree
 } from '../store/learningTree'
+import {getTag, postTag, putTag, delTag} from '../store/tag'
 import {getReviews} from '../store/review'
 import {Link} from 'react-router-dom'
 import {me} from '../store/user'
@@ -51,11 +52,14 @@ class LearningTree extends Component {
   //BEGIN MODAL METHODS
   async handleSubmit() {
     this.handleCloseEdit()
+    const tags = this.state.tags.split(', ')
     await this.props.putTree({
       title: this.state.title,
       description: this.state.description,
+      tags: tags,
       id: Number(this.props.match.params.id)
     })
+
     await this.props.me()
   }
 
@@ -183,7 +187,7 @@ class LearningTree extends Component {
                   <Form.Control
                     name="title"
                     type="title"
-                    value={this.state.title || ''}
+                    // value={this.state.title || ''}
                     onChange={this.handleChange}
                   />
                 </Form.Group>
@@ -192,8 +196,17 @@ class LearningTree extends Component {
                   <Form.Control
                     name="description"
                     as="textarea"
-                    value={this.state.description || ''}
+                    // value={this.state.description || ''}
                     rows="3"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="tags">
+                  <Form.Label>Tags</Form.Label>
+                  <Form.Control
+                    name="tags"
+                    // value={this.state.description || ''}
+
                     onChange={this.handleChange}
                   />
                 </Form.Group>
@@ -258,7 +271,9 @@ const mapDispatch = dispatch => {
     putTree: data => dispatch(putTree(data)),
     delTree: treeId => dispatch(delTree(treeId)),
     me: () => dispatch(me()),
-    getReviews: treeId => dispatch(getReviews(treeId))
+    getReviews: treeId => dispatch(getReviews(treeId)),
+    putTag: tag => dispatch(putTag(tag)),
+    postTag: tag => dispatch(postTag(tag))
   }
 }
 

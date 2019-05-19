@@ -33,14 +33,14 @@ export const getTags = () => async dispatch => {
   }
 }
 
-// export const getSingleTag = tagId => async dispatch => {
-//   try {
-//     const res = await axios.get(`/api/tags/${tagId}`)
-//     dispatch(fetchReview(res.data))
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+export const getSingleTag = tagId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/tags/${tagId}`)
+    dispatch(fetchTags(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 export const delTag = tag => async dispatch => {
   try {

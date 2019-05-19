@@ -13,8 +13,15 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tree = await Tag.findByPk(req.params.id)
-    res.json(tree)
+    const tag = await Tag.findByPk(req.params.id)
+    const learningTrees = await LearningTree.findAll({
+      where: {id: tag.learningTreeId},
+      include: [{model: Tag}]
+    })
+    res.json({
+      tag: tag,
+      learningTrees: learningTrees
+    })
   } catch (err) {
     next(err)
   }
