@@ -20,7 +20,14 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const comment = await Comment.findByPk(req.params.id)
+    const comment = await Comment.findByPk(req.params.id, {
+      where: {resourceId: req.params.id},
+      include: [
+        {
+          model: User
+        }
+      ]
+    })
     const updatedComment = await comment.update({
       content: req.body.content
     })

@@ -72,14 +72,6 @@ class Resource extends Component {
     return (
       <div>
         <Row>
-          <Button
-            onClick={() =>
-              this.props.delResource({resource: this.props.resource})
-            }
-          >
-            Delete
-          </Button>
-          <Button onClick={this.handleShow}>Edit</Button>
           <Col xs={12}>
             <Col xs={5}>
               <Row>
@@ -110,6 +102,17 @@ class Resource extends Component {
               </Col>
             </Row>
           </Col>
+          <Button
+            onClick={() =>
+              this.props.delResource({resource: this.props.resource})
+            }
+            variant="submit"
+          >
+            Delete
+          </Button>
+          <Button onClick={this.handleShow} variant="submit">
+            Edit
+          </Button>
         </Row>
         <Row>
           <Col xs={12}>

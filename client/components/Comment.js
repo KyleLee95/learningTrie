@@ -58,6 +58,7 @@ class Comment extends Component {
       commentId: this.props.comment.id,
       content: this.state.content
     })
+    this.handleClose()
   }
   render() {
     return (
@@ -65,7 +66,12 @@ class Comment extends Component {
         <Row>
           <Col xs={{span: 6, offSet: 10}}>
             <Card>
-              <Card.Title>UserName</Card.Title>
+              <Card.Title>
+                {`${this.props.comment.user.firstName} ${
+                  this.props.comment.user.lastName
+                }`}{' '}
+                | Posted At: {this.props.comment.createdAt}
+              </Card.Title>
               <Card.Body>{this.props.comment.content}</Card.Body>
               <Card.Footer>
                 <Button variant="submit" onClick={this.handleDeleteShow}>

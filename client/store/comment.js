@@ -70,6 +70,7 @@ export default function(state = defaultEdges, action) {
     case REMOVE_COMMENT:
       return state.filter(comment => comment.id !== action.comment)
     case UPDATE_COMMENT:
+      console.log(action.comment)
       return [
         ...state.filter(comment => {
           return comment.id !== action.comment.id
