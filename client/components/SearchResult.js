@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, Button} from 'react-bootstrap'
+import {Form, Row, Col, Button, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSearchTrees} from '../store/learningTree'
@@ -10,13 +10,70 @@ class SearchResult extends Component {
     this.state = {}
   }
 
+  componentDidMount() {
+    console.log(this.props)
+    this.props.fetchSearchTrees(`${this.props.location.search}`)
+  }
+
   render() {
     return (
-      <React.Fragment>
-        {this.props.trees.map(tree => {
-          return tree.title
-        })}
-      </React.Fragment>
+      <div>
+        <Row>
+          <Col xs={2}>
+            <React.Fragment>SOME SIDE BAR HERE</React.Fragment>
+          </Col>
+          <Col xs={10}>
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col xs={4}>
+                    <Card.Title>Title </Card.Title>
+                  </Col>
+                  <Col xs={1}>
+                    <Card.Title>Owner</Card.Title>
+                  </Col>
+                  <Col xs={3}>
+                    {' '}
+                    <Card.Title>Description</Card.Title>
+                  </Col>
+                  <Col xs={1}>
+                    <Card.Title>Rating</Card.Title>
+                  </Col>
+                  <Col xs={3}>
+                    <Card.Title>Tags</Card.Title>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+            {this.props.trees.map(tree => {
+              return (
+                <Card key={tree.id}>
+                  <Card.Body>
+                    <Row>
+                      <Col xs={4}>
+                        <Card.Title>{tree.title} </Card.Title>
+                      </Col>
+                      <Col xs={1}>
+                        <Card.Title>Owner</Card.Title>
+                      </Col>
+                      <Col xs={3}>
+                        {' '}
+                        <Card.Title>{tree.description}</Card.Title>
+                      </Col>
+                      <Col xs={1}>
+                        <Card.Title>Rating</Card.Title>
+                      </Col>
+                      <Col xs={3}>
+                        <Card.Title>Tags</Card.Title>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              )
+            })}
+          </Col>
+        </Row>
+      </div>
     )
   }
 }
