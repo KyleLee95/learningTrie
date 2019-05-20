@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {LearningTree, Tag} = require('../db/models')
+const {LearningTree, Tag, Review} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -13,10 +13,12 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tag = await Tag.findByPk(req.params.id)
+    const tag = await Tag.findByPk(req.params.id, {
+      include: [{model: LearningTree}]
+    })
     // console.log(Object.keys(tag.__proto__))
     const trees = await tag.getLearningTrees()
-    console.log('get trees', trees.data)
+    // console.log('get trees', trees.data)
     const learningTrees = await LearningTree.findAll({
       include: [
         {
@@ -26,7 +28,7 @@ router.get('/:id', async (req, res, next) => {
       ]
     })
     res.json({
-      someShit: trees,
+      // someShit: trees,
       tag: tag,
       learningTrees: learningTrees
     })
