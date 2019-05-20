@@ -8,7 +8,7 @@ import {
   postResource
 } from '../store/resource'
 import {getComments} from '../store/comment'
-import {Comment, ConnectedResourceCommentForm} from '.'
+import {ConnectedComment, ConnectedResourceCommentForm} from '.'
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
@@ -123,9 +123,11 @@ class Resource extends Component {
           <Col xs={12}>
             <strong>Discussion: </strong>
             <hr />
-            {this.props.comments.map(comment => {
-              return <Comment key={comment.id} />
-            })}
+            {this.props.comments && this.props.comments.length > 0
+              ? this.props.comments.map(comment => {
+                  return <ConnectedComment key={comment.id} comment={comment} />
+                })
+              : 'No comments yet. Start the discussion by adding your own comment!'}
           </Col>
         </Row>
         {/* Edit Modal */}

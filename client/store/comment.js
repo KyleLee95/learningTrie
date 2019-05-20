@@ -77,7 +77,7 @@ export default function(state = defaultEdges, action) {
         action.edge
       ]
     case CREATE_COMMENT:
-      return [...state, action.edge]
+      return [...state, action.comment]
     default:
       return state
   }
