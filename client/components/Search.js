@@ -33,7 +33,6 @@ class Search extends Component {
           <Form.Group controlId="search">
             <Form.Control
               onChange={this.handleChange}
-              onKeyPress={this.handleKeyPress}
               name="search"
               type="search"
               placeholder="Search"
