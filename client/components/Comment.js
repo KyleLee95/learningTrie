@@ -47,8 +47,18 @@ class Comment extends Component {
       show: false
     })
   }
-  handleChange() {}
-  handleSubmit() {}
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+  handleSubmit(e) {
+    e.preventDefault()
+    this.props.putComment({
+      commentId: this.props.comment.id,
+      content: this.state.content
+    })
+  }
   render() {
     return (
       <React.Fragment>

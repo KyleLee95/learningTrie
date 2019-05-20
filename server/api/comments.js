@@ -18,18 +18,17 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-// router.put('/:id', async (req, res, next) => {
-//   try {
-//     const tree = await LearningTree.findByPk(req.params.id)
-//     const updatedTree = await tree.update({
-//       title: req.body.title,
-//       description: req.body.description
-//     })
-//     res.status(200).json(updatedTree)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
+router.put('/:id', async (req, res, next) => {
+  try {
+    const comment = await Comment.findByPk(req.params.id)
+    const updatedComment = await comment.update({
+      content: req.body.content
+    })
+    res.status(200).json(updatedComment)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.delete('/:id', async (req, res, next) => {
   try {

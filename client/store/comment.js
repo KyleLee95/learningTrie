@@ -53,7 +53,7 @@ export const postComment = comment => async dispatch => {
 
 export const putComment = comment => async dispatch => {
   try {
-    const res = await axios.put('/api/comments', comment)
+    const res = await axios.put(`/api/comments/${comment.commentId}`, comment)
     dispatch(updateComment(res.data))
   } catch (err) {
     console.error(err)
@@ -68,14 +68,13 @@ export default function(state = defaultEdges, action) {
     case GET_COMMENTS:
       return action.comment
     case REMOVE_COMMENT:
-      console.log(action.comment)
       return state.filter(comment => comment.id !== action.comment)
     case UPDATE_COMMENT:
       return [
         ...state.filter(comment => {
           return comment.id !== action.comment.id
         }),
-        action.edge
+        action.comment
       ]
     case CREATE_COMMENT:
       return [...state, action.comment]
