@@ -9,6 +9,7 @@ import node from './node'
 import resource from './resource'
 import review from './review'
 import tag from './tag'
+import comment from './comment'
 const reducer = combineReducers({
   user,
   tree,
@@ -16,7 +17,8 @@ const reducer = combineReducers({
   node,
   resource,
   review,
-  tag
+  tag,
+  comment
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -31,3 +33,4 @@ export * from './node'
 export * from './resource'
 export * from './review'
 export * from './tag'
+export * from './comment'

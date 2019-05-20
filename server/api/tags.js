@@ -27,8 +27,7 @@ router.get('/:id', async (req, res, next) => {
         }
       ]
     })
-    res.json({
-      // someShit: trees,
+    res.status(200).json({
       tag: tag,
       learningTrees: learningTrees
     })

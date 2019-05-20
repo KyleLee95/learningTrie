@@ -7,7 +7,8 @@ import {
   putResource,
   postResource
 } from '../store/resource'
-
+import {getComments} from '../store/comment'
+import {Comment, ConnectedResourceCommentForm} from '.'
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
@@ -21,6 +22,7 @@ class Resource extends Component {
   }
   async componentDidMount() {
     await this.props.getSingleResource(Number(this.props.match.params.id))
+    await this.props.getComments(Number(this.props.match.params.id))
   }
 
   handleShow() {
@@ -111,7 +113,19 @@ class Resource extends Component {
         </Row>
         <Row>
           <Col xs={12}>
-            <strong>Comments here</strong>
+            <ConnectedResourceCommentForm
+              resourceId={this.props.match.params.id}
+            />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col xs={12}>
+            <strong>Discussion: </strong>
+            <hr />
+            {this.props.comments.map(comment => {
+              return <Comment key={comment.id} />
+            })}
           </Col>
         </Row>
         {/* Edit Modal */}
@@ -176,13 +190,15 @@ const mapDispatch = dispatch => {
     getSingleResource: resourceId => dispatch(getSingleResource(resourceId)),
     postResource: resource => dispatch(postResource(resource)),
     delResource: resource => dispatch(delResource(resource)),
-    putResource: resource => dispatch(putResource(resource))
+    putResource: resource => dispatch(putResource(resource)),
+    getComments: resourceId => dispatch(getComments(resourceId))
   }
 }
 
 const mapState = state => {
   return {
-    resource: state.resource
+    resource: state.resource,
+    comments: state.comment
   }
 }
 

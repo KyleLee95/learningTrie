@@ -68,7 +68,7 @@ class SearchResult extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.trees !== undefined
+            {this.props.trees !== undefined && this.props.trees.length > 0
               ? this.props.trees.map(tree => {
                   return (
                     <Card key={tree.id}>
@@ -133,7 +133,7 @@ class SearchResult extends Component {
                     </Card>
                   )
                 })
-              : ''}
+              : 'No Results Found '}
           </Col>
         </Row>
       </div>

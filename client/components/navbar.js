@@ -7,7 +7,9 @@ import {Navbar, Row, Col} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
 const Nav = ({handleClick, isLoggedIn}) => (
   <Navbar>
-    <Navbar.Brand href="/">Learning 🌳 Tree</Navbar.Brand>
+    <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
+      <h4>Learning 🌳 Tree</h4>
+    </Link>
     <Navbar.Collapse id="basic-navbar-nav">
       {isLoggedIn ? (
         <React.Fragment>
