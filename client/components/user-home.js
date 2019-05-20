@@ -137,7 +137,10 @@ class UserHome extends Component {
                                 ? tree.tags.map(tag => {
                                     return (
                                       <Link to={`/tag/${tag.id}`} key={tag.id}>
-                                        {tag.title}{' '}
+                                        {' '}
+                                        <Button size="sm" variant="submit">
+                                          {tag.title}{' '}
+                                        </Button>
                                       </Link>
                                     )
                                   })
