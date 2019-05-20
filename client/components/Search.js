@@ -15,28 +15,21 @@ class Search extends Component {
     // this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
-  // handleKeyPress(target, e) {
-  //   e.preventDefault()
-  //   if (target.charCode === 13) {
-  //     this.handleSubmit(`search=${this.state.search}`)
-  //   }
-  // }
-
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  handleSubmit(e) {
-    e.preventDefault()
+  handleSubmit(event) {
+    event.preventDefault()
     this.props.fetchSearchTrees(`search=${this.state.search}`)
   }
 
   render() {
     return (
       <React.Fragment>
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="search">
             <Form.Control
               onChange={this.handleChange}
@@ -46,7 +39,8 @@ class Search extends Component {
               placeholder="Search"
             />
           </Form.Group>
-          <Button variant="submit" type="submit" value="submit">
+
+          <Button variant="submit" type="submit">
             Submit
           </Button>
         </Form>

@@ -80,7 +80,8 @@ export const fetchTrees = () => async dispatch => {
 
 export const fetchSearchTrees = search => async dispatch => {
   try {
-    const res = await axios.get(`/api/learningTrees/search${search}`)
+    const res = await axios.get(`/api/learningTrees/search?${search}`)
+    history.push('/search')
     return dispatch(searchTrees(res.data))
   } catch (err) {
     console.log(err)

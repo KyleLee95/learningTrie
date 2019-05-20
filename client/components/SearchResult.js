@@ -11,8 +11,7 @@ class SearchResult extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
-    this.props.fetchSearchTrees(`${this.props.location.search}`)
+    // this.props.fetchSearchTrees(`${this.props.location.search}`)
   }
 
   render() {
