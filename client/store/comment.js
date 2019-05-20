@@ -35,7 +35,7 @@ export const getComments = resourceId => async dispatch => {
 
 export const delComment = commentId => async dispatch => {
   try {
-    await axios.delete(`/api/edges/${commentId}`)
+    await axios.delete(`/api/comments/${commentId}`)
     dispatch(removeComment(commentId))
   } catch (err) {
     console.error(err)
@@ -53,7 +53,7 @@ export const postComment = comment => async dispatch => {
 
 export const putComment = comment => async dispatch => {
   try {
-    const res = await axios.put('/api/edges', comment)
+    const res = await axios.put('/api/comments', comment)
     dispatch(updateComment(res.data))
   } catch (err) {
     console.error(err)
@@ -68,11 +68,12 @@ export default function(state = defaultEdges, action) {
     case GET_COMMENTS:
       return action.comment
     case REMOVE_COMMENT:
-      return state.filter(edge => edge.id !== action.edge.id)
+      console.log(action.comment)
+      return state.filter(comment => comment.id !== action.comment)
     case UPDATE_COMMENT:
       return [
-        ...state.filter(edge => {
-          return edge.id !== action.edge.id
+        ...state.filter(comment => {
+          return comment.id !== action.comment.id
         }),
         action.edge
       ]

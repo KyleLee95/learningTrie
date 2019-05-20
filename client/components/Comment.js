@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
-
+import {delComment, putComment} from '../store/comment'
 class Comment extends Component {
   constructor(props, context) {
     super(props, context)
@@ -31,7 +31,10 @@ class Comment extends Component {
       deleteShow: false
     })
   }
-  handleDeleteSubmit() {}
+  handleDeleteSubmit() {
+    this.props.delComment(Number(this.props.comment.id))
+    this.handleDeleteClose()
+  }
 
   //Edit
   handleShow() {
@@ -74,7 +77,9 @@ class Comment extends Component {
             <Button variant="submit" onClick={this.handleDeleteClose}>
               Cancel
             </Button>
-            <Button variant="submit">Yes</Button>
+            <Button variant="submit" onClick={this.handleDeleteSubmit}>
+              Yes
+            </Button>
           </Modal.Footer>
         </Modal>
         {/* Edit Comment Modal */}
@@ -82,11 +87,12 @@ class Comment extends Component {
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>Edit Comment</Modal.Header>
             <Modal.Body>
-              Please keep all discussion related to resource
+              Please keep all discussion related to the resource
               <Form.Control
                 name="content"
                 type="content"
                 as="textarea"
+                rows="10"
                 onChange={this.handleChange}
               />
             </Modal.Body>
@@ -105,4 +111,11 @@ class Comment extends Component {
   }
 }
 
-export const ConnectedComment = connect(null, null)(Comment)
+const mapDispatch = dispatch => {
+  return {
+    delComment: commentId => dispatch(delComment(commentId)),
+    putComment: comment => dispatch(putComment(comment))
+  }
+}
+
+export const ConnectedComment = connect(null, mapDispatch)(Comment)

@@ -14,10 +14,17 @@ class ResourceCommentForm extends Component {
   //Handles Modal
   handleSubmit(e) {
     e.preventDefault()
+    if (this.state.content.length < 0) {
+      //prevents
+      console.log()
+    }
     this.props.postComment({
       content: this.state.content,
       userId: this.props.user.id,
       resourceId: Number(this.props.resourceId)
+    })
+    this.setState({
+      content: ''
     })
   }
 
@@ -26,6 +33,11 @@ class ResourceCommentForm extends Component {
   }
 
   render() {
+    const {content} = this.state
+    let enabled
+    if (content !== undefined) {
+      enabled = content.length > 0
+    }
     return (
       <Row>
         <Col xs={12}>
@@ -36,13 +48,18 @@ class ResourceCommentForm extends Component {
               name="content"
               type="content"
               as="textarea"
+              value={this.state.content}
               style={{width: '50%'}}
-              placeholder="Please keep all discussion related to resource"
+              placeholder="Please keep all discussion related to the resource"
               onChange={this.handleChange}
             />
             <br />
             {/* </Form.Group> */}
-            <Button variant="primary" onClick={this.handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={this.handleSubmit}
+              disabled={!enabled}
+            >
               Submit
             </Button>
           </Form>
