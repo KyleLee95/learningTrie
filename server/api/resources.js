@@ -24,12 +24,15 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    //conditionally create resources
+
     const resource = await Resource.create({
       title: req.body.title,
       link: req.body.link,
       description: req.body.description,
       type: req.body.type
     })
+
     const node = await Node.findByPk(Number(req.body.nodeId))
     await node.addResource(resource)
     res.status(201).json(resource)

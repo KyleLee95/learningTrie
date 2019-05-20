@@ -67,9 +67,13 @@ class Comment extends Component {
           <Col xs={{span: 6, offSet: 10}}>
             <Card>
               <Card.Title>
-                {`${this.props.comment.user.firstName} ${
-                  this.props.comment.user.lastName
-                }`}{' '}
+                {this.props.comment.user &&
+                this.props.comment.user.firstName !== undefined &&
+                this.props.comment.user.lastName !== undefined
+                  ? `${this.props.comment.user.firstName} ${
+                      this.props.comment.user.lastName
+                    }`
+                  : ''}{' '}
                 | Posted At: {this.props.comment.createdAt}
               </Card.Title>
               <Card.Body>{this.props.comment.content}</Card.Body>

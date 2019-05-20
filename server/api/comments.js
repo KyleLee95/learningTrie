@@ -52,13 +52,20 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       content: req.body.content
     })
     const user = await User.findByPk(req.user.id)
     const resource = await Resource.findByPk(req.body.resourceId)
     await user.addComment(comment)
     await resource.addComment(comment)
+    comment = await Comment.findByPk(comment.id, {
+      include: [
+        {
+          model: User
+        }
+      ]
+    })
     res.status(201).send(comment)
   } catch (err) {
     next(err)
