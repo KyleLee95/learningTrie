@@ -6,7 +6,7 @@ router.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {email: req.body.email},
-      include: [{model: LearningTree}]
+      include: [{model: LearningTree, include: [{model: Tag}]}]
     })
     if (!user) {
       console.log('No such user found:', req.body.email)

@@ -8,7 +8,7 @@ import {ConnectedSearch} from '.'
 const Nav = ({handleClick, isLoggedIn}) => (
   <Navbar>
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
-      <h4>Learning 🌳 Tree</h4>
+      <h2>Learning 🌳 Tree</h2>
     </Link>
     <Navbar.Collapse id="basic-navbar-nav">
       {isLoggedIn ? (

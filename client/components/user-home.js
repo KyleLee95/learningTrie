@@ -133,7 +133,7 @@ class UserHome extends Component {
                           </Col>
                           <Col xs={3}>
                             <Card.Title>
-                              {tree.tags !== undefined
+                              {tree && tree.tags && tree.tags.length > 0
                                 ? tree.tags.map(tag => {
                                     return (
                                       <Link to={`/tag/${tag.id}`} key={tag.id}>

@@ -127,7 +127,7 @@ class LearningTree extends Component {
           <Col xs={12}>
             <Row>
               {this.props.tree !== null && this.props.tree.title !== null ? (
-                <h1>{this.props.tree.title} </h1>
+                <h3>{this.props.tree.title} </h3>
               ) : (
                 ''
               )}
