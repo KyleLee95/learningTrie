@@ -21,6 +21,12 @@ class Tag extends Component {
     await this.props.getSingleTag(Number(this.props.match.params.id))
   }
 
+  async componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      await this.props.getSingleTag(Number(this.props.match.params.id))
+    }
+  }
+
   render() {
     // const filteredReviews = this.props.reviews.filter(review => {
     //   return review.learningTreeId === Number(this.props.match.params.id)
