@@ -47,7 +47,12 @@ router.get('/me', async (req, res) => {
     // users' passwords are encrypted, it won't help if we just
     // send everything to anyone who asks!
     attributes: ['id', 'email'],
-    include: [{model: LearningTree, include: [{model: Review}, {model: Tag}]}]
+    include: [
+      {
+        model: LearningTree,
+        include: [{model: Review}, {model: Tag}, {model: User}]
+      }
+    ]
   })
   res.json(users)
 })

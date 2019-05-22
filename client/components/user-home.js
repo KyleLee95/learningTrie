@@ -63,6 +63,8 @@ class UserHome extends Component {
               </Card.Body>
             </Card>
             {this.props.user.learningTrees &&
+            this.props.user.learningTrees[0].users &&
+            this.props.user.learningTrees[0].users[0] &&
             this.props.user.learningTrees.length
               ? this.props.user.learningTrees.map(tree => {
                   return (
@@ -81,7 +83,7 @@ class UserHome extends Component {
                             </Link>
                           </Col>
                           <Col xs={1}>
-                            {tree.userId === this.props.user.id ? (
+                            {tree.ownerId === this.props.user.id ? (
                               <Link
                                 style={{
                                   textDecoration: 'none',
@@ -93,7 +95,15 @@ class UserHome extends Component {
                                 <Card.Title>Me</Card.Title>
                               </Link>
                             ) : (
-                              ''
+                              `${
+                                tree.users.filter(user => {
+                                  return user.id !== tree.ownerId
+                                })[0].firstName
+                              } ${
+                                tree.users.filter(user => {
+                                  return user.id !== tree.ownerId
+                                })[0].lastName
+                              } `
                             )}
                           </Col>
                           <Col xs={3}>
