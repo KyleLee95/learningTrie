@@ -28,20 +28,6 @@ class Tag extends Component {
   }
 
   render() {
-    // const filteredReviews = this.props.reviews.filter(review => {
-    //   return review.learningTreeId === Number(this.props.match.params.id)
-    // })
-    // const checkRating =
-    //   filteredReviews.reduce((acc, review) => {
-    //     return acc + review.rating
-    //   }, 0) / filteredReviews.length
-    // let rating = 0
-    // if (isNaN(checkRating) === true) {
-    //   rating = 0
-    // } else {
-    //   rating = checkRating.toString().slice(0, 4)
-    // }
-
     return (
       //Proably wrong and I hate this but it works
       <React.Fragment>
@@ -97,7 +83,7 @@ class Tag extends Component {
                             </Link>
                           </Col>
                           <Col xs={1}>
-                            {tree.userId === this.props.user.id ? (
+                            {tree.ownerId === this.props.user.id ? (
                               <Link
                                 style={{
                                   textDecoration: 'none',
@@ -109,7 +95,27 @@ class Tag extends Component {
                                 <Card.Title>Me</Card.Title>
                               </Link>
                             ) : (
-                              ''
+                              <Link
+                                style={{
+                                  textDecoration: 'none',
+                                  color: '#000000'
+                                }}
+                                to={`/learningTree/${tree.id}`}
+                              >
+                                {' '}
+                                <Card.Title>
+                                  {
+                                    tree.users.filter(user => {
+                                      return user.id === tree.ownerId
+                                    })[0].firstName
+                                  }{' '}
+                                  {
+                                    tree.users.filter(user => {
+                                      return user.id === tree.ownerId
+                                    })[0].lastName
+                                  }{' '}
+                                </Card.Title>
+                              </Link>
                             )}
                           </Col>
                           <Col xs={3}>
