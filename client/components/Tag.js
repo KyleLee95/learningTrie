@@ -18,25 +18,23 @@ class Tag extends Component {
     // this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
-    await this.props.fetchTrees()
     await this.props.getSingleTag(Number(this.props.match.params.id))
-    await this.props.getReviews()
   }
 
   render() {
-    const filteredReviews = this.props.reviews.filter(review => {
-      return review.learningTreeId === Number(this.props.match.params.id)
-    })
-    const checkRating =
-      filteredReviews.reduce((acc, review) => {
-        return acc + review.rating
-      }, 0) / filteredReviews.length
-    let rating = 0
-    if (isNaN(checkRating) === true) {
-      rating = 0
-    } else {
-      rating = checkRating.toString().slice(0, 4)
-    }
+    // const filteredReviews = this.props.reviews.filter(review => {
+    //   return review.learningTreeId === Number(this.props.match.params.id)
+    // })
+    // const checkRating =
+    //   filteredReviews.reduce((acc, review) => {
+    //     return acc + review.rating
+    //   }, 0) / filteredReviews.length
+    // let rating = 0
+    // if (isNaN(checkRating) === true) {
+    //   rating = 0
+    // } else {
+    //   rating = checkRating.toString().slice(0, 4)
+    // }
 
     return (
       //Proably wrong and I hate this but it works
@@ -45,10 +43,8 @@ class Tag extends Component {
           <Col xs={12}>
             <h3>
               Trees also tagged with:
-              {this.props.tag &&
-              this.props.tag.tag &&
-              this.props.tag.tag.title !== undefined
-                ? this.props.tag.tag.title
+              {this.props.tag && this.props.tag.title !== undefined
+                ? this.props.tag.title
                 : ''}
             </h3>
           </Col>
@@ -130,7 +126,11 @@ class Tag extends Component {
                               to={`/learningTree/${tree.id}`}
                             >
                               <Card.Title>
-                                {rating}
+                                {tree.reviews.length > 0
+                                  ? tree.reviews.reduce((acc, review) => {
+                                      return review.rating + acc
+                                    }, 0) / tree.reviews.length
+                                  : 0}{' '}
                                 / 5
                               </Card.Title>
                             </Link>
@@ -163,17 +163,13 @@ class Tag extends Component {
 
 const mapDispatch = dispatch => {
   return {
-    fetchTrees: () => dispatch(fetchTrees()),
-    getSingleTag: tagId => dispatch(getSingleTag(tagId)),
-    getReviews: () => dispatch(getReviews())
+    getSingleTag: tagId => dispatch(getSingleTag(tagId))
   }
 }
 
 const mapState = state => {
   return {
     user: state.user,
-    reviews: state.review,
-    trees: state.tree,
     tag: state.tag
   }
 }
