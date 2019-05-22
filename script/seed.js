@@ -12,13 +12,15 @@ async function seed() {
       firstName: 'cody',
       lastName: 'dog',
       email: 'cody@email.com',
-      password: '123'
+      password: '123',
+      isAdmin: true
     }),
     User.create({
       firstName: 'murphy',
       lastName: 'dog',
       email: 'murphy@email.com',
-      password: '123'
+      password: '123',
+      isAdmin: false
     })
   ])
 
@@ -33,6 +35,9 @@ async function seed() {
       description: 'An Architect and Staff Member of MoMA'
     })
   ])
+
+  console.log('USER', Object.keys(users[0].__proto__))
+  console.log('LEARNING TREE', Object.keys(learningTrees[0].__proto__))
 
   await users[0].addLearningTree(learningTrees[0])
   await users[0].addLearningTree(learningTrees[1])

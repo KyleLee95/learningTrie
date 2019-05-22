@@ -14,14 +14,14 @@ const Tag = require('./tag')
  */
 
 //User
-User.hasMany(LearningTree, {foreignKey: 'userId'})
+User.belongsToMany(LearningTree, {through: 'userTree'})
 User.hasMany(Comment)
 User.hasMany(Review)
 
 //Learning Tree
 LearningTree.hasMany(Review)
 LearningTree.hasMany(Node, {as: 'node'})
-LearningTree.belongsTo(User)
+LearningTree.belongsToMany(User, {through: 'userTree'})
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
 LearningTree.belongsToMany(Tag, {through: 'treeTag'})

@@ -29,7 +29,9 @@ router.get('/search', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.findByPk(req.params.id)
+    const tree = await LearningTree.findByPk(req.params.id, {
+      include: [{model: User}]
+    })
     res.json(tree)
   } catch (err) {
     next(err)
@@ -74,7 +76,7 @@ router.post('/', async (req, res, next) => {
     })
     const user = await User.findByPk(req.user.id)
     // console.log(Object.keys(learningTree.__proto__))
-    await learningTree.setUser(user)
+    await learningTree.addUser(user)
     req.body.tags.forEach(async tag => {
       let newTag = await Tag.findOrCreate({where: {title: tag}})
       await learningTree.addTag(newTag[0])
