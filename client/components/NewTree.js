@@ -92,6 +92,10 @@ class NewTree extends Component {
                 <Form.Group controlId="tags">
                   <Form.Label>Tags</Form.Label>
                   <Form.Control name="tags" onChange={this.handleChange} />
+                  <Form.Text className="text-muted">
+                    Separate with a comma and a space. Ex. 'Machine Learning,
+                    TensorFlow, JavaScript'
+                  </Form.Text>
                 </Form.Group>
               </Modal.Body>
             </Modal.Body>

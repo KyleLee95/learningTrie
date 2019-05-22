@@ -42,7 +42,7 @@ async function seed() {
   console.log('LEARNING TREE', Object.keys(learningTrees[0].__proto__))
 
   await users[0].addLearningTree(learningTrees[0])
-  await users[0].addLearningTree(learningTrees[1])
+  await users[1].addLearningTree(learningTrees[1])
   console.log(`seeded ${learningTrees.length} learningTrees`)
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)

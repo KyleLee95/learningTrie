@@ -9,9 +9,6 @@ import {fetchTrees, fetchMyTrees} from '../store/learningTree'
  * COMPONENT
  */
 class UserHome extends Component {
-  componentDidMount() {
-    // this.props.fetchTrees()
-  }
   render() {
     return (
       <div>
@@ -63,9 +60,9 @@ class UserHome extends Component {
               </Card.Body>
             </Card>
             {this.props.user.learningTrees &&
-            this.props.user.learningTrees[0].users &&
-            this.props.user.learningTrees[0].users[0] &&
-            this.props.user.learningTrees.length
+            this.props.user.learningTrees[
+              this.props.user.learningTrees.length - 1
+            ].users
               ? this.props.user.learningTrees.map(tree => {
                   return (
                     <Card key={tree.id}>
@@ -92,18 +89,19 @@ class UserHome extends Component {
                                 to={`/learningTree/${tree.id}`}
                               >
                                 {' '}
-                                <Card.Title>Me</Card.Title>
+                                <Card.Title>me</Card.Title>
                               </Link>
                             ) : (
                               `${
                                 tree.users.filter(user => {
-                                  return user.id !== tree.ownerId
+                                  return tree.ownerId === user.id
                                 })[0].firstName
-                              } ${
-                                tree.users.filter(user => {
-                                  return user.id !== tree.ownerId
-                                })[0].lastName
-                              } `
+                              }
+                            ${
+                              tree.users.filter(user => {
+                                return tree.ownerId === user.id
+                              })[0].lastName
+                            }`
                             )}
                           </Col>
                           <Col xs={3}>

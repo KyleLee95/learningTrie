@@ -17,13 +17,7 @@ router.get('/:id', async (req, res, next) => {
       include: [
         {
           model: LearningTree,
-          include: [
-            {model: Review},
-            {model: Tag},
-            {
-              model: User
-            }
-          ]
+          include: [{model: Review}, {model: Tag}, {model: User}]
         }
       ]
     })

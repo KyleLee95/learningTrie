@@ -92,7 +92,7 @@ class Tag extends Component {
                                 to={`/learningTree/${tree.id}`}
                               >
                                 {' '}
-                                <Card.Title>Me</Card.Title>
+                                <Card.Title>me</Card.Title>
                               </Link>
                             ) : (
                               <Link
