@@ -15,6 +15,10 @@ const LearningTree = db.define('learningTree', {
     validate: {
       notEmpty: true
     }
+  },
+  ownerId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 })
 

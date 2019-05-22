@@ -72,7 +72,8 @@ router.post('/', async (req, res, next) => {
   try {
     const learningTree = await LearningTree.create({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      ownerId: req.user.id
     })
     const user = await User.findByPk(req.user.id)
     // console.log(Object.keys(learningTree.__proto__))

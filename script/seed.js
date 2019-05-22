@@ -28,11 +28,13 @@ async function seed() {
     LearningTree.create({
       title: 'Machine Learning for Beginners',
       description:
-        'The impetus of this whole project started because I wanted to learn Machine Learning on my own'
+        'The impetus of this whole project started because I wanted to learn Machine Learning on my own',
+      ownerId: 1
     }),
     LearningTree.create({
       title: 'Introduction to Philip Johnson & Machine Art',
-      description: 'An Architect and Staff Member of MoMA'
+      description: 'An Architect and Staff Member of MoMA',
+      ownerId: 2
     })
   ])
 

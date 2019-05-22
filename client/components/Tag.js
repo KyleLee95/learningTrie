@@ -140,7 +140,7 @@ class Tag extends Component {
                               {tree.tags.map(tag => {
                                 return (
                                   <Link to={`/tag/${tag.id}`} key={tag.id}>
-                                    <Button size="sm" variant="submit">
+                                    <Button size="sm" variant="light">
                                       {tag.title}
                                     </Button>
                                   </Link>
