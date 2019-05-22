@@ -12,7 +12,7 @@ import {
 import {getTag, postTag, putTag, delTag} from '../store/tag'
 import {getReviews} from '../store/review'
 import {Link} from 'react-router-dom'
-import {me} from '../store/user'
+import {me, associateUserToTree} from '../store/user'
 import {ConnectedNewReview} from './NewReview'
 
 //TODO:
@@ -24,6 +24,7 @@ class LearningTree extends Component {
     this.state = {
       showEdit: false,
       show: false,
+      showCollaborator: false,
       title: this.props.tree.title,
       description: this.props.tree.description
     }
@@ -34,6 +35,12 @@ class LearningTree extends Component {
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+
+    //Collaborator
+    this.handleCollabChange = this.handleCollabChange.bind(this)
+    this.handleCollabShow = this.handleCollabShow.bind(this)
+    this.handleCollabClose = this.handleCollabClose.bind(this)
+    this.handleCollabSubmit = this.handleCollabSubmit.bind(this)
   }
 
   async componentDidMount() {
@@ -99,6 +106,35 @@ class LearningTree extends Component {
   }
   //END FORM METHODS
 
+  //ADD COLLABORATOR MODAL
+
+  handleCollabChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+  handleCollabShow() {
+    this.setState({
+      showCollaborator: true
+    })
+  }
+  handleCollabClose() {
+    this.setState({
+      showCollaborator: false
+    })
+  }
+  async handleCollabSubmit(e) {
+    e.preventDefault()
+    console.log(this.props.match.params.id)
+    await this.props.associateUserToTree({
+      learningTreeId: Number(this.props.match.params.id),
+      email: this.state.email
+    })
+    this.handleCollabClose()
+  }
+
+  //END COLLABORATOR MODAL
+
   render() {
     const {description, title} = this.state
     let enabled
@@ -132,7 +168,10 @@ class LearningTree extends Component {
                 ''
               )}
               {this.props.tree &&
-              this.props.user.id === this.props.tree.userId ? (
+              this.props.user &&
+              this.props.user.id !== undefined &&
+              this.props.tree.users !== undefined &&
+              this.props.user.id === this.props.tree.users[0].id ? (
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleShowEdit}>
                     Edit
@@ -140,16 +179,18 @@ class LearningTree extends Component {
                   <Button variant="submit" onClick={this.handleShow}>
                     Delete
                   </Button>
-                  {
-                    <Button variant="submit">
-                      <Link
-                        to={`/learningTree/${this.props.tree.id}/review`}
-                        style={{textDecoration: 'none', color: 'black'}}
-                      >
-                        Rating: {rating}/ 5 All Reviews
-                      </Link>
-                    </Button>
-                  }
+
+                  <Button variant="submit">
+                    <Link
+                      to={`/learningTree/${this.props.tree.id}/review`}
+                      style={{textDecoration: 'none', color: 'black'}}
+                    >
+                      Rating: {rating}/ 5 All Reviews
+                    </Link>
+                  </Button>
+                  <Button onClick={this.handleCollabShow} variant="submit">
+                    Add Collaborator
+                  </Button>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
@@ -173,6 +214,39 @@ class LearningTree extends Component {
             </Row>
           </Col>
         </Row>
+
+        {/* Add User as Collaborator Modal */}
+
+        <Form>
+          <Modal
+            show={this.state.showCollaborator}
+            onHide={this.handleCollabClose}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Add Collaborator</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Modal.Body>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    name="email"
+                    type="email"
+                    onChange={this.handleCollabChange}
+                  />
+                </Form.Group>
+              </Modal.Body>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleCollabClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleCollabSubmit}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
 
         {/* Edit Form Modal */}
         <Form>
@@ -273,7 +347,8 @@ const mapDispatch = dispatch => {
     me: () => dispatch(me()),
     getReviews: treeId => dispatch(getReviews(treeId)),
     putTag: tag => dispatch(putTag(tag)),
-    postTag: tag => dispatch(postTag(tag))
+    postTag: tag => dispatch(postTag(tag)),
+    associateUserToTree: data => dispatch(associateUserToTree(data))
   }
 }
 

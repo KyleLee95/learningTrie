@@ -323,8 +323,10 @@ class TreeVisualization extends Component {
         {/* TABS */}
         <Row>
           {this.props.tree &&
-          this.props.tree.userId &&
-          this.props.user.id === this.props.tree.userId ? (
+          this.props.user &&
+          this.props.user.id !== undefined &&
+          this.props.tree.users !== undefined &&
+          this.props.user.id === this.props.tree.users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
