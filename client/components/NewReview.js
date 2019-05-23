@@ -40,9 +40,9 @@ class NewReview extends Component {
       content: this.state.content,
       rating: this.state.rating,
       userId: this.props.user.id,
-      treeId: this.props.tree.id
+      treeId: this.props.trees[0].id
     })
-    await this.props.getReviews(this.props.tree.id)
+    await this.props.getReviews(this.props.trees[0].id)
   }
 
   render() {

@@ -10,10 +10,10 @@ import {me} from '../store/user'
  */
 class UserHome extends Component {
   async componentDidMount() {
-    await this.props.fetchMyTrees(this.props.user.id)
+    await this.props.fetchTrees()
   }
+
   render() {
-    console.log(this.props)
     return (
       <div>
         <Row>
@@ -65,7 +65,7 @@ class UserHome extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.trees
+            {this.props.trees && this.props.trees[0] !== undefined
               ? this.props.trees.map(tree => {
                   return (
                     <Card key={tree.id}>

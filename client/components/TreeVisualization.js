@@ -130,7 +130,7 @@ class TreeVisualization extends Component {
       type,
       x: 796.4899291992188,
       y: 407.50421142578125,
-      treeId: this.props.tree.id,
+      treeId: this.props.trees[0].id,
       resource
     }
     await this.props.postNode(viewNode)
@@ -153,7 +153,7 @@ class TreeVisualization extends Component {
       type,
       x: 796.4899291992188,
       y: 407.50421142578125,
-      treeId: this.props.tree.id
+      treeId: this.props.trees[0].id
     }
     await this.props.postNode(viewNode)
   }
@@ -229,7 +229,7 @@ class TreeVisualization extends Component {
       type,
       source: sourceNode,
       targetNode: targetNode,
-      treeId: this.props.tree.id
+      treeId: this.props.trees[0].id
     }
     this.props.postEdge(viewEdge)
   }
@@ -322,11 +322,11 @@ class TreeVisualization extends Component {
       <ScrollLock>
         {/* TABS */}
         <Row>
-          {this.props.tree &&
+          {this.props.trees[0] &&
           this.props.user &&
           this.props.user.id !== undefined &&
-          this.props.tree.users !== undefined &&
-          this.props.user.id === this.props.tree.users[0].id ? (
+          this.props.trees[0].users !== undefined &&
+          this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
@@ -476,9 +476,9 @@ class TreeVisualization extends Component {
               </ul>
             </Modal.Body>
             <Modal.Footer>
-              {this.props.tree &&
-              this.props.tree.userId &&
-              this.props.user.id === this.props.tree.userId ? (
+              {this.props.trees[0] &&
+              this.props.trees[0].ownerId &&
+              this.props.user.id === this.props.trees[0].ownerId ? (
                 // || is an approved ID
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleClose}>
@@ -582,9 +582,9 @@ class TreeVisualization extends Component {
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                {this.props.tree &&
-                this.props.tree.userId &&
-                this.props.user.id === this.props.tree.userId ? (
+                {this.props.trees[0] &&
+                this.props.trees[0].ownerId &&
+                this.props.user.id === this.props.trees[0].ownerId ? (
                   <React.Fragment>
                     <Button variant="submit" onClick={this.handleResourceClose}>
                       Close
@@ -612,7 +612,7 @@ class TreeVisualization extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    tree: state.tree,
+    trees: state.tree,
     nodes: state.node,
     edges: state.edge,
     resources: state.resource

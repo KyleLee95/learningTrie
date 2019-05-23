@@ -90,7 +90,7 @@ export const fetchSearchTrees = search => async dispatch => {
 
 export const fetchMyTrees = userId => async dispatch => {
   try {
-    const res = await axios.get('/api/learningTrees/  ')
+    const res = await axios.get('/api/learningTrees/myTrees')
 
     return dispatch(
       myTrees({

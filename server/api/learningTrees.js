@@ -4,7 +4,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/myTrees', async (req, res, next) => {
   try {
     const trees = await LearningTree.findAll({
       include: [{model: Tag}, {model: Review}, {model: User}]
@@ -37,7 +37,7 @@ router.get('/allTrees', async (req, res, next) => {
 router.get('/search', async (req, res, next) => {
   try {
     const trees = await LearningTree.findAll({
-      include: [{model: Tag}, {model: Review}],
+      include: [{model: Tag}, {model: Review}, {model: User}],
       where: {
         title: {[Op.iLike]: `%${req.query.search}%`}
       }
@@ -50,10 +50,11 @@ router.get('/search', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.findByPk(req.params.id, {
+    const tree = await LearningTree.findAll({
+      where: {id: req.params.id},
       include: [{model: User}]
     })
-    res.json(tree)
+    res.status(200).json(tree)
   } catch (err) {
     next(err)
   }

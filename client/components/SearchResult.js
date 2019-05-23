@@ -90,7 +90,29 @@ class SearchResult extends Component {
                             </Card.Title>
                           </Col>
                           <Col xs={1}>
-                            <Card.Title>Owner</Card.Title>
+                            {tree.ownerId === this.props.user.id ? (
+                              <Link
+                                style={{
+                                  textDecoration: 'none',
+                                  color: '#000000'
+                                }}
+                                to={`/learningTree/${tree.id}`}
+                              >
+                                {' '}
+                                <Card.Title>me</Card.Title>
+                              </Link>
+                            ) : (
+                              `${
+                                tree.users.filter(user => {
+                                  return tree.ownerId === user.id
+                                })[0].firstName
+                              }
+                            ${
+                              tree.users.filter(user => {
+                                return tree.ownerId === user.id
+                              })[0].lastName
+                            }`
+                            )}
                           </Col>
                           <Col xs={3}>
                             {' '}
@@ -143,7 +165,8 @@ class SearchResult extends Component {
 
 const mapState = state => {
   return {
-    trees: state.tree
+    trees: state.tree,
+    user: state.user
   }
 }
 
