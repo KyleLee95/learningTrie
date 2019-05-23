@@ -4,19 +4,25 @@ import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {fetchTrees, fetchMyTrees} from '../store/learningTree'
-
+import {me} from '../store/user'
 /**
  * COMPONENT
  */
 class UserHome extends Component {
+  async componentDidMount() {
+    await this.props.fetchMyTrees(this.props.user.id)
+  }
   render() {
+    console.log(this.props)
     return (
       <div>
         <Row>
           <Col xs={2}>
             <React.Fragment>
               <Card>
-                <Button variant="submit">All Trees</Button>
+                <Button variant="submit" onClick={this.props.fetchTrees}>
+                  All Trees
+                </Button>
               </Card>
               <Card>
                 <Button
@@ -59,11 +65,8 @@ class UserHome extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.user.learningTrees &&
-            this.props.user.learningTrees[
-              this.props.user.learningTrees.length - 1
-            ].users
-              ? this.props.user.learningTrees.map(tree => {
+            {this.props.trees
+              ? this.props.trees.map(tree => {
                   return (
                     <Card key={tree.id}>
                       <Card.Body>
@@ -169,13 +172,15 @@ class UserHome extends Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    trees: state.tree
   }
 }
 const mapDispatch = dispatch => {
   return {
     fetchTrees: () => dispatch(fetchTrees()),
-    fetchMyTrees: userId => dispatch(fetchMyTrees(userId))
+    fetchMyTrees: userId => dispatch(fetchMyTrees(userId)),
+    me: () => dispatch(me())
   }
 }
 

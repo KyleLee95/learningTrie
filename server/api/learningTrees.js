@@ -6,7 +6,28 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const trees = await LearningTree.findAll({include: [{model: Tag}]})
+    const trees = await LearningTree.findAll({
+      include: [{model: Tag}, {model: Review}, {model: User}]
+    })
+
+    res.status(200).json(trees)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/allTrees', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+
+    const trees = await user.getLearningTrees({
+      include: [{model: Tag}, {model: Review}, {model: User}]
+    })
+
+    // const trees = await LearningTree.findAll({
+    //   include: [{model: Tag}, {model: Review}, {model: User}]
+    // })
+
     res.status(200).json(trees)
   } catch (err) {
     next(err)

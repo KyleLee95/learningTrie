@@ -14,6 +14,7 @@ import {
   ConnectedSearchResult
 } from './components'
 import {me} from './store'
+import {fetchTrees} from './store/learningTree'
 
 /**
  * COMPONENT

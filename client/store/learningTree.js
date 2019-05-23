@@ -71,7 +71,7 @@ const sharedTrees = tree => ({
  */
 export const fetchTrees = () => async dispatch => {
   try {
-    const res = await axios.get('/api/learningTrees')
+    const res = await axios.get('/api/learningTrees/allTrees')
     return dispatch(getTrees(res.data))
   } catch (err) {
     console.error(err)
@@ -90,11 +90,11 @@ export const fetchSearchTrees = search => async dispatch => {
 
 export const fetchMyTrees = userId => async dispatch => {
   try {
-    const res = await axios.get('/api/learningTrees')
+    const res = await axios.get('/api/learningTrees/  ')
 
     return dispatch(
       myTrees({
-        data: res.data,
+        trees: res.data,
         userId: userId
       })
     )
@@ -156,6 +156,10 @@ export default function(state = defaultTree, action) {
       return action.tree
     case SET_SELECTED_TREE:
       return action.tree
+    case SET_MY_TREES:
+      return action.tree.trees.filter(tree => {
+        return tree.ownerId === action.tree.userId
+      })
     case DELETE_TREE:
       return {}
     default:
