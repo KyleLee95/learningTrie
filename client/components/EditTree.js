@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Form, Button, Modal, Dropdown} from 'react-bootstrap'
 import {postTree} from '../store/learningTree'
-import {me} from '../store/user'
+import {me} from '../store/currentUser'
 import {connect} from 'react-redux'
 
 class EditTree extends Component {

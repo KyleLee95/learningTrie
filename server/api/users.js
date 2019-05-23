@@ -19,17 +19,26 @@ router.get('/', async (req, res, next) => {
 })
 
 //Associate a user as an owner of the learningTree
-
+// console.log(Object.keys(tree.__proto__))
 router.put('/isOwner', async (req, res, next) => {
   try {
-    console.log('AAAAA')
     const tree = await LearningTree.findByPk(req.body.learningTreeId)
-    console.log(Object.keys(tree.__proto__))
     const sanitizeEmail = req.body.email.toLowerCase()
-    console.log(sanitizeEmail)
     const user = await User.findOne({where: {email: sanitizeEmail}})
     await tree.addUser(user)
-    res.status(200).json('A')
+    res.status(200).send('success')
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    console.log(req.params)
+    const users = await User.findAll({
+      where: {id: req.params.id}
+    })
+    res.status(200).json(users)
   } catch (err) {
     next(err)
   }

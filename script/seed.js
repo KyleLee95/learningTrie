@@ -27,8 +27,7 @@ async function seed() {
   const learningTrees = await Promise.all([
     LearningTree.create({
       title: 'Machine Learning for Beginners',
-      description:
-        'The impetus of this whole project started because I wanted to learn Machine Learning on my own',
+      description: 'The impetus of this whole project',
       ownerId: 1
     }),
     LearningTree.create({

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Row, Col, Form, Button, Modal, Card} from 'react-bootstrap'
 import {postTree} from '../store/learningTree'
 import {postTag} from '../store/tag'
-import {me} from '../store/user'
+import {me} from '../store/currentUser'
 import {connect} from 'react-redux'
 
 class NewTree extends Component {

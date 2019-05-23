@@ -12,7 +12,7 @@ import {
 import {getTag, postTag, putTag, delTag} from '../store/tag'
 import {getReviews} from '../store/review'
 import {Link} from 'react-router-dom'
-import {me, associateUserToTree} from '../store/user'
+import {me, associateUserToTree} from '../store/currentUser'
 import {ConnectedNewReview} from './NewReview'
 
 //TODO:
@@ -124,7 +124,6 @@ class LearningTree extends Component {
   }
   async handleCollabSubmit(e) {
     e.preventDefault()
-    console.log(this.props.match.params.id)
     await this.props.associateUserToTree({
       learningTreeId: Number(this.props.match.params.id),
       email: this.state.email
@@ -172,28 +171,7 @@ class LearningTree extends Component {
               this.props.user &&
               this.props.user.id !== undefined &&
               this.props.trees[0].users[0] !== undefined &&
-              this.props.user.id === this.props.trees[0].users[0].id ? (
-                <React.Fragment>
-                  <Button variant="submit" onClick={this.handleShowEdit}>
-                    Edit
-                  </Button>
-                  <Button variant="submit" onClick={this.handleShow}>
-                    Delete
-                  </Button>
-
-                  <Button variant="submit">
-                    <Link
-                      to={`/learningTree/${this.props.trees[0].id}/review`}
-                      style={{textDecoration: 'none', color: 'black'}}
-                    >
-                      Rating: {rating}/ 5 All Reviews
-                    </Link>
-                  </Button>
-                  <Button onClick={this.handleCollabShow} variant="submit">
-                    Add Collaborator
-                  </Button>
-                </React.Fragment>
-              ) : this.props.trees[0] !== undefined ? (
+              this.props.user.id !== this.props.trees[0].users[0].id ? (
                 <React.Fragment>
                   <Button variant="submit">
                     <Link
@@ -205,6 +183,26 @@ class LearningTree extends Component {
                     </Link>
                   </Button>
                   <ConnectedNewReview />
+                </React.Fragment>
+              ) : this.props.trees[0] !== undefined ? (
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleShowEdit}>
+                    Edit
+                  </Button>
+                  <Button variant="submit" onClick={this.handleShow}>
+                    Delete
+                  </Button>
+                  <Button variant="submit">
+                    <Link
+                      to={`/learningTree/${this.props.trees[0].id}/review`}
+                      style={{textDecoration: 'none', color: 'black'}}
+                    >
+                      Rating: {rating}/ 5 All Reviews
+                    </Link>
+                  </Button>
+                  <Button onClick={this.handleCollabShow} variant="submit">
+                    Add Collaborator
+                  </Button>
                 </React.Fragment>
               ) : (
                 ''

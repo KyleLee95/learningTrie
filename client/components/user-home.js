@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {fetchTrees, fetchMyTrees} from '../store/learningTree'
-import {me} from '../store/user'
+import {me} from '../store/currentUser'
 /**
  * COMPONENT
  */
 class UserHome extends Component {
   async componentDidMount() {
     await this.props.fetchTrees()
+    console.log(this.props)
   }
 
   render() {
