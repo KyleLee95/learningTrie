@@ -78,7 +78,8 @@ class TreeVisualization extends Component {
       selected: {},
       show: false,
       editShow: false,
-      resourceShow: false
+      resourceShow: false,
+      recommendShow: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -106,6 +107,11 @@ class TreeVisualization extends Component {
     this.handleResourceClose = this.handleResourceClose.bind(this)
     this.handleResourceSubmit = this.handleResourceSubmit.bind(this)
     this.handleResourceChange = this.handleResourceChange.bind(this)
+    //Recommend Resource Modal
+    this.handleRecommendShow = this.handleRecommendShow.bind(this)
+    this.handleRecommendClose = this.handleRecommendClose.bind(this)
+    this.handleRecommendSubmit = this.handleRecommendSubmit.bind(this)
+    this.handleRecommendChange = this.handleRecommendChange.bind(this)
   }
 
   //COMPONENT METHODS
@@ -297,6 +303,26 @@ class TreeVisualization extends Component {
     this.setState({resourceShow: false})
   }
 
+  //RECOMMEND RESOURCE HANDLERS
+  handleRecommendShow() {
+    this.setState({
+      recommendShow: true
+    })
+  }
+  handleRecommendClose() {
+    this.setState({
+      recommendShow: false
+    })
+  }
+  handleRecommendSubmit(e) {
+    console.log('A')
+  }
+  handleRecommendChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -326,7 +352,7 @@ class TreeVisualization extends Component {
           this.props.user &&
           this.props.user.id !== undefined &&
           this.props.trees[0].users !== undefined &&
-          this.props.user.id == this.props.trees[0].users[0].id ? (
+          this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
@@ -475,6 +501,7 @@ class TreeVisualization extends Component {
                   : ''}
               </ul>
             </Modal.Body>
+            {/* RENDERS NODE RESOURCE CONTROLS */}
             <Modal.Footer>
               {this.props.trees[0] &&
               this.props.trees[0].ownerId &&
@@ -493,8 +520,11 @@ class TreeVisualization extends Component {
                   </Button>
                 </React.Fragment>
               ) : (
-                ''
+                <Button variant="submit" onClick={this.handleRecommendShow}>
+                  Recommend Resource
+                </Button>
               )}
+              {/* END RENDERS NODE RESOURCE CONTROLS */}
             </Modal.Footer>
           </Modal>
           {/* End Resource Modal */}
@@ -602,7 +632,68 @@ class TreeVisualization extends Component {
               </Modal.Footer>
             </Modal>
           </Form>
-          {/* End Edit Description */}
+          {/* End Add Resource Modal */}
+
+          {/* Recommend Resource Modal */}
+          <Form>
+            <Modal
+              show={this.state.recommendShow}
+              onHide={this.handleRecommendClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Recommend Resource</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    name="title"
+                    type="title"
+                    placeholder="Enter title"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Link</Form.Label>
+                  <Form.Control
+                    name="link"
+                    type="link"
+                    placeholder="Enter link"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    name="description"
+                    type="description"
+                    as="textarea"
+                    rows="3"
+                    placeholder="Enter description"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="type"
+                    onChange={this.handleRecommendChange}
+                  >
+                    {options.map(option => {
+                      return <option key={option}>{option}</option>
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleRecommendClose}>
+                    Close
+                  </Button>
+                  <Button variant="submit" onClick={this.handleRecommendSubmit}>
+                    Submit
+                  </Button>
+                </React.Fragment>
+              </Modal.Footer>
+            </Modal>
+          </Form>
+          {/* End Recommend Resource Modal */}
         </Row>
       </ScrollLock>
     )
