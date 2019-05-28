@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card, Tabs, Tab} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchSingleUser} from '../store/user'
+import {fetchSingleUser, addFollower} from '../store/user'
 
 class UserProfile extends Component {
   constructor(props, context) {
@@ -24,10 +24,20 @@ class UserProfile extends Component {
           <Card.Title>
             {user !== undefined ? `${user.firstName} ${user.lastName}` : ''}{' '}
             {this.props.user && user && this.props.user.id !== user.id ? (
-              user.followers && user.followers.includes(this.props.user) ? (
+              user.following &&
+              //how tf do I render this button? figure it out morning me
+              user.following.find(
+                follower => this.props.user.id === follower.id
+              ) ? (
                 <Button>unfollow</Button>
               ) : (
-                <Button>follow</Button>
+                <Button
+                  onClick={() =>
+                    this.props.addFollower(Number(this.props.match.params.id))
+                  }
+                >
+                  follow
+                </Button>
               )
             ) : (
               ''
@@ -188,7 +198,12 @@ class UserProfile extends Component {
           >
             Followers
           </Tab>
-          <Tab eventKey="following" title="Following">
+          <Tab
+            eventKey="following"
+            title={`Following (${
+              user && user.following !== undefined ? user.following.length : 0
+            })`}
+          >
             Following
           </Tab>
         </Tabs>
@@ -199,7 +214,8 @@ class UserProfile extends Component {
 
 const mapDispatch = dispatch => {
   return {
-    fetchSingleUser: userId => dispatch(fetchSingleUser(userId))
+    fetchSingleUser: userId => dispatch(fetchSingleUser(userId)),
+    addFollower: userId => dispatch(addFollower(userId))
   }
 }
 

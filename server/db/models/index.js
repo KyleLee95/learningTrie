@@ -18,6 +18,7 @@ User.belongsToMany(LearningTree, {through: 'userTree'})
 User.hasMany(Comment)
 User.hasMany(Review)
 User.belongsToMany(User, {as: 'followers', through: 'follower'})
+User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
 
 //Learning Tree
 LearningTree.hasMany(Review)
