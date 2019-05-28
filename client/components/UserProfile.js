@@ -24,11 +24,10 @@ class UserProfile extends Component {
           <Card.Title>
             {user !== undefined ? `${user.firstName} ${user.lastName}` : ''}{' '}
             {this.props.user && user && this.props.user.id !== user.id ? (
-              user.following &&
-              //how tf do I render this button? figure it out morning me
-              user.following.find(
+              user.followers &&
+              user.followers.find(
                 follower => this.props.user.id === follower.id
-              ) ? (
+              ) !== undefined ? (
                 <Button>unfollow</Button>
               ) : (
                 <Button
@@ -196,7 +195,29 @@ class UserProfile extends Component {
               user && user.followers !== undefined ? user.followers.length : 0
             })`}
           >
-            Followers
+            {user && user.followers !== undefined
+              ? user.followers.map(follower => {
+                  return (
+                    <Card key={follower.id}>
+                      <Card.Img
+                        variant="top"
+                        src="holder.js/100px180"
+                        alt="IMAGE"
+                      />
+                      <Card.Body>
+                        <Card.Title>
+                          {follower.firstName} {follower.lastName}
+                        </Card.Title>
+                        <Card.Text>
+                          Some quick example text to build on the card title and
+                          make up the bulk of the card's content.
+                        </Card.Text>
+                        <Button variant="primary">Go somewhere</Button>
+                      </Card.Body>
+                    </Card>
+                  )
+                })
+              : 'No Followers'}
           </Tab>
           <Tab
             eventKey="following"

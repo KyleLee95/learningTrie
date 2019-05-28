@@ -58,7 +58,10 @@ router.put('/follow/:id', async (req, res, next) => {
         {model: User, as: 'following'}
       ]
     })
-    const userToFollow = await User.findAll({
+    let userToFollow = await User.findByPk(req.params.id)
+    await user[0].addFollowing(userToFollow)
+    await userToFollow.addFollower(user)
+    userToFollow = await User.findAll({
       where: {id: req.params.id},
       include: [
         {
@@ -73,8 +76,6 @@ router.put('/follow/:id', async (req, res, next) => {
         {model: User, as: 'following'}
       ]
     })
-    await user[0].addFollowing(userToFollow)
-    await userToFollow[0].addFollower(user)
     res.status(200).send(userToFollow)
   } catch (err) {
     next(err)
