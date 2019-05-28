@@ -334,7 +334,7 @@ class LearningTree extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     trees: state.tree,
     reviews: state.review
   }

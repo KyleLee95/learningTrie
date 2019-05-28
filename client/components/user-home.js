@@ -11,7 +11,6 @@ import {me} from '../store/currentUser'
 class UserHome extends Component {
   async componentDidMount() {
     await this.props.fetchTrees()
-    console.log(this.props)
   }
 
   render() {
@@ -173,7 +172,7 @@ class UserHome extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     trees: state.tree
   }
 }

@@ -97,7 +97,7 @@ const mapDispatch = dispatch => {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     reviews: state.review,
     tree: state.tree
   }

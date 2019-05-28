@@ -78,7 +78,7 @@ const mapDispatch = dispatch => {
 const mapState = state => {
   return {
     resource: state.resource,
-    user: state.user
+    user: state.currUser
   }
 }
 

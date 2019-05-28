@@ -181,7 +181,7 @@ const mapDispatch = dispatch => {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     tag: state.tag
   }
 }

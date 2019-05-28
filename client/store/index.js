@@ -2,7 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux'
 import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
-import user from './currentUser'
+import currUser from './currentUser'
 import tree from './learningTree'
 import edge from './edge'
 import node from './node'
@@ -12,7 +12,7 @@ import tag from './tag'
 import comment from './comment'
 import users from './user'
 const reducer = combineReducers({
-  user,
+  currUser,
   users,
   tree,
   edge,

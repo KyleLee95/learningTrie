@@ -16,7 +16,7 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_CURRENT_USER, user})
+const getUser = currUser => ({type: GET_CURRENT_USER, currUser})
 const removeUser = () => ({type: REMOVE_CURRENT_USER})
 const addUserToTree = () => ({type: ADD_USER_TO_TREE})
 
@@ -72,7 +72,7 @@ export const associateUserToTree = data => async dispatch => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_CURRENT_USER:
-      return action.user
+      return action.currUser
     case REMOVE_CURRENT_USER:
       return defaultUser
     case ADD_USER_TO_TREE:

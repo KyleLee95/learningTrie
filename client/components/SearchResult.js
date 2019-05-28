@@ -143,9 +143,17 @@ class SearchResult extends Component {
                             <Card.Title>
                               {tree.tags.map(tag => {
                                 return (
-                                  <Link key={tag.id} to={`/tag/${tag.id}`}>
-                                    {tag.title}{' '}
-                                  </Link>
+                                  <Button variant="light" key={tag.id}>
+                                    <Link
+                                      to={`/tag/${tag.id}`}
+                                      style={{
+                                        textDecoration: 'none',
+                                        color: '#000000'
+                                      }}
+                                    >
+                                      {tag.title}{' '}
+                                    </Link>
+                                  </Button>
                                 )
                               })}
                             </Card.Title>
@@ -166,7 +174,7 @@ class SearchResult extends Component {
 const mapState = state => {
   return {
     trees: state.tree,
-    user: state.user
+    user: state.currUser
   }
 }
 

@@ -113,7 +113,7 @@ class NewReview extends Component {
 const mapState = state => {
   return {
     trees: state.tree,
-    user: state.user
+    user: state.currUser
   }
 }
 

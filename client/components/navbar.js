@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Navbar, Row, Col} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
-const Nav = ({handleClick, isLoggedIn}) => (
+const Nav = ({handleClick, isLoggedIn, user}) => (
   <Navbar>
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
       <h2>Learning 🌳 Tree</h2>
@@ -17,6 +17,7 @@ const Nav = ({handleClick, isLoggedIn}) => (
           {/* The navbar will show these links after you log in */}
           <Link to="/">Home</Link>
           <Link to="/explore">Explore</Link>
+          <Link to={`/user/${user.id}`}>Profile</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -39,7 +40,8 @@ const Nav = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.currUser.id,
+    user: state.currUser
   }
 }
 

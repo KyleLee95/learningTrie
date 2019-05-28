@@ -611,7 +611,7 @@ class TreeVisualization extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     trees: state.tree,
     nodes: state.node,
     edges: state.edge,

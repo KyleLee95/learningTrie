@@ -16,10 +16,63 @@ class UserProfile extends Component {
 
   render() {
     const user = this.props.users[0]
-    console.log(user)
+
     return (
       <React.Fragment>
-        <Card>{user !== undefined ? user.firstName : ''}</Card>
+        <Card border="light">
+          <Card.Title>
+            {user !== undefined ? `${user.firstName} ${user.lastName}` : ''}
+          </Card.Title>
+        </Card>
+        <Row>
+          <Col xs={12}>
+            <Card>
+              <Row>
+                <Col xs={4}>
+                  <Card.Title>Title</Card.Title>
+                </Col>
+
+                <Col xs={5}>
+                  {' '}
+                  <Card.Title>Description</Card.Title>
+                </Col>
+                <Col xs={3}>
+                  <Card.Title>Tags</Card.Title>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+        {user
+          ? user.learningTrees.map(tree => {
+              return (
+                <Card key={tree.id}>
+                  <Row>
+                    <Col xs={4}>
+                      <Card.Title>{tree.title}</Card.Title>
+                    </Col>
+                    <Col xs={5}>
+                      {' '}
+                      <Card.Title>{tree.description}</Card.Title>
+                    </Col>
+                    <Col xs={3}>
+                      <Card.Title>
+                        {tree.tags !== undefined
+                          ? tree.tags.map(tag => {
+                              return (
+                                <Link key={tag.title} to={`/tag/${tag.id}`}>
+                                  <Button variant="light">{tag.title}</Button>
+                                </Link>
+                              )
+                            })
+                          : ''}
+                      </Card.Title>
+                    </Col>
+                  </Row>
+                </Card>
+              )
+            })
+          : 'No Trees Found'}
       </React.Fragment>
     )
   }
@@ -33,7 +86,7 @@ const mapDispatch = dispatch => {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     trees: state.tree,
     users: state.users
   }

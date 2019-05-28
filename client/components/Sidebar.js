@@ -26,7 +26,7 @@ class Sidebar extends Component {
 
 const mapState = state => {
   return {
-    user: state.user,
+    user: state.currUser,
     trees: state.trees
   }
 }
