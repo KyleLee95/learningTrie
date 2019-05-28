@@ -17,6 +17,7 @@ const Tag = require('./tag')
 User.belongsToMany(LearningTree, {through: 'userTree'})
 User.hasMany(Comment)
 User.hasMany(Review)
+User.belongsToMany(User, {as: 'followers', through: 'follower'})
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -31,8 +32,6 @@ Comment.belongsTo(User)
 Comment.belongsToMany(Resource, {through: 'resourceComment'})
 
 //Node
-// Node.hasMany(Node)
-// Node.belongsToMany(Node, {as: 'child', through: 'ChildNode'})
 Node.hasMany(Resource)
 Node.belongsTo(LearningTree)
 Node.hasMany(Edge, {onDelete: 'CASCADE'})

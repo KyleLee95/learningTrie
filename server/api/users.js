@@ -1,5 +1,12 @@
 const router = require('express').Router()
-const {User, LearningTree, Review, Tag} = require('../db/models')
+const {
+  User,
+  LearningTree,
+  Review,
+  Tag,
+  Comment,
+  Resource
+} = require('../db/models')
 module.exports = router
 //da fuq am I using this for? I think this ileftover from boilerplate lmao. probably delete this at some poiint but I'm too afraid to.
 router.get('/', async (req, res, next) => {
@@ -36,7 +43,17 @@ router.get('/:id', async (req, res, next) => {
   try {
     const users = await User.findAll({
       where: {id: req.params.id},
-      include: [{model: LearningTree, include: [{model: Tag}]}]
+      include: [
+        {
+          model: LearningTree,
+          include: [{model: Tag}, {model: User}, {model: Review}]
+        },
+        {
+          model: Comment,
+          include: [{model: Resource}]
+        },
+        {model: User, as: 'followers'}
+      ]
     })
     res.status(200).json(users)
   } catch (err) {

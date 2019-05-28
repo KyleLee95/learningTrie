@@ -44,7 +44,6 @@ class LearningTree extends Component {
   async componentDidMount() {
     await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     await this.props.getReviews(Number(this.props.match.params.id))
-    console.log(this.props)
   }
 
   async componentDidUpdate(prevProps) {
