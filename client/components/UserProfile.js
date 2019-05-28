@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchSingleUser, addFollower} from '../store/user'
+import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
 import {UserCard} from '.'
 
 class UserProfile extends Component {
@@ -51,7 +51,15 @@ class UserProfile extends Component {
                     user.followers.find(
                       follower => this.props.user.id === follower.id
                     ) !== undefined ? (
-                      <Button>unfollow</Button>
+                      <Button
+                        onClick={() =>
+                          this.props.removeFollower(
+                            Number(this.props.match.params.id)
+                          )
+                        }
+                      >
+                        unfollow
+                      </Button>
                     ) : (
                       <Button
                         onClick={() =>
@@ -272,7 +280,8 @@ class UserProfile extends Component {
 const mapDispatch = dispatch => {
   return {
     fetchSingleUser: userId => dispatch(fetchSingleUser(userId)),
-    addFollower: userId => dispatch(addFollower(userId))
+    addFollower: userId => dispatch(addFollower(userId)),
+    removeFollower: userId => dispatch(removeFollower(userId))
   }
 }
 

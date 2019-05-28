@@ -44,19 +44,7 @@ router.put('/follow/:id', async (req, res, next) => {
   // console.log(req.body)
   try {
     const user = await User.findAll({
-      where: {id: req.user.id},
-      include: [
-        {
-          model: LearningTree,
-          include: [{model: Tag}, {model: User}, {model: Review}]
-        },
-        {
-          model: Comment,
-          include: [{model: Resource}]
-        },
-        {model: User, as: 'followers'},
-        {model: User, as: 'following'}
-      ]
+      where: {id: req.user.id}
     })
     let userToFollow = await User.findByPk(req.params.id)
     await user[0].addFollowing(userToFollow)
@@ -99,10 +87,26 @@ router.put('/unfollow/:id', async (req, res, next) => {
         {model: User, as: 'following'}
       ]
     })
-    const userToUnfollow = await User.findByPk(req.body.userId)
-    await user.removeFollowing(userToUnfollow)
+
+    let userToUnfollow = await User.findByPk(req.params.id)
+    await user[0].removeFollowing(userToUnfollow)
     await userToUnfollow.removeFollower(user)
-    res.status(200).send('success')
+    userToUnfollow = await User.findAll({
+      where: {id: req.params.id},
+      include: [
+        {
+          model: LearningTree,
+          include: [{model: Tag}, {model: User}, {model: Review}]
+        },
+        {
+          model: Comment,
+          include: [{model: Resource}]
+        },
+        {model: User, as: 'followers'},
+        {model: User, as: 'following'}
+      ]
+    })
+    res.status(200).json(userToUnfollow)
   } catch (err) {
     next(err)
   }
