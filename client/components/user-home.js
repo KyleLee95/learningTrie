@@ -21,6 +21,11 @@ class UserHome extends Component {
             <React.Fragment>
               <Card>
                 <Button variant="submit" onClick={this.props.fetchTrees}>
+                  News Feed
+                </Button>
+              </Card>
+              <Card>
+                <Button variant="submit" onClick={this.props.fetchTrees}>
                   All Trees
                 </Button>
               </Card>

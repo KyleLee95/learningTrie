@@ -24,6 +24,10 @@ const User = db.define('user', {
     unique: true,
     allowNull: false
   },
+  avatar: {
+    type: Sequelize.TEXT,
+    defaultValue: 'https://robohash.org/MatLamTam'
+  },
   password: {
     type: Sequelize.STRING,
     // Making `.password` act like a func hides it when serializing to JSON.
