@@ -12,7 +12,8 @@ import {
   ConnectedExplore,
   ConnectedTag,
   ConnectedSearchResult,
-  ConnectedUserProfile
+  ConnectedUserProfile,
+  ConnectedInbox
 } from './components'
 import {me} from './store'
 import {fetchTrees} from './store/learningTree'
@@ -51,7 +52,8 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/" component={UserHome} />
+            <Route exact path="/" component={UserHome} />
+            <Route path="/inbox" component={ConnectedInbox} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
