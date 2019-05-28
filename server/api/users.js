@@ -82,7 +82,7 @@ router.put('/follow/:id', async (req, res, next) => {
   }
 })
 
-router.put('/unfollow', async (req, res, next) => {
+router.put('/unfollow/:id', async (req, res, next) => {
   try {
     const user = await User.findAll({
       where: {id: req.user.id},

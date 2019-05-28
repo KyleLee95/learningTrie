@@ -1,9 +1,20 @@
 /* eslint-disable complexity */
 import React, {Component} from 'react'
-import {Row, Col, Modal, Button, Form, Card, Tabs, Tab} from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  Modal,
+  Button,
+  Form,
+  Card,
+  CardDeck,
+  Tabs,
+  Tab
+} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {fetchSingleUser, addFollower} from '../store/user'
+import {UserCard} from '.'
 
 class UserProfile extends Component {
   constructor(props, context) {
@@ -195,29 +206,13 @@ class UserProfile extends Component {
               user && user.followers !== undefined ? user.followers.length : 0
             })`}
           >
-            {user && user.followers !== undefined
-              ? user.followers.map(follower => {
-                  return (
-                    <Card key={follower.id}>
-                      <Card.Img
-                        variant="top"
-                        src="holder.js/100px180"
-                        alt="IMAGE"
-                      />
-                      <Card.Body>
-                        <Card.Title>
-                          {follower.firstName} {follower.lastName}
-                        </Card.Title>
-                        <Card.Text>
-                          Some quick example text to build on the card title and
-                          make up the bulk of the card's content.
-                        </Card.Text>
-                        <Button variant="primary">Go somewhere</Button>
-                      </Card.Body>
-                    </Card>
-                  )
-                })
-              : 'No Followers'}
+            <CardDeck>
+              {user && user.followers !== undefined
+                ? user.followers.map(follower => {
+                    return <UserCard key={follower.id} follower={follower} />
+                  })
+                : 'No Followers'}
+            </CardDeck>
           </Tab>
           <Tab
             eventKey="following"

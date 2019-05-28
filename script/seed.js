@@ -27,6 +27,26 @@ async function seed() {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
       isAdmin: false
+    }),
+    User.create({
+      firstName: 'kyle',
+      lastName: 'lee',
+      email: 'kyle@email.com',
+      password: '123',
+      username: 'mangoHi_Chew',
+      bio:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
+      isAdmin: false
+    }),
+    User.create({
+      firstName: 'Mat Lam Tam',
+      lastName: 'FSA',
+      email: 'mlt@email.com',
+      password: '123',
+      username: 'MatLamTam',
+      bio:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
+      isAdmin: false
     })
   ])
 
