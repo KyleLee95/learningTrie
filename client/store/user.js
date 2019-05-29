@@ -29,7 +29,7 @@ const unfollowUser = users => ({type: UNFOLLOW_USER, users})
  */
 export const fetchSingleUser = userId => async dispatch => {
   try {
-    const res = await axios.get(`/api//users/${userId}`)
+    const res = await axios.get(`/api/users/${userId}`)
     return dispatch(getSingleUser(res.data))
   } catch (err) {
     console.error(err)

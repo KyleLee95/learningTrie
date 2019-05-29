@@ -8,6 +8,7 @@ const Edge = require('./edge')
 const Tag = require('./tag')
 const Message = require('./message')
 const Conversation = require('./conversation')
+const Link = require('./Link')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -35,7 +36,7 @@ LearningTree.belongsToMany(Tag, {through: 'treeTag'})
 
 //Comment
 Comment.belongsTo(User)
-Comment.belongsToMany(Resource, {through: 'resourceComment'})
+Comment.belongsTo(Link)
 
 //Node
 Node.hasMany(Resource)
@@ -47,9 +48,10 @@ Edge.belongsTo(LearningTree)
 Edge.belongsToMany(Node, {through: 'nodeEdge'})
 
 //Resource
-Resource.belongsToMany(Node, {through: 'LearningResource'})
-Resource.hasMany(Comment)
+Resource.belongsToMany(Node, {through: 'nodeResource'})
+Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
+// Resource.hasMany(Comment)
 //Review
 Review.belongsTo(User)
 Review.belongsTo(LearningTree)
@@ -60,6 +62,11 @@ Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 //Conversation
 Conversation.hasMany(Message)
 Conversation.belongsToMany(User, {through: 'userConversation'})
+
+//Link
+Link.hasMany(Comment)
+// Link.hasMany(Resource)
+Link.belongsToMany(Resource, {through: 'resourceLink'})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -77,5 +84,6 @@ module.exports = {
   Edge,
   Tag,
   Conversation,
-  Message
+  Message,
+  Link
 }

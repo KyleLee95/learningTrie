@@ -1,5 +1,12 @@
 const router = require('express').Router()
-const {Resource, Node, LearningTree, User} = require('../db/models')
+const {
+  Resource,
+  Node,
+  LearningTree,
+  User,
+  Link,
+  Comment
+} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -14,8 +21,11 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {
-      include: [{model: Node}]
+      include: [
+        {model: Link, through: 'resourceLink', include: [{model: Comment}]}
+      ]
     })
+    console.log(Object.keys(resource.__proto__))
     res.status(200).json(resource)
   } catch (err) {
     next(err)
@@ -25,17 +35,21 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
-
     let resource = await Resource.create({
       title: req.body.title,
       link: req.body.link,
       description: req.body.description,
       type: req.body.type
     })
+    const link = await Link.findOrCreate({
+      where: {url: req.body.link}
+    })
     const user = await User.findByPk(Number(req.user.id))
     const node = await Node.findByPk(Number(req.body.nodeId))
+    await link[0].addResource(resource)
     await resource.addNode(node)
     await resource.addUser(user)
+    // await resource.setResourceLink(link[0])
     await user.addResource(resource)
     await node.addResource(resource)
 

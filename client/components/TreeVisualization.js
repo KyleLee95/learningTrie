@@ -300,6 +300,7 @@ class TreeVisualization extends Component {
       link: this.state.link,
       nodeId: this.state.selected.id
     })
+
     this.setState({resourceShow: false})
   }
 

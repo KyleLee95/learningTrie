@@ -8,6 +8,7 @@ import {
   putResource,
   postResource
 } from '../store/resource'
+import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
 class Resource extends Component {
@@ -21,12 +22,12 @@ class Resource extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+
   async componentDidMount() {
+    await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleResource(Number(this.props.match.params.id))
-    await this.props.getComments({
-      id: Number(this.props.match.params.id),
-      link: this.props.resource.link
-    })
+    // console.log(this.props)
+    await this.props.getComments(Number(this.props.resource.links[0].id))
   }
 
   handleShow() {
@@ -136,6 +137,13 @@ class Resource extends Component {
           <Col xs={12}>
             <ConnectedResourceCommentForm
               resourceId={this.props.match.params.id}
+              linkId={
+                this.props.resource !== undefined &&
+                this.props.resource.links !== undefined &&
+                this.props.resource.links.length > 0
+                  ? this.props.resource.links[0].id
+                  : ''
+              }
             />
           </Col>
         </Row>
@@ -214,14 +222,16 @@ const mapDispatch = dispatch => {
     postResource: resource => dispatch(postResource(resource)),
     delResource: resource => dispatch(delResource(resource)),
     putResource: resource => dispatch(putResource(resource)),
-    getComments: resource => dispatch(getComments(resource))
+    getComments: resourceId => dispatch(getComments(resourceId)),
+    getLink: resourceId => dispatch(getLink(resourceId))
   }
 }
 
 const mapState = state => {
   return {
     resource: state.resource,
-    comments: state.comment
+    comments: state.comment,
+    link: state.link
   }
 }
 

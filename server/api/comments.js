@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Comment, User, Resource} = require('../db/models')
+const {Comment, User, Resource, Link} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -8,7 +8,7 @@ router.get('/:id', async (req, res, next) => {
     //findall({where:link: req.body.link, include: [{model: Comment, include:[model: User]}]})
 
     const comments = await Comment.findAll({
-      where: {resourceId: req.params.id},
+      where: {linkId: req.params.id},
       include: [
         {
           model: User
@@ -55,14 +55,24 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    console.log(req.body)
+
     let comment = await Comment.create({
       content: req.body.content
     })
     const user = await User.findByPk(req.user.id)
-    const resource = await Resource.findByPk(req.body.resourceId)
+    const link = await Link.findByPk(req.body.linkId)
+    //TODO
+    //ASSOCIATE THE COMMENT WITH LINK ID
+    //NEED TO SEND LINK ID FROM RESOURCE PAGE AND THEN USER ASSOCIATION METHOD from comment (comment.addLink)
+    // const resource = await Resource.findByPk(req.body.resourceId)
     await user.addComment(comment)
-    await resource.addComment(comment)
-    await comment.addResource(resource)
+    // await resource.addComment(comment)
+    console.log('COMMENT', Object.keys(comment.__proto__))
+
+    console.log('LINK', Object.keys(link.__proto__))
+
+    await comment.setLink(link)
     comment = await Comment.findByPk(comment.id, {
       include: [
         {

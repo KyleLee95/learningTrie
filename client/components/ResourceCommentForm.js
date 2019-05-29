@@ -21,7 +21,8 @@ class ResourceCommentForm extends Component {
     this.props.postComment({
       content: this.state.content,
       userId: this.props.user.id,
-      resourceId: Number(this.props.resourceId)
+      resourceId: Number(this.props.resourceId),
+      linkId: Number(this.props.linkId)
     })
     this.setState({
       content: ''

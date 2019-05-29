@@ -5,7 +5,8 @@ const {
   Review,
   Tag,
   Comment,
-  Resource
+  Resource,
+  Link
 } = require('../db/models')
 module.exports = router
 //da fuq am I using this for? I think this ileftover from boilerplate lmao. probably delete this at some poiint but I'm too afraid to.
@@ -61,7 +62,7 @@ router.put('/follow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Resource}]
+          include: [{model: Link, include: [{model: Resource}]}]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
@@ -85,7 +86,7 @@ router.put('/unfollow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Resource}]
+          include: [{model: Link, include: [{model: Resource}]}]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'}
@@ -104,7 +105,7 @@ router.put('/unfollow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Resource}]
+          include: [{model: Link, include: [{model: Resource}]}]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
@@ -128,11 +129,16 @@ router.get('/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Resource}]
+          include: [
+            {
+              model: Link,
+              include: [{model: Resource}, {model: Comment}]
+            }
+          ]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
-        {model: Resource}
+        {model: Resource, include: [{model: Link}]}
       ]
     })
     res.status(200).json(users)
