@@ -59,6 +59,7 @@ router.post('/', async (req, res, next) => {
     const resource = await Resource.findByPk(req.body.resourceId)
     await user.addComment(comment)
     await resource.addComment(comment)
+    await comment.addResource(resource)
     comment = await Comment.findByPk(comment.id, {
       include: [
         {

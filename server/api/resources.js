@@ -34,6 +34,7 @@ router.post('/', async (req, res, next) => {
     })
 
     const node = await Node.findByPk(Number(req.body.nodeId))
+    await resource.addNode(node)
     await node.addResource(resource)
     res.status(201).json(resource)
   } catch (err) {
