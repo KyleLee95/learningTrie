@@ -9,6 +9,8 @@ router.use('/resources', require('./resources'))
 router.use('/reviews', require('./reviews'))
 router.use('/tags', require('./tags'))
 router.use('/comments', require('./comments'))
+router.use('/message', require('./message'))
+router.use('/conversation', require('./conversation'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')
