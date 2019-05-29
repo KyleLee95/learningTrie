@@ -16,7 +16,10 @@ router.get('/', async (req, res, next) => {
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
       attributes: ['id', 'email'],
-      include: [{model: LearningTree, include: [{model: Review}]}]
+      include: [
+        {model: LearningTree, include: [{model: Review}]},
+        {model: Resource}
+      ]
     })
 
     res.json(users)
@@ -61,7 +64,8 @@ router.put('/follow/:id', async (req, res, next) => {
           include: [{model: Resource}]
         },
         {model: User, as: 'followers'},
-        {model: User, as: 'following'}
+        {model: User, as: 'following'},
+        {model: Resource}
       ]
     })
     res.status(200).send(userToFollow)
@@ -103,7 +107,8 @@ router.put('/unfollow/:id', async (req, res, next) => {
           include: [{model: Resource}]
         },
         {model: User, as: 'followers'},
-        {model: User, as: 'following'}
+        {model: User, as: 'following'},
+        {model: Resource}
       ]
     })
     res.status(200).json(userToUnfollow)
@@ -126,7 +131,8 @@ router.get('/:id', async (req, res, next) => {
           include: [{model: Resource}]
         },
         {model: User, as: 'followers'},
-        {model: User, as: 'following'}
+        {model: User, as: 'following'},
+        {model: Resource}
       ]
     })
     res.status(200).json(users)

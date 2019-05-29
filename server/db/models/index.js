@@ -23,6 +23,7 @@ User.belongsToMany(User, {as: 'followers', through: 'follower'})
 User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
 User.belongsToMany(Conversation, {through: 'userConversation'})
 User.hasMany(Message)
+User.hasMany(Resource)
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -33,7 +34,6 @@ LearningTree.hasMany(Edge)
 LearningTree.belongsToMany(Tag, {through: 'treeTag'})
 
 //Comment
-Comment.belongsTo(LearningTree)
 Comment.belongsTo(User)
 Comment.belongsToMany(Resource, {through: 'resourceComment'})
 
@@ -49,7 +49,7 @@ Edge.belongsToMany(Node, {through: 'nodeEdge'})
 //Resource
 Resource.belongsToMany(Node, {through: 'LearningResource'})
 Resource.hasMany(Comment, {as: 'comment'})
-
+Resource.belongsToMany(User, {through: 'UserResource'})
 //Review
 Review.belongsTo(User)
 Review.belongsTo(LearningTree)

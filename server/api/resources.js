@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Resource, Node, LearningTree} = require('../db/models')
+const {Resource, Node, LearningTree, User} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -26,16 +26,19 @@ router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
 
-    const resource = await Resource.create({
+    let resource = await Resource.create({
       title: req.body.title,
       link: req.body.link,
       description: req.body.description,
       type: req.body.type
     })
-
+    const user = await User.findByPk(Number(req.user.id))
     const node = await Node.findByPk(Number(req.body.nodeId))
     await resource.addNode(node)
+    await resource.addUser(user)
+    await user.addResource(resource)
     await node.addResource(resource)
+
     res.status(201).json(resource)
   } catch (err) {
     next(err)
