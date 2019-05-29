@@ -1,3 +1,4 @@
+/*eslint-disable complexity*/
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
@@ -22,7 +23,10 @@ class Resource extends Component {
   }
   async componentDidMount() {
     await this.props.getSingleResource(Number(this.props.match.params.id))
-    await this.props.getComments(Number(this.props.match.params.id))
+    await this.props.getComments({
+      id: Number(this.props.match.params.id),
+      link: this.props.resource.link
+    })
   }
 
   handleShow() {
@@ -76,28 +80,42 @@ class Resource extends Component {
             <Col xs={5}>
               <Row>
                 {' '}
-                <strong>Title:</strong> {this.props.resource.title}
+                <strong>Title:</strong>{' '}
+                {this.props.resource && this.props.resource.title !== undefined
+                  ? this.props.resource.title
+                  : ''}
               </Row>
             </Col>
             <Col xs={5}>
               <Row>
                 {' '}
                 <strong>Description:</strong>
-                {this.props.resource.description}
+                {this.props.resource ? this.props.resource.description : ''}
               </Row>
             </Col>
             <Row>
               <Col xs={5}>
                 {' '}
-                <strong>Type:</strong> {this.props.resource.type}
+                <strong>Type:</strong>{' '}
+                {this.props.resource ? this.props.resource.type : ''}
               </Col>
             </Row>
             <Row>
               <Col xs={5}>
                 {' '}
                 <strong>Link:</strong>{' '}
-                <a href={this.props.resource.link} target="_blank">
-                  {this.props.resource.link}
+                <a
+                  href={
+                    this.props.resource &&
+                    this.props.resource.link !== undefined
+                      ? this.props.resource.link
+                      : ''
+                  }
+                  target="_blank"
+                >
+                  {this.props.resource && this.props.resource.link
+                    ? this.props.resource.link
+                    : ''}
                 </a>
               </Col>
             </Row>
@@ -196,7 +214,7 @@ const mapDispatch = dispatch => {
     postResource: resource => dispatch(postResource(resource)),
     delResource: resource => dispatch(delResource(resource)),
     putResource: resource => dispatch(putResource(resource)),
-    getComments: resourceId => dispatch(getComments(resourceId))
+    getComments: resource => dispatch(getComments(resource))
   }
 }
 

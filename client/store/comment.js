@@ -24,9 +24,9 @@ const updateComment = comment => ({type: UPDATE_COMMENT, comment})
  * THUNK CREATORS
  */
 
-export const getComments = resourceId => async dispatch => {
+export const getComments = resource => async dispatch => {
   try {
-    const res = await axios.get(`/api/comments/${resourceId}`)
+    const res = await axios.get(`/api/comments/${resource.id}`)
     dispatch(fetchComments(res.data))
   } catch (err) {
     console.error(err)

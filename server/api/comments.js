@@ -4,6 +4,9 @@ module.exports = router
 
 router.get('/:id', async (req, res, next) => {
   try {
+    //WHEN YOU GET A RESOURCE, GET ALL THE COMMENTS WHERE THE LINK IS THE SAME LIINK
+    //findall({where:link: req.body.link, include: [{model: Comment, include:[model: User]}]})
+
     const comments = await Comment.findAll({
       where: {resourceId: req.params.id},
       include: [
@@ -60,7 +63,6 @@ router.post('/', async (req, res, next) => {
     await user.addComment(comment)
     await resource.addComment(comment)
     await comment.addResource(resource)
-    // console.log(Object.keys(comment.__proto__))
     comment = await Comment.findByPk(comment.id, {
       include: [
         {

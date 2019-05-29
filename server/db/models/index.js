@@ -48,7 +48,7 @@ Edge.belongsToMany(Node, {through: 'nodeEdge'})
 
 //Resource
 Resource.belongsToMany(Node, {through: 'LearningResource'})
-Resource.hasMany(Comment, {as: 'comment'})
+Resource.hasMany(Comment)
 Resource.belongsToMany(User, {through: 'UserResource'})
 //Review
 Review.belongsTo(User)

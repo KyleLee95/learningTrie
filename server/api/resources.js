@@ -5,7 +5,7 @@ module.exports = router
 router.get('/', async (req, res, next) => {
   try {
     const resource = await Resource.findAll()
-    res.json(resource)
+    res.status(200).json(resource)
   } catch (err) {
     next(err)
   }
@@ -16,7 +16,7 @@ router.get('/:id', async (req, res, next) => {
     const resource = await Resource.findByPk(req.params.id, {
       include: [{model: Node}]
     })
-    res.json(resource)
+    res.status(200).json(resource)
   } catch (err) {
     next(err)
   }

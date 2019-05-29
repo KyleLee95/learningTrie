@@ -53,6 +53,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route exact path="/" component={UserHome} />
+            <Route path="/home" component={UserHome} />
             <Route path="/inbox" component={ConnectedInbox} />
           </Switch>
         )}

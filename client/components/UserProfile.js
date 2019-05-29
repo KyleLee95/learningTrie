@@ -228,7 +228,11 @@ class UserProfile extends Component {
                   : ''}
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
-                Resources
+                {user && user.resources !== undefined
+                  ? user.resources.map(resource => {
+                      return resource.title
+                    })
+                  : 'No Resources Found'}
               </Tab>
               <Tab eventKey="groups" title="Groups">
                 Groups
