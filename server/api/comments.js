@@ -55,7 +55,7 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log(req.body)
+    // console.log(req.body)
 
     let comment = await Comment.create({
       content: req.body.content
@@ -68,9 +68,9 @@ router.post('/', async (req, res, next) => {
     // const resource = await Resource.findByPk(req.body.resourceId)
     await user.addComment(comment)
     // await resource.addComment(comment)
-    console.log('COMMENT', Object.keys(comment.__proto__))
+    // console.log('COMMENT', Object.keys(comment.__proto__))
 
-    console.log('LINK', Object.keys(link.__proto__))
+    // console.log('LINK', Object.keys(link.__proto__))
 
     await comment.setLink(link)
     comment = await Comment.findByPk(comment.id, {

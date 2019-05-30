@@ -25,7 +25,7 @@ router.get('/:id', async (req, res, next) => {
         {model: Link, through: 'resourceLink', include: [{model: Comment}]}
       ]
     })
-    console.log(Object.keys(resource.__proto__))
+    // console.log(Object.keys(resource.__proto__))
     res.status(200).json(resource)
   } catch (err) {
     next(err)

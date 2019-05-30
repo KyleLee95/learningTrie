@@ -26,8 +26,7 @@ class Resource extends Component {
   async componentDidMount() {
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleResource(Number(this.props.match.params.id))
-    // console.log(this.props)
-    await this.props.getComments(Number(this.props.resource.links[0].id))
+    await this.props.getComments(Number(this.props.link.id))
   }
 
   handleShow() {

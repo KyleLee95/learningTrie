@@ -15,7 +15,6 @@ const defaultLink = {}
  * ACTION CREATORS
  */
 const fetchLink = link => ({type: GET_LINK, link})
-
 const createLink = link => ({type: CREATE_LINK, link})
 
 /**
@@ -25,7 +24,8 @@ const createLink = link => ({type: CREATE_LINK, link})
 export const getLink = resourceId => async dispatch => {
   try {
     const res = await axios.get(`/api/links/${resourceId}`)
-    dispatch(fetchLink(res.data))
+
+    dispatch(fetchLink(res.data[0]))
   } catch (err) {
     console.error(err)
   }

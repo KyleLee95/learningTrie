@@ -223,14 +223,27 @@ class UserProfile extends Component {
               <Tab eventKey="comments" title="Comments">
                 {user && user.comments !== undefined
                   ? user.comments.map(comment => {
-                      return <Card key={comment.id}>{comment.content}</Card>
+                      return (
+                        <Card key={comment.id}>
+                          <Card.Title>{`${user.firstName} ${
+                            user.lastName
+                          } | Posted at: ${comment.createdAt}`}</Card.Title>
+                          <Card.Body>{comment.content}</Card.Body>
+                        </Card>
+                      )
                     })
-                  : ''}
+                  : 'No Comments Found'}
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
                 {user && user.resources !== undefined
                   ? user.resources.map(resource => {
-                      return resource.title
+                      return (
+                        <Link key={resource.id} to={`/resource/${resource.id}`}>
+                        <Card>
+                          <Card.Title>{resource.title}</Card.Title>
+                        </Card>
+                        </Link>
+                      )
                     })
                   : 'No Resources Found'}
               </Tab>
