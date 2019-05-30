@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-
+const moment = require('moment')
 const Comment = db.define('comment', {
   content: {
     type: Sequelize.TEXT
   },
-  DateTime: {
+  postedAt: {
     type: Sequelize.DATEONLY,
     get: function() {
-      return moment(this.getDataValue('DateTime')).format('DD.MM.YYYY')
+      return moment(this.getDataValue(Date.now())).format('MM/DD/YYYY')
     }
   }
 })

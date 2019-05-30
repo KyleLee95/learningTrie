@@ -74,7 +74,7 @@ class Comment extends Component {
                       this.props.comment.user.lastName
                     }`
                   : ''}{' '}
-                | Posted At: {this.props.comment.createdAt}
+                | Posted on: {this.props.comment.postedAt}
               </Card.Title>
               <Card.Body>{this.props.comment.content}</Card.Body>
               <Card.Footer>

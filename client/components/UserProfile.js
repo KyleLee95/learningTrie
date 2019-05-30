@@ -227,7 +227,7 @@ class UserProfile extends Component {
                         <Card key={comment.id}>
                           <Card.Title>{`${user.firstName} ${
                             user.lastName
-                          } | Posted at: ${comment.createdAt}`}</Card.Title>
+                          } | Posted on: ${comment.postedAt}`}</Card.Title>
                           <Card.Body>{comment.content}</Card.Body>
                         </Card>
                       )
