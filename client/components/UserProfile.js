@@ -235,14 +235,69 @@ class UserProfile extends Component {
                   : 'No Comments Found'}
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
+                <Card>
+                  <Row>
+                    <Col xs={4}>
+                      <Card.Title>Title</Card.Title>
+                    </Col>
+                    <Col xs={4}>
+                      <Card.Title>Description</Card.Title>
+                    </Col>
+                    <Col xs={4}>
+                      <Card.Title>Tags</Card.Title>
+                    </Col>
+                  </Row>
+                </Card>
                 {user && user.resources !== undefined
                   ? user.resources.map(resource => {
                       return (
-                        <Link key={resource.id} to={`/resource/${resource.id}`}>
-                        <Card>
-                          <Card.Title>{resource.title}</Card.Title>
+                        <Card key={resource.id}>
+                          <Row>
+                            <Col xs={4}>
+                              <Link
+                                to={`/resource/${resource.id}`}
+                                style={{
+                                  textDecoration: 'none',
+                                  color: '#000000'
+                                }}
+                              >
+                                <Card.Title>{resource.title}</Card.Title>
+                              </Link>
+                            </Col>
+                            <Col xs={4}>
+                              <Card.Title>
+                                <Link
+                                  to={`/resource/${resource.id}`}
+                                  style={{
+                                    textDecoration: 'none',
+                                    color: '#000000'
+                                  }}
+                                >
+                                  {resource.description.length > 250
+                                    ? `${resource.description.slice(
+                                        0,
+                                        250
+                                      )}${'...'}`
+                                    : `${resource.description}`}
+                                </Link>
+                              </Card.Title>
+                            </Col>
+                            <Col xs={4}>
+                              <Card.Title>
+                                {/* {resource.tags.length > 0
+                                    ? resource.tags.map(tag => {
+                                        return (
+                                          <Button variant="light" size="sm">
+                                            TAG
+                                          </Button>
+                                        )
+                                      })
+                                    : 'No Tags'} */}
+                                TAGS
+                              </Card.Title>
+                            </Col>
+                          </Row>
                         </Card>
-                        </Link>
                       )
                     })
                   : 'No Resources Found'}
