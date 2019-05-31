@@ -55,22 +55,18 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    // console.log(req.body)
-
     let comment = await Comment.create({
       content: req.body.content
     })
     const user = await User.findByPk(req.user.id)
     const link = await Link.findByPk(req.body.linkId)
-    //TODO
-    //ASSOCIATE THE COMMENT WITH LINK ID
-    //NEED TO SEND LINK ID FROM RESOURCE PAGE AND THEN USER ASSOCIATION METHOD from comment (comment.addLink)
-    // const resource = await Resource.findByPk(req.body.resourceId)
-    await user.addComment(comment)
-    // await resource.addComment(comment)
-    // console.log('COMMENT', Object.keys(comment.__proto__))
 
-    // console.log('LINK', Object.keys(link.__proto__))
+    const resource = await Resource.findByPk(req.body.resourceId)
+    await user.addComment(comment)
+    await comment.setResource(resource)
+    await resource.addComment(comment)
+    // console.log('COMMENT', Object.keys(comment.__proto__))
+    // console.log('resource', Object.keys(resource.__proto__))
 
     await comment.setLink(link)
     comment = await Comment.findByPk(comment.id, {

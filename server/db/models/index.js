@@ -37,6 +37,7 @@ LearningTree.belongsToMany(Tag, {through: 'treeTag'})
 //Comment
 Comment.belongsTo(User)
 Comment.belongsTo(Link)
+Comment.belongsTo(Resource)
 
 //Node
 Node.hasMany(Resource)
@@ -51,7 +52,7 @@ Edge.belongsToMany(Node, {through: 'nodeEdge'})
 Resource.belongsToMany(Node, {through: 'nodeResource'})
 Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
-// Resource.hasMany(Comment)
+Resource.hasMany(Comment)
 //Review
 Review.belongsTo(User)
 Review.belongsTo(LearningTree)

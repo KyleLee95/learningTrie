@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
 import {UserCard} from '.'
-
+import moment from 'moment'
 class UserProfile extends Component {
   constructor(props, context) {
     super(props, context)
@@ -226,13 +226,24 @@ class UserProfile extends Component {
                       return (
                         <Card key={comment.id}>
                           <Card.Body>
-                            <Card.Title>{`${user.firstName} ${
-                              user.lastName
-                            } | Posted on: ${comment.postedAt}`}</Card.Title>
+                            <Card.Title>
+                              {`${user.firstName} ${
+                                user.lastName
+                              } | posted: ${moment(
+                                comment.createdAt
+                              ).fromNow()} to `}
+                              {
+                                <Link to={`/resource/${comment.resource.id}`}>
+                                  {comment.resource.title}
+                                </Link>
+                              }
+                            </Card.Title>
                             <Card.Body>{comment.content}</Card.Body>
                           </Card.Body>
                           <Card.Footer>
-                            <Button variant="submit">See full context</Button>
+                            <Link to={`/resource/${comment.resource.id}`}>
+                              <Button variant="submit">See full context</Button>
+                            </Link>
                           </Card.Footer>
                         </Card>
                       )

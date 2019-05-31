@@ -133,7 +133,8 @@ router.get('/:id', async (req, res, next) => {
             {
               model: Link,
               include: [{model: Resource}, {model: Comment}]
-            }
+            },
+            {model: Resource}
           ]
         },
         {model: User, as: 'followers'},
