@@ -234,7 +234,11 @@ class UserProfile extends Component {
                               ).fromNow()} to `}
                               {
                                 <Link to={`/resource/${comment.resource.id}`}>
-                                  {comment.resource.title}
+                                  {`${comment.resource.title} (${
+                                    comment.link.url.length > 25
+                                      ? comment.link.url.slice(0, 25)
+                                      : comment.link.url
+                                  })`}
                                 </Link>
                               }
                             </Card.Title>

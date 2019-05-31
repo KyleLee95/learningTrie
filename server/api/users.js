@@ -62,11 +62,17 @@ router.put('/follow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Link, include: [{model: Resource}]}]
+          include: [
+            {
+              model: Link,
+              include: [{model: Resource}, {model: Comment}]
+            },
+            {model: Resource}
+          ]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
-        {model: Resource}
+        {model: Resource, include: [{model: Link}]}
       ]
     })
     res.status(200).send(userToFollow)
@@ -86,10 +92,17 @@ router.put('/unfollow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Link, include: [{model: Resource}]}]
+          include: [
+            {
+              model: Link,
+              include: [{model: Resource}, {model: Comment}]
+            },
+            {model: Resource}
+          ]
         },
         {model: User, as: 'followers'},
-        {model: User, as: 'following'}
+        {model: User, as: 'following'},
+        {model: Resource, include: [{model: Link}]}
       ]
     })
 
@@ -105,11 +118,17 @@ router.put('/unfollow/:id', async (req, res, next) => {
         },
         {
           model: Comment,
-          include: [{model: Link, include: [{model: Resource}]}]
+          include: [
+            {
+              model: Link,
+              include: [{model: Resource}, {model: Comment}]
+            },
+            {model: Resource}
+          ]
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
-        {model: Resource}
+        {model: Resource, include: [{model: Link}]}
       ]
     })
     res.status(200).json(userToUnfollow)
