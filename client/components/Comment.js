@@ -66,17 +66,19 @@ class Comment extends Component {
         <Row>
           <Col xs={{span: 6, offSet: 10}}>
             <Card>
-              <Card.Title>
-                {this.props.comment.user &&
-                this.props.comment.user.firstName !== undefined &&
-                this.props.comment.user.lastName !== undefined
-                  ? `${this.props.comment.user.firstName} ${
-                      this.props.comment.user.lastName
-                    }`
-                  : ''}{' '}
-                | Posted on: {this.props.comment.postedAt}
-              </Card.Title>
-              <Card.Body>{this.props.comment.content}</Card.Body>
+              <Card.Body>
+                <Card.Title>
+                  {this.props.comment.user &&
+                  this.props.comment.user.firstName !== undefined &&
+                  this.props.comment.user.lastName !== undefined
+                    ? `${this.props.comment.user.firstName} ${
+                        this.props.comment.user.lastName
+                      }`
+                    : ''}{' '}
+                  | Posted on: {this.props.comment.postedAt}
+                </Card.Title>
+                <Card.Body>{this.props.comment.content}</Card.Body>
+              </Card.Body>
               <Card.Footer>
                 <Button variant="submit" onClick={this.handleDeleteShow}>
                   Delete

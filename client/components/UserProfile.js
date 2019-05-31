@@ -225,10 +225,15 @@ class UserProfile extends Component {
                   ? user.comments.map(comment => {
                       return (
                         <Card key={comment.id}>
-                          <Card.Title>{`${user.firstName} ${
-                            user.lastName
-                          } | Posted on: ${comment.postedAt}`}</Card.Title>
-                          <Card.Body>{comment.content}</Card.Body>
+                          <Card.Body>
+                            <Card.Title>{`${user.firstName} ${
+                              user.lastName
+                            } | Posted on: ${comment.postedAt}`}</Card.Title>
+                            <Card.Body>{comment.content}</Card.Body>
+                          </Card.Body>
+                          <Card.Footer>
+                            <Button variant="submit">See full context</Button>
+                          </Card.Footer>
                         </Card>
                       )
                     })
@@ -236,36 +241,27 @@ class UserProfile extends Component {
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
                 <Card>
-                  <Row>
-                    <Col xs={4}>
-                      <Card.Title>Title</Card.Title>
-                    </Col>
-                    <Col xs={4}>
-                      <Card.Title>Description</Card.Title>
-                    </Col>
-                    <Col xs={4}>
-                      <Card.Title>Tags</Card.Title>
-                    </Col>
-                  </Row>
+                  <Card.Body>
+                    <Row>
+                      <Col xs={4}>
+                        <Card.Title>Title</Card.Title>
+                      </Col>
+                      <Col xs={4}>
+                        <Card.Title>Description</Card.Title>
+                      </Col>
+                      <Col xs={4}>
+                        <Card.Title>Tags</Card.Title>
+                      </Col>
+                    </Row>
+                  </Card.Body>
                 </Card>
                 {user && user.resources !== undefined
                   ? user.resources.map(resource => {
                       return (
                         <Card key={resource.id}>
-                          <Row>
-                            <Col xs={4}>
-                              <Link
-                                to={`/resource/${resource.id}`}
-                                style={{
-                                  textDecoration: 'none',
-                                  color: '#000000'
-                                }}
-                              >
-                                <Card.Title>{resource.title}</Card.Title>
-                              </Link>
-                            </Col>
-                            <Col xs={4}>
-                              <Card.Title>
+                          <Card.Body>
+                            <Row>
+                              <Col xs={4}>
                                 <Link
                                   to={`/resource/${resource.id}`}
                                   style={{
@@ -273,18 +269,30 @@ class UserProfile extends Component {
                                     color: '#000000'
                                   }}
                                 >
-                                  {resource.description.length > 250
-                                    ? `${resource.description.slice(
-                                        0,
-                                        250
-                                      )}${'...'}`
-                                    : `${resource.description}`}
+                                  <Card.Title>{resource.title}</Card.Title>
                                 </Link>
-                              </Card.Title>
-                            </Col>
-                            <Col xs={4}>
-                              <Card.Title>
-                                {/* {resource.tags.length > 0
+                              </Col>
+                              <Col xs={4}>
+                                <Card.Title>
+                                  <Link
+                                    to={`/resource/${resource.id}`}
+                                    style={{
+                                      textDecoration: 'none',
+                                      color: '#000000'
+                                    }}
+                                  >
+                                    {resource.description.length > 250
+                                      ? `${resource.description.slice(
+                                          0,
+                                          250
+                                        )}${'...'}`
+                                      : `${resource.description}`}
+                                  </Link>
+                                </Card.Title>
+                              </Col>
+                              <Col xs={4}>
+                                <Card.Title>
+                                  {/* {resource.tags.length > 0
                                     ? resource.tags.map(tag => {
                                         return (
                                           <Button variant="light" size="sm">
@@ -293,10 +301,11 @@ class UserProfile extends Component {
                                         )
                                       })
                                     : 'No Tags'} */}
-                                TAGS
-                              </Card.Title>
-                            </Col>
-                          </Row>
+                                  TAGS
+                                </Card.Title>
+                              </Col>
+                            </Row>
+                          </Card.Body>
                         </Card>
                       )
                     })
@@ -320,7 +329,7 @@ class UserProfile extends Component {
                           <UserCard key={follower.id} follower={follower} />
                         )
                       })
-                    : 'No Followers'}
+                    : 'No Followers Found'}
                 </CardDeck>
               </Tab>
               <Tab
@@ -338,7 +347,7 @@ class UserProfile extends Component {
                           <UserCard key={follower.id} follower={follower} />
                         )
                       })
-                    : 'No Followers'}
+                    : 'Not Following Anybody'}
                 </CardDeck>
               </Tab>
             </Tabs>

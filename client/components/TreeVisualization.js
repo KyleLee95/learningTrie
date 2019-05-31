@@ -30,6 +30,7 @@ const GraphConfig = {
     empty: {
       // required to show empty nodes
       // typeText: 'Hello',
+      //USING THIS ONE
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -44,6 +45,17 @@ const GraphConfig = {
       shape: (
         <symbol viewBox="0 0 50 25" id="custom" key="0">
           <ellipse cx="50" cy="25" rx="50" ry="25" />
+        </symbol>
+      )
+    },
+    target: {
+      // required to show empty nodes
+      // typeText: 'Hello',
+      //USING THIS ONE
+      shapeId: '#empty', // relates to the type property of a node
+      shape: (
+        <symbol viewBox="0 0 100 100" id="empty" key="0">
+          <circle cx="50" cy="50" r="45" fill="#ffcecc" />
         </symbol>
       )
     }
@@ -79,7 +91,8 @@ class TreeVisualization extends Component {
       show: false,
       editShow: false,
       resourceShow: false,
-      recommendShow: false
+      recommendShow: false,
+      target: {}
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -165,27 +178,50 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    // this.handleShow()
-    await this.props.putNode(node)
+    if (JSON.stringify(node) !== JSON.stringify(this.state.selected) && JSON.stringify(node) !== JSON.stringify(this.state.target)) {
+      console.log(node)
+      console.log(this.state.selected)
+      await this.props.putNode(node)
+    } else {
+     console.log("A")
+    }
   }
 
-  //Kinda works. Once a noce is selected you can click it again to trigger the modal.
+  //Kinda works. Once a node is selected you can click it again to trigger the modal.
   //This works for now but we can do better.
   async onSelectNode(node) {
-    if (node === null) {
-      //'return' prevents null error message when clicking on the grid to deselect a node.
-      //by setting selected to an empty object
+    if (
+      this.state.selected.id !== undefined &&
+      node !== null &&
+      node.id !== this.state.selected.id
+      //selects a target node
+    ) {
       this.setState({
-        selected: {}
+        target: node
       })
-      // return
-    } else if (this.state.selected.id === node.id) {
+
+      console.log('target', this.state.target)
+      console.log('selected', this.state.selected)
+      return ''
+    } else if (node !== null && this.state.selected.id === node.id) {
+      //shows modal for selected node
       this.handleShow()
-    } else if (this.state.selected.id !== node.id) {
+    } else if (node !== null && this.state.selected.id !== node.id) {
+      //set selected node
       this.setState({
         selected: node
       })
       await this.props.getResources()
+    } else if (node === null) {
+      //deselect node
+      //'return' prevents null error message when clicking on the grid to deselect a node.
+      //by setting selected to an empty object
+
+      this.setState({
+        selected: {},
+        target: {}
+      })
+      // return
     }
   }
 
@@ -357,6 +393,33 @@ class TreeVisualization extends Component {
             <React.Fragment>
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
+                <br />
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    this.props.postEdge({
+                      type: 'emptyEdge',
+                      source: this.state.selected,
+                      targetNode: this.state.target,
+                      treeId: this.props.trees[0].id
+                    })
+                  }
+                >
+                  Add Edge
+                </Button>
+                <br />
+                <br />
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    this.setState({
+                      selected: {},
+                      target: {}
+                    })
+                  }
+                >
+                  Clear Selected Nodes
+                </Button>
               </Col>
               <Col xs={11}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>
