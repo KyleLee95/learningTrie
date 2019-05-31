@@ -5,6 +5,10 @@ const Link = db.define('link', {
   url: {
     type: Sequelize.TEXT,
     allowNull: false
+  },
+  shortUrl: {
+    type: Sequelize.TEXT,
+    allowNull: false
   }
 })
 

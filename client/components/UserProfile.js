@@ -25,6 +25,11 @@ class UserProfile extends Component {
   async componentDidMount() {
     await this.props.fetchSingleUser(Number(this.props.match.params.id))
   }
+  async componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      await this.props.fetchSingleUser(Number(this.props.match.params.id))
+    }
+  }
 
   render() {
     const user = this.props.users[0]
@@ -235,9 +240,7 @@ class UserProfile extends Component {
                               {
                                 <Link to={`/resource/${comment.resource.id}`}>
                                   {`${comment.resource.title} (${
-                                    comment.link.url.length > 25
-                                      ? comment.link.url.slice(0, 25)
-                                      : comment.link.url
+                                    comment.link.shortUrl
                                   })`}
                                 </Link>
                               }

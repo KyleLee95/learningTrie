@@ -41,8 +41,11 @@ router.post('/', async (req, res, next) => {
       description: req.body.description,
       type: req.body.type
     })
+    const shortUrl = req.body.link
+      .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
+      .split('/')[0]
     const link = await Link.findOrCreate({
-      where: {url: req.body.link}
+      where: {url: req.body.link, shortUrl: shortUrl}
     })
     const user = await User.findByPk(Number(req.user.id))
     const node = await Node.findByPk(Number(req.body.nodeId))
