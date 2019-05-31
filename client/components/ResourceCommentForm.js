@@ -12,13 +12,13 @@ class ResourceCommentForm extends Component {
   }
 
   //Handles Modal
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault()
     if (this.state.content.length < 0) {
       //prevents
       console.log()
     }
-    this.props.postComment({
+    await this.props.postComment({
       content: this.state.content,
       userId: this.props.user.id,
       resourceId: Number(this.props.resourceId),

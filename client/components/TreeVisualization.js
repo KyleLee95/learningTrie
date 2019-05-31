@@ -178,12 +178,15 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    if (JSON.stringify(node) !== JSON.stringify(this.state.selected) && JSON.stringify(node) !== JSON.stringify(this.state.target)) {
+    if (
+      JSON.stringify(node) !== JSON.stringify(this.state.selected) &&
+      JSON.stringify(node) !== JSON.stringify(this.state.target)
+    ) {
       console.log(node)
       console.log(this.state.selected)
       await this.props.putNode(node)
     } else {
-     console.log("A")
+      console.log('A')
     }
   }
 

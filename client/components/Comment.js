@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {delComment, putComment} from '../store/comment'
+import moment from 'moment'
 class Comment extends Component {
   constructor(props, context) {
     super(props, context)
@@ -75,7 +76,7 @@ class Comment extends Component {
                         this.props.comment.user.lastName
                       }`
                     : ''}{' '}
-                  | Posted on: {this.props.comment.postedAt}
+                  | posted: {moment(this.props.comment.createdAt).fromNow()}
                 </Card.Title>
                 <Card.Body>{this.props.comment.content}</Card.Body>
               </Card.Body>
