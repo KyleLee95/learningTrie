@@ -17,6 +17,9 @@ const Edge = db.define('edge', {
   type: {
     type: Sequelize.STRING,
     defaultValue: 'emptyEdge'
+  },
+  handleText: {
+    type: Sequelize.STRING
   }
 })
 

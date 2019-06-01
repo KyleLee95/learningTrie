@@ -1,4 +1,5 @@
 /* eslint-disable complexity */
+/* eslint-disable max-statements */
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -13,7 +14,7 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Modal, Button, Form, Row, Col, Tabs, Tab} from 'react-bootstrap'
+import {Modal, Button, Card, Form, Row, Col, Tabs, Tab} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -65,12 +66,29 @@ const GraphConfig = {
     emptyEdge: {
       // required to show empty edges
       shapeId: '#emptyEdge',
+
       shape: (
         <symbol viewBox="0 0 50 50" id="emptyEdge" key="0">
           <circle cx="25" cy="25" r="8" fill="currentColor">
-            {' '}
+            {''}
           </circle>
         </symbol>
+      )
+    },
+    labeledEdge: {
+      shapeId: '#labeledEdge',
+      shape: (
+        // <svg viewBox="0 0 100 100">
+        <symbol
+          width="200000000000"
+          height="20000000000"
+          viewBox="0 0 55 25"
+          id="labeledEdge"
+          key="0"
+        >
+          <circle cx="25" cy="25" r="25" fill="currentColor" />
+        </symbol>
+        // </svg>
       )
     }
   }
@@ -92,6 +110,7 @@ class TreeVisualization extends Component {
       editShow: false,
       resourceShow: false,
       recommendShow: false,
+      edgeLabelShow: false,
       target: {}
     }
     //Edge method bindings
@@ -125,6 +144,11 @@ class TreeVisualization extends Component {
     this.handleRecommendClose = this.handleRecommendClose.bind(this)
     this.handleRecommendSubmit = this.handleRecommendSubmit.bind(this)
     this.handleRecommendChange = this.handleRecommendChange.bind(this)
+    //Edge Label Modal
+    this.handleEdgeLabelShow = this.handleEdgeLabelShow.bind(this)
+    this.handleEdgeLabelClose = this.handleEdgeLabelClose.bind(this)
+    this.handleEdgeLabelSubmit = this.handleEdgeLabelSubmit.bind(this)
+    this.handleEdgeLabelChange = this.handleEdgeLabelChange.bind(this)
   }
 
   //COMPONENT METHODS
@@ -248,9 +272,15 @@ class TreeVisualization extends Component {
 
   onSelectEdge(edge) {
     //select edge also selects the node that has the same ID as the edge
-    this.setState({
-      selected: edge
-    })
+    if (edge !== null && this.state.selected.id !== edge.id) {
+      //set selected node
+      this.setState({
+        selected: edge
+      })
+    } else if (edge !== null && this.state.selected.id === edge.id) {
+      //set selected node
+      this.handleEdgeLabelShow()
+    }
   }
 
   canDeleteEdge() {
@@ -358,6 +388,34 @@ class TreeVisualization extends Component {
     console.log('A')
   }
   handleRecommendChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  //EDGE LABEL MODAL HANDLERS
+
+  handleEdgeLabelShow() {
+    this.setState({
+      edgeLabelShow: true
+    })
+  }
+  handleEdgeLabelClose() {
+    this.setState({
+      edgeLabelShow: false
+    })
+  }
+  async handleEdgeLabelSubmit(e) {
+    e.preventDefault()
+    await this.props.putEdge({
+      edge: {
+        id: this.state.selected.id,
+        target: this.state.selected.target,
+        handleText: this.state.handleText
+      }
+    })
+  }
+  handleEdgeLabelChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -761,6 +819,40 @@ class TreeVisualization extends Component {
             </Modal>
           </Form>
           {/* End Recommend Resource Modal */}
+          {/* Edge Label Modal */}
+          <Form>
+            <Modal
+              show={this.state.edgeLabelShow}
+              onHide={this.handleEdgeLabelClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Associtation Label</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Associtation Label</Form.Label>
+                  <Form.Control
+                    name="handleText"
+                    type="handleText"
+                    placeholder="Enter Assocation Label"
+                    onChange={this.handleEdgeLabelChange}
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.edgeLabelClose}>
+                    Close
+                  </Button>
+                  <Button variant="submit" onClick={this.handleEdgeLabelSubmit}>
+                    Submit
+                  </Button>
+                </React.Fragment>
+              </Modal.Footer>
+            </Modal>
+          </Form>
+          {/* End Edge Label Modal */}
         </Row>
       </ScrollLock>
     )

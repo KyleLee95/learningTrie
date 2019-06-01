@@ -8,7 +8,8 @@ const Edge = require('./edge')
 const Tag = require('./tag')
 const Message = require('./message')
 const Conversation = require('./conversation')
-const Link = require('./Link')
+const Link = require('./link')
+const Recommendation = require('./recommendations')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -66,8 +67,10 @@ Conversation.belongsToMany(User, {through: 'userConversation'})
 
 //Link
 Link.hasMany(Comment)
-// Link.hasMany(Resource)
 Link.belongsToMany(Resource, {through: 'resourceLink'})
+
+//Recommendation
+Recommendation.belongsToMany(User, {through: 'recommendedResources'})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,

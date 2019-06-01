@@ -47,10 +47,12 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     const edge = await Edge.findByPk(req.body.edge.id)
     const updatedEdge = await edge.update({
-      target: req.body.edge.target
+      target: req.body.edge.target,
+      handleText: req.body.edge.handleText
     })
     res.status(200).json(updatedEdge)
   } catch (err) {
