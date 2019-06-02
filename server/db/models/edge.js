@@ -19,7 +19,8 @@ const Edge = db.define('edge', {
     defaultValue: 'emptyEdge'
   },
   handleText: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: 'Double click to edit'
   }
 })
 

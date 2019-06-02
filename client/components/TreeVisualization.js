@@ -35,17 +35,17 @@ const GraphConfig = {
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
-          <circle cx="50" cy="50" r="45" />
+          <circle cx="50" cy="50" r="45" fill="" />
         </symbol>
       )
     },
     custom: {
       // required to show empty nodes
-      typeText: 'Custom',
+      typeText: 'target',
       shapeId: '#custom', // relates to the type property of a node
       shape: (
-        <symbol viewBox="0 0 50 25" id="custom" key="0">
-          <ellipse cx="50" cy="25" rx="50" ry="25" />
+        <symbol viewBox="0 0 100 100" id="custom" key="0">
+          <circle cx="50" cy="50" r="45" fill="currentColor" />
         </symbol>
       )
     },
@@ -56,7 +56,7 @@ const GraphConfig = {
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
-          <circle cx="50" cy="50" r="45" fill="#ffcecc" />
+          <circle cx="50" cy="50" r="45" fill="currentColor" />
         </symbol>
       )
     }
@@ -68,8 +68,8 @@ const GraphConfig = {
       shapeId: '#emptyEdge',
 
       shape: (
-        <symbol viewBox="0 0 50 50" id="emptyEdge" key="0">
-          <circle cx="25" cy="25" r="8" fill="currentColor">
+        <symbol viewBox="0 0 100 100" id="emptyEdge" key="0">
+          <circle cx="50" cy="50" r="49" fill="currentColor">
             {''}
           </circle>
         </symbol>
@@ -78,7 +78,6 @@ const GraphConfig = {
     labeledEdge: {
       shapeId: '#labeledEdge',
       shape: (
-        // <svg viewBox="0 0 100 100">
         <symbol
           width="200000000000"
           height="20000000000"
@@ -86,9 +85,8 @@ const GraphConfig = {
           id="labeledEdge"
           key="0"
         >
-          <circle cx="25" cy="25" r="25" fill="currentColor" />
+          <circle cx="25" cy="25" r="25" fill="#000000" />
         </symbol>
-        // </svg>
       )
     }
   }
@@ -202,35 +200,66 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    if (
-      JSON.stringify(node) !== JSON.stringify(this.state.selected) &&
-      JSON.stringify(node) !== JSON.stringify(this.state.target)
-    ) {
-      console.log(node)
-      console.log(this.state.selected)
-      await this.props.putNode(node)
-    } else {
-      console.log('A')
-    }
+    // const id = node.id
+    // const selectedX = this.state.selected.x
+    // const selectedY = this.state.selected.y
+    // console.log(selectedX)
+    // console.log(id)
+    // if (id === this.state.selected.id) {
+    // if (node.x !== selectedX || node.y !== selectedY) {
+    await this.props.putNode(node)
+    //   }
+    // }
+
+    // if (this.state.selected.id === undefined) {
+    //   return ''
+    // } else if (
+    //   this.state.selected.id !== undefined &&
+    //   this.state.target.id === undefined
+    // ) {
+    //   for (let key in node) {
+    //     if (node[key] !== this.state.selected[key]) {
+    //       await this.props.putNode(node)
+    //     }
+    //   }
+    // } else if (
+    //   this.state.selected.id !== undefined &&
+    //   this.state.target.id === undefined
+    // ) {
+    //   return ''
+    // } else if (
+    //   this.state.selected.id !== undefined &&
+    //   this.state.target.id !== undefined
+    // ) {
+    //   for (let key in this.state.target) {
+    //     if (this.state.target[key] !== this.state.target[key]) {
+    //       console.log('A')
+    //       await this.props.putNode(this.state.target)
+    //     }
+    //   }
+    // }
   }
 
   //Kinda works. Once a node is selected you can click it again to trigger the modal.
   //This works for now but we can do better.
   async onSelectNode(node) {
-    if (
-      this.state.selected.id !== undefined &&
-      node !== null &&
-      node.id !== this.state.selected.id
-      //selects a target node
-    ) {
-      this.setState({
-        target: node
-      })
+    // if (
+    //   this.state.selected.id !== undefined &&
+    //   node !== null &&
+    //   node.id !== this.state.selected.id
+    //selects a target node
+    // ) {
+    //   this.setState({
+    //     target: node
+    //   })
 
-      console.log('target', this.state.target)
-      console.log('selected', this.state.selected)
-      return ''
-    } else if (node !== null && this.state.selected.id === node.id) {
+    // this.state.target.type = 'custom'
+
+    // console.log('target', this.state.target)
+    // console.log('selected', this.state.selected)
+    // return ''
+    // } else
+    if (node !== null && this.state.selected.id === node.id) {
       //shows modal for selected node
       this.handleShow()
     } else if (node !== null && this.state.selected.id !== node.id) {
@@ -243,12 +272,13 @@ class TreeVisualization extends Component {
       //deselect node
       //'return' prevents null error message when clicking on the grid to deselect a node.
       //by setting selected to an empty object
-
+      // this.state.target.type = 'empty'
+      // console.log(this.state.target.type)
+      // console.log('after', this.state.target)
       this.setState({
         selected: {},
         target: {}
       })
-      // return
     }
   }
 
@@ -298,15 +328,16 @@ class TreeVisualization extends Component {
     return true
   }
 
-  onCreateEdge(sourceNode, targetNode) {
+  async onCreateEdge(sourceNode, targetNode) {
     const type = 'emptyEdge'
     const viewEdge = {
       type,
       source: sourceNode,
       targetNode: targetNode,
-      treeId: this.props.trees[0].id
+      treeId: this.props.trees[0].id,
+      handleText: this.state.handleText
     }
-    this.props.postEdge(viewEdge)
+    await this.props.postEdge(viewEdge)
   }
 
   //END EDGE HANDLERS
@@ -393,7 +424,30 @@ class TreeVisualization extends Component {
     })
   }
 
-  //EDGE LABEL MODAL HANDLERS
+  // //EDGE LABEL MODAL HANDLERS
+
+  // handleEdgeLabelShow() {
+  //   this.setState({
+  //     edgeLabelShow: true
+  //   })
+  // }
+  // handleEdgeLabelClose() {
+  //   this.setState({
+  //     edgeLabelShow: false
+  //   })
+  // }
+  // handleEdgeLabelSubmit() {
+  //   this.setState({
+  //     edgeLabelShow: false
+  //   })
+  // }
+  // handleEdgeLabelChange(e) {
+  //   this.setState({
+  //     [e.target.name]: e.target.value
+  //   })
+  // }
+
+  //EDGE Edit LABEL MODAL HANDLERS
 
   handleEdgeLabelShow() {
     this.setState({
@@ -414,6 +468,7 @@ class TreeVisualization extends Component {
         handleText: this.state.handleText
       }
     })
+    this.handleEdgeLabelClose()
   }
   handleEdgeLabelChange(e) {
     this.setState({
@@ -455,20 +510,34 @@ class TreeVisualization extends Component {
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
-                <Button
+                {/* <Button
                   variant="primary"
-                  onClick={() =>
-                    this.props.postEdge({
-                      type: 'emptyEdge',
-                      source: this.state.selected,
-                      targetNode: this.state.target,
-                      treeId: this.props.trees[0].id
-                    })
-                  }
+                  onClick={() => {
+                    var keyboardEvent = document.createEvent('KeyboardEvent')
+                    var initMethod =
+                      typeof keyboardEvent.initKeyboardEvent !== 'undefined'
+                        ? 'initKeyboardEvent'
+                        : 'initKeyEvent'
+
+                    keyboardEvent[initMethod](
+                      'keydown', // event type : keydown, keyup, keypress
+                      true, // bubbles
+                      true, // cancelable
+                      window, // viewArg: should be window
+                      false, // ctrlKeyArg
+                      false, // altKeyArg
+                      true, // shiftKeyArg
+                      false, // metaKeyArg
+                      40, // keyCodeArg : unsigned long the virtual key code, else 0
+                      0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+                    )
+                    document.dispatchEvent(keyboardEvent)
+                    console.log('A')
+                  }}
                 >
                   Add Edge
-                </Button>
-                <br />
+                </Button> */}
+                {/* <br />
                 <br />
                 <Button
                   variant="primary"
@@ -480,7 +549,7 @@ class TreeVisualization extends Component {
                   }
                 >
                   Clear Selected Nodes
-                </Button>
+                </Button> */}
               </Col>
               <Col xs={11}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>

@@ -40,14 +40,13 @@ router.post('/', async (req, res, next) => {
     await node.addEdge(edge)
     const learningTree = await LearningTree.findByPk(req.body.treeId)
     await learningTree.addEdge(edge)
-    res.json(edge)
+    res.status(200).json(edge)
   } catch (err) {
     next(err)
   }
 })
 
 router.put('/', async (req, res, next) => {
-  console.log(req.body)
   try {
     const edge = await Edge.findByPk(req.body.edge.id)
     const updatedEdge = await edge.update({
