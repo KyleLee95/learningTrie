@@ -1,12 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-
+// const DataTypes = require('sequelize').DataTypes
 const Node = db.define('node', {
-  id: {
-    type: Sequelize.BIGINT,
-    primaryKey: true,
-    autoIncrement: true
-  },
   title: {
     type: Sequelize.STRING,
     allowNull: false
@@ -25,6 +20,11 @@ const Node = db.define('node', {
   },
   y: {
     type: Sequelize.FLOAT
+  },
+  uuid: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
   }
 })
 

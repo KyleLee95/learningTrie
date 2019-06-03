@@ -35,7 +35,7 @@ export const getNodes = treeId => async dispatch => {
 
 export const delNode = node => async dispatch => {
   try {
-    await axios.delete(`/api/nodes/${node.id}`, {data: {node: node}})
+    await axios.delete(`/api/nodes/${node.uuid}`, {data: {node: node}})
     dispatch(removeNode(node))
   } catch (err) {
     console.error(err)
@@ -68,11 +68,11 @@ export default function(state = defaultNodes, action) {
     case GET_NODES:
       return action.node
     case REMOVE_NODE:
-      return state.filter(node => node.id !== action.node.id)
+      return state.filter(node => node.uuid !== action.node.uuid)
     case UPDATE_NODE:
       return [
         ...state.filter(node => {
-          return node.id !== action.node.id
+          return node.uuid !== action.node.uuid
         }),
         action.node
       ]
