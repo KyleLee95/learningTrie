@@ -320,13 +320,19 @@ class TreeVisualization extends Component {
       })
     } else if (edge !== null && this.state.selected.id === edge.id) {
       //set selected node
-      this.handleEdgeLabelShow()
+      if (this.props.user.id === this.props.trees[0].ownerId) {
+        this.handleEdgeLabelShow()
+      } else {
+        return ''
+      }
     }
   }
 
   canDeleteEdge() {
     if (this.props.user.id === this.props.trees[0].ownerId) {
       return true
+    } else {
+      return false
     }
   }
 
@@ -337,13 +343,15 @@ class TreeVisualization extends Component {
         selected: {}
       })
     } else {
-      return ''
+      return false
     }
   }
 
   canCreateEdge(startNode, endNode) {
     if (this.props.user.id === this.props.trees[0].ownerId) {
       return true
+    } else {
+      return false
     }
   }
 
@@ -443,30 +451,7 @@ class TreeVisualization extends Component {
     })
   }
 
-  // //EDGE LABEL MODAL HANDLERS
-
-  // handleEdgeLabelShow() {
-  //   this.setState({
-  //     edgeLabelShow: true
-  //   })
-  // }
-  // handleEdgeLabelClose() {
-  //   this.setState({
-  //     edgeLabelShow: false
-  //   })
-  // }
-  // handleEdgeLabelSubmit() {
-  //   this.setState({
-  //     edgeLabelShow: false
-  //   })
-  // }
-  // handleEdgeLabelChange(e) {
-  //   this.setState({
-  //     [e.target.name]: e.target.value
-  //   })
-  // }
-
-  //EDGE Edit LABEL MODAL HANDLERS
+  //EDGE LABEL MODAL HANDLERS
 
   handleEdgeLabelShow() {
     this.setState({

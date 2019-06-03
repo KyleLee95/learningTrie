@@ -12,8 +12,8 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const resource = await Resource.findAll()
-    res.status(200).json(resource)
+    const recommendation = await Recommendation.findAll()
+    res.status(200).json(recommendation)
   } catch (err) {
     next(err)
   }
@@ -21,13 +21,16 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const resource = await Resource.findByPk(req.params.id, {
-      include: [
-        {model: Link, through: 'resourceLink', include: [{model: Comment}]}
-      ]
-    })
+    const recommendation = await recommendation.findByPk(
+      req.params.id
+      //   , {
+      //   include: [
+      //     {model: Link, through: 'resourceLink', include: [{model: Comment}]}
+      //   ]
+      // }
+    )
     // console.log(Object.keys(resource.__proto__))
-    res.status(200).json(resource)
+    res.status(200).json(recommendation)
   } catch (err) {
     next(err)
   }

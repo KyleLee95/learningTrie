@@ -43,7 +43,6 @@ export const getSingleResource = resourceId => async dispatch => {
 }
 
 export const delResource = resource => async dispatch => {
-  console.log(resource)
   try {
     const res = await axios.delete(`/api/resources/${resource.resource.id}`, {
       data: {resource: resource}
