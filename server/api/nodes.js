@@ -16,7 +16,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const node = await Node.create({
-      id: req.body.id,
+      // id: req.body.id,
       title: req.body.title,
       description: req.body.description,
       type: req.body.type,
@@ -35,7 +35,7 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    const node = await Node.findByPk(req.body.id)
+    const node = await Node.findByPk(req.body.uuid)
     const updatedNode = await node.update({
       title: req.body.title,
       description: req.body.description,
@@ -48,11 +48,11 @@ router.put('/', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:uuid', async (req, res, next) => {
   try {
     await Node.destroy({
       where: {
-        id: req.params.id
+        uuid: req.params.uuid
       }
     })
     res.status(200).json(req.params.id)
