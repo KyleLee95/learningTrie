@@ -28,15 +28,12 @@ class NewNode extends Component {
   }
 
   async handleSubmit() {
-    const id = Date.now()
-
     this.setState({
       show: false
     })
     await this.props.createNode(
       this.state.title,
       this.state.description,
-      id,
       this.state.resource
     )
   }

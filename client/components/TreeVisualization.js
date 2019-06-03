@@ -278,8 +278,8 @@ class TreeVisualization extends Component {
       // console.log(this.state.target.type)
       // console.log('after', this.state.target)
       this.setState({
-        selected: {},
-        target: {}
+        selected: {}
+        // target: {}
       })
     }
   }
@@ -913,7 +913,7 @@ class TreeVisualization extends Component {
               </Modal.Body>
               <Modal.Footer>
                 <React.Fragment>
-                  <Button variant="submit" onClick={this.edgeLabelClose}>
+                  <Button variant="submit" onClick={this.handleEdgeLabelClose}>
                     Close
                   </Button>
                   <Button variant="submit" onClick={this.handleEdgeLabelSubmit}>

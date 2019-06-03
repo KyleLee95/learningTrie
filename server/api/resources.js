@@ -48,7 +48,7 @@ router.post('/', async (req, res, next) => {
       where: {url: req.body.link, shortUrl: shortUrl}
     })
     const user = await User.findByPk(Number(req.user.id))
-    const node = await Node.findByPk(Number(req.body.nodeId))
+    const node = await Node.findByPk(req.body.nodeId)
     await link[0].addResource(resource)
     await resource.addNode(node)
     await resource.addUser(user)

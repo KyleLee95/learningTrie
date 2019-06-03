@@ -37,7 +37,7 @@ router.post('/', async (req, res, next) => {
       target: req.body.targetNode.id,
       type: req.body.type
     })
-    const node = await Node.findByPk(req.body.source.uuid)
+    const node = await Node.findByPk(req.body.source.id)
     await node.addEdge(edge)
     const learningTree = await LearningTree.findByPk(req.body.treeId)
     await learningTree.addEdge(edge)

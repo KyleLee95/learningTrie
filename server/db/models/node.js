@@ -3,8 +3,9 @@ const db = require('../db')
 // const DataTypes = require('sequelize').DataTypes
 const Node = db.define('node', {
   id: {
-    type: Sequelize.BIGINT,
-    autoIncrement: true
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
   },
   title: {
     type: Sequelize.STRING,
@@ -24,12 +25,13 @@ const Node = db.define('node', {
   },
   y: {
     type: Sequelize.FLOAT
-  },
-  uuid: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true
   }
+  // ,
+  // uuid: {
+  //   type: Sequelize.UUID,
+  //   defaultValue: Sequelize.UUIDV4,
+  //   primaryKey: true
+  // }
 })
 
 module.exports = Node

@@ -8,11 +8,11 @@ const Edge = db.define('edge', {
     autoIncrement: true
   },
   source: {
-    type: Sequelize.BIGINT,
+    type: Sequelize.UUID,
     allowNull: false
   },
   target: {
-    type: Sequelize.BIGINT
+    type: Sequelize.UUID
   },
   type: {
     type: Sequelize.STRING,
