@@ -1,4 +1,5 @@
 import axios from 'axios'
+import history from '../history'
 /**
  * ACTION TYPES
  */
@@ -80,6 +81,16 @@ export const putRecommendation = recommendation => async dispatch => {
   try {
     const res = await axios.put('/api/recommendations', recommendation)
     dispatch(updateRecommendation(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const convertRecommendationToResource = recommendation => async dispatch => {
+  try {
+    await axios.delete(`/api/recommendations/${recommendation.id}`)
+    const res = await axios.post(`/api/resources/`, recommendation)
+    history.push(`/resource/${res.data.id}`)
   } catch (err) {
     console.error(err)
   }

@@ -6,7 +6,7 @@ import {
   getSingleRecommendation,
   delRecommendation,
   putRecommendation,
-  postResource
+  convertRecommendationToResource
 } from '../store/recommendation'
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
@@ -141,7 +141,16 @@ class Recommendation extends Component {
           </Button>
           {/* TODO: conditional rendering for button
           */}
-          <Button variant="submit">Add to Resources</Button>
+          <Button
+            variant="submit"
+            onClick={() =>
+              this.props.convertRecommendationToResource(
+                this.props.recommendation
+              )
+            }
+          >
+            Add to Resources
+          </Button>
         </Row>
 
         <hr />
@@ -221,7 +230,8 @@ const mapDispatch = dispatch => {
       dispatch(getSingleRecommendation(recommendationId)),
     postResource: resource => dispatch(postResource(resource)),
     // delResource: resource => dispatch(delResource(resource)),
-    // putResource: resource => dispatch(putResource(resource)),
+    convertRecommendationToResource: recommendation =>
+      dispatch(convertRecommendationToResource(recommendation)),
     putRecommendation: recommendation =>
       dispatch(putRecommendation(recommendation)),
     getComments: resourceId => dispatch(getComments(resourceId)),

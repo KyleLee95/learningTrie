@@ -50,7 +50,6 @@ router.post('/', async (req, res, next) => {
     await link[0].addRecommendation(recommendation)
     await recommendation.addNode(node)
     await recommendation.addUser(user)
-    // await resource.setResourceLink(link[0])
     await user.addRecommendation(recommendation)
     await node.addRecommendation(recommendation)
 
@@ -78,16 +77,16 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const node = await Node.findByPk(req.body.resource.resource.nodeId, {
-      include: [{model: LearningTree}]
-    })
-    await Resource.destroy({
+    // const node = await Node.findByPk(req.body.resource.resource.nodeId, {
+    //   include: [{model: LearningTree}]
+    // })
+    await Recommendation.destroy({
       where: {
         id: req.params.id
       }
     })
 
-    res.status(200).json(node)
+    res.status(200).json(Recommendation)
   } catch (err) {
     next(err)
   }
