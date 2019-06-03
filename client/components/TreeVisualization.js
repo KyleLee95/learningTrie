@@ -178,41 +178,48 @@ class TreeVisualization extends Component {
   }
 
   async onCreateNode(x, y) {
-    const type = 'empty'
-    // const counter = 1000
-    let id = Date.now()
-    // if (this.props.nodes.length === 0) {
-    //   id = Date.now()
-    // } else {
-    //   id = Date.now()
-    // }
-    const viewNode = {
-      //prevents the node and edge with the same ID from being selected
-      id: id,
-      title: 'Double Click To Edit',
-      nodeType: 'Root',
-      type,
-      x: x,
-      // 796.4899291992188,,
-      y: y,
-      // 407.50421142578125,
-      treeId: this.props.trees[0].id
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      const type = 'empty'
+      // const counter = 1000
+      let id = Date.now()
+      // if (this.props.nodes.length === 0) {
+      //   id = Date.now()
+      // } else {
+      //   id = Date.now()
+      // }
+      const viewNode = {
+        //prevents the node and edge with the same ID from being selected
+        id: id,
+        title: 'Double Click To Edit',
+        nodeType: 'Root',
+        type,
+        x: x,
+        // 796.4899291992188,,
+        y: y,
+        // 407.50421142578125,
+        treeId: this.props.trees[0].id
+      }
+      await this.props.postNode(viewNode)
+    } else {
+      return ''
     }
-    await this.props.postNode(viewNode)
   }
 
   async onUpdateNode(node) {
-    // const id = node.id
-    // const selectedX = this.state.selected.x
-    // const selectedY = this.state.selected.y
-    // console.log(selectedX)
-    // console.log(id)
-    // if (id === this.state.selected.id) {
-    // if (node.x !== selectedX || node.y !== selectedY) {
-    await this.props.putNode(node)
-    //   }
-    // }
-
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      // const id = node.id
+      // const selectedX = this.state.selected.x
+      // const selectedY = this.state.selected.y
+      // console.log(selectedX)
+      // console.log(id)
+      // if (id === this.state.selected.id) {
+      // if (node.x !== selectedX || node.y !== selectedY) {
+      await this.props.putNode(node)
+      //   }
+      // }
+    } else {
+      return ''
+    }
     // if (this.state.selected.id === undefined) {
     //   return ''
     // } else if (
@@ -285,13 +292,15 @@ class TreeVisualization extends Component {
   }
 
   async onDeleteNode(node) {
-    await this.setState({
-      selected: {}
-    })
-    await this.props.delEdge(node)
-    await this.props.delNode(node)
-
-    await this.props.getEdges(Number(this.props.match.params.id))
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      await this.setState({
+        selected: {}
+      })
+      await this.props.delNode(node)
+      await this.props.delEdge(node)
+    } else {
+      return ''
+    }
   }
 
   //END NODE HANDLERs
@@ -316,18 +325,26 @@ class TreeVisualization extends Component {
   }
 
   canDeleteEdge() {
-    return true
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      return true
+    }
   }
 
   async onDeleteEdge() {
-    await this.props.delSelectedEdge(this.state.selected)
-    this.setState({
-      selected: {}
-    })
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      await this.props.delSelectedEdge(this.state.selected)
+      this.setState({
+        selected: {}
+      })
+    } else {
+      return ''
+    }
   }
 
   canCreateEdge(startNode, endNode) {
-    return true
+    if (this.props.user.id === this.props.trees[0].ownerId) {
+      return true
+    }
   }
 
   async onCreateEdge(sourceNode, targetNode) {
@@ -512,6 +529,26 @@ class TreeVisualization extends Component {
               <Col xs={1}>
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
+                <Button
+                  onClick={async () => {
+                    const node = {
+                      id: this.state.selected.id,
+                      title: this.state.selected.title,
+                      description: this.state.selected.description,
+                      nodeType: this.state.selected.nodeType,
+                      type: this.state.selected.type,
+                      x: this.state.selected.x,
+                      y: this.state.selected.y
+                    }
+                    this.setState({
+                      selected: {}
+                    })
+                    await this.props.delEdge(node)
+                    await this.props.delNode(node)
+                  }}
+                >
+                  Delete Node
+                </Button>
                 {/* <Button
                   variant="primary"
                   onClick={() => {

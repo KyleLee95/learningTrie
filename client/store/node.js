@@ -68,6 +68,7 @@ export default function(state = defaultNodes, action) {
     case GET_NODES:
       return action.node
     case REMOVE_NODE:
+      console.log(action.node.id)
       return state.filter(node => node.id !== action.node.id)
     case UPDATE_NODE:
       return [

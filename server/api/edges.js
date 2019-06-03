@@ -30,7 +30,6 @@ router.delete('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log(req.body)
   try {
     const edge = await Edge.create({
       source: req.body.source.id,

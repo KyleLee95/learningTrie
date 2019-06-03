@@ -52,7 +52,6 @@ router.post('/', async (req, res, next) => {
     await link[0].addResource(resource)
     await resource.addNode(node)
     await resource.addUser(user)
-    // await resource.setResourceLink(link[0])
     await user.addResource(resource)
     await node.addResource(resource)
 
@@ -66,7 +65,6 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.body.id)
-    console.log(req.body.type)
     await resource.update({
       title: req.body.title,
       description: req.body.description,

@@ -26,12 +26,6 @@ const Node = db.define('node', {
   y: {
     type: Sequelize.FLOAT
   }
-  // ,
-  // uuid: {
-  //   type: Sequelize.UUID,
-  //   defaultValue: Sequelize.UUIDV4,
-  //   primaryKey: true
-  // }
 })
 
 module.exports = Node
