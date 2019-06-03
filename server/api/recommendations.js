@@ -33,7 +33,6 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
-    console.log('req.body', req.body)
     let recommendation = await Recommendation.create({
       title: req.body.title,
       link: req.body.link,
@@ -58,22 +57,20 @@ router.post('/', async (req, res, next) => {
     res.status(201).json(recommendation)
   } catch (err) {
     next(err)
-    console.error(err)
   }
 })
 
 router.put('/', async (req, res, next) => {
   try {
-    const resource = await Resource.findByPk(req.body.id)
-    console.log(req.body.type)
-    await resource.update({
+    const recommendation = await Recommendation.findByPk(req.body.id)
+    await recommendation.update({
       title: req.body.title,
       description: req.body.description,
       link: req.body.link,
       type: req.body.type
     })
 
-    res.status(200).json(resource)
+    res.status(200).json(recommendation)
   } catch (err) {
     next(err)
   }

@@ -4,8 +4,8 @@ import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {
   getSingleRecommendation,
-  delResource,
-  putResource,
+  delRecommendation,
+  putRecommendation,
   postResource
 } from '../store/recommendation'
 import {getLink} from '../store/link'
@@ -27,7 +27,7 @@ class Recommendation extends Component {
   async componentDidMount() {
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleRecommendation(Number(this.props.match.params.id))
-    // await this.props.getComments(Number(this.props.link.id))
+    await this.props.getComments(Number(this.props.link.id))
   }
 
   handleShow() {
@@ -48,7 +48,7 @@ class Recommendation extends Component {
   }
 
   handleSubmit() {
-    this.props.putResource({
+    this.props.putRecommendation({
       id: Number(this.props.match.params.id),
       title: this.state.title,
       description: this.state.description,
@@ -139,25 +139,17 @@ class Recommendation extends Component {
           <Button onClick={this.handleShow} variant="submit">
             Edit
           </Button>
+          {/* TODO: conditional rendering for button
+          */}
+          <Button variant="submit">Add to Resources</Button>
         </Row>
-        <Row>
-          <Col xs={12}>
-            <ConnectedResourceCommentForm
-              resourceId={this.props.match.params.id}
-              linkId={
-                this.props.resource !== undefined &&
-                this.props.resource.links !== undefined &&
-                this.props.resource.links.length > 0
-                  ? this.props.resource.links[0].id
-                  : ''
-              }
-            />
-          </Col>
-        </Row>
+
         <hr />
         <Row>
           <Col xs={12}>
-            <strong>Discussion: </strong>
+            <strong>
+              What people have said about: {this.props.recommendation.title}:{' '}
+            </strong>
             <hr />
             {this.props.comments && this.props.comments.length > 0
               ? this.props.comments.map(comment => {
@@ -227,10 +219,12 @@ const mapDispatch = dispatch => {
   return {
     getSingleRecommendation: recommendationId =>
       dispatch(getSingleRecommendation(recommendationId)),
-    // postResource: resource => dispatch(postResource(resource)),
+    postResource: resource => dispatch(postResource(resource)),
     // delResource: resource => dispatch(delResource(resource)),
     // putResource: resource => dispatch(putResource(resource)),
-    // getComments: resourceId => dispatch(getComments(resourceId)),
+    putRecommendation: recommendation =>
+      dispatch(putRecommendation(recommendation)),
+    getComments: resourceId => dispatch(getComments(resourceId)),
     getLink: resourceId => dispatch(getLink(resourceId))
   }
 }
