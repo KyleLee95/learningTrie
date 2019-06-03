@@ -2,6 +2,10 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 // const DataTypes = require('sequelize').DataTypes
 const Node = db.define('node', {
+  id: {
+    type: Sequelize.BIGINT,
+    autoIncrement: true
+  },
   title: {
     type: Sequelize.STRING,
     allowNull: false

@@ -30,13 +30,14 @@ router.delete('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     const edge = await Edge.create({
       source: req.body.source.id,
       target: req.body.targetNode.id,
       type: req.body.type
     })
-    const node = await Node.findByPk(req.body.source.id)
+    const node = await Node.findByPk(req.body.source.uuid)
     await node.addEdge(edge)
     const learningTree = await LearningTree.findByPk(req.body.treeId)
     await learningTree.addEdge(edge)
