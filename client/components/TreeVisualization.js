@@ -192,8 +192,10 @@ class TreeVisualization extends Component {
       title: 'Double Click To Edit',
       nodeType: 'Root',
       type,
-      x: 796.4899291992188,
-      y: 407.50421142578125,
+      x: x,
+      // 796.4899291992188,,
+      y: y,
+      // 407.50421142578125,
       treeId: this.props.trees[0].id
     }
     await this.props.postNode(viewNode)
