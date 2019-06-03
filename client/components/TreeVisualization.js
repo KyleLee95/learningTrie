@@ -23,6 +23,7 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
+import {postRecommendation, getRecommendations} from '../store/recommendation'
 import {getResources, postResource} from '../store/resource'
 import {ConnectedNewNode, ConnectedResource, ConnectedNewReview} from './index'
 
@@ -277,6 +278,7 @@ class TreeVisualization extends Component {
         selected: node
       })
       await this.props.getResources()
+      await this.props.getRecommendations()
     } else if (node === null) {
       //deselect node
       //'return' prevents null error message when clicking on the grid to deselect a node.
@@ -442,8 +444,16 @@ class TreeVisualization extends Component {
       recommendShow: false
     })
   }
-  handleRecommendSubmit(e) {
-    console.log('A')
+  async handleRecommendSubmit(e) {
+    e.preventDefault()
+    await this.props.postRecommendation({
+      title: this.state.title,
+      description: this.state.description,
+      type: this.state.type,
+      link: this.state.link,
+      nodeId: this.state.selected.id
+    })
+    this.handleRecommendClose()
   }
   handleRecommendChange(e) {
     this.setState({
@@ -712,7 +722,34 @@ class TreeVisualization extends Component {
                           <li key={resource.id}>
                             <Link to={`/resource/${resource.id}`}>
                               {resource.title}
-                            </Link>
+                            </Link>{' '}
+                            ({resource.type})
+                          </li>
+                        )
+                      })
+                  : ''}
+              </ul>
+            </Modal.Body>
+            <Modal.Body>
+              <strong>Resources Recommended by other Users:</strong>
+              <ul>
+                {this.props.recommendations &&
+                this.props.recommendations[0] &&
+                this.props.recommendations[0].id !== undefined
+                  ? this.props.recommendations
+                      .filter(recommendation => {
+                        return (
+                          recommendation.nodeId === this.state.selected.id ||
+                          recommendation.nodeId === null
+                        )
+                      })
+                      .map(recommendation => {
+                        return (
+                          <li key={recommendation.id}>
+                            <Link to={`/recommendation/${recommendation.id}`}>
+                              {recommendation.title}
+                            </Link>{' '}
+                            ({recommendation.type})
                           </li>
                         )
                       })
@@ -958,7 +995,8 @@ const mapState = state => {
     trees: state.tree,
     nodes: state.node,
     edges: state.edge,
-    resources: state.resource
+    resources: state.resource,
+    recommendations: state.recommendation
   }
 }
 
@@ -974,7 +1012,10 @@ const mapDispatch = dispatch => {
     delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
     putEdge: edge => dispatch(putEdge(edge)),
     getResources: () => dispatch(getResources()),
-    postResource: resource => dispatch(postResource(resource))
+    postResource: resource => dispatch(postResource(resource)),
+    postRecommendation: recommendation =>
+      dispatch(postRecommendation(recommendation)),
+    getRecommendations: () => dispatch(getRecommendations())
   }
 }
 

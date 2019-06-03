@@ -12,6 +12,7 @@ router.use('/comments', require('./comments'))
 router.use('/messages', require('./message'))
 router.use('/conversation', require('./conversation'))
 router.use('/links', require('./links'))
+router.use('/recommendations', require('./recommendations'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')

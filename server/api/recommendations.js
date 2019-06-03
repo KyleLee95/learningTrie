@@ -5,8 +5,7 @@ const {
   Node,
   LearningTree,
   User,
-  Link,
-  Comment
+  Link
 } = require('../db/models')
 module.exports = router
 
@@ -21,14 +20,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const recommendation = await recommendation.findByPk(
-      req.params.id
-      //   , {
-      //   include: [
-      //     {model: Link, through: 'resourceLink', include: [{model: Comment}]}
-      //   ]
-      // }
-    )
+    const recommendation = await Recommendation.findByPk(req.params.id, {
+      include: [{model: Link, through: 'recommendationLink'}]
+    })
     // console.log(Object.keys(resource.__proto__))
     res.status(200).json(recommendation)
   } catch (err) {
@@ -39,7 +33,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
-    let resource = await Resource.create({
+    console.log('req.body', req.body)
+    let recommendation = await Recommendation.create({
       title: req.body.title,
       link: req.body.link,
       description: req.body.description,
@@ -52,15 +47,15 @@ router.post('/', async (req, res, next) => {
       where: {url: req.body.link, shortUrl: shortUrl}
     })
     const user = await User.findByPk(Number(req.user.id))
-    const node = await Node.findByPk(Number(req.body.nodeId))
-    await link[0].addResource(resource)
-    await resource.addNode(node)
-    await resource.addUser(user)
+    const node = await Node.findByPk(req.body.nodeId)
+    await link[0].addRecommendation(recommendation)
+    await recommendation.addNode(node)
+    await recommendation.addUser(user)
     // await resource.setResourceLink(link[0])
-    await user.addResource(resource)
-    await node.addResource(resource)
+    await user.addRecommendation(recommendation)
+    await node.addRecommendation(recommendation)
 
-    res.status(201).json(resource)
+    res.status(201).json(recommendation)
   } catch (err) {
     next(err)
     console.error(err)

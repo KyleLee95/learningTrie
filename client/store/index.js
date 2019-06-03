@@ -12,6 +12,7 @@ import tag from './tag'
 import comment from './comment'
 import users from './user'
 import link from './link'
+import recommendation from './recommendation'
 const reducer = combineReducers({
   currUser,
   users,
@@ -22,7 +23,8 @@ const reducer = combineReducers({
   review,
   tag,
   comment,
-  link
+  link,
+  recommendation
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -40,3 +42,4 @@ export * from './tag'
 export * from './comment'
 export * from './user'
 export * from './link'
+export * from './recommendation'

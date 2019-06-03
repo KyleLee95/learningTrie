@@ -13,10 +13,10 @@ import {
   ConnectedTag,
   ConnectedSearchResult,
   ConnectedUserProfile,
-  ConnectedInbox
+  ConnectedInbox,
+  ConnectedRecommendation
 } from './components'
 import {me} from './store'
-import {fetchTrees} from './store/learningTree'
 
 /**
  * COMPONENT
@@ -49,6 +49,7 @@ class Routes extends Component {
         <Route path="/explore" component={ConnectedExplore} />
         <Route exact path="/tag/:id" component={ConnectedTag} />
         <Route path="/user/:id" component={ConnectedUserProfile} />
+        <Route path="/recommendation/:id" component={ConnectedRecommendation} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

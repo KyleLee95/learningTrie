@@ -26,6 +26,7 @@ User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
 User.belongsToMany(Conversation, {through: 'userConversation'})
 User.hasMany(Message)
 User.hasMany(Resource)
+User.hasMany(Recommendation)
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -42,6 +43,7 @@ Comment.belongsTo(Resource)
 
 //Node
 Node.hasMany(Resource)
+Node.hasMany(Recommendation)
 Node.belongsTo(LearningTree)
 Node.belongsToMany(Edge, {through: 'nodeEdge'})
 
@@ -68,9 +70,13 @@ Conversation.belongsToMany(User, {through: 'userConversation'})
 //Link
 Link.hasMany(Comment)
 Link.belongsToMany(Resource, {through: 'resourceLink'})
+Link.belongsToMany(Recommendation, {through: 'recommendationLink'})
 
 //Recommendation
 Recommendation.belongsToMany(User, {through: 'recommendedResources'})
+Recommendation.belongsToMany(Link, {through: 'recommendationLink'})
+Recommendation.belongsToMany(User, {through: 'userRecommendation'})
+Recommendation.belongsToMany(Node, {through: 'nodeRecommendation'})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -89,5 +95,6 @@ module.exports = {
   Tag,
   Conversation,
   Message,
-  Link
+  Link,
+  Recommendation
 }

@@ -75,7 +75,6 @@ export default function(state = defaultUsers, action) {
     case FOLLOW_USER:
       return action.users
     case UNFOLLOW_USER:
-      console.log(action.users)
       return action.users
     // case ADD_USER_TO_TREE:
     // return state

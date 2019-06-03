@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Node, LearningTree, Resource} = require('../db/models')
+const {Node, LearningTree, Resource, Recommendation} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -56,12 +56,17 @@ router.delete('/:id', async (req, res, next) => {
       }
     })
 
+    await Recommendation.destroy({
+      where: {
+        nodeId: req.params.id
+      }
+    })
+
     await Node.destroy({
       where: {
         id: req.params.id
       }
     })
-
     res.status(200).json(req.params.id)
   } catch (err) {
     next(err)
