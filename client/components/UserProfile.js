@@ -261,14 +261,17 @@ class UserProfile extends Component {
                 <Card>
                   <Card.Body>
                     <Row>
-                      <Col xs={4}>
+                      <Col xs={3}>
                         <Card.Title>Title</Card.Title>
                       </Col>
                       <Col xs={4}>
                         <Card.Title>Description</Card.Title>
                       </Col>
-                      <Col xs={4}>
-                        <Card.Title>Tags</Card.Title>
+                      <Col xs={3}>
+                        <Card.Title>Type</Card.Title>
+                      </Col>
+                      <Col xs={2}>
+                        <Card.Title>Comments</Card.Title>
                       </Col>
                     </Row>
                   </Card.Body>
@@ -279,7 +282,7 @@ class UserProfile extends Component {
                         <Card key={resource.id}>
                           <Card.Body>
                             <Row>
-                              <Col xs={4}>
+                              <Col xs={3}>
                                 <Link
                                   to={`/resource/${resource.id}`}
                                   style={{
@@ -287,7 +290,11 @@ class UserProfile extends Component {
                                     color: '#000000'
                                   }}
                                 >
-                                  <Card.Title>{resource.title}</Card.Title>
+                                  <Card.Title>
+                                    {resource.title} ({
+                                      resource.links[0].shortUrl
+                                    })
+                                  </Card.Title>
                                 </Link>
                               </Col>
                               <Col xs={4}>
@@ -308,19 +315,29 @@ class UserProfile extends Component {
                                   </Link>
                                 </Card.Title>
                               </Col>
-                              <Col xs={4}>
-                                <Card.Title>
-                                  {/* {resource.tags.length > 0
-                                    ? resource.tags.map(tag => {
-                                        return (
-                                          <Button variant="light" size="sm">
-                                            TAG
-                                          </Button>
-                                        )
-                                      })
-                                    : 'No Tags'} */}
-                                  TAGS
-                                </Card.Title>
+                              <Col xs={3}>
+                                <Link
+                                  to={`/resource/${resource.id}`}
+                                  style={{
+                                    textDecoration: 'none',
+                                    color: '#000000'
+                                  }}
+                                >
+                                  <Card.Title>{resource.type}</Card.Title>
+                                </Link>
+                              </Col>
+                              <Col xs={2}>
+                                <Link
+                                  to={`/resource/${resource.id}`}
+                                  style={{
+                                    textDecoration: 'none',
+                                    color: '#000000'
+                                  }}
+                                >
+                                  <Card.Title>
+                                    {resource.links[0].comments.length}
+                                  </Card.Title>
+                                </Link>
                               </Col>
                             </Row>
                           </Card.Body>

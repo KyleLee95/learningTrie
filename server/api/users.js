@@ -158,7 +158,7 @@ router.get('/:id', async (req, res, next) => {
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
-        {model: Resource, include: [{model: Link}]}
+        {model: Resource, include: [{model: Link, include: [{model: Comment}]}]}
       ]
     })
     res.status(200).json(users)
