@@ -65,7 +65,7 @@ router.post('/', async (req, res, next) => {
     await user.addComment(comment)
     await comment.setResource(resource)
     await resource.addComment(comment)
-    // console.log('COMMENT', Object.keys(comment.__proto__))
+    console.log('COMMENT', Object.keys(comment.__proto__))
     // console.log('resource', Object.keys(resource.__proto__))
 
     await comment.setLink(link)

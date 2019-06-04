@@ -87,6 +87,9 @@ class Comment extends Component {
                 <Button variant="submit" onClick={this.handleShow}>
                   Edit
                 </Button>
+                <Button variant="submit" onClick={this.handleSubmit}>
+                  Reply
+                </Button>
               </Card.Footer>
             </Card>
           </Col>

@@ -40,6 +40,8 @@ LearningTree.belongsToMany(Tag, {through: 'treeTag'})
 Comment.belongsTo(User)
 Comment.belongsTo(Link)
 Comment.belongsTo(Resource)
+Comment.belongsTo(Comment, {as: 'parent'})
+Comment.belongsTo(Comment, {as: 'child'})
 
 //Node
 Node.hasMany(Resource)
