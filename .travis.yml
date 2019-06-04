@@ -24,6 +24,6 @@ script:
 # deploy:
 #   skip_cleanup: true # prevents travis from deleting the build
 #   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
+#   app: learning-tree-app # see README
 #   api_key:
 #     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
