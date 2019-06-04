@@ -526,7 +526,6 @@ class TreeVisualization extends Component {
         return authId.push(user.id)
       })
     }
-    console.log(authId)
     if (authId.includes(this.props.user.id) === true) {
       isAuthorized = true
     }
@@ -777,9 +776,9 @@ class TreeVisualization extends Component {
             </Modal.Body>
             {/* RENDERS NODE RESOURCE CONTROLS */}
             <Modal.Footer>
-              {this.props.trees[0] &&
-              this.props.trees[0].ownerId &&
-              this.props.user.id === this.props.trees[0].ownerId &&
+              {(this.props.trees[0] &&
+                this.props.trees[0].ownerId &&
+                this.props.user.id === this.props.trees[0].ownerId) ||
               isAuthorized === true ? (
                 // || is an approved ID
                 <React.Fragment>
@@ -889,9 +888,10 @@ class TreeVisualization extends Component {
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                {this.props.trees[0] &&
-                this.props.trees[0].ownerId &&
-                this.props.user.id === this.props.trees[0].ownerId ? (
+                {(this.props.trees[0] &&
+                  this.props.trees[0].ownerId &&
+                  this.props.user.id === this.props.trees[0].ownerId) ||
+                isAuthorized === true ? (
                   <React.Fragment>
                     <Button variant="submit" onClick={this.handleResourceClose}>
                       Close
