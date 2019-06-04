@@ -7,6 +7,7 @@ const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS'
 const REMOVE_RECOMMENDATIONS = 'REMOVE_RECOMMENDATIONS'
 const UPDATE_RECOMMENDATIONS = 'UPDATE_RECOMMENDATIONS'
 const CREATE_RECOMMENDATIONS = 'CREATE_RECOMMENDATIONS'
+const CONVERT_TO_RESOURCE = 'CONVERT_TO_RESOURCE'
 
 /**
  * INITIAL STATE
@@ -31,6 +32,10 @@ const createRecommendation = recommendation => ({
 const updateRecommendation = recommendation => ({
   type: UPDATE_RECOMMENDATIONS,
   recommendation
+})
+
+const convertToResource = () => ({
+  type: CONVERT_TO_RESOURCE
 })
 /**
  * THUNK CREATORS
@@ -80,7 +85,7 @@ export const postRecommendation = recommendation => async dispatch => {
 export const putRecommendation = recommendation => async dispatch => {
   try {
     const res = await axios.put('/api/recommendations', recommendation)
-    dispatch(updateRecommendation(res.data))
+    return dispatch(updateRecommendation(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -88,8 +93,10 @@ export const putRecommendation = recommendation => async dispatch => {
 
 export const convertRecommendationToResource = recommendation => async dispatch => {
   try {
-    await axios.delete(`/api/recommendations/${recommendation.id}`)
     const res = await axios.post(`/api/resources/`, recommendation)
+    await axios.delete(`/api/recommendations/${recommendation.id}`)
+
+    // dispatch(convertToResource())
     history.push(`/resource/${res.data.id}`)
   } catch (err) {
     console.error(err)
@@ -104,6 +111,8 @@ export default function(state = defaultRecommendations, action) {
     case GET_RECOMMENDATIONS:
       return action.recommendation
     case REMOVE_RECOMMENDATIONS:
+      return []
+    case CONVERT_TO_RESOURCE:
       return []
     case UPDATE_RECOMMENDATIONS:
       return action.recommendation
