@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A collaborative concept map based learning application.",
   "engines": {
-    "node": ">= 7.0.0"
+    "node": "12.4.0"
   },
   "main": "index.js",
   "scripts": {

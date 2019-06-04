@@ -110,7 +110,8 @@ class TreeVisualization extends Component {
       resourceShow: false,
       recommendShow: false,
       edgeLabelShow: false,
-      target: {}
+      target: {},
+      shiftDown: false
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -148,6 +149,8 @@ class TreeVisualization extends Component {
     this.handleEdgeLabelClose = this.handleEdgeLabelClose.bind(this)
     this.handleEdgeLabelSubmit = this.handleEdgeLabelSubmit.bind(this)
     this.handleEdgeLabelChange = this.handleEdgeLabelChange.bind(this)
+    //key sim
+    this.KeySimulation = this.KeySimulation.bind(this)
   }
 
   //COMPONENT METHODS
@@ -490,6 +493,42 @@ class TreeVisualization extends Component {
     })
   }
 
+  // shift key sim
+
+  KeySimulation() {
+    var e = document.createEvent('KeyboardEvent')
+    if (e.initKeyboardEvent) {
+      // Chrome, IE
+      e.initKeyboardEvent(
+        'keydown',
+        true,
+        true,
+        document.defaultView,
+        'Shift',
+        0,
+        '',
+        false,
+        ''
+      )
+    } else {
+      // FireFox
+      e.initKeyEvent(
+        'keyup',
+        true,
+        true,
+        document.defaultView,
+        false,
+        false,
+        false,
+        false,
+        13,
+        0
+      )
+    }
+    document.getElementById('empty').dispatchEvent(e)
+    console.log('A')
+  }
+
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -562,33 +601,22 @@ class TreeVisualization extends Component {
                 >
                   Delete Node
                 </Button>
-                {/* <Button
+                <Button
                   variant="primary"
-                  onClick={() => {
-                    var keyboardEvent = document.createEvent('KeyboardEvent')
-                    var initMethod =
-                      typeof keyboardEvent.initKeyboardEvent !== 'undefined'
-                        ? 'initKeyboardEvent'
-                        : 'initKeyEvent'
-
-                    keyboardEvent[initMethod](
-                      'keydown', // event type : keydown, keyup, keypress
-                      true, // bubbles
-                      true, // cancelable
-                      window, // viewArg: should be window
-                      false, // ctrlKeyArg
-                      false, // altKeyArg
-                      true, // shiftKeyArg
-                      false, // metaKeyArg
-                      40, // keyCodeArg : unsigned long the virtual key code, else 0
-                      0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-                    )
-                    document.dispatchEvent(keyboardEvent)
-                    console.log('A')
-                  }}
+                  onClick={this.KeySimulation}
+                  //   () => {
+                  //   this.setState({
+                  //     shiftDown: !this.state.shiftDown
+                  //   })
+                  //   if (this.state.shiftDown === true) {
+                  //     let node = document.getElementById('empty')
+                  //     node.dispatchEvent()
+                  //     console.log(node)
+                  //   }
+                  // }
                 >
                   Add Edge
-                </Button> */}
+                </Button>
                 {/* <br />
                 <br />
                 <Button
