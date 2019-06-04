@@ -511,6 +511,25 @@ class TreeVisualization extends Component {
       'Practice Problem Set',
       'Exercise'
     ]
+
+    let isAuthorized = false
+    let authId = []
+    if (
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].users !== undefined &&
+      this.props.trees[0].users[0] !== undefined &&
+      this.props.trees[0].users[0].id !== undefined
+    ) {
+      this.props.trees[0].users.forEach(user => {
+        return authId.push(user.id)
+      })
+    }
+    console.log(authId)
+    if (authId.includes(this.props.user.id) === true) {
+      isAuthorized = true
+    }
     return (
       <ScrollLock>
         {/* TABS */}
@@ -760,7 +779,8 @@ class TreeVisualization extends Component {
             <Modal.Footer>
               {this.props.trees[0] &&
               this.props.trees[0].ownerId &&
-              this.props.user.id === this.props.trees[0].ownerId ? (
+              this.props.user.id === this.props.trees[0].ownerId &&
+              isAuthorized === true ? (
                 // || is an approved ID
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleClose}>
@@ -774,10 +794,12 @@ class TreeVisualization extends Component {
                     Add Resource
                   </Button>
                 </React.Fragment>
-              ) : (
+              ) : this.props.user.id !== undefined ? (
                 <Button variant="submit" onClick={this.handleRecommendShow}>
                   Recommend Resource
                 </Button>
+              ) : (
+                ''
               )}
               {/* END RENDERS NODE RESOURCE CONTROLS */}
             </Modal.Footer>

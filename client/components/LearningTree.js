@@ -53,7 +53,7 @@ class LearningTree extends Component {
       await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     }
   }
-
+ 
   //BEGIN MODAL METHODS
   async handleSubmit() {
     this.handleCloseEdit()
