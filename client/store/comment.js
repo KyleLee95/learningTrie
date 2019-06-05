@@ -7,6 +7,7 @@ const GET_COMMENTS = 'GET_COMMENTS'
 const REMOVE_COMMENT = 'REMOVE_COMMENT'
 const UPDATE_COMMENT = 'UPDATE_COMMENT'
 const CREATE_COMMENT = 'CREATE_COMMENT'
+const CREATE_REPLY_COMMENT = 'CREATE_REPLY_COMMENT'
 
 /**
  * INITIAL STATE
@@ -20,6 +21,7 @@ const fetchComments = comment => ({type: GET_COMMENTS, comment})
 const removeComment = comment => ({type: REMOVE_COMMENT, comment})
 const createComment = comment => ({type: CREATE_COMMENT, comment})
 const updateComment = comment => ({type: UPDATE_COMMENT, comment})
+const createReply = comment => ({type: CREATE_REPLY_COMMENT, comment})
 /**
  * THUNK CREATORS
  */
@@ -60,6 +62,15 @@ export const putComment = comment => async dispatch => {
   }
 }
 
+export const postReply = comment => async dispatch => {
+  try {
+    const res = await axios.post(`/api/comments/reply`, comment)
+    dispatch(createReply(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -70,7 +81,6 @@ export default function(state = defaultEdges, action) {
     case REMOVE_COMMENT:
       return state.filter(comment => comment.id !== action.comment)
     case UPDATE_COMMENT:
-      console.log(action.comment)
       return [
         ...state.filter(comment => {
           return comment.id !== action.comment.id
@@ -78,6 +88,8 @@ export default function(state = defaultEdges, action) {
         action.comment
       ]
     case CREATE_COMMENT:
+      return [...state, action.comment]
+    case CREATE_REPLY_COMMENT:
       return [...state, action.comment]
     default:
       return state
