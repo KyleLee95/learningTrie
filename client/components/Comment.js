@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {delComment, putComment, postReply} from '../store/comment'
+import {
+  delComment,
+  putComment,
+  postReply,
+  getComments,
+  getReplies
+} from '../store/comment'
 import moment from 'moment'
 class Comment extends Component {
   constructor(props, context) {
@@ -9,7 +15,7 @@ class Comment extends Component {
     this.state = {
       show: false,
       deleteShow: false,
-      replyShow: false
+      replyShow: 'none'
     }
     //Edit Modal
     this.handleChange = this.handleChange.bind(this)
@@ -59,9 +65,9 @@ class Comment extends Component {
       [e.target.name]: e.target.value
     })
   }
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault()
-    this.props.putComment({
+    await this.props.putComment({
       commentId: this.props.comment.id,
       content: this.state.content
     })
@@ -70,41 +76,38 @@ class Comment extends Component {
 
   //reply
 
-  handleReplyShow() {
-    this.setState({
-      replyShow: !this.state.replyShow
-    })
-    console.log(this.state.replyShow)
+  handleReplyShow(id) {
+    let form = document.getElementById(id)
+    console.log(form)
+    form.style.display = 'block'
+
+    // this.setState({
+    //   replyShow: 'block'
+    // })
+    // console.log(this.state.replyShow)
   }
-  handleReplyClose() {
-    this.setState({
-      replyShow: false
-    })
+  handleReplyClose(id) {
+    let form = document.getElementById(id)
+    console.log(form)
+    form.style.display = 'none'
   }
   handleReplyChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
+    // console.log(this.state)
   }
-  handleReplySubmit(parentId) {
-    this.props.postReply({
+  async handleReplySubmit(parentId) {
+    await this.props.postReply({
       parentId,
       resourceId: Number(this.props.resource.id),
       linkId: Number(this.props.link.id),
-      content: 'TEST'
+      content: this.state.reply,
+      isChild: true
     })
-    //Needs comment id
-    console.log()
-    // await this.handleReplyClose()
-  }
 
-  //   <Button
-  //   variant="submit"
-  //   onClick={() => this.handleReplySubmit(this.props.comment.id)}
-  // >
-  //   Reply Submit
-  //   Reply
-  // </Button>
+    await this.handleReplyClose(parentId)
+  }
 
   render() {
     //If the comment has an odd ID #, render it on a white backgroud
@@ -112,7 +115,7 @@ class Comment extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={{span: 9, offSet: 10}}>
+          <Col xs={{span: 12, offset: 0.5}}>
             <Card>
               <Card.Body>
                 <Card.Title>
@@ -126,100 +129,78 @@ class Comment extends Component {
                   | posted: {moment(this.props.comment.createdAt).fromNow()}
                 </Card.Title>
                 <Card.Body>{this.props.comment.content}</Card.Body>
-              </Card.Body>
-              {/* Create conditional render for color of the card like so */}
-              <Card.Footer>
                 <Button variant="submit" onClick={this.handleDeleteShow}>
                   Delete
                 </Button>
                 <Button variant="submit" onClick={this.handleShow}>
                   Edit
                 </Button>
-                <Button variant="submit" onClick={this.handleReplyShow}>
+                <Button
+                  variant="submit"
+                  onClick={() => this.handleReplyShow(this.props.comment.id)}
+                >
                   Reply
                 </Button>
+                {/* \/\/\/\/\/\/\/\ reply form \/\/\/\/\/\/\/\/ */}
+                <Form
+                  id={`${this.props.comment.id.toString()}`}
+                  style={{resize: 'both', display: `${this.state.replyShow}`}}
+                >
+                  <Row>
+                    <Col xs={12}>
+                      <Form.Label>Reply:</Form.Label>
+                      <Form.Control
+                        name="reply"
+                        as="textarea"
+                        rows="5"
+                        cols="50"
+                        style={{resize: 'both'}}
+                        onChange={this.handleReplyChange}
+                      />
 
-                {/* </Card.Footer>
-              <Card.Footer> */}
-
-                {/* \/\/\/\/\/\/\/\/\/\/\/\/\/ Replies go here \/ \/ \/ \/ \/ \/*/}
-                {/* <Row> */}
-                {/* <Col xs={12}> */}
-
-                {this.props.comment.children !== undefined
-                  ? this.props.comment.children.map(child => {
-                      return (
-                        <Card key={child.id}>
-                          <Card.Body>
-                            <Card.Title>
-                              {child &&
-                              child.user.firstName !== undefined &&
-                              child.user.lastName !== undefined
-                                ? `${child.user.firstName} ${
-                                    child.user.lastName
-                                  }`
-                                : ''}{' '}
-                              | posted: {moment(child.createdAt).fromNow()}
-                            </Card.Title>
-                            <Card.Body>{child.content}</Card.Body>
-                          </Card.Body>
-                          <Card.Footer>
-                            <Button
-                              variant="submit"
-                              onClick={this.handleDeleteShow}
-                            >
-                              Delete
-                            </Button>
-                            <Button variant="submit" onClick={this.handleShow}>
-                              Edit
-                            </Button>
-                            <Button
-                              variant="submit"
-                              onClick={() =>
-                                this.handleReplySubmit(this.props.comment.id)
-                              }
-                            >
-                              Reply
-                            </Button>
-                          </Card.Footer>
-                        </Card>
-                      )
-                    })
-                  : ''}
-                {/* <Card>
-                  <Card.Body>
-                    <Card.Title>
-                      {this.props.comment.user &&
-                      this.props.comment.user.firstName !== undefined &&
-                      this.props.comment.user.lastName !== undefined
-                        ? `${this.props.comment.user.firstName} ${
-                            this.props.comment.user.lastName
-                          }`
-                        : ''}{' '}
-                      | posted: {moment(this.props.comment.createdAt).fromNow()}
-                    </Card.Title>
-                    <Card.Body>{this.props.comment.content}</Card.Body>
-                  </Card.Body>
+                      <Button
+                        variant="submit"
+                        onClick={() =>
+                          this.handleReplySubmit(this.props.comment.id)
+                        }
+                      >
+                        Submit
+                      </Button>
+                      <Button
+                        variant="submit"
+                        onClick={() =>
+                          this.handleReplyClose(this.props.comment.id)
+                        }
+                      >
+                        Cancel
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
+              </Card.Body>
+              {this.props.comments !== undefined ? (
+                this.props.comments.filter(comment => {
+                  return comment.parentId === this.props.comment.id
+                }).length > 0 ? (
                   <Card.Footer>
-                    <Button variant="submit" onClick={this.handleDeleteShow}>
-                      Delete
-                    </Button>
-                    <Button variant="submit" onClick={this.handleShow}>
-                      Edit
-                    </Button>
-                    <Button
-                      variant="submit"
-                      onClick={() =>
-                        this.handleReplySubmit(this.props.comment.id)
-                      }
-                    >
-                      Reply
-                    </Button>
+                    {/* \/\/\/\/\/\/\/\/\/\/\/\/\/ Replies go here \/ \/ \/ \/ \/ \/*/}
+                    {this.props.comments !== undefined
+                      ? this.props.comments
+                          .filter(comment => {
+                            return comment.parentId === this.props.comment.id
+                          })
+                          .map(comment => {
+                            return (
+                              <ConnectedComment
+                                key={comment.id}
+                                comment={comment}
+                              />
+                            )
+                          })
+                      : ''}
                   </Card.Footer>
-                </Card> */}
-                {/* </Col> */}
-                {/* </Row> */}
-              </Card.Footer>
+                ) : null
+              ) : null}
             </Card>
           </Col>
         </Row>
@@ -270,13 +251,16 @@ const mapDispatch = dispatch => {
   return {
     delComment: commentId => dispatch(delComment(commentId)),
     putComment: comment => dispatch(putComment(comment)),
-    postReply: comment => dispatch(postReply(comment))
+    postReply: comment => dispatch(postReply(comment)),
+    getComments: resourceId => dispatch(getComments(resourceId)),
+    getReplies: parentId => dispatch(getReplies(parentId))
   }
 }
 const mapState = state => {
   return {
     resource: state.resource,
-    link: state.link
+    link: state.link,
+    comments: state.comment
   }
 }
 

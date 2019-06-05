@@ -4,24 +4,12 @@ module.exports = router
 
 router.get('/:id', async (req, res, next) => {
   try {
-    //WHEN YOU GET A RESOURCE, GET ALL THE COMMENTS WHERE THE LINK IS THE SAME LIINK
-    //findall({where:link: req.body.link, include: [{model: Comment, include:[model: User]}]})
-
     const comments = await Comment.findAll({
       where: {linkId: req.params.id},
+
       include: [
         {
           model: User
-        },
-        {model: Comment, as: 'parent'},
-        {
-          model: Comment,
-          as: 'children',
-          include: [
-            {
-              model: User
-            }
-          ]
         }
       ]
     })
@@ -98,7 +86,8 @@ router.post('/reply', async (req, res, next) => {
   console.log('req.user', req.user.id)
   try {
     let comment = await Comment.create({
-      content: req.body.content
+      content: req.body.content,
+      isChild: req.body.isChild
     })
     const user = await User.findByPk(Number(req.user.id))
     console.log('user', user.data)
@@ -122,7 +111,27 @@ router.post('/reply', async (req, res, next) => {
         }
       ]
     })
-    res.status(201).send(comment)
+
+    const comments = await Comment.findAll({
+      where: {linkId: req.body.linkId},
+      include: [
+        {
+          model: User
+        }
+      ]
+    })
+    res.status(201).json(comments)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/reply/:id', async (req, res, next) => {
+  try {
+    const comments = await Comment.findAll({
+      where: {parentId: req.params.id}
+    })
+    res.status(200).json(comments)
   } catch (err) {
     next(err)
   }

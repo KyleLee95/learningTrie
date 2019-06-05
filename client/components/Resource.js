@@ -151,6 +151,7 @@ class Resource extends Component {
           <Col xs={12}>
             <strong>Discussion: </strong>
             <hr />
+
             {this.props.comments && this.props.comments.length > 0
               ? this.props.comments
                   .filter(comment => {
