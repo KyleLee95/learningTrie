@@ -14,7 +14,15 @@ router.get('/:id', async (req, res, next) => {
           model: User
         },
         {model: Comment, as: 'parent'},
-        {model: Comment, as: 'child'}
+        {
+          model: Comment,
+          as: 'children',
+          include: [
+            {
+              model: User
+            }
+          ]
+        }
       ]
     })
     res.status(200).json(comments)
@@ -67,7 +75,7 @@ router.post('/', async (req, res, next) => {
     await user.addComment(comment)
     await comment.setResource(resource)
     await resource.addComment(comment)
-    console.log('COMMENT', Object.keys(comment.__proto__))
+    // console.log('COMMENT', Object.keys(comment.__proto__))
     // console.log('resource', Object.keys(resource.__proto__))
 
     await comment.setLink(link)

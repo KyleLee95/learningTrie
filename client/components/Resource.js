@@ -152,9 +152,15 @@ class Resource extends Component {
             <strong>Discussion: </strong>
             <hr />
             {this.props.comments && this.props.comments.length > 0
-              ? this.props.comments.map(comment => {
-                  return <ConnectedComment key={comment.id} comment={comment} />
-                })
+              ? this.props.comments
+                  .filter(comment => {
+                    return comment.isChild === false
+                  })
+                  .map(comment => {
+                    return (
+                      <ConnectedComment key={comment.id} comment={comment} />
+                    )
+                  })
               : 'No comments yet. Start the discussion by adding your own comment!'}
           </Col>
         </Row>

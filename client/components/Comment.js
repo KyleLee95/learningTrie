@@ -112,7 +112,7 @@ class Comment extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={{span: 6, offSet: 10}}>
+          <Col xs={{span: 9, offSet: 10}}>
             <Card>
               <Card.Body>
                 <Card.Title>
@@ -145,7 +145,48 @@ class Comment extends Component {
                 {/* \/\/\/\/\/\/\/\/\/\/\/\/\/ Replies go here \/ \/ \/ \/ \/ \/*/}
                 {/* <Row> */}
                 {/* <Col xs={12}> */}
-                <Card>
+
+                {this.props.comment.children !== undefined
+                  ? this.props.comment.children.map(child => {
+                      return (
+                        <Card key={child.id}>
+                          <Card.Body>
+                            <Card.Title>
+                              {child &&
+                              child.user.firstName !== undefined &&
+                              child.user.lastName !== undefined
+                                ? `${child.user.firstName} ${
+                                    child.user.lastName
+                                  }`
+                                : ''}{' '}
+                              | posted: {moment(child.createdAt).fromNow()}
+                            </Card.Title>
+                            <Card.Body>{child.content}</Card.Body>
+                          </Card.Body>
+                          <Card.Footer>
+                            <Button
+                              variant="submit"
+                              onClick={this.handleDeleteShow}
+                            >
+                              Delete
+                            </Button>
+                            <Button variant="submit" onClick={this.handleShow}>
+                              Edit
+                            </Button>
+                            <Button
+                              variant="submit"
+                              onClick={() =>
+                                this.handleReplySubmit(this.props.comment.id)
+                              }
+                            >
+                              Reply
+                            </Button>
+                          </Card.Footer>
+                        </Card>
+                      )
+                    })
+                  : ''}
+                {/* <Card>
                   <Card.Body>
                     <Card.Title>
                       {this.props.comment.user &&
@@ -175,7 +216,7 @@ class Comment extends Component {
                       Reply
                     </Button>
                   </Card.Footer>
-                </Card>
+                </Card> */}
                 {/* </Col> */}
                 {/* </Row> */}
               </Card.Footer>
