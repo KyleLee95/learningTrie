@@ -16,6 +16,8 @@ import {connect} from 'react-redux'
 import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
 import {UserCard} from '.'
 import moment from 'moment'
+import {ConnectedUserProfileOverview} from './UserProfileOverview'
+
 class UserProfile extends Component {
   constructor(props, context) {
     super(props, context)
@@ -85,7 +87,7 @@ class UserProfile extends Component {
           <Col xs={10}>
             <Tabs defaultActiveKey="overview">
               <Tab eventKey="overview" title="Overview">
-                Overview
+                <ConnectedUserProfileOverview />
               </Tab>
               <Tab eventKey="trees" title="Learning Trees">
                 <Row>

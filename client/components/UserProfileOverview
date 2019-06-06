@@ -1,0 +1,41 @@
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
+import {
+  Row,
+  Col,
+  Modal,
+  Button,
+  Form,
+  Card,
+  CardDeck,
+  Tabs,
+  Tab
+} from 'react-bootstrap'
+
+class UserProfileOverview extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.state = {}
+  }
+
+  render() {
+    return <Col />
+  }
+}
+
+const mapState = state => {
+  return {
+    users: state.users,
+    currUser: state.currUser,
+    trees: state.tree
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {}
+}
+
+export const ConnectedUserProfileOverview = connect(mapState, mapDispatch)(
+  UserProfileOverview
+)
