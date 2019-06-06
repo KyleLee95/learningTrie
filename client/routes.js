@@ -9,7 +9,7 @@ import {
   ConnectedLearningTree,
   ConnectedResource,
   ConnectedReview,
-  ConnectedExplore,
+  ConnectedBlog,
   ConnectedTag,
   ConnectedSearchResult,
   ConnectedUserProfile,
@@ -46,7 +46,7 @@ class Routes extends Component {
           path="/learningTree/:id/review"
           component={ConnectedReview}
         />
-        <Route path="/explore" component={ConnectedExplore} />
+        <Route path="/blog" component={ConnectedBlog} />
         <Route exact path="/tag/:id" component={ConnectedTag} />
         <Route path="/user/:id" component={ConnectedUserProfile} />
         <Route path="/recommendation/:id" component={ConnectedRecommendation} />

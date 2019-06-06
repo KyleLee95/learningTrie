@@ -43,11 +43,7 @@ class UserProfile extends Component {
               <Card.Title>
                 <Row>
                   <Col xs={{offset: 1, span: 11}}>
-                    <h2>
-                      {user !== undefined
-                        ? `${user.firstName} ${user.lastName}`
-                        : ''}
-                    </h2>
+                    <h2>{user !== undefined ? `${user.username} ` : (null)} </h2>
                   </Col>
                 </Row>
                 <Row>

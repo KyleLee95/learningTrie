@@ -7,12 +7,12 @@ import {fetchTrees} from '../store/learningTree'
 /**
  * COMPONENT
  */
-class Explore extends Component {
+class Blog extends Component {
   async componentDidMount() {
     await this.props.fetchTrees()
   }
   render() {
-    return <div>HELLO WORLD</div>
+    return <div>HELLO WORLD, BLOG</div>
   }
 }
 
@@ -28,4 +28,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export const ConnectedExplore = connect(mapState, mapDispatch)(Explore)
+export const ConnectedBlog = connect(mapState, mapDispatch)(Blog)

@@ -8,6 +8,7 @@ import {
   getComments,
   getReplies
 } from '../store/comment'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 class Comment extends Component {
   constructor(props, context) {
@@ -110,8 +111,6 @@ class Comment extends Component {
   }
 
   render() {
-    //If the comment has an odd ID #, render it on a white backgroud
-    //If the comment has an even ID #, render it on a dark grey background
     return (
       <React.Fragment>
         <Row>
@@ -120,12 +119,13 @@ class Comment extends Component {
               <Card.Body>
                 <Card.Title>
                   {this.props.comment.user &&
-                  this.props.comment.user.firstName !== undefined &&
-                  this.props.comment.user.lastName !== undefined
-                    ? `${this.props.comment.user.firstName} ${
-                        this.props.comment.user.lastName
-                      }`
-                    : ''}{' '}
+                  this.props.comment.user.username !== undefined ? (
+                    <Link to={`/user/${this.props.comment.user.id}`}>
+                      {this.props.comment.user.username}
+                    </Link>
+                  ) : (
+                    ''
+                  )}{' '}
                   | posted: {moment(this.props.comment.createdAt).fromNow()}
                 </Card.Title>
                 <Card.Body>{this.props.comment.content}</Card.Body>
