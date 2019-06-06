@@ -19,7 +19,8 @@ const User = db.define('user', {
     defaultValue: 'user'
   },
   bio: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    defaultValue: 'A'
   },
   email: {
     type: Sequelize.STRING,
