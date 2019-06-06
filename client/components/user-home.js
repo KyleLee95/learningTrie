@@ -47,25 +47,24 @@ class UserHome extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col xs={9}>
+          <Col lg={9}>
             <Card>
               <Card.Body>
                 <Row>
-                  <Col xs={4}>
-                    <Card.Title>Title </Card.Title>
+                  <Col lg={4}>
+                    <Card.Title>title </Card.Title>
                   </Col>
-                  <Col xs={1}>
-                    <Card.Title>Owner</Card.Title>
+                  <Col lg={1}>
+                    <Card.Title>owner</Card.Title>
                   </Col>
-                  <Col xs={3}>
-                    {' '}
-                    <Card.Title>Description</Card.Title>
+                  <Col lg={3}>
+                    <Card.Title>description</Card.Title>
                   </Col>
-                  <Col xs={1}>
-                    <Card.Title>Rating</Card.Title>
+                  <Col lg={1}>
+                    <Card.Title>rating</Card.Title>
                   </Col>
-                  <Col xs={3}>
-                    <Card.Title>Tags</Card.Title>
+                  <Col lg={3}>
+                    <Card.Title>tags</Card.Title>
                   </Col>
                 </Row>
               </Card.Body>

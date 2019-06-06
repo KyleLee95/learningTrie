@@ -37,13 +37,13 @@ class UserProfile extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={3}>
+          <Col xs={2}>
             <Card border="light">
               <Card.Img variant="top" src={user ? user.avatar : ''} />
               <Card.Title>
                 <Row>
                   <Col xs={{offset: 1, span: 11}}>
-                    <h2>{user !== undefined ? `${user.username} ` : (null)} </h2>
+                    <h2>{user !== undefined ? `${user.username} ` : null} </h2>
                   </Col>
                 </Row>
                 <Row>
@@ -82,7 +82,7 @@ class UserProfile extends Component {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={9}>
+          <Col xs={10}>
             <Tabs defaultActiveKey="overview">
               <Tab eventKey="overview" title="Overview">
                 Overview
@@ -94,20 +94,19 @@ class UserProfile extends Component {
                       <Card.Body>
                         <Row>
                           <Col xs={4}>
-                            <Card.Title>Title </Card.Title>
+                            <Card.Title>title </Card.Title>
                           </Col>
                           <Col xs={1}>
-                            <Card.Title>Owner</Card.Title>
+                            <Card.Title>owner</Card.Title>
                           </Col>
                           <Col xs={3}>
-                            {' '}
-                            <Card.Title>Description</Card.Title>
+                            <Card.Title>description</Card.Title>
                           </Col>
                           <Col xs={1}>
-                            <Card.Title>Rating</Card.Title>
+                            <Card.Title>rating</Card.Title>
                           </Col>
                           <Col xs={3}>
-                            <Card.Title>Tags</Card.Title>
+                            <Card.Title>tags</Card.Title>
                           </Col>
                         </Row>
                       </Card.Body>
