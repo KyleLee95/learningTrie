@@ -601,6 +601,8 @@ class TreeVisualization extends Component {
                 >
                   Delete Node
                 </Button>
+                <br />
+                <br />
                 <Button
                   variant="primary"
                   onClick={this.KeySimulation}

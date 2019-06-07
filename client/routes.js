@@ -14,7 +14,8 @@ import {
   ConnectedSearchResult,
   ConnectedUserProfile,
   ConnectedInbox,
-  ConnectedRecommendation
+  ConnectedRecommendation,
+  ConnectedExplore
 } from './components'
 import {me} from './store'
 
@@ -47,6 +48,7 @@ class Routes extends Component {
           component={ConnectedReview}
         />
         <Route path="/blog" component={ConnectedBlog} />
+        <Route path="/explore" component={ConnectedExplore} />
         <Route exact path="/tag/:id" component={ConnectedTag} />
         <Route path="/user/:id" component={ConnectedUserProfile} />
         <Route path="/recommendation/:id" component={ConnectedRecommendation} />
