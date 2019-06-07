@@ -10,7 +10,7 @@ router.use('/reviews', require('./reviews'))
 router.use('/tags', require('./tags'))
 router.use('/comments', require('./comments'))
 router.use('/messages', require('./message'))
-router.use('/conversation', require('./conversation'))
+router.use('/conversations', require('./conversation'))
 router.use('/links', require('./links'))
 router.use('/recommendations', require('./recommendations'))
 

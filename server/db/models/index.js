@@ -23,10 +23,13 @@ User.hasMany(Comment)
 User.hasMany(Review)
 User.belongsToMany(User, {as: 'followers', through: 'follower'})
 User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
-User.belongsToMany(Conversation, {through: 'userConversation'})
+// User.belongsToMany(Conversation, {through: 'userConversation'})
+User.hasMany(Conversation)
 User.hasMany(Message)
 User.hasMany(Resource)
 User.hasMany(Recommendation)
+// User.belongsTo(Conversation, {as: 'sender'})
+// User.belongsTo(Conversation, {as: 'receiver'})
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -67,7 +70,8 @@ Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 
 //Conversation
 Conversation.hasMany(Message)
-Conversation.belongsToMany(User, {through: 'userConversation'})
+// Conversation.hasMany(User)
+// Conversation.belongsToMany(User, {through: 'userConversation'})
 
 //Link
 Link.hasMany(Comment)

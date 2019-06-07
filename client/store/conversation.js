@@ -5,78 +5,55 @@ import axios from 'axios'
  */
 const GET_CONVERSATIONS = 'GET_CONVERSATIONS'
 const REMOVE_CONVERSATION = 'REMOVE_CONVERSATION'
-const UPDATE_COMMENT = 'UPDATE_COMMENT'
-const CREATE_COMMENT = 'CREATE_COMMENT'
-const CREATE_REPLY_COMMENT = 'CREATE_REPLY_COMMENT'
-const GET_REPLY_COMMENT = 'GET_REPLY_COMMENT'
+const CREATE_CONVERSATION = 'CREATE_CONVERSATION'
 
 /**
  * INITIAL STATE
  */
-const defaultEdges = []
+const defaultConversations = []
 
 /**
  * ACTION CREATORS
  */
-const fetchComments = comment => ({type: GET_CONVERSATIONS, comment})
-const removeComment = comment => ({type: REMOVE_CONVERSATION, comment})
-const createComment = comment => ({type: CREATE_COMMENT, comment})
-const updateComment = comment => ({type: UPDATE_COMMENT, comment})
-const createReply = comment => ({type: CREATE_REPLY_COMMENT, comment})
-const fetchReplies = comment => ({type: GET_REPLY_COMMENT, comment})
+const fetchConversations = conversation => ({
+  type: GET_CONVERSATIONS,
+  conversation
+})
+const removeConversation = conversation => ({
+  type: REMOVE_CONVERSATION,
+  conversation
+})
+const createConversation = conversation => ({
+  type: CREATE_CONVERSATION,
+  conversation
+})
+
 /**
  * THUNK CREATORS
  */
 
-export const getComments = linkId => async dispatch => {
+export const getConversations = () => async dispatch => {
   try {
-    const res = await axios.get(`/api/comments/${linkId}`)
-    dispatch(fetchComments(res.data))
+    const res = await axios.get(`/api/conversations/`)
+    dispatch(fetchConversations(res.data))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const delComment = commentId => async dispatch => {
+export const delConversation = conversationId => async dispatch => {
   try {
-    await axios.delete(`/api/comments/${commentId}`)
-    dispatch(removeComment(commentId))
+    await axios.delete(`/api/conversations/${conversationId}`)
+    dispatch(removeConversation(conversationId))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const postComment = comment => async dispatch => {
+export const postConversation = conversation => async dispatch => {
   try {
-    const res = await axios.post('/api/comments', comment)
-    dispatch(createComment(res.data))
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const putComment = comment => async dispatch => {
-  try {
-    const res = await axios.put(`/api/comments/${comment.commentId}`, comment)
-    dispatch(updateComment(res.data))
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const postReply = comment => async dispatch => {
-  try {
-    const res = await axios.post(`/api/comments/reply`, comment)
-    dispatch(createReply(res.data))
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const getReplies = parentId => async dispatch => {
-  try {
-    const res = await axios.get(`/api/comments/reply/${parentId}`)
-    dispatch(fetchReplies(res.data))
+    const res = await axios.post('/api/conversations', conversation)
+    dispatch(createConversation(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -85,25 +62,16 @@ export const getReplies = parentId => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultEdges, action) {
+export default function(state = defaultConversations, action) {
   switch (action.type) {
     case GET_CONVERSATIONS:
-      return action.comment
+      return action.conversation
     case REMOVE_CONVERSATION:
-      return state.filter(comment => comment.id !== action.comment)
-    case UPDATE_COMMENT:
-      return [
-        ...state.filter(comment => {
-          return comment.id !== action.comment.id
-        }),
-        action.comment
-      ]
-    case CREATE_COMMENT:
-      return [...state, action.comment]
-    case CREATE_REPLY_COMMENT:
-      return action.comment
-    case GET_REPLY_COMMENT:
-      return [...state, action.comment]
+      return state.filter(
+        conversation => conversation.id !== action.conversation
+      )
+    case CREATE_CONVERSATION:
+      return [action.conversation]
     default:
       return state
   }
