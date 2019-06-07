@@ -85,10 +85,7 @@ class UserProfile extends Component {
             </Card>
           </Col>
           <Col xs={10}>
-            <Tabs defaultActiveKey="overview">
-              <Tab eventKey="overview" title="Overview">
-                <ConnectedUserProfileOverview />
-              </Tab>
+            <Tabs defaultActiveKey="trees">
               <Tab eventKey="trees" title="Learning Trees">
                 <Row>
                   <Col xs={12}>

@@ -1,6 +1,4 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {
   Row,
   Col,
@@ -12,6 +10,8 @@ import {
   Tabs,
   Tab
 } from 'react-bootstrap'
+import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 class UserProfileOverview extends Component {
   constructor(props, context) {
@@ -20,7 +20,7 @@ class UserProfileOverview extends Component {
   }
 
   render() {
-    return <Col />
+    return 'HELLO'
   }
 }
 

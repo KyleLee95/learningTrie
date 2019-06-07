@@ -3,8 +3,8 @@ import axios from 'axios'
 /**
  * ACTION TYPES
  */
-const GET_COMMENTS = 'GET_COMMENTS'
-const REMOVE_COMMENT = 'REMOVE_COMMENT'
+const GET_CONVERSATIONS = 'GET_CONVERSATIONS'
+const REMOVE_CONVERSATION = 'REMOVE_CONVERSATION'
 const UPDATE_COMMENT = 'UPDATE_COMMENT'
 const CREATE_COMMENT = 'CREATE_COMMENT'
 const CREATE_REPLY_COMMENT = 'CREATE_REPLY_COMMENT'
@@ -13,13 +13,13 @@ const GET_REPLY_COMMENT = 'GET_REPLY_COMMENT'
 /**
  * INITIAL STATE
  */
-const defaultComments = []
+const defaultEdges = []
 
 /**
  * ACTION CREATORS
  */
-const fetchComments = comment => ({type: GET_COMMENTS, comment})
-const removeComment = comment => ({type: REMOVE_COMMENT, comment})
+const fetchComments = comment => ({type: GET_CONVERSATIONS, comment})
+const removeComment = comment => ({type: REMOVE_CONVERSATION, comment})
 const createComment = comment => ({type: CREATE_COMMENT, comment})
 const updateComment = comment => ({type: UPDATE_COMMENT, comment})
 const createReply = comment => ({type: CREATE_REPLY_COMMENT, comment})
@@ -85,11 +85,11 @@ export const getReplies = parentId => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultComments, action) {
+export default function(state = defaultEdges, action) {
   switch (action.type) {
-    case GET_COMMENTS:
+    case GET_CONVERSATIONS:
       return action.comment
-    case REMOVE_COMMENT:
+    case REMOVE_CONVERSATION:
       return state.filter(comment => comment.id !== action.comment)
     case UPDATE_COMMENT:
       return [
