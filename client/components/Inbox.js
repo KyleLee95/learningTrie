@@ -20,26 +20,31 @@ class Inbox extends Component {
   render() {
     return (
       <React.Fragment>
+        <h3>Conversations</h3>
         <Row>
           <Col lg={12}>
             {this.props.conversations && this.props.conversations.length > 0
               ? this.props.conversations.map(conversation => {
                   return (
                     <Card key={conversation.id}>
-                      <Row>
-                        <Col lg={4}>{conversation.sender}</Col>
-                        <Col lg={4}>
-                          <Card.Title>{conversation.title}</Card.Title>
-                        </Col>
-                        <Col lg={4}>
-                          <Card.Title>
-                            place holder for last message sent
-                            {moment(conversation.createdAt).format(
-                              'MMMM Do YYYY, h:mma'
-                            )}
-                          </Card.Title>
-                        </Col>
-                      </Row>
+                      <Card.Body>
+                        <Row>
+                          <Col lg={3}>
+                            {' '}
+                            <Card.Title>{conversation.sender}</Card.Title>
+                          </Col>
+                          <Col lg={5}>
+                            <Card.Title>{conversation.title}</Card.Title>
+                          </Col>
+                          <Col lg={{span: 3, offset: 1}}>
+                            <Card.Title>
+                              {moment(conversation.createdAt).format(
+                                'MMMM Do YYYY, h:mma'
+                              )}
+                            </Card.Title>
+                          </Col>
+                        </Row>
+                      </Card.Body>
                     </Card>
                   )
                 })

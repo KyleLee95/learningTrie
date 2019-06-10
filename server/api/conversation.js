@@ -15,7 +15,10 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const conversations = await Conversation.findByPk(req.body.conversationId)
+    const conversations = await Conversation.findAll({
+      where: req.body.conversationId,
+      include: [{model: Message, include: [{model: User}]}]
+    })
     res.status(200).json(conversations)
   } catch (err) {
     console.error(err)

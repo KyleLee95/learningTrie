@@ -15,7 +15,8 @@ import {
   ConnectedUserProfile,
   ConnectedInbox,
   ConnectedRecommendation,
-  ConnectedExplore
+  ConnectedExplore,
+  ConnectedConversation
 } from './components'
 import {me} from './store'
 
@@ -58,6 +59,7 @@ class Routes extends Component {
             <Route exact path="/" component={UserHome} />
             <Route path="/home" component={UserHome} />
             <Route path="/inbox" component={ConnectedInbox} />
+            <Route path="/conversation" component={ConnectedConversation} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

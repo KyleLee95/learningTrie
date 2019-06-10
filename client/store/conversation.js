@@ -4,6 +4,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_CONVERSATIONS = 'GET_CONVERSATIONS'
+const GET_SELECTED_CONVERSATION = 'GET_SELECTED_CONVERSATION'
 const REMOVE_CONVERSATION = 'REMOVE_CONVERSATION'
 const CREATE_CONVERSATION = 'CREATE_CONVERSATION'
 
@@ -28,6 +29,11 @@ const createConversation = conversation => ({
   conversation
 })
 
+const fetchSelectedConversation = conversation => ({
+  type: GET_SELECTED_CONVERSATION,
+  conversation
+})
+
 /**
  * THUNK CREATORS
  */
@@ -36,6 +42,15 @@ export const getConversations = () => async dispatch => {
   try {
     const res = await axios.get(`/api/conversations/`)
     dispatch(fetchConversations(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getSelectedConversation = conversationId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/conversations/${conversationId}`)
+    return dispatch(fetchSelectedConversation(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -70,6 +85,8 @@ export default function(state = defaultConversations, action) {
       return state.filter(
         conversation => conversation.id !== action.conversation
       )
+    case GET_SELECTED_CONVERSATION:
+      return action.conversation
     case CREATE_CONVERSATION:
       return [action.conversation]
     default:
