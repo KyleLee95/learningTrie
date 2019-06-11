@@ -14,6 +14,7 @@ import users from './user'
 import link from './link'
 import recommendation from './recommendation'
 import conversation from './conversation'
+import message from './message'
 const reducer = combineReducers({
   currUser,
   users,
@@ -26,7 +27,8 @@ const reducer = combineReducers({
   comment,
   link,
   recommendation,
-  conversation
+  conversation,
+  message
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -46,3 +48,4 @@ export * from './user'
 export * from './link'
 export * from './recommendation'
 export * from './conversation'
+export * from './message'

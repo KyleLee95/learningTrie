@@ -24,12 +24,12 @@ User.hasMany(Review)
 User.belongsToMany(User, {as: 'followers', through: 'follower'})
 User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
 // User.belongsToMany(Conversation, {through: 'userConversation'})
-User.hasMany(Conversation)
+// User.hasMany(Conversation)
 User.hasMany(Message)
 User.hasMany(Resource)
 User.hasMany(Recommendation)
-// User.belongsTo(Conversation, {as: 'sender'})
-// User.belongsTo(Conversation, {as: 'receiver'})
+User.belongsToMany(Conversation, {as: 'sender', through: 'userConversation'})
+User.belongsToMany(Conversation, {as: 'receiver', through: 'userConversation'})
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -70,6 +70,7 @@ Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 
 //Conversation
 Conversation.hasMany(Message)
+Conversation.belongsToMany(User, {through: 'userConversation'})
 // Conversation.hasMany(User)
 // Conversation.belongsToMany(User, {through: 'userConversation'})
 
@@ -83,6 +84,10 @@ Recommendation.belongsToMany(User, {through: 'recommendedResources'})
 Recommendation.belongsToMany(Link, {through: 'recommendationLink'})
 Recommendation.belongsToMany(User, {through: 'userRecommendation'})
 Recommendation.belongsToMany(Node, {through: 'nodeRecommendation'})
+
+//Message
+Message.belongsTo(User)
+Message.belongsTo(Conversation)
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,

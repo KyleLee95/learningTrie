@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Conversation = db.define('conversation', {
-  title: {
+  subject: {
     type: Sequelize.STRING
   },
   sender: {

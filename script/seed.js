@@ -14,6 +14,7 @@ async function seed() {
       email: 'cody@email.com',
       password: '123',
       username: 'codyDog',
+      dbUsername: 'codydog',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
       isAdmin: true
@@ -24,6 +25,7 @@ async function seed() {
       email: 'murphy@email.com',
       password: '123',
       username: 'murphyDog',
+      dbUsername: 'murphydog',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
       isAdmin: false
@@ -34,6 +36,7 @@ async function seed() {
       email: 'kyle@email.com',
       password: '123',
       username: 'mangoHi_Chew',
+      dbUsername: 'manghi_chew',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
       isAdmin: false
@@ -44,6 +47,7 @@ async function seed() {
       email: 'mlt@email.com',
       password: '123',
       username: 'MatLamTam',
+      dbUsername: 'matlamtam',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor leo ac sem pulvinar viverra. Suspendisse interdum pharetra erat vel ornare. Donec dui orci, molestie at dolor ac, volutpat facilisis quam. Fusce scelerisque dui libero, nec laoreet mauris viverra vel. Quisque pretium imperdiet ante id rhoncus. Sed vitae volutpat lacus, vel accumsan nulla. Morbi elementum dui vitae tristique cursus. Nulla maximus dui et tellus pulvinar, sed varius velit mattis. Ut viverra ante ligula, vel viverra urna faucibus sed. Etiam ut turpis finibus, imperdiet augue vitae, auctor erat. Aliquam gravida neque quis est aliquam, ac iaculis sem vulputate. Nulla condimentum in sem quis placerat. Suspendisse facilisis arcu eu odio aliquet, sed interdum diam hendrerit. Nullam in consectetur metus.',
       isAdmin: false

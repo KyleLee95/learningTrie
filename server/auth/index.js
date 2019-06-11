@@ -46,7 +46,15 @@ router.get('/me', async (req, res) => {
     // explicitly select only the id and email fields - even though
     // users' passwords are encrypted, it won't help if we just
     // send everything to anyone who asks!
-    attributes: ['id', 'email', 'firstName', 'lastName', 'username', 'bio'],
+    attributes: [
+      'avatar',
+      'id',
+      'email',
+      'firstName',
+      'lastName',
+      'username',
+      'bio'
+    ],
     include: [
       {
         model: LearningTree,

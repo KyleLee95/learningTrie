@@ -7,7 +7,7 @@ const GET_CONVERSATIONS = 'GET_CONVERSATIONS'
 const GET_SELECTED_CONVERSATION = 'GET_SELECTED_CONVERSATION'
 const REMOVE_CONVERSATION = 'REMOVE_CONVERSATION'
 const CREATE_CONVERSATION = 'CREATE_CONVERSATION'
-
+const TOGGLE_CONVERSATION_STATUS = 'TOGGLE_CONVERSATION_STATUS'
 /**
  * INITIAL STATE
  */
@@ -31,6 +31,11 @@ const createConversation = conversation => ({
 
 const fetchSelectedConversation = conversation => ({
   type: GET_SELECTED_CONVERSATION,
+  conversation
+})
+
+const toggleConversationStatus = conversation => ({
+  type: TOGGLE_CONVERSATION_STATUS,
   conversation
 })
 
@@ -68,6 +73,15 @@ export const delConversation = conversationId => async dispatch => {
 export const postConversation = conversation => async dispatch => {
   try {
     const res = await axios.post('/api/conversations', conversation)
+    dispatch(toggleConversationStatus(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const putConversation = conversation => async dispatch => {
+  try {
+    const res = await axios.put('/api/conversations', conversation)
     dispatch(createConversation(res.data))
   } catch (err) {
     console.error(err)
@@ -88,7 +102,14 @@ export default function(state = defaultConversations, action) {
     case GET_SELECTED_CONVERSATION:
       return action.conversation
     case CREATE_CONVERSATION:
-      return [action.conversation]
+      return [...state, action.conversation]
+    case TOGGLE_CONVERSATION_STATUS:
+      return [
+        ...state.filter(
+          conversation => conversation.id !== action.conversation.id
+        ),
+        action.conversation
+      ]
     default:
       return state
   }

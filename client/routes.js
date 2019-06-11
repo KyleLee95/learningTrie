@@ -59,7 +59,7 @@ class Routes extends Component {
             <Route exact path="/" component={UserHome} />
             <Route path="/home" component={UserHome} />
             <Route path="/inbox" component={ConnectedInbox} />
-            <Route path="/conversation" component={ConnectedConversation} />
+            <Route path="/conversation/:id" component={ConnectedConversation} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
