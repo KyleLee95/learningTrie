@@ -74,7 +74,7 @@ export const InboxLineItem = props => {
           key={props.conversation.id}
           style={{fontWeight: 'none'}}
           onClick={() =>
-            props.toggleRead(props.conversation.id.toString(), true)
+            props.toggleRead(props.conversation.id.toString(), false)
           }
         >
           <Card>
@@ -104,7 +104,7 @@ export const InboxLineItem = props => {
           key={props.conversation.id}
           style={{fontWeight: 'bold'}}
           onClick={() =>
-            props.toggleRead(props.conversation.id.toString(), true)
+            props.toggleRead(props.conversation.id.toString(), false)
           }
         >
           <Card>

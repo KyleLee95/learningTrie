@@ -60,10 +60,16 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     let conversation = await Conversation.findByPk(req.body.conversationId)
-    conversation.update({
-      senderRead: req.body.isSender,
-      receiverRead: !req.body.isSender
-    })
+    if (req.body.isSender === false) {
+      conversation.update({
+        receiverRead: !req.body.isSender
+      })
+    } else {
+      conversation.update({
+        senderRead: req.body.isSender
+      })
+    }
+
     conversation = await Conversation.findByPk(req.body.conversationId)
     res.status(200).send(conversation)
   } catch (err) {
