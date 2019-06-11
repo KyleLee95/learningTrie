@@ -49,7 +49,7 @@ class Inbox extends Component {
     this.handleShow()
   }
 
-  toggleRead(id) {
+  async toggleRead(id, sender) {
     // const string = id.toString()
     // console.log(string)
     // console.log('id', typeof id)
@@ -58,6 +58,11 @@ class Inbox extends Component {
     if (bold.style.fontWeight === 'bold') {
       document.getElementById(id).style.fontWeight = 'normal'
     }
+
+    await this.props.putConversation({
+      conversationId: Number(id),
+      isSender: sender
+    })
   }
   async componentDidMount() {
     await this.props.getConversations()

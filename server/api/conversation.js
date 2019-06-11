@@ -59,12 +59,12 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    let conversation = await Conversation.findbyPk(req.body.conversationId)
+    let conversation = await Conversation.findByPk(req.body.conversationId)
     conversation.update({
-      senderRead: req.body.senderRead,
-      receiverRead: req.body.receiverRead
+      senderRead: req.body.isSender,
+      receiverRead: !req.body.isSender
     })
-    conversation = await Conversation.findbyPk(req.body.conversationId)
+    conversation = await Conversation.findByPk(req.body.conversationId)
     res.status(200).send(conversation)
   } catch (err) {
     next(err)

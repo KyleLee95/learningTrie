@@ -12,7 +12,9 @@ export const InboxLineItem = props => {
             id={`${props.conversation.id.toString()}`}
             key={props.conversation.id}
             style={{fontWeight: 'none'}}
-            onClick={() => props.toggleRead(props.conversation.id.toString())}
+            onClick={() =>
+              props.toggleRead(props.conversation.id.toString(), true)
+            }
           >
             <Card>
               <Link
@@ -40,7 +42,9 @@ export const InboxLineItem = props => {
             id={`${props.conversation.id.toString()}`}
             key={props.conversation.id}
             style={{fontWeight: 'bold'}}
-            onClick={() => props.toggleRead(props.conversation.id.toString())}
+            onClick={() =>
+              props.toggleRead(props.conversation.id.toString(), true)
+            }
           >
             <Card>
               <Link
@@ -69,7 +73,9 @@ export const InboxLineItem = props => {
           id={`${props.conversation.id.toString()}`}
           key={props.conversation.id}
           style={{fontWeight: 'none'}}
-          onClick={() => props.toggleRead(props.conversation.id.toString())}
+          onClick={() =>
+            props.toggleRead(props.conversation.id.toString(), true)
+          }
         >
           <Card>
             <Link
@@ -97,7 +103,9 @@ export const InboxLineItem = props => {
           id={`${props.conversation.id.toString()}`}
           key={props.conversation.id}
           style={{fontWeight: 'bold'}}
-          onClick={() => props.toggleRead(props.conversation.id.toString())}
+          onClick={() =>
+            props.toggleRead(props.conversation.id.toString(), true)
+          }
         >
           <Card>
             <Link
