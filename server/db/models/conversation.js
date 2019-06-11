@@ -12,6 +12,16 @@ const Conversation = db.define('conversation', {
   receiver: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  senderRead: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
+    allowNull: false
+  },
+  receiverRead: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
   }
 })
 

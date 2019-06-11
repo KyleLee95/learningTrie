@@ -73,7 +73,7 @@ export const delConversation = conversationId => async dispatch => {
 export const postConversation = conversation => async dispatch => {
   try {
     const res = await axios.post('/api/conversations', conversation)
-    dispatch(toggleConversationStatus(res.data))
+    dispatch(createConversation(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -82,7 +82,7 @@ export const postConversation = conversation => async dispatch => {
 export const putConversation = conversation => async dispatch => {
   try {
     const res = await axios.put('/api/conversations', conversation)
-    dispatch(createConversation(res.data))
+    dispatch(toggleConversationStatus(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -104,6 +104,7 @@ export default function(state = defaultConversations, action) {
     case CREATE_CONVERSATION:
       return [...state, action.conversation]
     case TOGGLE_CONVERSATION_STATUS:
+      console.log(action.conversation)
       return [
         ...state.filter(
           conversation => conversation.id !== action.conversation.id

@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
-import {Row, Col, Form, Button, Modal, Card} from 'react-bootstrap'
+import {Row, Col, Form, Button, Modal, Card, ListGroup} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {
   getConversations,
   delConversation,
-  postConversation
+  postConversation,
+  putConversation
 } from '../store/conversation'
+import {InboxLineItem} from '.'
 class Inbox extends Component {
   constructor(props, context) {
     super(props, context)
@@ -15,9 +17,15 @@ class Inbox extends Component {
       show: false
     }
 
+    // await this.props.putConversation({
+    //   conversationId: Number(this.props.match.params.id),
+    //   senderRead: true,
+    //   receiverRead: false
+    // })
     this.handleShow = this.handleShow.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.toggleRead = this.toggleRead.bind(this)
   }
 
   handleShow() {
@@ -41,6 +49,16 @@ class Inbox extends Component {
     this.handleShow()
   }
 
+  toggleRead(id) {
+    // const string = id.toString()
+    // console.log(string)
+    // console.log('id', typeof id)
+    const bold = document.getElementById(id)
+    console.log(bold)
+    if (bold.style.fontWeight === 'bold') {
+      document.getElementById(id).style.fontWeight = 'normal'
+    }
+  }
   async componentDidMount() {
     await this.props.getConversations()
   }
@@ -54,46 +72,24 @@ class Inbox extends Component {
             <Button onClick={this.handleShow}>New Conversation</Button>
           </Col>
 
-          <Col lg={11}>
-            {this.props.conversations && this.props.conversations.length > 0
-              ? this.props.conversations.map(conversation => {
-                  return (
-                    <Link
-                      to={`/conversation/${conversation.id}`}
-                      style={{fontWeight: 'bold'}}
-                      key={conversation.id}
-                    >
-                      <Card>
-                        <Card.Body>
-                          <Row>
-                            <Col lg={3}>
-                              {' '}
-                              <Card.Title>
-                                {conversation.sender ===
-                                this.props.user.username
-                                  ? conversation.receiver
-                                  : conversation.sender}
-                              </Card.Title>
-                            </Col>
-                            <Col lg={5}>
-                              <Card.Title>{conversation.subject}</Card.Title>
-                            </Col>
-                            <Col lg={{span: 3, offset: 1}}>
-                              <Card.Title>
-                                {moment(conversation.createdAt).format(
-                                  'MMMM Do YYYY, h:mma'
-                                )}
-                              </Card.Title>
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  )
-                })
-              : 'no conversations found'}
+          <Col xs={{span: 9, offset: 1}}>
+            <ul style={{listStyle: 'none'}}>
+              {this.props.conversations && this.props.conversations.length > 0
+                ? this.props.conversations.map(conversation => {
+                    return (
+                      <InboxLineItem
+                        user={this.props.user}
+                        key={conversation.id}
+                        conversation={conversation}
+                        toggleRead={this.toggleRead}
+                      />
+                    )
+                  })
+                : 'none found'}
+            </ul>
           </Col>
         </Row>
+
         <Form>
           <Modal show={this.state.show} onHide={this.handleShow}>
             <Modal.Header closeButton>
@@ -141,7 +137,8 @@ const mapDispatch = dispatch => {
     getConversations: () => dispatch(getConversations()),
     delConversation: conversationId =>
       dispatch(delConversation(conversationId)),
-    postConversation: conversation => dispatch(postConversation(conversation))
+    postConversation: conversation => dispatch(postConversation(conversation)),
+    putConversation: conversation => dispatch(putConversation(conversation))
   }
 }
 

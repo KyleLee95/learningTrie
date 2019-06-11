@@ -89,7 +89,7 @@ class Comment extends Component {
   }
   handleReplyClose(id) {
     let form = document.getElementById(id)
-    console.log(form)
+    // console.log(form)
     form.style.display = 'none'
   }
   handleReplyChange(e) {

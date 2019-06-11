@@ -3,12 +3,14 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Row, Col, Card, Form, Button} from 'react-bootstrap'
 import {getMessages, postMessage} from '../store/message'
-import {getSelectedConversation} from '../store/conversation'
+import {getSelectedConversation, putConversation} from '../store/conversation'
 import moment from 'moment'
 class Conversation extends Component {
   constructor(props, context) {
     super(props)
-    this.state = {}
+    this.state = {
+      content: ''
+    }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,10 +26,11 @@ class Conversation extends Component {
       conversationId: Number(this.props.match.params.id),
       content: this.state.content
     })
+
+    document.getElementById('content').value = ''
   }
 
   async componentDidMount() {
-    console.log(this.props)
     await this.props.getSelectedConversation(Number(this.props.match.params.id))
     await this.props.getMessages(Number(this.props.match.params.id))
   }
@@ -86,6 +89,8 @@ class Conversation extends Component {
                     <Form.Row>
                       <Form.Label>Reply</Form.Label>
                       <Form.Control
+                        value={this.state.content.value}
+                        id="content"
                         as="textarea"
                         resize="both"
                         rows="5"
@@ -121,7 +126,8 @@ const mapDispatch = dispatch => {
     getMessages: conversationId => dispatch(getMessages(conversationId)),
     postMessage: message => dispatch(postMessage(message)),
     getSelectedConversation: conversationId =>
-      dispatch(getSelectedConversation(conversationId))
+      dispatch(getSelectedConversation(conversationId)),
+    putConversation: conversation => dispatch(putConversation(conversation))
   }
 }
 

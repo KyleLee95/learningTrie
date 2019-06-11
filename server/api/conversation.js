@@ -56,3 +56,17 @@ router.post('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/', async (req, res, next) => {
+  try {
+    let conversation = await Conversation.findbyPk(req.body.conversationId)
+    conversation.update({
+      senderRead: req.body.senderRead,
+      receiverRead: req.body.receiverRead
+    })
+    conversation = await Conversation.findbyPk(req.body.conversationId)
+    res.status(200).send(conversation)
+  } catch (err) {
+    next(err)
+  }
+})
