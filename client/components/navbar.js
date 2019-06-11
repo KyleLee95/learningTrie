@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {readMail} from '../store/currentUser'
 import {Navbar, Row, Col, Button} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
-const Nav = ({handleClick, isLoggedIn, user, checkMail}) => (
+const Nav = ({handleClick, isLoggedIn, user}) => (
   <Navbar>
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
       <h2>🌎pen Source Ed</h2>
@@ -20,11 +19,9 @@ const Nav = ({handleClick, isLoggedIn, user, checkMail}) => (
           <Link to="/blog">Blog</Link>
           <Link to="/explore">Explore</Link>
           {user.newMessage === true ? (
-            <Button variant="submit" onClick={checkMail}>
-              <Link to="/inbox" style={{color: 'red'}}>
-                Inbox
-              </Link>
-            </Button>
+            <Link to="/inbox" style={{color: 'red'}}>
+              Inbox
+            </Link>
           ) : (
             <Link to="/inbox">Inbox</Link>
           )}
@@ -58,8 +55,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleClick: () => dispatch(logout()),
-    checkMail: () => dispatch(readMail())
+    handleClick: () => dispatch(logout())
   }
 }
 

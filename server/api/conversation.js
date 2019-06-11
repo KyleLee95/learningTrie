@@ -36,6 +36,9 @@ router.post('/', async (req, res, next) => {
     const receiver = await User.findOne({
       where: {dbUsername: req.body.receiver.toLowerCase()}
     })
+    await receiver.update({
+      newMessage: true
+    })
     const message = await Message.create({
       content: req.body.content
     })

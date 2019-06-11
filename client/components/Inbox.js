@@ -9,6 +9,7 @@ import {
   postConversation,
   putConversation
 } from '../store/conversation'
+import {readMail} from '../store/currentUser'
 import {InboxLineItem} from '.'
 class Inbox extends Component {
   constructor(props, context) {
@@ -62,6 +63,7 @@ class Inbox extends Component {
   }
   async componentDidMount() {
     await this.props.getConversations()
+    await this.props.readMail()
   }
   render() {
     return (
@@ -139,7 +141,8 @@ const mapDispatch = dispatch => {
     delConversation: conversationId =>
       dispatch(delConversation(conversationId)),
     postConversation: conversation => dispatch(postConversation(conversation)),
-    putConversation: conversation => dispatch(putConversation(conversation))
+    putConversation: conversation => dispatch(putConversation(conversation)),
+    readMail: () => dispatch(readMail())
   }
 }
 
