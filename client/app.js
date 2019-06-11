@@ -1,12 +1,12 @@
 import React from 'react'
 
-import Nav from './components/navbar'
+import {ConnectedNav} from './components/navbar'
 import Routes from './routes'
 
 const App = () => {
   return (
     <div className="container-fluid">
-      <Nav />
+      <ConnectedNav />
       <Routes />
     </div>
   )

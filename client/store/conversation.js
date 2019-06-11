@@ -104,7 +104,6 @@ export default function(state = defaultConversations, action) {
     case CREATE_CONVERSATION:
       return [...state, action.conversation]
     case TOGGLE_CONVERSATION_STATUS:
-      console.log(action.conversation)
       return [
         ...state.filter(
           conversation => conversation.id !== action.conversation.id

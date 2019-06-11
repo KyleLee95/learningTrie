@@ -8,6 +8,7 @@ const GET_USERS = 'GET_USERS'
 const REMOVE_USER = 'REMOVE_USER'
 const FOLLOW_USER = 'FOLLOW_USER'
 const UNFOLLOW_USER = 'UNFOLLOW_USER'
+
 // const ADD_USER_TO_TREE = 'ADD_USER_TO_TREE'
 
 /**
@@ -21,6 +22,7 @@ const defaultUsers = []
 const getSingleUser = users => ({type: GET_USERS, users})
 const followUser = users => ({type: FOLLOW_USER, users})
 const unfollowUser = users => ({type: UNFOLLOW_USER, users})
+
 // const removeUser = () => ({type: REMOVE_USER})
 // const addUserToTree = () => ({type: ADD_USER_TO_TREE})
 
@@ -54,17 +56,7 @@ export const removeFollower = userId => async dispatch => {
   }
 }
 
-// export const associateUserToTree = data => async dispatch => {
-//   try {
-//     await axios.put('/api/users/isOwner', data)
-//     return dispatch(addUserToTree())
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
-
-/**
- * REDUCER
+/* REDUCER
  */
 export default function(state = defaultUsers, action) {
   switch (action.type) {
@@ -76,8 +68,6 @@ export default function(state = defaultUsers, action) {
       return action.users
     case UNFOLLOW_USER:
       return action.users
-    // case ADD_USER_TO_TREE:
-    // return state
     default:
       return state
   }

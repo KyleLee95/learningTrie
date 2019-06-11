@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Navbar, Row, Col} from 'react-bootstrap'
+import {readMail} from '../store/currentUser'
+import {Navbar, Row, Col, Button} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
-const Nav = ({handleClick, isLoggedIn, user}) => (
+const Nav = ({handleClick, isLoggedIn, user, checkMail}) => (
   <Navbar>
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
       <h2>🌎pen Source Ed</h2>
@@ -18,7 +19,15 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
           <Link to="/">Home</Link>
           <Link to="/blog">Blog</Link>
           <Link to="/explore">Explore</Link>
-          <Link to="/inbox">Inbox</Link>
+          {user.newMessage === true ? (
+            <Button variant="submit" onClick={checkMail}>
+              <Link to="/inbox" style={{color: 'red'}}>
+                Inbox
+              </Link>
+            </Button>
+          ) : (
+            <Link to="/inbox">Inbox</Link>
+          )}
           <Link to={`/user/${user.id}`}>Profile</Link>
           <a href="#" onClick={handleClick}>
             Logout
@@ -49,13 +58,12 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleClick() {
-      dispatch(logout())
-    }
+    handleClick: () => dispatch(logout()),
+    checkMail: () => dispatch(readMail())
   }
 }
 
-export default connect(mapState, mapDispatch)(Nav)
+export const ConnectedNav = connect(mapState, mapDispatch)(Nav)
 
 /**
  * PROP TYPES

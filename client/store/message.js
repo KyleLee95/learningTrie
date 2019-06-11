@@ -57,8 +57,6 @@ export default function(state = defaultMessages, action) {
       })
     case CREATE_MESSAGE:
       return action.message.sort(function(a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
         return new Date(a.createdAt) - new Date(b.createdAt)
       })
     default:

@@ -17,31 +17,47 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     const conversation = await Conversation.findOrCreate({
       where: {id: req.body.conversationId}
     })
-    const user = await User.findByPk(req.user.id)
+
+    const sender = await User.findByPk(req.user.id)
+    const checkReceiver = req.body.users.find(user => {
+      return user.id !== req.user.id
+    })
+    const receiver = await User.findByPk(checkReceiver.id)
     const createMessage = await Message.create({
       content: req.body.content
     })
-
-    await user.addMessage(createMessage)
-    await createMessage.setUser(user)
+    await receiver.update({
+      newMessage: true
+    })
+    await sender.addMessage(createMessage)
+    await createMessage.setUser(sender)
     await createMessage.setConversation(conversation[0])
-
+    if (req.body.isSender === true) {
+      await Conversation.update(
+        {
+          senderRead: true,
+          receiverRead: false
+        },
+        {where: {id: req.body.conversationId}}
+      )
+    } else {
+      await Conversation.update(
+        {
+          senderRead: false,
+          receiverRead: true
+        },
+        {where: {id: req.body.conversationId}}
+      )
+    }
     const message = await Message.findAll({
       where: {conversationId: req.body.conversationId},
       include: [{model: User}, {model: Conversation}]
     })
-    // console.log(conversation)
-    // console.log(user)
-    // console.log(message.data)
-    // console.log('conversation', Object.keys(conversation.__proto__))
-
-    // console.log('user', Object.keys(user.__proto__))
-
-    // console.log('message', Object.keys(message.__proto__))
 
     res.status(200).json(message)
   } catch (err) {

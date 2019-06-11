@@ -22,11 +22,21 @@ class Conversation extends Component {
     })
   }
   async handleSubmit() {
-    await this.props.postMessage({
-      conversationId: Number(this.props.match.params.id),
-      content: this.state.content
-    })
-
+    if (this.props.conversations[0].sender === this.props.user.username) {
+      await this.props.postMessage({
+        conversationId: Number(this.props.match.params.id),
+        content: this.state.content,
+        isSender: true,
+        users: this.props.conversations[0].users
+      })
+    } else {
+      await this.props.postMessage({
+        conversationId: Number(this.props.match.params.id),
+        content: this.state.content,
+        isSender: false,
+        users: this.props.conversations[0].users
+      })
+    }
     document.getElementById('content').value = ''
   }
 

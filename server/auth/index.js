@@ -35,6 +35,17 @@ router.post('/signup', async (req, res, next) => {
   }
 })
 
+router.put('/checkMail', async (req, res, next) => {
+  try {
+    let user = await User.findByPk(req.user.id)
+    await user.update({newMessage: false})
+    user = await User.findByPk(req.user.id)
+    res.status(200).json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/logout', (req, res) => {
   req.logout()
   req.session.destroy()
@@ -53,7 +64,8 @@ router.get('/me', async (req, res) => {
       'firstName',
       'lastName',
       'username',
-      'bio'
+      'bio',
+      'newMessage'
     ],
     include: [
       {

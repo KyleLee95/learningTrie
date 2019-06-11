@@ -7,6 +7,7 @@ import history from '../history'
 const GET_CURRENT_USER = 'GET_CURRENT_USER'
 const REMOVE_CURRENT_USER = 'REMOVE_CURRENT_USER'
 const ADD_USER_TO_TREE = 'ADD_USER_TO_TREE'
+const READ_MAIL = 'READ_MAIL'
 
 /**
  * INITIAL STATE
@@ -19,6 +20,7 @@ const defaultUser = {}
 const getUser = currUser => ({type: GET_CURRENT_USER, currUser})
 const removeUser = () => ({type: REMOVE_CURRENT_USER})
 const addUserToTree = () => ({type: ADD_USER_TO_TREE})
+const toggleMail = currUser => ({type: READ_MAIL, currUser})
 
 /**
  * THUNK CREATORS
@@ -65,6 +67,14 @@ export const associateUserToTree = data => async dispatch => {
     console.error(err)
   }
 }
+export const readMail = () => async dispatch => {
+  try {
+    const res = await axios.put('/auth/checkMail')
+    return dispatch(toggleMail(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 /**
  * REDUCER
@@ -77,6 +87,8 @@ export default function(state = defaultUser, action) {
       return defaultUser
     case ADD_USER_TO_TREE:
       return state
+    case READ_MAIL:
+      return action.currUser
     default:
       return state
   }

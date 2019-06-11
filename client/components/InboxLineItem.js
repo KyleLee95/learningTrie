@@ -1,9 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 export const InboxLineItem = props => {
-  console.log(props)
   return (
     <React.Fragment>
       {props.conversation.sender === props.user.username ? (
@@ -21,19 +20,21 @@ export const InboxLineItem = props => {
                 to={`/conversation/${props.conversation.id}`}
                 style={{textDecoration: 'none'}}
               >
-                <Row>
-                  <Col lg={{span: 3, offset: 1}}>
-                    {props.conversation.sender === props.user.username
-                      ? props.conversation.receiver
-                      : props.conversation.sender}{' '}
-                  </Col>
-                  <Col lg={5}>{props.conversation.subject}</Col>
-                  <Col lg={3}>
-                    {moment(props.conversation.createdAt).format(
-                      'MMMM Do YYYY, h:mm:ss a'
-                    )}
-                  </Col>
-                </Row>
+                <Card.Title>
+                  <Row>
+                    <Col lg={{span: 3, offset: 1}}>
+                      {props.conversation.sender === props.user.username
+                        ? props.conversation.receiver
+                        : props.conversation.sender}{' '}
+                    </Col>
+                    <Col lg={5}>{props.conversation.subject}</Col>
+                    <Col lg={3}>
+                      {moment(props.conversation.createdAt).format(
+                        'MMMM Do YYYY, h:mm:ss a'
+                      )}
+                    </Col>
+                  </Row>
+                </Card.Title>
               </Link>
             </Card>
           </li>

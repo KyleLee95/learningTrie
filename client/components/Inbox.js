@@ -50,11 +50,7 @@ class Inbox extends Component {
   }
 
   async toggleRead(id, sender) {
-    // const string = id.toString()
-    // console.log(string)
-    // console.log('id', typeof id)
     const bold = document.getElementById(id)
-    console.log(bold)
     if (bold.style.fontWeight === 'bold') {
       document.getElementById(id).style.fontWeight = 'normal'
     }
