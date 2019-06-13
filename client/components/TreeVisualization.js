@@ -111,7 +111,8 @@ class TreeVisualization extends Component {
       recommendShow: false,
       edgeLabelShow: false,
       target: {},
-      shiftDown: false
+      actions: [],
+      objects: []
     }
     //Edge method bindings
     this.onSwapEdge = this.onSwapEdge.bind(this)
@@ -149,8 +150,8 @@ class TreeVisualization extends Component {
     this.handleEdgeLabelClose = this.handleEdgeLabelClose.bind(this)
     this.handleEdgeLabelSubmit = this.handleEdgeLabelSubmit.bind(this)
     this.handleEdgeLabelChange = this.handleEdgeLabelChange.bind(this)
-    //key sim
-    this.KeySimulation = this.KeySimulation.bind(this)
+    //Undo
+    this.onUndo = this.onUndo.bind(this)
   }
 
   //COMPONENT METHODS
@@ -159,14 +160,67 @@ class TreeVisualization extends Component {
     await this.props.getNodes(Number(this.props.match.params.id))
     await this.props.getEdges(Number(this.props.match.params.id))
     await this.props.nodes.forEach(node => {
-      this.props.putNode({
-        id: node.id,
-        type: 'empty'
-      })
+      if (node.type !== 'empty') {
+        this.props.putNode({
+          id: node.id,
+          type: 'empty'
+        })
+      }
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.nodes !== undefined &&
+      prevProps.nodes.length !== 0 &&
+      prevProps.nodes.length + 1 === this.props.nodes.length
+    ) {
+      this.state.objects.push(this.props.nodes[this.props.nodes.length - 1])
+      console.log('objects', this.state.objects)
+      console.log('actions', this.state.actions)
+    } else if (
+      prevProps.edges !== undefined &&
+      prevProps.edges.length !== 0 &&
+      prevProps.edges.length + 1 === this.props.edges.length
+    )
+      //pushes new node into objects array so that you can undo the action
+
+      this.state.objects.push(this.props.edges[this.props.edges.length - 1])
+    console.log('objects', this.state.objects)
+    console.log('actions', this.state.actions)
+  }
+
   //END COMPONENT METHODS
+
+  //UNDO
+
+  async onUndo() {
+    if (this.state.actions[0] === 'deleteNode') {
+      await this.props.postNode(this.state.objects[0])
+      await this.props.postEdge(this.state.objects[1])
+      this.setState({
+        objects: this.state.objects.slice(0, 2)
+      })
+    }
+    if (this.state.actions[0] === 'postNode') {
+      await this.props.delNode(this.state.objects[0])
+      this.setState({
+        objects: this.state.objects.slice(0, 1)
+      })
+    }
+    if (this.state.actions[0] === 'deleteEdge') {
+      await this.props.postEdge(this.state.objects[0])
+      this.setState({
+        objects: this.state.objects.slice(0, 1)
+      })
+    }
+    if (this.state.actions[0] === 'postEdge') {
+      await this.props.delEdge(this.state.objects[0])
+      this.setState({
+        objects: this.state.objects.slice(0, 1)
+      })
+    }
+  }
 
   //START NODE HANDLERS
   async createNode(title, description, id, resource) {
@@ -209,6 +263,7 @@ class TreeVisualization extends Component {
         // 407.50421142578125,
         treeId: this.props.trees[0].id
       }
+      this.state.actions.push('postNode')
       await this.props.postNode(viewNode)
     } else {
       return ''
@@ -235,23 +290,54 @@ class TreeVisualization extends Component {
 
   async onSelectNode(node) {
     if (
-      this.state.selected.id !== undefined &&
       node !== null &&
+      this.state.target.id !== undefined &&
+      this.state.selected.id !== undefined &&
+      node.id !== this.state.target.id &&
       node.id !== this.state.selected.id
-      //selects a target node
     ) {
+      await this.props.putNode({
+        id: this.state.target.id,
+        x: this.state.target.x,
+        y: this.state.target.y,
+        type: 'empty'
+      })
       this.setState({
         target: node
       })
       await this.props.putNode({
         id: this.state.target.id,
+        x: this.state.target.x,
+        y: this.state.target.y,
+        type: 'custom'
+      })
+      return ''
+    } else if (
+      this.state.selected.id !== undefined &&
+      node !== null &&
+      node.id !== this.state.selected.id &&
+      this.state.target.id === undefined
+      //selects a target node
+    ) {
+      this.setState({
+        target: node
+      })
+      //updates target node to be red, functionality doesn't work though
+      await this.props.putNode({
+        id: this.state.target.id,
+        x: this.state.target.x,
+        y: this.state.target.y,
         type: 'custom'
       })
       return ''
     } else if (node !== null && this.state.selected.id === node.id) {
       //shows modal for selected node
       this.handleShow()
-    } else if (node !== null && this.state.selected.id !== node.id) {
+    } else if (
+      node !== null &&
+      this.state.selected.id !== node.id &&
+      node.id !== this.state.target.id
+    ) {
       //set selected node
       this.setState({
         selected: node
@@ -259,11 +345,6 @@ class TreeVisualization extends Component {
       await this.props.getResources()
       await this.props.getRecommendations()
     } else if (node === null) {
-      // deselect node
-      // 'return' prevents null error message when clicking on the grid to deselect a node.
-      // by setting selected to an empty object
-      // this.state.target.type = 'empty'
-      // console.log('after', this.state.target)
       if (this.state.target.id !== undefined) {
         await this.props.putNode({
           id: this.state.target.id,
@@ -285,9 +366,11 @@ class TreeVisualization extends Component {
 
   async onDeleteNode(node) {
     if (this.props.user.id === this.props.trees[0].ownerId) {
-      await this.setState({
+      this.setState({
         selected: {}
       })
+      this.state.actions.push('deleteNode')
+      this.state.objects.push(node)
       await this.props.delNode(node)
       await this.props.delEdge(node)
     } else {
@@ -331,6 +414,8 @@ class TreeVisualization extends Component {
   async onDeleteEdge() {
     if (this.props.user.id === this.props.trees[0].ownerId) {
       await this.props.delSelectedEdge(this.state.selected)
+      this.state.actions.push('deleteEdge')
+      this.state.objects.push(this.state.selected)
       this.setState({
         selected: {}
       })
@@ -357,6 +442,7 @@ class TreeVisualization extends Component {
       handleText: this.state.handleText
     }
     await this.props.postEdge(viewEdge)
+    this.state.actions.push('postEdge')
   }
 
   //END EDGE HANDLERS
@@ -480,42 +566,6 @@ class TreeVisualization extends Component {
     })
   }
 
-  // shift key sim
-
-  KeySimulation() {
-    var e = document.createEvent('KeyboardEvent')
-    if (e.initKeyboardEvent) {
-      // Chrome, IE
-      e.initKeyboardEvent(
-        'keydown',
-        true,
-        true,
-        document.defaultView,
-        'Shift',
-        0,
-        '',
-        false,
-        ''
-      )
-    } else {
-      // FireFox
-      e.initKeyEvent(
-        'keyup',
-        true,
-        true,
-        document.defaultView,
-        false,
-        false,
-        false,
-        false,
-        13,
-        0
-      )
-    }
-    document.getElementById('empty').dispatchEvent(e)
-    console.log('A')
-  }
-
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -566,6 +616,22 @@ class TreeVisualization extends Component {
           this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
+                <Button onClick={this.onUndo}>Undo last action</Button>
+                <br />
+                <br />
+                <Button
+                  onClick={() => {
+                    const selectedNode = document.getElementById(
+                      `node-${this.state.selected.id}`
+                    )
+                    selectedNode.dispatchEvent(
+                      new KeyboardEvent('keydown', {key: 'Shift'})
+                    )
+                    console.log('keyboard fire')
+                  }}
+                >
+                  Create Association
+                </Button>
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button
@@ -595,21 +661,10 @@ class TreeVisualization extends Component {
                   onClick={() =>
                     this.onCreateEdge(this.state.selected, this.state.target)
                   }
-                  // onClick={this.KeySimulation}
-                  //   () => {
-                  //   this.setState({
-                  //     shiftDown: !this.state.shiftDown
-                  //   })
-                  //   if (this.state.shiftDown === true) {
-                  //     let node = document.getElementById('empty')
-                  //     node.dispatchEvent()
-                  //     console.log(node)
-                  //   }
-                  // }
                 >
                   Add Edge
                 </Button>
-                {/* <br />
+                <br />
                 <br />
                 <Button
                   variant="primary"
@@ -621,7 +676,7 @@ class TreeVisualization extends Component {
                   }
                 >
                   Clear Selected Nodes
-                </Button> */}
+                </Button>
               </Col>
               <Col xs={11}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>
@@ -648,6 +703,7 @@ class TreeVisualization extends Component {
                       onDeleteEdge={this.onDeleteEdge}
                       canCreateEdge={this.canCreateEdge}
                       renderNode={this.renderNode}
+                      onUndo={this.onUndo}
                     />
                   ) : (
                     <GraphView
@@ -668,6 +724,7 @@ class TreeVisualization extends Component {
                       onSwapEdge={this.onSwapEdge}
                       onDeleteEdge={this.onDeleteEdge}
                       canCreateEdge={this.canCreateEdge}
+                      onUndo={this.onUndo}
                     />
                   )}
                 </div>
@@ -700,6 +757,7 @@ class TreeVisualization extends Component {
                       onDeleteEdge={this.onDeleteEdge}
                       canCreateEdge={this.canCreateEdge}
                       renderNode={this.renderNode}
+                      onUndo={this.onUndo}
                     />
                   ) : (
                     <GraphView
@@ -720,6 +778,7 @@ class TreeVisualization extends Component {
                       onSwapEdge={this.onSwapEdge}
                       onDeleteEdge={this.onDeleteEdge}
                       canCreateEdge={this.canCreateEdge}
+                      onUndo={this.onUndo}
                     />
                   )}
                 </div>
