@@ -42,7 +42,7 @@ const GraphConfig = {
     },
     custom: {
       // required to show empty nodes
-      typeText: 'target',
+      typeText: 'node to be associated',
       shapeId: '#custom', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="custom" key="0">
@@ -176,8 +176,8 @@ class TreeVisualization extends Component {
       prevProps.nodes.length + 1 === this.props.nodes.length
     ) {
       this.state.objects.push(this.props.nodes[this.props.nodes.length - 1])
-      console.log('objects', this.state.objects)
-      console.log('actions', this.state.actions)
+      // console.log('objects', this.state.objects)
+      // console.log('actions', this.state.actions)
     } else if (
       prevProps.edges !== undefined &&
       prevProps.edges.length !== 0 &&
@@ -186,8 +186,8 @@ class TreeVisualization extends Component {
       //pushes new node into objects array so that you can undo the action
 
       this.state.objects.push(this.props.edges[this.props.edges.length - 1])
-    console.log('objects', this.state.objects)
-    console.log('actions', this.state.actions)
+    // console.log('objects', this.state.objects)
+    // console.log('actions', this.state.actions)
   }
 
   //END COMPONENT METHODS
@@ -199,25 +199,30 @@ class TreeVisualization extends Component {
       await this.props.postNode(this.state.objects[0])
       await this.props.postEdge(this.state.objects[1])
       this.setState({
-        objects: this.state.objects.slice(0, 2)
+        objects: this.state.objects.slice(0, 2),
+        actions: this.state.actions.slice(0, 2)
       })
     }
     if (this.state.actions[0] === 'postNode') {
       await this.props.delNode(this.state.objects[0])
+
       this.setState({
-        objects: this.state.objects.slice(0, 1)
+        objects: this.state.objects.slice(0, 1),
+        actions: this.state.actions.slice(0, 1)
       })
     }
     if (this.state.actions[0] === 'deleteEdge') {
       await this.props.postEdge(this.state.objects[0])
       this.setState({
-        objects: this.state.objects.slice(0, 1)
+        objects: this.state.objects.slice(0, 1),
+        actions: this.state.actions.slice(0, 1)
       })
     }
     if (this.state.actions[0] === 'postEdge') {
       await this.props.delEdge(this.state.objects[0])
       this.setState({
-        objects: this.state.objects.slice(0, 1)
+        objects: this.state.objects.slice(0, 1),
+        actions: this.state.actions.slice(0, 1)
       })
     }
   }
@@ -279,8 +284,18 @@ class TreeVisualization extends Component {
           description: this.state.target.description,
           nodeType: this.state.target.nodeType,
           type: 'custom',
-          x: this.state.target.x,
-          y: this.state.target.y
+          x: node.x,
+          y: node.y
+        })
+      } else if (node.id === this.state.selected.id) {
+        await this.props.putNode({
+          id: node.id,
+          title: node.title,
+          description: node.description,
+          nodeType: node.nodeType,
+          type: node.type,
+          x: node.x,
+          y: node.y
         })
       }
     } else {
@@ -351,9 +366,9 @@ class TreeVisualization extends Component {
           title: this.state.target.title,
           description: this.state.target.description,
           nodeType: this.state.target.nodeType,
-          type: 'empty',
-          x: this.state.target.x,
-          y: this.state.target.y
+          type: 'empty'
+          // x: this.state.target.x,
+          // y: this.state.target.y
         })
       }
 
@@ -441,8 +456,8 @@ class TreeVisualization extends Component {
       treeId: this.props.trees[0].id,
       handleText: this.state.handleText
     }
-    await this.props.postEdge(viewEdge)
     this.state.actions.push('postEdge')
+    await this.props.postEdge(viewEdge)
   }
 
   //END EDGE HANDLERS
@@ -616,10 +631,10 @@ class TreeVisualization extends Component {
           this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
-                <Button onClick={this.onUndo}>Undo last action</Button>
+                {/* <Button onClick={this.onUndo}>Undo last action</Button>
                 <br />
-                <br />
-                <Button
+                <br /> */}
+                {/* <Button
                   onClick={() => {
                     const selectedNode = document.getElementById(
                       `node-${this.state.selected.id}`
@@ -631,7 +646,7 @@ class TreeVisualization extends Component {
                   }}
                 >
                   Create Association
-                </Button>
+                </Button> */}
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button

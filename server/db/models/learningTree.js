@@ -19,6 +19,11 @@ const LearningTree = db.define('learningTree', {
   ownerId: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  isPrivate: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 })
 
