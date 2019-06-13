@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const {LearningTree, Tag, Review, User} = require('../db/models')
+const {LearningTree, ResourceTag, Review, User, Link} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const tags = await Tag.findAll()
+    const tags = await ResourceTag.findAll()
     res.json(tags)
   } catch (err) {
     next(err)
@@ -13,11 +13,11 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const tag = await Tag.findByPk(req.params.id, {
+    const tag = await ResourceTag.findByPk(req.params.id, {
       include: [
         {
-          model: LearningTree,
-          include: [{model: Review}, {model: Tag}, {model: User}]
+          model: Link,
+          include: [{model: Review}, {model: ResourceTag}, {model: User}]
         }
       ]
     })
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const tag = await Tag.findByPk(req.params.id)
+    const tag = await ResourceTag.findByPk(req.params.id)
     const updatedTag = await tag.update({
       title: req.body.title
     })
@@ -47,7 +47,7 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    await Tag.destroy({
+    await ResourceTag.destroy({
       where: {
         id: req.params.id
       }
@@ -60,10 +60,10 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const tag = await Tag.findOrCreate({
+    const tag = await ResourceTag.create({
       title: req.body.title
     })
-    const learningTree = await LearningTree.findByPk(req.body.treeId)
+    const learningTree = await LearningTree.findByPk(req.body.resourceId)
     // console.log(Object.keys(learningTree.__proto__))
     // learningTree.setT(user)
     res.status(201).send(tag)

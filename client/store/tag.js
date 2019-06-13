@@ -11,7 +11,7 @@ const CREATE_TAG = 'CREATE_TAG'
 /**
  * INITIAL STATE
  */
-const defaultReviews = []
+const defaultTags = []
 
 /**
  * ACTION CREATORS
@@ -74,12 +74,17 @@ export const putTag = tag => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultReviews, action) {
+export default function(state = defaultTags, action) {
   switch (action.type) {
     case GET_TAGS:
       return action.tag
     case REMOVE_TAG:
-      return []
+      return [
+        ...state.filter(tag => {
+          return tag.id !== action.tag
+        }),
+        action.tag
+      ]
     case UPDATE_TAG:
       return action.tag
     case CREATE_TAG:

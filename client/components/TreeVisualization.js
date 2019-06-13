@@ -46,7 +46,7 @@ const GraphConfig = {
       shapeId: '#custom', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="custom" key="0">
-          <circle cx="50" cy="50" r="45" fill="currentColor" />
+          <circle cx="50" cy="50" r="45" fill="red" />
         </symbol>
       )
     },
@@ -210,7 +210,20 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
+    console.log('update called')
     if (this.props.user.id === this.props.trees[0].ownerId) {
+      console.log('update called 1')
+      if (node.id === this.state.target.id) {
+        await this.props.putNode({
+          id: this.state.target.id,
+          title: this.state.target.title,
+          description: this.state.target.description,
+          nodeType: this.state.target.nodeType,
+          type: 'custom',
+          x: this.state.target.x,
+          y: this.state.target.y
+        })
+      }
       // const id = node.id
       // const selectedX = this.state.selected.x
       // const selectedY = this.state.selected.y
@@ -218,7 +231,7 @@ class TreeVisualization extends Component {
       // console.log(id)
       // if (id === this.state.selected.id) {
       // if (node.x !== selectedX || node.y !== selectedY) {
-      await this.props.putNode(node)
+      // await this.props.putNode(node)
       //   }
       // }
     } else {
@@ -253,26 +266,45 @@ class TreeVisualization extends Component {
     // }
   }
 
-  //Kinda works. Once a node is selected you can click it again to trigger the modal.
-  //This works for now but we can do better.
-  async onSelectNode(node) {
-    // if (
-    //   this.state.selected.id !== undefined &&
-    //   node !== null &&
-    //   node.id !== this.state.selected.id
-    //selects a target node
-    // ) {
-    //   this.setState({
-    //     target: node
-    //   })
+  async onSelectNode(node, e) {
+    if (
+      this.state.selected.id !== undefined &&
+      node !== null &&
+      node.id !== this.state.selected.id
+      //selects a target node
+    ) {
+      this.setState({
+        target: node
+      })
 
-    // this.state.target.type = 'custom'
+      // const targetNode = document.getElementById(`node-${this.state.target.id}`)
+      // const selected = document.getElementById(`node-${this.state.selected.id}`)
+      // console.log('targetnode class', targetNode.className)
+      // targetNode.setAttribute('class', 'node empty selected')
+      // targetNode.childNodes[0].setAttribute('class', 'shape')
+      // targetNode.childNodes[0].childNodes[0].fill = 'blue'
+      // targetNode.childNodes[0].childNodes[0].setAttribute(
+      //   'id',
+      //   `${this.state.target.id}`
+      // )
+      //changes color of target node
 
-    // console.log('target', this.state.target)
-    // console.log('selected', this.state.selected)
-    // return ''
-    // } else
-    if (node !== null && this.state.selected.id === node.id) {
+      // const targetUse = document.getElementById(`${this.state.target.id}`)
+      // targetUse.setAttribute('class', 'target')
+
+      // console.log(targetUse)
+      // console.log('targetnode', targetNode)
+      // console.log('targetchild', targetNode.childNodes)
+      // console.log('targetChild use', targetNode.childNodes[0].childNodes[0])
+      // console.log('selectedNode class', selected.className)
+      // console.log('selectedNode', selected)
+      // console.log('selectedChild', selected.childNodes)
+
+      // console.log('TargetshadowRoot', targetNode.childNodes[0].childNodes)
+      // console.log('selectedShadow', selected.childNodes[0].childNodes)
+
+      return ''
+    } else if (node !== null && this.state.selected.id === node.id) {
       //shows modal for selected node
       this.handleShow()
     } else if (node !== null && this.state.selected.id !== node.id) {
@@ -283,15 +315,23 @@ class TreeVisualization extends Component {
       await this.props.getResources()
       await this.props.getRecommendations()
     } else if (node === null) {
-      //deselect node
-      //'return' prevents null error message when clicking on the grid to deselect a node.
-      //by setting selected to an empty object
+      // deselect node
+      // 'return' prevents null error message when clicking on the grid to deselect a node.
+      // by setting selected to an empty object
       // this.state.target.type = 'empty'
-      // console.log(this.state.target.type)
-      // console.log('after', this.state.target)
+      console.log('after', this.state.target)
+      await this.props.putNode({
+        id: this.state.target.id,
+        title: this.state.target.title,
+        description: this.state.target.description,
+        nodeType: this.state.target.nodeType,
+        type: 'empty',
+        x: this.state.target.x,
+        y: this.state.target.y
+      })
       this.setState({
-        selected: {}
-        // target: {}
+        selected: {},
+        target: {}
       })
     }
   }
@@ -605,7 +645,10 @@ class TreeVisualization extends Component {
                 <br />
                 <Button
                   variant="primary"
-                  onClick={this.KeySimulation}
+                  onClick={() =>
+                    this.onCreateEdge(this.state.selected, this.state.target)
+                  }
+                  // onClick={this.KeySimulation}
                   //   () => {
                   //   this.setState({
                   //     shiftDown: !this.state.shiftDown

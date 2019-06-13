@@ -10,6 +10,7 @@ const Message = require('./message')
 const Conversation = require('./conversation')
 const Link = require('./link')
 const Recommendation = require('./recommendation')
+const ResourceTag = require('./resourceTag')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -61,12 +62,17 @@ Resource.belongsToMany(Node, {through: 'nodeResource'})
 Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
 Resource.hasMany(Comment)
+Resource.belongsToMany(ResourceTag, {through: 'Tags for Resource'})
+
 //Review
 Review.belongsTo(User)
 Review.belongsTo(LearningTree)
 
 //Tag
 Tag.belongsToMany(LearningTree, {through: 'treeTag'})
+
+//Resource Tag
+ResourceTag.belongsToMany(Resource, {through: 'Tags for Resource'})
 
 //Conversation
 Conversation.hasMany(Message)
@@ -107,5 +113,6 @@ module.exports = {
   Conversation,
   Message,
   Link,
-  Recommendation
+  Recommendation,
+  ResourceTag
 }

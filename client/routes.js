@@ -48,7 +48,7 @@ class Routes extends Component {
           path="/learningTree/:id/review"
           component={ConnectedReview}
         />
-        <Route path="/blog" component={ConnectedBlog} />
+        {/* <Route path="/blog" component={ConnectedBlog} /> */}
         <Route path="/explore" component={ConnectedExplore} />
         <Route exact path="/tag/:id" component={ConnectedTag} />
         <Route path="/user/:id" component={ConnectedUserProfile} />

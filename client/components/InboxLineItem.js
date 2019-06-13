@@ -20,21 +20,19 @@ export const InboxLineItem = props => {
                 to={`/conversation/${props.conversation.id}`}
                 style={{textDecoration: 'none'}}
               >
-                <Card.Title>
-                  <Row>
-                    <Col lg={{span: 3, offset: 1}}>
-                      {props.conversation.sender === props.user.username
-                        ? props.conversation.receiver
-                        : props.conversation.sender}{' '}
-                    </Col>
-                    <Col lg={5}>{props.conversation.subject}</Col>
-                    <Col lg={3}>
-                      {moment(props.conversation.createdAt).format(
-                        'MMMM Do YYYY, h:mm:ss a'
-                      )}
-                    </Col>
-                  </Row>
-                </Card.Title>
+                <Row>
+                  <Col lg={{span: 3, offset: 1}}>
+                    {props.conversation.sender === props.user.username
+                      ? props.conversation.receiver
+                      : props.conversation.sender}{' '}
+                  </Col>
+                  <Col lg={5}>{props.conversation.subject}</Col>
+                  <Col lg={3}>
+                    {moment(props.conversation.createdAt).format(
+                      'MMMM Do YYYY, h:mm:ss a'
+                    )}
+                  </Col>
+                </Row>
               </Link>
             </Card>
           </li>
