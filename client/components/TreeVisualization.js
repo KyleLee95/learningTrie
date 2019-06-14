@@ -26,7 +26,7 @@ import {
 import {postRecommendation, getRecommendations} from '../store/recommendation'
 import {getResources, postResource} from '../store/resource'
 import {ConnectedNewNode, ConnectedResource, ConnectedNewReview} from './index'
-
+import axios from 'axios'
 const GraphConfig = {
   NodeTypes: {
     empty: {
@@ -110,6 +110,8 @@ class TreeVisualization extends Component {
       resourceShow: false,
       recommendShow: false,
       edgeLabelShow: false,
+      resourceSearchShow: false,
+      searchResults: [],
       target: {},
       actions: [],
       objects: []
@@ -150,6 +152,10 @@ class TreeVisualization extends Component {
     this.handleEdgeLabelClose = this.handleEdgeLabelClose.bind(this)
     this.handleEdgeLabelSubmit = this.handleEdgeLabelSubmit.bind(this)
     this.handleEdgeLabelChange = this.handleEdgeLabelChange.bind(this)
+    //Resource Search
+    this.handleResourceSearchSubmit = this.handleResourceSearchSubmit.bind(this)
+    this.handleResourceSearchShow = this.handleResourceSearchShow.bind(this)
+    this.handleResourceSearchChange = this.handleResourceSearchChange.bind(this)
     //Undo
     this.onUndo = this.onUndo.bind(this)
   }
@@ -581,6 +587,26 @@ class TreeVisualization extends Component {
     })
   }
 
+  //RESOURCE SEARCH
+
+  async handleResourceSearchSubmit() {
+    const res = await axios.get(`/api/resources/link?link=${this.state.link}`)
+    this.setState({
+      searchResults: res.data
+    })
+    console.log(this.state.searchResults)
+  }
+  handleResourceSearchShow() {
+    this.setState({
+      resourceSearchShow: !this.state.resourceSearchShow
+    })
+  }
+  handleResourceSearchChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -683,14 +709,18 @@ class TreeVisualization extends Component {
                 <br />
                 <Button
                   variant="primary"
-                  onClick={() =>
+                  onClick={async () => {
+                    await this.props.putNode({
+                      id: this.state.target.id,
+                      type: 'empty'
+                    })
                     this.setState({
                       selected: {},
                       target: {}
                     })
-                  }
+                  }}
                 >
-                  Clear Selected Nodes
+                  Clear Selected
                 </Button>
               </Col>
               <Col xs={11}>
@@ -883,7 +913,10 @@ class TreeVisualization extends Component {
                   <Button variant="submit" onClick={this.handleEditShow}>
                     Edit
                   </Button>
-                  <Button variant="submit" onClick={this.handleResourceShow}>
+                  <Button
+                    variant="submit"
+                    onClick={this.handleResourceSearchShow}
+                  >
                     Add Resource
                   </Button>
                 </React.Fragment>
@@ -934,6 +967,7 @@ class TreeVisualization extends Component {
               </Modal.Footer>
             </Modal>
           </Form>
+
           {/* Add Resource Modal  */}
           <Form>
             <Modal
@@ -1004,6 +1038,60 @@ class TreeVisualization extends Component {
             </Modal>
           </Form>
           {/* End Add Resource Modal */}
+
+          {/* Check if Resource Exists */}
+          <Form>
+            <Modal
+              show={this.state.resourceSearchShow}
+              onHide={this.handleResourceSearchShow}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Search Resource</Modal.Title>
+              </Modal.Header>
+              <React.Fragment>
+                <Modal.Body>
+                  {' '}
+                  <Form.Group>
+                    <Form.Label>
+                      <strong>Link</strong>
+                    </Form.Label>
+
+                    <Form.Control
+                      name="link"
+                      type="link"
+                      placeholder="Enter link"
+                      onChange={this.handleResourceSearchChange}
+                    />
+                    <Form.Text>
+                      Enter the URL for the resource you want add. If it does
+                      not already exist in our database you will have the
+                      opportunity to add it.
+                    </Form.Text>
+                  </Form.Group>
+                  <ul>
+                    {this.state.searchResults.length > 0
+                      ? this.state.searchResults.map(result => {
+                          return <li key={result.id}>{result.title}</li>
+                        })
+                      : null}
+                  </ul>
+                </Modal.Body>
+                <Modal.Footer>
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleResourceShow}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceSearchSubmit}
+                    >
+                      Submit
+                    </Button>
+                  </React.Fragment>
+                </Modal.Footer>
+              </React.Fragment>
+            </Modal>
+          </Form>
 
           {/* Recommend Resource Modal */}
           <Form>

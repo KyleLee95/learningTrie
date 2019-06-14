@@ -18,6 +18,22 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/link', async (req, res, next) => {
+  console.log(req.query)
+  try {
+    const resource = await Resource.findAll({
+      where: {link: req.query.link}
+    })
+    if (resource === undefined) {
+      res.status(200).send({title: 'None Found'})
+    } else {
+      res.status(200).json(resource)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {

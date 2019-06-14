@@ -7,6 +7,7 @@ const GET_RESOURCES = 'GET_RESOURCES'
 const REMOVE_RESOURCE = 'REMOVE_RESOURCE'
 const UPDATE_RESOURCE = 'UPDATE_RESOURCE'
 const CREATE_RESOURCE = 'CREATE_RESOURCE'
+const SEARCH_RESOURCE_BY_LINK = 'SEARCH_RESOURCE_BY_LINK'
 
 /**
  * INITIAL STATE
@@ -20,6 +21,10 @@ const fetchResources = resource => ({type: GET_RESOURCES, resource})
 const removeResource = resource => ({type: REMOVE_RESOURCE, resource})
 const createResouce = resource => ({type: CREATE_RESOURCE, resource})
 const updateResource = resource => ({type: UPDATE_RESOURCE, resource})
+const fetchResourcesByLink = resource => ({
+  type: SEARCH_RESOURCE_BY_LINK,
+  resource
+})
 /**
  * THUNK CREATORS
  */
@@ -37,6 +42,15 @@ export const getSingleResource = resourceId => async dispatch => {
   try {
     const res = await axios.get(`/api/resources/${resourceId}`)
     dispatch(fetchResources(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getResourceByLink = () => async dispatch => {
+  try {
+    const res = await axios.get(`/api/resources/link`)
+    dispatch(fetchResourcesByLink(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -86,6 +100,8 @@ export default function(state = defaultResources, action) {
       return action.resource
     case CREATE_RESOURCE:
       return [...state, action.resource]
+    // case SEARCH_RESOURCE_BY_LINK:
+    //   return action.resource
     default:
       return state
   }
