@@ -549,11 +549,12 @@ class TreeVisualization extends Component {
   handleRecommendClose() {
     this.setState({
       recommendShow: false,
-      recommend: false
+      recommend: false,
+      resourceSearchShow: false
     })
   }
   async handleRecommendSubmit(e) {
-     const tags = this.state.tags.split(', ')
+    const tags = this.state.tags.split(', ')
     e.preventDefault()
     await this.props.postRecommendation({
       title: this.state.title,
@@ -561,7 +562,8 @@ class TreeVisualization extends Component {
       type: this.state.type,
       link: this.state.link,
       nodeId: this.state.selected.id,
-      tags: tags
+      tags: tags,
+      ownerId: this.props.trees[0].ownerId
     })
     this.handleRecommendClose()
   }
@@ -1217,20 +1219,22 @@ class TreeVisualization extends Component {
                         Submit
                       </Button>
                     </React.Fragment>
-                  ): ( <React.Fragment>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceShow}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceSearchSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </React.Fragment>)}
+                  ) : (
+                    <React.Fragment>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceShow}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSearchSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </React.Fragment>
+                  )}
                 </Modal.Footer>
               </React.Fragment>
             </Modal>

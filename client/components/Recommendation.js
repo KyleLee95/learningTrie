@@ -11,7 +11,7 @@ import {
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
-
+import {Link} from 'react-router-dom'
 class Recommendation extends Component {
   constructor(props, context) {
     super(props, context)
@@ -125,6 +125,23 @@ class Recommendation extends Component {
                 </a>
               </Col>
             </Row>
+            <Row>
+              <Col xs={5}>
+                <strong>Tags:</strong>
+                {this.props.recommendation.ResourceTags
+                  ? this.props.recommendation.ResourceTags.map(tag => {
+                      return (
+                        <Link to={`/ResourceTag/${tag.id}`} key={tag.id}>
+                          <Button variant="light" size="sm" type="submit">
+                            {' '}
+                            {tag.title}
+                          </Button>
+                        </Link>
+                      )
+                    })
+                  : null}
+              </Col>
+            </Row>
           </Col>
           <Button
             onClick={() =>
@@ -139,18 +156,18 @@ class Recommendation extends Component {
           <Button onClick={this.handleShow} variant="submit">
             Edit
           </Button>
-          {/* TODO: conditional rendering for button
-          */}
-          <Button
-            variant="submit"
-            onClick={() =>
-              this.props.convertRecommendationToResource(
-                this.props.recommendation
-              )
-            }
-          >
-            Add to Resources
-          </Button>
+          {this.props.recommendation.ownerId === this.props.user.id ? (
+            <Button
+              variant="submit"
+              onClick={() =>
+                this.props.convertRecommendationToResource(
+                  this.props.recommendation
+                )
+              }
+            >
+              Add to Resources
+            </Button>
+          ) : null}
         </Row>
 
         <hr />
@@ -164,7 +181,7 @@ class Recommendation extends Component {
               ? this.props.comments.map(comment => {
                   return <ConnectedComment key={comment.id} comment={comment} />
                 })
-              : 'No comments yet. Start the discussion by adding your own comment!'}
+              : 'No comments yet.'}
           </Col>
         </Row>
         {/* Edit Modal */}
@@ -243,7 +260,8 @@ const mapState = state => {
   return {
     recommendation: state.recommendation,
     comments: state.comment,
-    link: state.link
+    link: state.link,
+    user: state.currUser
   }
 }
 

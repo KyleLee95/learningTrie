@@ -28,6 +28,9 @@ const Recommendation = db.define('recommendation', {
       'Practice Problem Set',
       'Exercise'
     )
+  },
+  ownerId: {
+    type: Sequelize.INTEGER
   }
 })
 

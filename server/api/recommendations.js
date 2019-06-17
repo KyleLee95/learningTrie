@@ -37,11 +37,13 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
+    //ADD OWNER ID FROM THE TREE
     let recommendation = await Recommendation.create({
       title: req.body.title,
       link: req.body.link,
       description: req.body.description,
-      type: req.body.type
+      type: req.body.type,
+      ownerId: req.body.ownerId
     })
     const shortUrl = req.body.link
       .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
