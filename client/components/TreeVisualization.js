@@ -111,6 +111,7 @@ class TreeVisualization extends Component {
       recommendShow: false,
       edgeLabelShow: false,
       resourceSearchShow: false,
+      search: false,
       searchResults: [],
       target: {},
       actions: [],
@@ -527,7 +528,11 @@ class TreeVisualization extends Component {
       nodeId: this.state.selected.id
     })
 
-    this.setState({resourceShow: false})
+    this.setState({
+      resourceShow: false,
+      resourceSearchShow: false,
+      search: false
+    })
   }
 
   //RECOMMEND RESOURCE HANDLERS
@@ -592,7 +597,8 @@ class TreeVisualization extends Component {
   async handleResourceSearchSubmit() {
     const res = await axios.get(`/api/resources/link?link=${this.state.link}`)
     this.setState({
-      searchResults: res.data
+      searchResults: res.data,
+      search: true
     })
     console.log(this.state.searchResults)
   }
@@ -831,6 +837,78 @@ class TreeVisualization extends Component {
             </React.Fragment>
           )}
 
+          {/* Add Resource Modal  */}
+          <Form>
+            <Modal
+              show={this.state.resourceShow}
+              onHide={this.handleResourceClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Add Resource</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    name="title"
+                    type="title"
+                    placeholder="Enter title"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Link</Form.Label>
+                  <Form.Control
+                    name="link"
+                    type="link"
+                    placeholder="Enter link"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    name="description"
+                    type="description"
+                    as="textarea"
+                    rows="3"
+                    placeholder="Enter description"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="type"
+                    onChange={this.handleEditChange}
+                  >
+                    {options.map(option => {
+                      return <option key={option}>{option}</option>
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                {(this.props.trees[0] &&
+                  this.props.trees[0].ownerId &&
+                  this.props.user.id === this.props.trees[0].ownerId) ||
+                isAuthorized === true ? (
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleResourceClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceSubmit}
+                    >
+                      Submit
+                    </Button>
+                  </React.Fragment>
+                ) : (
+                  ''
+                )}
+              </Modal.Footer>
+            </Modal>
+          </Form>
+
+          {/* End Add Resource Modal */}
+
           {/* Node Resource Modal */}
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
@@ -968,77 +1046,6 @@ class TreeVisualization extends Component {
             </Modal>
           </Form>
 
-          {/* Add Resource Modal  */}
-          <Form>
-            <Modal
-              show={this.state.resourceShow}
-              onHide={this.handleResourceClose}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Add Resource</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group>
-                  {/* Title */}
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control
-                    name="title"
-                    type="title"
-                    placeholder="Enter title"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Link</Form.Label>
-                  <Form.Control
-                    name="link"
-                    type="link"
-                    placeholder="Enter link"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    name="description"
-                    type="description"
-                    as="textarea"
-                    rows="3"
-                    placeholder="Enter description"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Type</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="type"
-                    onChange={this.handleEditChange}
-                  >
-                    {options.map(option => {
-                      return <option key={option}>{option}</option>
-                    })}
-                  </Form.Control>
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer>
-                {(this.props.trees[0] &&
-                  this.props.trees[0].ownerId &&
-                  this.props.user.id === this.props.trees[0].ownerId) ||
-                isAuthorized === true ? (
-                  <React.Fragment>
-                    <Button variant="submit" onClick={this.handleResourceClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </React.Fragment>
-                ) : (
-                  ''
-                )}
-              </Modal.Footer>
-            </Modal>
-          </Form>
-          {/* End Add Resource Modal */}
-
           {/* Check if Resource Exists */}
           <Form>
             <Modal
@@ -1055,7 +1062,6 @@ class TreeVisualization extends Component {
                     <Form.Label>
                       <strong>Link</strong>
                     </Form.Label>
-
                     <Form.Control
                       name="link"
                       type="link"
@@ -1063,31 +1069,106 @@ class TreeVisualization extends Component {
                       onChange={this.handleResourceSearchChange}
                     />
                     <Form.Text>
-                      Enter the URL for the resource you want add. If it does
+                      Enter the URL for the resource you want to add. If it does
                       not already exist in our database you will have the
                       opportunity to add it.
                     </Form.Text>
                   </Form.Group>
-                  <ul>
-                    {this.state.searchResults.length > 0
-                      ? this.state.searchResults.map(result => {
-                          return <li key={result.id}>{result.title}</li>
-                        })
-                      : null}
-                  </ul>
+                  {/* <ul> */}
+                  {this.state.searchResults.length > 0 ? (
+                    this.state.searchResults.map(result => {
+                      return (
+                        <li key={result.id}>
+                          <Link to={`/resource/${result.id}`}>
+                            {result.title}{' '}
+                            <Button
+                              size="sm"
+                              variant="submit"
+                              onClick={this.handleResourceSubmit}
+                            >
+                              Add to Node
+                            </Button>
+                          </Link>
+                        </li>
+                      )
+                    })
+                  ) : this.state.searchResults.length === 0 &&
+                  this.state.search === true ? (
+                    <React.Fragment>
+                      None found. Would you like to add it to the database?
+                      {/* <Form.Group> */}
+                      {/* Title */}
+                      <Form.Label>Title</Form.Label>
+                      <Form.Control
+                        name="title"
+                        type="title"
+                        placeholder="Enter title"
+                        onChange={this.handleResourceChange}
+                      />
+                      {/* <Form.Label>Link</Form.Label>
+                        <Form.Control
+                          name="link"
+                          type="link"
+                          placeholder="Enter link"
+                          onChange={this.handleResourceChange}
+                        /> */}
+                      <Form.Label>Description</Form.Label>
+                      <Form.Control
+                        name="description"
+                        type="description"
+                        as="textarea"
+                        rows="3"
+                        placeholder="Enter description"
+                        onChange={this.handleResourceChange}
+                      />
+                      <Form.Label>Type</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="type"
+                        onChange={this.handleEditChange}
+                      >
+                        {options.map(option => {
+                          return <option key={option}>{option}</option>
+                        })}
+                      </Form.Control>
+                      {/* </Form.Group> */}
+                    </React.Fragment>
+                  ) : null}
+                  {/* </ul> */}
                 </Modal.Body>
                 <Modal.Footer>
-                  <React.Fragment>
-                    <Button variant="submit" onClick={this.handleResourceShow}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceSearchSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </React.Fragment>
+                  {this.state.search === true &&
+                  this.state.searchResults.length === 0 ? (
+                    <React.Fragment>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSearchShow}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceShow}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSearchSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </React.Fragment>
+                  )}
                 </Modal.Footer>
               </React.Fragment>
             </Modal>
