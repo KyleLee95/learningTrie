@@ -73,7 +73,7 @@ Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 
 //Resource Tag
 ResourceTag.belongsToMany(Resource, {through: 'Tags for Resource'})
-
+ResourceTag.belongsToMany(Recommendation, {through: 'recommendationTag'})
 //Conversation
 Conversation.hasMany(Message)
 Conversation.belongsToMany(User, {through: 'userConversation'})
@@ -90,7 +90,7 @@ Recommendation.belongsToMany(User, {through: 'recommendedResources'})
 Recommendation.belongsToMany(Link, {through: 'recommendationLink'})
 Recommendation.belongsToMany(User, {through: 'userRecommendation'})
 Recommendation.belongsToMany(Node, {through: 'nodeRecommendation'})
-
+Recommendation.belongsToMany(ResourceTag, {through: 'recommendationTag'})
 //Message
 Message.belongsTo(User)
 Message.belongsTo(Conversation)

@@ -13,7 +13,7 @@ router.use('/messages', require('./message'))
 router.use('/conversations', require('./conversation'))
 router.use('/links', require('./links'))
 router.use('/recommendations', require('./recommendations'))
-
+router.use('/resourceTags', require('./resourceTags'))
 router.use((req, res, next) => {
   const error = new Error('Not Found')
   error.status = 404

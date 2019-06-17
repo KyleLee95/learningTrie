@@ -5,7 +5,8 @@ const {
   LearningTree,
   User,
   Link,
-  Comment
+  Comment,
+  ResourceTag
 } = require('../db/models')
 module.exports = router
 
@@ -19,7 +20,6 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/link', async (req, res, next) => {
-  console.log(req.query)
   try {
     const resource = await Resource.findAll({
       where: {link: req.query.link}
@@ -38,7 +38,8 @@ router.get('/:id', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {
       include: [
-        {model: Link, through: 'resourceLink', include: [{model: Comment}]}
+        {model: Link, through: 'resourceLink', include: [{model: Comment}]},
+        {model: ResourceTag}
       ]
     })
     // console.log(Object.keys(resource.__proto__))
@@ -49,6 +50,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     //conditionally create resources
     let resource = await Resource.create({
@@ -65,6 +67,18 @@ router.post('/', async (req, res, next) => {
     })
     const user = await User.findByPk(Number(req.user.id))
     const node = await Node.findByPk(req.body.nodeId)
+    if (req.body.tags) {
+      req.body.tags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
+        await resource.addResourceTag(newTag[0])
+      })
+    } else {
+      req.body.ResourceTags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag.title}})
+        await resource.addResourceTag(newTag[0])
+      })
+    }
+
     await link[0].addResource(resource)
     await resource.addNode(node)
     await resource.addUser(user)

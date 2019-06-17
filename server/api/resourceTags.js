@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {LearningTree, ResourceTag, Review, User, Link} = require('../db/models')
+const {LearningTree, ResourceTag, Resource} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -16,8 +16,8 @@ router.get('/:id', async (req, res, next) => {
     const tag = await ResourceTag.findByPk(req.params.id, {
       include: [
         {
-          model: Link,
-          include: [{model: Review}, {model: ResourceTag}, {model: User}]
+          model: Resource,
+          include: [{model: ResourceTag}]
         }
       ]
     })

@@ -112,6 +112,7 @@ class TreeVisualization extends Component {
       edgeLabelShow: false,
       resourceSearchShow: false,
       search: false,
+      recommend: false,
       searchResults: [],
       target: {},
       actions: [],
@@ -344,7 +345,7 @@ class TreeVisualization extends Component {
       this.setState({
         target: node
       })
-      //updates target node to be red, functionality doesn't work though
+      //updates target node to be red
       await this.props.putNode({
         id: this.state.target.id,
         x: this.state.target.x,
@@ -520,12 +521,14 @@ class TreeVisualization extends Component {
   }
 
   async handleResourceSubmit() {
+    const tags = this.state.tags.split(', ')
     await this.props.postResource({
       title: this.state.title,
       description: this.state.description,
       type: this.state.type,
       link: this.state.link,
-      nodeId: this.state.selected.id
+      nodeId: this.state.selected.id,
+      tags: tags
     })
 
     this.setState({
@@ -538,22 +541,27 @@ class TreeVisualization extends Component {
   //RECOMMEND RESOURCE HANDLERS
   handleRecommendShow() {
     this.setState({
-      recommendShow: true
+      // recommendShow: true,
+      recommend: true,
+      resourceSearchShow: true
     })
   }
   handleRecommendClose() {
     this.setState({
-      recommendShow: false
+      recommendShow: false,
+      recommend: false
     })
   }
   async handleRecommendSubmit(e) {
+     const tags = this.state.tags.split(', ')
     e.preventDefault()
     await this.props.postRecommendation({
       title: this.state.title,
       description: this.state.description,
       type: this.state.type,
       link: this.state.link,
-      nodeId: this.state.selected.id
+      nodeId: this.state.selected.id,
+      tags: tags
     })
     this.handleRecommendClose()
   }
@@ -1105,13 +1113,6 @@ class TreeVisualization extends Component {
                         placeholder="Enter title"
                         onChange={this.handleResourceChange}
                       />
-                      {/* <Form.Label>Link</Form.Label>
-                        <Form.Control
-                          name="link"
-                          type="link"
-                          placeholder="Enter link"
-                          onChange={this.handleResourceChange}
-                        /> */}
                       <Form.Label>Description</Form.Label>
                       <Form.Control
                         name="description"
@@ -1131,13 +1132,59 @@ class TreeVisualization extends Component {
                           return <option key={option}>{option}</option>
                         })}
                       </Form.Control>
+                      <Form.Label>Tags</Form.Label>
+                      <Form.Control
+                        name="tags"
+                        type="tags"
+                        placeholder="Enter tags"
+                        onChange={this.handleResourceChange}
+                      />
                       {/* </Form.Group> */}
+                    </React.Fragment>
+                  ) : this.state.searchResults.length === 0 &&
+                  this.state.search === true &&
+                  this.state.recommend === true ? (
+                    <React.Fragment>
+                      <Form.Label>Title</Form.Label>
+                      <Form.Control
+                        name="title"
+                        type="title"
+                        placeholder="Enter title"
+                        onChange={this.handleRecommendChange}
+                      />
+                      <Form.Label>Link</Form.Label>
+                      <Form.Control
+                        name="link"
+                        type="link"
+                        placeholder="Enter link"
+                        onChange={this.handleRecommendChange}
+                      />
+                      <Form.Label>Description</Form.Label>
+                      <Form.Control
+                        name="description"
+                        type="description"
+                        as="textarea"
+                        rows="3"
+                        placeholder="Enter description"
+                        onChange={this.handleRecommendChange}
+                      />
+                      <Form.Label>Type</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="type"
+                        onChange={this.handleRecommendChange}
+                      >
+                        {options.map(option => {
+                          return <option key={option}>{option}</option>
+                        })}
+                      </Form.Control>
                     </React.Fragment>
                   ) : null}
                   {/* </ul> */}
                 </Modal.Body>
                 <Modal.Footer>
                   {this.state.search === true &&
+                  this.state.recommend === false &&
                   this.state.searchResults.length === 0 ? (
                     <React.Fragment>
                       <Button
@@ -1153,22 +1200,37 @@ class TreeVisualization extends Component {
                         Submit
                       </Button>
                     </React.Fragment>
-                  ) : (
+                  ) : this.state.search === true &&
+                  this.state.recommend === true &&
+                  this.state.searchResults.length === 0 ? (
                     <React.Fragment>
                       <Button
                         variant="submit"
-                        onClick={this.handleResourceShow}
+                        onClick={this.handleResourceSearchShow}
                       >
                         Close
                       </Button>
                       <Button
                         variant="submit"
-                        onClick={this.handleResourceSearchSubmit}
+                        onClick={this.handleRecommendSubmit}
                       >
                         Submit
                       </Button>
                     </React.Fragment>
-                  )}
+                  ): ( <React.Fragment>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceShow}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceSearchSubmit}
+                    >
+                      Submit
+                    </Button>
+                  </React.Fragment>)}
                 </Modal.Footer>
               </React.Fragment>
             </Modal>

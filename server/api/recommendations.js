@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {
   Resource,
+  ResourceTag,
   Recommendation,
   Node,
   LearningTree,
@@ -21,7 +22,10 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const recommendation = await Recommendation.findByPk(req.params.id, {
-      include: [{model: Link, through: 'recommendationLink'}]
+      include: [
+        {model: Link, through: 'recommendationLink'},
+        {model: ResourceTag}
+      ]
     })
     // console.log(Object.keys(resource.__proto__))
     res.status(200).json(recommendation)
@@ -44,6 +48,11 @@ router.post('/', async (req, res, next) => {
       .split('/')[0]
     const link = await Link.findOrCreate({
       where: {url: req.body.link, shortUrl: shortUrl}
+    })
+
+    req.body.tags.forEach(async tag => {
+      let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
+      await recommendation.addResourceTag(newTag[0])
     })
     const user = await User.findByPk(Number(req.user.id))
     const node = await Node.findByPk(req.body.nodeId)

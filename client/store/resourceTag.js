@@ -16,10 +16,22 @@ const defaultTags = []
 /**
  * ACTION CREATORS
  */
-const fetchResourceTags = tag => ({type: GET_RESOURCE_TAGS, tag})
-const removeResourceTag = tag => ({type: REMOVE_RESOURCE_TAG, tag})
-const createResourceTag = tag => ({type: UPDATE_RESOURCE_TAG, tag})
-const updateResourceTag = tag => ({type: CREATE_RESOURCE_TAG, tag})
+const fetchResourceTags = resourceTag => ({
+  type: GET_RESOURCE_TAGS,
+  resourceTag
+})
+const removeResourceTag = resourceTag => ({
+  type: REMOVE_RESOURCE_TAG,
+  resourceTag
+})
+const createResourceTag = resourceTag => ({
+  type: UPDATE_RESOURCE_TAG,
+  resourceTag
+})
+const updateResourceTag = resourceTag => ({
+  type: CREATE_RESOURCE_TAG,
+  resourceTag
+})
 /**
  * THUNK CREATORS
  */
@@ -77,13 +89,13 @@ export const putTag = tag => async dispatch => {
 export default function(state = defaultTags, action) {
   switch (action.type) {
     case GET_RESOURCE_TAGS:
-      return action.tag
+      return action.resourceTag
     case REMOVE_RESOURCE_TAG:
       return []
     case UPDATE_RESOURCE_TAG:
-      return action.tag
+      return action.resourceTag
     case CREATE_RESOURCE_TAG:
-      return [...state, action.tag]
+      return [...state, action.resourceTag]
     default:
       return state
   }

@@ -11,6 +11,7 @@ import {
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
+import {Link} from 'react-router-dom'
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
@@ -24,6 +25,7 @@ class Resource extends Component {
   }
 
   async componentDidMount() {
+    console.log(this.props)
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleResource(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
@@ -117,6 +119,22 @@ class Resource extends Component {
                     ? this.props.resource.link
                     : ''}
                 </a>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={5}>
+                <strong>Tags:</strong>{' '}
+                {this.props.resource && this.props.resource.ResourceTags
+                  ? this.props.resource.ResourceTags.map(tag => {
+                      return (
+                        <Link key={tag.id} to={`/resourceTag/${tag.id}`}>
+                          <Button variant="light" size="sm">
+                            {tag.title}
+                          </Button>
+                        </Link>
+                      )
+                    })
+                  : null}
               </Col>
             </Row>
           </Col>
