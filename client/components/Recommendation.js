@@ -12,6 +12,8 @@ import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
 import {Link} from 'react-router-dom'
+
+let auth = false
 class Recommendation extends Component {
   constructor(props, context) {
     super(props, context)
@@ -74,6 +76,23 @@ class Recommendation extends Component {
       'Practice Problem Set',
       'Exercise'
     ]
+
+    let authId = []
+    if (
+      this.props.recommendation.nodes !== undefined &&
+      this.props.recommendation.nodes[0] !== undefined &&
+      this.props.recommendation.nodes[0].learningTree !== undefined &&
+      this.props.recommendation.nodes[0].learningTree !== undefined &&
+      this.props.recommendation.nodes[0].learningTree.users !== undefined &&
+      this.props.recommendation.nodes[0].learningTree.users[0].id !== undefined
+    ) {
+      this.props.recommendation.nodes[0].learningTree.users.forEach(user => {
+        return authId.push(user.id)
+      })
+    }
+    if (authId.includes(this.props.user.id) === true) {
+      auth = true
+    }
     return (
       <div>
         <Row>
@@ -156,7 +175,7 @@ class Recommendation extends Component {
           <Button onClick={this.handleShow} variant="submit">
             Edit
           </Button>
-          {this.props.recommendation.ownerId === this.props.user.id ? (
+          {auth === false ? null : (
             <Button
               variant="submit"
               onClick={() =>
@@ -167,7 +186,7 @@ class Recommendation extends Component {
             >
               Add to Resources
             </Button>
-          ) : null}
+          )}
         </Row>
 
         <hr />

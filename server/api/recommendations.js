@@ -24,7 +24,8 @@ router.get('/:id', async (req, res, next) => {
     const recommendation = await Recommendation.findByPk(req.params.id, {
       include: [
         {model: Link, through: 'recommendationLink'},
-        {model: ResourceTag}
+        {model: ResourceTag},
+        {model: Node, include: [{model: LearningTree, include: {model: User}}]}
       ]
     })
     // console.log(Object.keys(resource.__proto__))
@@ -37,7 +38,6 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
-    //ADD OWNER ID FROM THE TREE
     let recommendation = await Recommendation.create({
       title: req.body.title,
       link: req.body.link,

@@ -94,7 +94,7 @@ const GraphConfig = {
 }
 
 const NODE_KEY = 'id' // Allows D3 to correctly update DOM
-
+let auth = false
 class TreeVisualization extends Component {
   constructor(props, context) {
     super(props, context)
@@ -115,6 +115,7 @@ class TreeVisualization extends Component {
       recommend: false,
       searchResults: [],
       target: {},
+
       actions: [],
       objects: []
     }
@@ -645,7 +646,6 @@ class TreeVisualization extends Component {
       'Exercise'
     ]
 
-    let isAuthorized = false
     let authId = []
     if (
       this.props.trees !== undefined &&
@@ -660,7 +660,7 @@ class TreeVisualization extends Component {
       })
     }
     if (authId.includes(this.props.user.id) === true) {
-      isAuthorized = true
+      auth = true
     }
     return (
       <ScrollLock>
@@ -898,7 +898,7 @@ class TreeVisualization extends Component {
                 {(this.props.trees[0] &&
                   this.props.trees[0].ownerId &&
                   this.props.user.id === this.props.trees[0].ownerId) ||
-                isAuthorized === true ? (
+                auth === true ? (
                   <React.Fragment>
                     <Button variant="submit" onClick={this.handleResourceClose}>
                       Close
@@ -991,7 +991,7 @@ class TreeVisualization extends Component {
               {(this.props.trees[0] &&
                 this.props.trees[0].ownerId &&
                 this.props.user.id === this.props.trees[0].ownerId) ||
-              isAuthorized === true ? (
+              auth === true ? (
                 // || is an approved ID
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleClose}>
