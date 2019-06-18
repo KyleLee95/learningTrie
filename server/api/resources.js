@@ -40,14 +40,7 @@ router.get('/search', async (req, res, next) => {
     let resource = []
     let resourcesTagged = []
     const resources = await Resource.findAll({
-      where: {title: {[Op.iLike]: `%${req.query.search}%`}},
-      include: [
-        {
-          model: ResourceTag,
-          where: {title: req.query.search},
-          include: [{model: Resource}]
-        }
-      ]
+      where: {title: {[Op.iLike]: `%${req.query.search}%`}}
     })
 
     const resourceTag = await ResourceTag.findOne({
@@ -125,7 +118,19 @@ router.post('/', async (req, res, next) => {
     res.status(201).json(resource)
   } catch (err) {
     next(err)
-    console.error(err)
+  }
+})
+
+router.post('/add', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.body.node.id)
+    const resource = await Resource.findByPk(req.body.resource.id)
+
+    await resource.addNode(node)
+    await node.addResource(resource)
+    res.status(200).send('success')
+  } catch (err) {
+    next(err)
   }
 })
 

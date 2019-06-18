@@ -1230,7 +1230,17 @@ class TreeVisualization extends Component {
                                 {result.title}
                               </Link>
 
-                              <Button variant="submit" sz="sm">
+                              <Button
+                                variant="submit"
+                                sz="sm"
+                                onClick={async () => {
+                                  await axios.post(`/api/resources/add`, {
+                                    node: this.state.selected,
+                                    resource: result
+                                  })
+                                  await this.props.getResources()
+                                }}
+                              >
                                 Add to Node
                               </Button>
                             </li>
