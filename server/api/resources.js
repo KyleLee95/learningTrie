@@ -8,6 +8,7 @@ const {
   Comment,
   ResourceTag
 } = require('../db/models')
+const Op = require('sequelize').Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -34,6 +35,43 @@ router.get('/link', async (req, res, next) => {
   }
 })
 
+router.get('/search', async (req, res, next) => {
+  try {
+    let resource = []
+    let resourcesTagged = []
+    const resources = await Resource.findAll({
+      where: {title: {[Op.iLike]: `%${req.query.search}%`}},
+      include: [
+        {
+          model: ResourceTag,
+          where: {title: req.query.search},
+          include: [{model: Resource}]
+        }
+      ]
+    })
+
+    const resourceTag = await ResourceTag.findOne({
+      where: {title: req.query.search}
+    })
+    if (resourceTag !== null) {
+      resourcesTagged = await resourceTag.getResources()
+    } else {
+      resourcesTagged = []
+    }
+
+    // console.log(Object.keys(resourceTag.__proto__))
+
+    resource = [...resources, ...resourcesTagged]
+    if (resource === undefined) {
+      res.status(200).send({title: 'None Found'})
+    } else {
+      res.status(200).json(resource)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {
@@ -50,7 +88,6 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log(req.body)
   try {
     //conditionally create resources
     let resource = await Resource.create({

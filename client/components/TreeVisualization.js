@@ -121,6 +121,7 @@ class TreeVisualization extends Component {
       recommendShow: false,
       edgeLabelShow: false,
       searchExistingResource: false,
+      searchExistingResourceResults: [],
       resourceSearchShow: false,
       search: false,
       recommend: false,
@@ -640,8 +641,16 @@ class TreeVisualization extends Component {
 
   //EXISTING RESOURCE SEARCH
 
-  handleExistingSearchSubmit() {
-    console.log('A')
+  async handleExistingSearchSubmit() {
+    const res = await axios.get(
+      `/api/resources/search?search=${this.state.searchExisting}`
+    )
+    this.setState({
+      searchExistingResourceResults: res.data
+      // searchExisting: true
+    })
+
+    console.log(this.state.searchExistingResourceResults)
   }
   handleExistingSearchShow() {
     this.setState({
@@ -950,7 +959,10 @@ class TreeVisualization extends Component {
                   >
                     Add Resource
                   </Button>
-                  <Button variant="submit" onClick={this.handleExistingSearchShow}>
+                  <Button
+                    variant="submit"
+                    onClick={this.handleExistingSearchShow}
+                  >
                     Search Resources
                   </Button>
                 </React.Fragment>
@@ -1200,12 +1212,34 @@ class TreeVisualization extends Component {
                   {/* Title */}
                   <Form.Label>Search</Form.Label>
                   <Form.Control
-                    name="search"
+                    name="searchExisting"
                     placeholder="Search for a Resource"
                     onChange={this.handleExistingSearchChange}
                   />
                 </Form.Group>
               </Modal.Body>
+              {this.state.searchExistingResourceResults.length > 0 ? (
+                <Modal.Body>
+                  Search Results
+                  {this.state.searchExistingResourceResults.length > 0
+                    ? this.state.searchExistingResourceResults.map(result => {
+                        return (
+                          <React.Fragment key={result.link}>
+                            <li>
+                              <Link to={`/resource/${result.id}`}>
+                                {result.title}
+                              </Link>
+
+                              <Button variant="submit" sz="sm">
+                                Add to Node
+                              </Button>
+                            </li>
+                          </React.Fragment>
+                        )
+                      })
+                    : null}
+                </Modal.Body>
+              ) : null}
               <Modal.Footer>
                 <React.Fragment>
                   <Button
