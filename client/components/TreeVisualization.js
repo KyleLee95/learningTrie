@@ -14,7 +14,16 @@ import {
   BwdlTransformer, // optional, Example JSON transformer
   GraphUtils // optional, useful utility functions
 } from 'react-digraph'
-import {Modal, Button, Card, Form, Row, Col, Tabs, Tab} from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Card,
+  Form,
+  Row,
+  Col,
+  OverlayTrigger,
+  Popover
+} from 'react-bootstrap'
 import {postNode, putNode, getNodes, delNode} from '../store/node'
 import {
   getEdges,
@@ -25,7 +34,8 @@ import {
 } from '../store/edge'
 import {postRecommendation, getRecommendations} from '../store/recommendation'
 import {getResources, postResource} from '../store/resource'
-import {ConnectedNewNode, ConnectedResource, ConnectedNewReview} from './index'
+import {ConnectedNewNode} from './index'
+import {ConnectedSearchPopover} from './SearchPopover'
 import axios from 'axios'
 const GraphConfig = {
   NodeTypes: {
@@ -110,6 +120,7 @@ class TreeVisualization extends Component {
       resourceShow: false,
       recommendShow: false,
       edgeLabelShow: false,
+      searchExistingResource: false,
       resourceSearchShow: false,
       search: false,
       recommend: false,
@@ -159,6 +170,10 @@ class TreeVisualization extends Component {
     this.handleResourceSearchSubmit = this.handleResourceSearchSubmit.bind(this)
     this.handleResourceSearchShow = this.handleResourceSearchShow.bind(this)
     this.handleResourceSearchChange = this.handleResourceSearchChange.bind(this)
+    //Existing Resource Search
+    this.handleExistingSearchSubmit = this.handleExistingSearchSubmit.bind(this)
+    this.handleExistingSearchShow = this.handleExistingSearchShow.bind(this)
+    this.handleExistingSearchChange = this.handleExistingSearchChange.bind(this)
     //Undo
     this.onUndo = this.onUndo.bind(this)
   }
@@ -611,7 +626,6 @@ class TreeVisualization extends Component {
       searchResults: res.data,
       search: true
     })
-    console.log(this.state.searchResults)
   }
   handleResourceSearchShow() {
     this.setState({
@@ -619,6 +633,22 @@ class TreeVisualization extends Component {
     })
   }
   handleResourceSearchChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  //EXISTING RESOURCE SEARCH
+
+  handleExistingSearchSubmit() {
+    console.log('A')
+  }
+  handleExistingSearchShow() {
+    this.setState({
+      searchExistingResource: !this.state.searchExistingResource
+    })
+  }
+  handleExistingSearchChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -673,22 +703,6 @@ class TreeVisualization extends Component {
           this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
-                {/* <Button onClick={this.onUndo}>Undo last action</Button>
-                <br />
-                <br /> */}
-                {/* <Button
-                  onClick={() => {
-                    const selectedNode = document.getElementById(
-                      `node-${this.state.selected.id}`
-                    )
-                    selectedNode.dispatchEvent(
-                      new KeyboardEvent('keydown', {key: 'Shift'})
-                    )
-                    console.log('keyboard fire')
-                  }}
-                >
-                  Create Association
-                </Button> */}
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button
@@ -738,6 +752,8 @@ class TreeVisualization extends Component {
                 >
                   Clear Selected
                 </Button>
+                <br />
+                <br />
               </Col>
               <Col xs={11}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>
@@ -847,78 +863,6 @@ class TreeVisualization extends Component {
             </React.Fragment>
           )}
 
-          {/* Add Resource Modal  */}
-          <Form>
-            <Modal
-              show={this.state.resourceShow}
-              onHide={this.handleResourceClose}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Add Resource</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group>
-                  {/* Title */}
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control
-                    name="title"
-                    type="title"
-                    placeholder="Enter title"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Link</Form.Label>
-                  <Form.Control
-                    name="link"
-                    type="link"
-                    placeholder="Enter link"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    name="description"
-                    type="description"
-                    as="textarea"
-                    rows="3"
-                    placeholder="Enter description"
-                    onChange={this.handleResourceChange}
-                  />
-                  <Form.Label>Type</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="type"
-                    onChange={this.handleEditChange}
-                  >
-                    {options.map(option => {
-                      return <option key={option}>{option}</option>
-                    })}
-                  </Form.Control>
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer>
-                {(this.props.trees[0] &&
-                  this.props.trees[0].ownerId &&
-                  this.props.user.id === this.props.trees[0].ownerId) ||
-                auth === true ? (
-                  <React.Fragment>
-                    <Button variant="submit" onClick={this.handleResourceClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </React.Fragment>
-                ) : (
-                  ''
-                )}
-              </Modal.Footer>
-            </Modal>
-          </Form>
-
-          {/* End Add Resource Modal */}
-
           {/* Node Resource Modal */}
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
@@ -992,7 +936,6 @@ class TreeVisualization extends Component {
                 this.props.trees[0].ownerId &&
                 this.props.user.id === this.props.trees[0].ownerId) ||
               auth === true ? (
-                // || is an approved ID
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleClose}>
                     Close
@@ -1006,6 +949,9 @@ class TreeVisualization extends Component {
                     onClick={this.handleResourceSearchShow}
                   >
                     Add Resource
+                  </Button>
+                  <Button variant="submit" onClick={this.handleExistingSearchShow}>
+                    Search Resources
                   </Button>
                 </React.Fragment>
               ) : this.props.user.id !== undefined ? (
@@ -1240,66 +1186,46 @@ class TreeVisualization extends Component {
             </Modal>
           </Form>
 
-          {/* Recommend Resource Modal */}
+          {/* Search Existing Resource Modal */}
           <Form>
             <Modal
-              show={this.state.recommendShow}
-              onHide={this.handleRecommendClose}
+              show={this.state.searchExistingResource}
+              onHide={this.handleExistingSearchShow}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Recommend Resource</Modal.Title>
+                <Modal.Title>Search</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form.Group>
                   {/* Title */}
-                  <Form.Label>Title</Form.Label>
+                  <Form.Label>Search</Form.Label>
                   <Form.Control
-                    name="title"
-                    type="title"
-                    placeholder="Enter title"
-                    onChange={this.handleRecommendChange}
+                    name="search"
+                    placeholder="Search for a Resource"
+                    onChange={this.handleExistingSearchChange}
                   />
-                  <Form.Label>Link</Form.Label>
-                  <Form.Control
-                    name="link"
-                    type="link"
-                    placeholder="Enter link"
-                    onChange={this.handleRecommendChange}
-                  />
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    name="description"
-                    type="description"
-                    as="textarea"
-                    rows="3"
-                    placeholder="Enter description"
-                    onChange={this.handleRecommendChange}
-                  />
-                  <Form.Label>Type</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="type"
-                    onChange={this.handleRecommendChange}
-                  >
-                    {options.map(option => {
-                      return <option key={option}>{option}</option>
-                    })}
-                  </Form.Control>
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
                 <React.Fragment>
-                  <Button variant="submit" onClick={this.handleRecommendClose}>
+                  <Button
+                    variant="submit"
+                    onClick={this.handleExistingSearchShow}
+                  >
                     Close
                   </Button>
-                  <Button variant="submit" onClick={this.handleRecommendSubmit}>
+                  <Button
+                    variant="submit"
+                    onClick={this.handleExistingSearchSubmit}
+                  >
                     Submit
                   </Button>
                 </React.Fragment>
               </Modal.Footer>
             </Modal>
           </Form>
-          {/* End Recommend Resource Modal */}
+          {/* End Edge Label Modal */}
+
           {/* Edge Label Modal */}
           <Form>
             <Modal

@@ -1,0 +1,152 @@
+   {/* Recommend Resource Modal */}
+          <Form>
+            <Modal
+              show={this.state.recommendShow}
+              onHide={this.handleRecommendClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Recommend Resource</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    name="title"
+                    type="title"
+                    placeholder="Enter title"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Link</Form.Label>
+                  <Form.Control
+                    name="link"
+                    type="link"
+                    placeholder="Enter link"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    name="description"
+                    type="description"
+                    as="textarea"
+                    rows="3"
+                    placeholder="Enter description"
+                    onChange={this.handleRecommendChange}
+                  />
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="type"
+                    onChange={this.handleRecommendChange}
+                  >
+                    {options.map(option => {
+                      return <option key={option}>{option}</option>
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleRecommendClose}>
+                    Close
+                  </Button>
+                  <Button variant="submit" onClick={this.handleRecommendSubmit}>
+                    Submit
+                  </Button>
+                </React.Fragment>
+              </Modal.Footer>
+            </Modal>
+          </Form>
+          {/* End Recommend Resource Modal */}
+
+
+
+          {/* Add Resource Modal  */}
+          <Form>
+            <Modal
+              show={this.state.resourceShow}
+              onHide={this.handleResourceClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Add Resource</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    name="title"
+                    type="title"
+                    placeholder="Enter title"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Link</Form.Label>
+                  <Form.Control
+                    name="link"
+                    type="link"
+                    placeholder="Enter link"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    name="description"
+                    type="description"
+                    as="textarea"
+                    rows="3"
+                    placeholder="Enter description"
+                    onChange={this.handleResourceChange}
+                  />
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="type"
+                    onChange={this.handleEditChange}
+                  >
+                    {options.map(option => {
+                      return <option key={option}>{option}</option>
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                {(this.props.trees[0] &&
+                  this.props.trees[0].ownerId &&
+                  this.props.user.id === this.props.trees[0].ownerId) ||
+                auth === true ? (
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleResourceClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceSubmit}
+                    >
+                      Submit
+                    </Button>
+                  </React.Fragment>
+                ) : (
+                  ''
+                )}
+              </Modal.Footer>
+            </Modal>
+          </Form>
+
+          {/* End Add Resource Modal */}
+
+
+   {/* <Button onClick={this.onUndo}>Undo last action</Button>
+                <br />
+                <br /> */}
+                {/* <Button
+                  onClick={() => {
+                    const selectedNode = document.getElementById(
+                      `node-${this.state.selected.id}`
+                    )
+                    selectedNode.dispatchEvent(
+                      new KeyboardEvent('keydown', {key: 'Shift'})
+                    )
+                    console.log('keyboard fire')
+                  }}
+                >
+                  Create Association
+                </Button> */}
