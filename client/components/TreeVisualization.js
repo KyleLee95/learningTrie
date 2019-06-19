@@ -1270,10 +1270,13 @@ class TreeVisualization extends Component {
                           </React.Fragment>
                         )
                       })
-                    : this.state.searchExistingResourceSearch === false &&
+                    : this.state.searchExistingResourceSearch === true &&
                       this.state.searchExistingResourceResults.length === 0
-                      ? null
-                      : null}
+                      ? (<Row>
+                        <Col>
+                        none found
+                        </Col>             </Row>)
+                      : (null)}
                 </Modal.Body>
               ) : null}
 
