@@ -658,8 +658,6 @@ class TreeVisualization extends Component {
       searchExistingResourceSearch: true
       // searchExisting: true
     })
-
-   
   }
   handleExistingSearchShow() {
     this.setState({
@@ -1069,16 +1067,39 @@ class TreeVisualization extends Component {
                     this.state.searchResults.map(result => {
                       return (
                         <li key={result.id}>
-                          <Link to={`/resource/${result.id}`}>
-                            {result.title}{' '}
-                            <Button
-                              size="sm"
-                              variant="submit"
-                              onClick={this.handleResourceSubmit}
-                            >
-                              Add to Node
-                            </Button>
-                          </Link>
+                          {this.state.selected.id !== result.nodeId ? (
+                            <React.Fragment>
+                            <Link to={`/resource/${result.id}`}>
+                              {result.title}{' '}
+                              </Link>
+                              <Button
+                                size="sm"
+                                variant="submit"
+                                onClick={this.handleResourceSubmit}
+                              >
+                                Add to Node
+                              </Button>
+                              </React.Fragment>
+                          ) : (
+                            <React.Fragment>
+                              <Link to={`/resource/${result.id}`}>
+                                {result.title}{' '}
+                              </Link>
+                              <Button
+                                size="sm"
+                                variant="submit"
+                                onClick={async () => {
+                                  await this.props.unAssociateResourceFromNode({
+                                    node: this.state.selected,
+                                    resource: result
+                                  })
+                                  await this.props.getResources()
+                                }}
+                              >
+                                Remove from Node
+                              </Button>
+                            </React.Fragment>
+                          )}
                         </li>
                       )
                     })
@@ -1244,40 +1265,38 @@ class TreeVisualization extends Component {
                 <Modal.Body>
                   Search Results
                   {this.state.searchExistingResourceResults.length > 0 &&
-                  this.state.searchExistingResourceSearch === true
-                    ? this.state.searchExistingResourceResults.map(result => {
-                        return (
-                          <React.Fragment key={result.link}>
-                            <li>
-                              <Link to={`/resource/${result.id}`}>
-                                {result.title}
-                              </Link>
+                  this.state.searchExistingResourceSearch === true ? (
+                    this.state.searchExistingResourceResults.map(result => {
+                      return (
+                        <React.Fragment key={result.link}>
+                          <li>
+                            <Link to={`/resource/${result.id}`}>
+                              {result.title}
+                            </Link>
 
-                              <Button
-                                variant="submit"
-                                sz="sm"
-                                onClick={async () => {
-                                  await this.props.associateResourceToNode({
-                                    node: this.state.selected,
-                                    resource: result
-                                  })
-                                  await this.props.getResources()
-                                }}
-                              >
-                                Add to Node
-                              </Button>
-                            </li>
-                          </React.Fragment>
-                        )
-                      })
-                    : this.state.searchExistingResourceSearch === true &&
-                      this.state.searchExistingResourceResults.length === 0
-                      ? (<Row>
-                        <Col>
-                        none found
-                        </Col>            
-                         </Row>)
-                      : (null)}
+                            <Button
+                              variant="submit"
+                              sz="sm"
+                              onClick={async () => {
+                                await this.props.associateResourceToNode({
+                                  node: this.state.selected,
+                                  resource: result
+                                })
+                                await this.props.getResources()
+                              }}
+                            >
+                              Add to Node
+                            </Button>
+                          </li>
+                        </React.Fragment>
+                      )
+                    })
+                  ) : this.state.searchExistingResourceSearch === true &&
+                  this.state.searchExistingResourceResults.length === 0 ? (
+                    <Row>
+                      <Col>none found</Col>
+                    </Row>
+                  ) : null}
                 </Modal.Body>
               ) : null}
 
