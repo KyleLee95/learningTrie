@@ -1275,7 +1275,8 @@ class TreeVisualization extends Component {
                       ? (<Row>
                         <Col>
                         none found
-                        </Col>             </Row>)
+                        </Col>            
+                         </Row>)
                       : (null)}
                 </Modal.Body>
               ) : null}

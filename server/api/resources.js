@@ -55,10 +55,17 @@ router.get('/search', async (req, res, next) => {
     // console.log(Object.keys(resourceTag.__proto__))
 
     resource = [...resources, ...resourcesTagged]
+
+    const uniqueResources = Array.from(new Set(resource.map(a => a.id))).map(
+      id => {
+        return resource.find(a => a.id === id)
+      }
+    )
+
     if (resource === undefined) {
       res.status(200).send({title: 'None Found'})
     } else {
-      res.status(200).json(resource)
+      res.status(200).json(uniqueResources)
     }
   } catch (err) {
     next(err)
