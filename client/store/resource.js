@@ -8,7 +8,8 @@ const REMOVE_RESOURCE = 'REMOVE_RESOURCE'
 const UPDATE_RESOURCE = 'UPDATE_RESOURCE'
 const CREATE_RESOURCE = 'CREATE_RESOURCE'
 const SEARCH_RESOURCE_BY_LINK = 'SEARCH_RESOURCE_BY_LINK'
-
+const ASSOCIATE_RESOURCE_TO_NODE = 'ASSOCIATE_RESOURCE_TO_NODE'
+const UNASSOCIATE_RESOURCE_FROM_NODE = 'UNASSOCIATE_RESOURCE_FROM_NODE'
 /**
  * INITIAL STATE
  */
@@ -24,6 +25,12 @@ const updateResource = resource => ({type: UPDATE_RESOURCE, resource})
 const fetchResourcesByLink = resource => ({
   type: SEARCH_RESOURCE_BY_LINK,
   resource
+})
+const assocateToNode = () => ({
+  type: ASSOCIATE_RESOURCE_TO_NODE
+})
+const unAssociateFromNode = () => ({
+  type: UNASSOCIATE_RESOURCE_FROM_NODE
 })
 /**
  * THUNK CREATORS
@@ -51,6 +58,24 @@ export const getResourceByLink = () => async dispatch => {
   try {
     const res = await axios.get(`/api/resources/link`)
     dispatch(fetchResourcesByLink(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const associateResourceToNode = resource => async dispatch => {
+  try {
+    await axios.post(`/api/resources/add`, resource)
+    dispatch(assocateToNode())
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const unAssociateResourceFromNode = resource => async dispatch => {
+  try {
+    await axios.put('/api/resources/remove', resource)
+    dispatch(unAssociateFromNode())
   } catch (err) {
     console.error(err)
   }
@@ -100,8 +125,10 @@ export default function(state = defaultResources, action) {
       return action.resource
     case CREATE_RESOURCE:
       return [...state, action.resource]
-    // case SEARCH_RESOURCE_BY_LINK:
-    //   return action.resource
+    case ASSOCIATE_RESOURCE_TO_NODE:
+      return state
+    case UNASSOCIATE_RESOURCE_FROM_NODE:
+      return state
     default:
       return state
   }

@@ -33,7 +33,12 @@ import {
   delSelectedEdge
 } from '../store/edge'
 import {postRecommendation, getRecommendations} from '../store/recommendation'
-import {getResources, postResource} from '../store/resource'
+import {
+  getResources,
+  postResource,
+  associateResourceToNode,
+  unAssociateResourceFromNode
+} from '../store/resource'
 import {ConnectedNewNode} from './index'
 import {ConnectedSearchPopover} from './SearchPopover'
 import axios from 'axios'
@@ -121,6 +126,8 @@ class TreeVisualization extends Component {
       recommendShow: false,
       edgeLabelShow: false,
       searchExistingResource: false,
+      //handles results view
+      searchExistResourceSearch: false,
       searchExistingResourceResults: [],
       resourceSearchShow: false,
       search: false,
@@ -553,6 +560,7 @@ class TreeVisualization extends Component {
       resourceSearchShow: false,
       search: false
     })
+    await this.props.getResources()
   }
 
   //RECOMMEND RESOURCE HANDLERS
@@ -646,11 +654,12 @@ class TreeVisualization extends Component {
       `/api/resources/search?search=${this.state.searchExisting}`
     )
     this.setState({
-      searchExistingResourceResults: res.data
+      searchExistingResourceResults: res.data,
+      searchExistingResourceSearch: true
       // searchExisting: true
     })
 
-    console.log(this.state.searchExistingResourceResults)
+    console.log(this.state.searchExistingResourceResults.length)
   }
   handleExistingSearchShow() {
     this.setState({
@@ -897,7 +906,7 @@ class TreeVisualization extends Component {
                       .filter(resource => {
                         return (
                           resource.nodeId === this.state.selected.id ||
-                          resource.nodeId === null
+                          resource.nodeId !== null
                         )
                       })
                       .map(resource => {
@@ -907,6 +916,19 @@ class TreeVisualization extends Component {
                               {resource.title}
                             </Link>{' '}
                             ({resource.type})
+                            <Button
+                              variant="submit"
+                              size="sm"
+                              onClick={async () => {
+                                await this.props.unAssociateResourceFromNode({
+                                  node: this.state.selected,
+                                  resource: resource
+                                })
+                                await this.props.getResources()
+                              }}
+                            >
+                              Remove
+                            </Button>
                           </li>
                         )
                       })
@@ -1218,10 +1240,11 @@ class TreeVisualization extends Component {
                   />
                 </Form.Group>
               </Modal.Body>
-              {this.state.searchExistingResourceResults.length > 0 ? (
+              {this.state.searchExistingResourceResults.length >= 0 ? (
                 <Modal.Body>
                   Search Results
-                  {this.state.searchExistingResourceResults.length > 0
+                  {this.state.searchExistingResourceResults.length > 0 &&
+                  this.state.searchExistingResourceSearch === true
                     ? this.state.searchExistingResourceResults.map(result => {
                         return (
                           <React.Fragment key={result.link}>
@@ -1234,7 +1257,7 @@ class TreeVisualization extends Component {
                                 variant="submit"
                                 sz="sm"
                                 onClick={async () => {
-                                  await axios.post(`/api/resources/add`, {
+                                  await this.props.associateResourceToNode({
                                     node: this.state.selected,
                                     resource: result
                                   })
@@ -1247,9 +1270,13 @@ class TreeVisualization extends Component {
                           </React.Fragment>
                         )
                       })
-                    : null}
+                    : this.state.searchExistingResourceSearch === false &&
+                      this.state.searchExistingResourceResults.length === 0
+                      ? null
+                      : null}
                 </Modal.Body>
               ) : null}
+
               <Modal.Footer>
                 <React.Fragment>
                   <Button
@@ -1336,7 +1363,11 @@ const mapDispatch = dispatch => {
     postResource: resource => dispatch(postResource(resource)),
     postRecommendation: recommendation =>
       dispatch(postRecommendation(recommendation)),
-    getRecommendations: () => dispatch(getRecommendations())
+    getRecommendations: () => dispatch(getRecommendations()),
+    associateResourceToNode: resource =>
+      dispatch(associateResourceToNode(resource)),
+    unAssociateResourceFromNode: resource =>
+      dispatch(unAssociateResourceFromNode(resource))
   }
 }
 

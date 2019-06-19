@@ -73,7 +73,7 @@ router.get('/:id', async (req, res, next) => {
         {model: ResourceTag}
       ]
     })
-    // console.log(Object.keys(resource.__proto__))
+
     res.status(200).json(resource)
   } catch (err) {
     next(err)
@@ -109,11 +109,11 @@ router.post('/', async (req, res, next) => {
       })
     }
 
-    await link[0].addResource(resource)
     await resource.addNode(node)
+    await node.addResource(resource)
     await resource.addUser(user)
     await user.addResource(resource)
-    await node.addResource(resource)
+    await link[0].addResource(resource)
 
     res.status(201).json(resource)
   } catch (err) {
@@ -121,6 +121,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+//Adds the resources to the node from the search menu of existing resources
 router.post('/add', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.body.node.id)
@@ -128,6 +129,20 @@ router.post('/add', async (req, res, next) => {
 
     await resource.addNode(node)
     await node.addResource(resource)
+    res.status(200).send('success')
+  } catch (err) {
+    next(err)
+  }
+})
+
+//removes resource from the selected node but does not delete
+
+router.put('/remove', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.body.node.id)
+    const resource = await Resource.findByPk(req.body.resource.id)
+    await node.removeResource(resource)
+    await resource.removeNode(node)
     res.status(200).send('success')
   } catch (err) {
     next(err)
