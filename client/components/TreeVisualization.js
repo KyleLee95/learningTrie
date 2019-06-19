@@ -659,7 +659,7 @@ class TreeVisualization extends Component {
       // searchExisting: true
     })
 
-    console.log(this.state.searchExistingResourceResults.length)
+   
   }
   handleExistingSearchShow() {
     this.setState({
@@ -905,7 +905,7 @@ class TreeVisualization extends Component {
                   ? this.props.resources
                       .filter(resource => {
                         return (
-                          resource.nodeId === this.state.selected.id ||
+                          resource.nodeId === this.state.selected.id &&
                           resource.nodeId !== null
                         )
                       })
