@@ -28,6 +28,10 @@ const Resource = db.define('resource', {
       'Practice Problem Set',
       'Exercise'
     )
+  },
+  score: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1
   }
 })
 

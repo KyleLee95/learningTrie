@@ -37,11 +37,14 @@ import {
   getResources,
   postResource,
   associateResourceToNode,
-  unAssociateResourceFromNode
+  unAssociateResourceFromNode,
+  getResourcesByNode
 } from '../store/resource'
 import {ConnectedNewNode} from './index'
-import {ConnectedSearchPopover} from './SearchPopover'
 import axios from 'axios'
+import * as d3 from 'd3'
+import {event as currentEvent} from 'd3-selection'
+
 const GraphConfig = {
   NodeTypes: {
     empty: {
@@ -134,7 +137,7 @@ class TreeVisualization extends Component {
       recommend: false,
       searchResults: [],
       target: {},
-
+      drawing: false,
       actions: [],
       objects: []
     }
@@ -184,6 +187,8 @@ class TreeVisualization extends Component {
     this.handleExistingSearchChange = this.handleExistingSearchChange.bind(this)
     //Undo
     this.onUndo = this.onUndo.bind(this)
+    //toggleDraw
+    this.toggleDraw = this.toggleDraw.bind(this)
   }
 
   //COMPONENT METHODS
@@ -389,7 +394,7 @@ class TreeVisualization extends Component {
       this.setState({
         selected: node
       })
-      await this.props.getResources()
+      await this.props.getResourcesByNode(this.state.selected)
       await this.props.getRecommendations()
     } else if (node === null) {
       if (this.state.target.id !== undefined) {
@@ -560,7 +565,7 @@ class TreeVisualization extends Component {
       resourceSearchShow: false,
       search: false
     })
-    await this.props.getResources()
+    await this.props.getResourcesByNode(this.state.selected)
   }
 
   //RECOMMEND RESOURCE HANDLERS
@@ -670,6 +675,15 @@ class TreeVisualization extends Component {
     })
   }
 
+  toggleDraw(event) {
+    d3
+      .select('svg')
+      .selectAll('circle')
+      .dispatchEvent(d3.event.sourceEvent.shiftKey)
+    this.setState({
+      drawing: true
+    })
+  }
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes
@@ -719,6 +733,7 @@ class TreeVisualization extends Component {
           this.props.user.id === this.props.trees[0].users[0].id ? (
             <React.Fragment>
               <Col xs={1}>
+                <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button
@@ -900,36 +915,31 @@ class TreeVisualization extends Component {
                 {this.props.resources &&
                 this.props.resources[0] &&
                 this.props.resources[0].id !== undefined
-                  ? this.props.resources
-                      .filter(resource => {
-                        return (
-                          resource.nodeId === this.state.selected.id &&
-                          resource.nodeId !== null
-                        )
-                      })
-                      .map(resource => {
-                        return (
-                          <li key={resource.id}>
-                            <Link to={`/resource/${resource.id}`}>
-                              {resource.title}
-                            </Link>{' '}
-                            ({resource.type})
-                            <Button
-                              variant="submit"
-                              size="sm"
-                              onClick={async () => {
-                                await this.props.unAssociateResourceFromNode({
-                                  node: this.state.selected,
-                                  resource: resource
-                                })
-                                await this.props.getResources()
-                              }}
-                            >
-                              Remove
-                            </Button>
-                          </li>
-                        )
-                      })
+                  ? this.props.resources.map(resource => {
+                      return (
+                        <li key={resource.id}>
+                          <Link to={`/resource/${resource.id}`}>
+                            {resource.title}
+                          </Link>{' '}
+                          ({resource.type})
+                          <Button
+                            variant="submit"
+                            size="sm"
+                            onClick={async () => {
+                              await this.props.unAssociateResourceFromNode({
+                                node: this.state.selected,
+                                resource: resource
+                              })
+                              await this.props.getResourcesByNode(
+                                this.state.selected
+                              )
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </li>
+                      )
+                    })
                   : ''}
               </ul>
             </Modal.Body>
@@ -940,12 +950,12 @@ class TreeVisualization extends Component {
                 this.props.recommendations[0] &&
                 this.props.recommendations[0].id !== undefined
                   ? this.props.recommendations
-                      .filter(recommendation => {
-                        return (
-                          recommendation.nodeId === this.state.selected.id ||
-                          recommendation.nodeId === null
-                        )
-                      })
+                      // .filter(recommendation => {
+                      //   return (
+                      //     recommendation.nodeId === this.state.selected.id ||
+                      //     recommendation.nodeId === null
+                      //   )
+                      // })
                       .map(recommendation => {
                         return (
                           <li key={recommendation.id}>
@@ -1069,8 +1079,8 @@ class TreeVisualization extends Component {
                         <li key={result.id}>
                           {this.state.selected.id !== result.nodeId ? (
                             <React.Fragment>
-                            <Link to={`/resource/${result.id}`}>
-                              {result.title}{' '}
+                              <Link to={`/resource/${result.id}`}>
+                                {result.title}{' '}
                               </Link>
                               <Button
                                 size="sm"
@@ -1079,7 +1089,7 @@ class TreeVisualization extends Component {
                               >
                                 Add to Node
                               </Button>
-                              </React.Fragment>
+                            </React.Fragment>
                           ) : (
                             <React.Fragment>
                               <Link to={`/resource/${result.id}`}>
@@ -1093,7 +1103,9 @@ class TreeVisualization extends Component {
                                     node: this.state.selected,
                                     resource: result
                                   })
-                                  await this.props.getResources()
+                                  await this.props.getResourcesByNode(
+                                    this.state.selected
+                                  )
                                 }}
                               >
                                 Remove from Node
@@ -1282,7 +1294,9 @@ class TreeVisualization extends Component {
                                   node: this.state.selected,
                                   resource: result
                                 })
-                                await this.props.getResources()
+                                await this.props.getResourcesByNode(
+                                  this.state.selected
+                                )
                               }}
                             >
                               Add to Node
@@ -1382,7 +1396,7 @@ const mapDispatch = dispatch => {
     delEdge: edge => dispatch(delEdge(edge)),
     delSelectedEdge: edgeId => dispatch(delSelectedEdge(edgeId)),
     putEdge: edge => dispatch(putEdge(edge)),
-    getResources: () => dispatch(getResources()),
+    getResources: node => dispatch(getResources(node)),
     postResource: resource => dispatch(postResource(resource)),
     postRecommendation: recommendation =>
       dispatch(postRecommendation(recommendation)),
@@ -1390,7 +1404,8 @@ const mapDispatch = dispatch => {
     associateResourceToNode: resource =>
       dispatch(associateResourceToNode(resource)),
     unAssociateResourceFromNode: resource =>
-      dispatch(unAssociateResourceFromNode(resource))
+      dispatch(unAssociateResourceFromNode(resource)),
+    getResourcesByNode: node => dispatch(getResourcesByNode(node))
   }
 }
 

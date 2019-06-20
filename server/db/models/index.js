@@ -48,8 +48,8 @@ Comment.hasMany(Comment, {as: 'children'})
 Comment.belongsTo(Comment, {as: 'parent'})
 
 //Node
-Node.hasMany(Resource)
-Node.hasMany(Recommendation)
+Node.belongsToMany(Resource, {through: 'nodeResource'})
+Node.belongsToMany(Recommendation, {through: 'nodeRecommendation'})
 Node.belongsTo(LearningTree)
 Node.belongsToMany(Edge, {through: 'nodeEdge'})
 

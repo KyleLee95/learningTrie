@@ -20,6 +20,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:nodeId', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.params.nodeId)
+    const resource = await node.getResources()
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
 router.get('/link', async (req, res, next) => {
   try {
     const resource = await Resource.findAll({
@@ -117,6 +126,7 @@ router.post('/', async (req, res, next) => {
     }
 
     await resource.addNode(node)
+    console.log(Object.keys(resource.__proto__))
     await node.addResource(resource)
     await resource.addUser(user)
     await user.addResource(resource)

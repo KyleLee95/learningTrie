@@ -36,9 +36,18 @@ const unAssociateFromNode = () => ({
  * THUNK CREATORS
  */
 
-export const getResources = () => async dispatch => {
+export const getResources = node => async dispatch => {
   try {
-    const res = await axios.get(`/api/resources/`)
+    const res = await axios.get(`/api/resources/${node.id}`)
+    dispatch(fetchResources(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getResourcesByNode = node => async dispatch => {
+  try {
+    const res = await axios.get(`/api/resources/${node.id}`)
     dispatch(fetchResources(res.data))
   } catch (err) {
     console.error(err)
