@@ -136,8 +136,8 @@ class NodeResourceModal extends Component {
     }
 
     //Modal method bindings
-    this.handleShow = this.handleShow.bind(this)
-    this.handleClose = this.handleClose.bind(this)
+    // this.handleShow = this.handleShow.bind(this)
+    // this.handleClose = this.handleClose.bind(this)
     //Edit Modal
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.handleEditShow = this.handleEditShow.bind(this)
@@ -170,26 +170,27 @@ class NodeResourceModal extends Component {
 
   //COMPONENT METHODS
 
-  async componentDidMount() {
-    await this.props.getNodes(Number(this.props.match.params.id))
-    await this.props.getEdges(Number(this.props.match.params.id))
-    await this.props.nodes.forEach(node => {
-      if (node.type !== 'empty') {
-        this.props.putNode({
-          id: node.id,
-          type: 'empty'
-        })
-      }
-    })
-  }
-  //MODAL HANDLERS
-  handleClose() {
-    this.setState({show: false})
-  }
+  // async componentDidMount() {
+  //   await this.props.getNodes(Number(this.props.match.params.id))
+  //   await this.props.getEdges(Number(this.props.match.params.id))
+  //   await this.props.nodes.forEach(node => {
+  //     if (node.type !== 'empty') {
+  //       this.props.putNode({
+  //         id: node.id,
+  //         type: 'empty'
+  //       })
+  //     }
+  //   })
+  // }
 
-  handleShow() {
-    this.setState({show: true})
-  }
+  //MODAL HANDLERS
+  // handleClose() {
+  //   this.setState({show: false})
+  // }
+
+  // handleShow() {
+  //   this.setState({show: true})
+  // }
 
   //EDIT MODAL HANDLERS
   handleEditShow() {
@@ -211,9 +212,9 @@ class NodeResourceModal extends Component {
     await this.props.putNode({
       title: this.state.title,
       description: this.state.description,
-      id: this.state.selected.id,
-      x: this.state.selected.x,
-      y: this.state.selected.y
+      id: this.props.selected.id,
+      x: this.props.selected.x,
+      y: this.props.selected.y
       //prevents the node and edge with the same ID from being selected
     })
   }
@@ -239,7 +240,7 @@ class NodeResourceModal extends Component {
       description: this.state.description,
       type: this.state.type,
       link: this.state.link,
-      nodeId: this.state.selected.id,
+      nodeId: this.props.selected.id,
       tags: tags
     })
 
@@ -248,7 +249,7 @@ class NodeResourceModal extends Component {
       resourceSearchShow: false,
       search: false
     })
-    await this.props.getResourcesByNode(this.state.selected)
+    await this.props.getResourcesByNode(this.props.selected)
   }
 
   //RECOMMEND RESOURCE HANDLERS
@@ -274,7 +275,7 @@ class NodeResourceModal extends Component {
       description: this.state.description,
       type: this.state.type,
       link: this.state.link,
-      nodeId: this.state.selected.id,
+      nodeId: this.props.selected.id,
       tags: tags,
       ownerId: this.props.trees[0].ownerId
     })
@@ -302,8 +303,8 @@ class NodeResourceModal extends Component {
     e.preventDefault()
     await this.props.putEdge({
       edge: {
-        id: this.state.selected.id,
-        target: this.state.selected.target,
+        id: this.props.selected.id,
+        target: this.props.selected.target,
         handleText: this.state.handleText
       }
     })
@@ -368,7 +369,7 @@ class NodeResourceModal extends Component {
     })
   }
   render() {
-    const selected = this.state.selected
+    const selected = this.props.selected
     const NodeTypes = GraphConfig.NodeTypes
     const NodeSubtypes = GraphConfig.NodeSubtypes
     const EdgeTypes = GraphConfig.EdgeTypes
@@ -408,17 +409,17 @@ class NodeResourceModal extends Component {
     return (
       <React.Fragment>
         {/* Node Resource Modal */}
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.props.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>{this.state.selected.title}</Modal.Title>
+            <Modal.Title>{this.props.selected.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <strong>Description:</strong>
             {this.props.nodes &&
-            this.state.selected.id !== undefined &&
-            this.state.selected.description !== undefined
+            this.props.selected.id !== undefined &&
+            this.props.selected.description !== undefined
               ? this.props.nodes.find(node => {
-                  return node.id === this.state.selected.id
+                  return node.id === this.props.selected.id
                 }).description
               : ''}
           </Modal.Body>
@@ -456,11 +457,11 @@ class NodeResourceModal extends Component {
                             size="sm"
                             onClick={async () => {
                               await this.props.unAssociateResourceFromNode({
-                                node: this.state.selected,
+                                node: this.props.selected,
                                 resource: resource
                               })
                               await this.props.getResourcesByNode(
-                                this.state.selected
+                                this.props.selected
                               )
                             }}
                           >
@@ -480,23 +481,16 @@ class NodeResourceModal extends Component {
               {this.props.recommendations &&
               this.props.recommendations[0] &&
               this.props.recommendations[0].id !== undefined
-                ? this.props.recommendations
-                    // .filter(recommendation => {
-                    //   return (
-                    //     recommendation.nodeId === this.state.selected.id ||
-                    //     recommendation.nodeId === null
-                    //   )
-                    // })
-                    .map(recommendation => {
-                      return (
-                        <li key={recommendation.id}>
-                          <Link to={`/recommendation/${recommendation.id}`}>
-                            {recommendation.title}
-                          </Link>{' '}
-                          ({recommendation.type})
-                        </li>
-                      )
-                    })
+                ? this.props.recommendations.map(recommendation => {
+                    return (
+                      <li key={recommendation.id}>
+                        <Link to={`/recommendation/${recommendation.id}`}>
+                          {recommendation.title}
+                        </Link>{' '}
+                        ({recommendation.type})
+                      </li>
+                    )
+                  })
                 : ''}
             </ul>
           </Modal.Body>
@@ -608,7 +602,7 @@ class NodeResourceModal extends Component {
                   this.state.searchResults.map(result => {
                     return (
                       <li key={result.id}>
-                        {this.state.selected.id !== result.nodeId ? (
+                        {this.props.selected.id !== result.nodeId ? (
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
@@ -631,11 +625,11 @@ class NodeResourceModal extends Component {
                               variant="submit"
                               onClick={async () => {
                                 await this.props.unAssociateResourceFromNode({
-                                  node: this.state.selected,
+                                  node: this.props.selected,
                                   resource: result
                                 })
                                 await this.props.getResourcesByNode(
-                                  this.state.selected
+                                  this.props.selected
                                 )
                               }}
                             >
@@ -819,11 +813,11 @@ class NodeResourceModal extends Component {
                             sz="sm"
                             onClick={async () => {
                               await this.props.associateResourceToNode({
-                                node: this.state.selected,
+                                node: this.props.selected,
                                 resource: result
                               })
                               await this.props.getResourcesByNode(
-                                this.state.selected
+                                this.props.selected
                               )
                             }}
                           >
