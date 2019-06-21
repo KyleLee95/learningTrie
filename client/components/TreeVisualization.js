@@ -40,7 +40,7 @@ import {
   unAssociateResourceFromNode,
   getResourcesByNode
 } from '../store/resource'
-import {ConnectedNewNode} from './index'
+import {ConnectedNewNode, ConnectedNodeResourceModal} from './index'
 import axios from 'axios'
 import * as d3 from 'd3'
 import {event as currentEvent} from 'd3-selection'
@@ -893,7 +893,14 @@ class TreeVisualization extends Component {
               </Col>
             </React.Fragment>
           )}
+          <ConnectedNodeResourceModal
+            selected={this.state.selected}
+            target={this.state.target}
+            resources={this.props.resources}
+            recommendations={this.props.recommendations}
+          />
 
+          {/* ------- */}
           {/* Node Resource Modal */}
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
@@ -911,37 +918,59 @@ class TreeVisualization extends Component {
             </Modal.Body>
             <Modal.Body>
               <strong>Resources:</strong>
-              <ul>
-                {this.props.resources &&
-                this.props.resources[0] &&
-                this.props.resources[0].id !== undefined
-                  ? this.props.resources.map(resource => {
-                      return (
-                        <li key={resource.id}>
-                          <Link to={`/resource/${resource.id}`}>
-                            {resource.title}
-                          </Link>{' '}
-                          ({resource.type})
-                          <Button
-                            variant="submit"
-                            size="sm"
-                            onClick={async () => {
-                              await this.props.unAssociateResourceFromNode({
-                                node: this.state.selected,
-                                resource: resource
-                              })
-                              await this.props.getResourcesByNode(
-                                this.state.selected
-                              )
-                            }}
-                          >
-                            Remove
-                          </Button>
-                        </li>
-                      )
-                    })
-                  : ''}
-              </ul>
+              {/* <ul> */}
+              {this.props.resources &&
+              this.props.resources[0] &&
+              this.props.resources[0].id !== undefined
+                ? this.props.resources.map(resource => {
+                    //<ConnectedResourceModalItem>
+                    return (
+                      <li key={resource.id} style={{listStyleType: 'none'}}>
+                        <Row>
+                          <Col xs={4}>
+                            <Row>
+                              <Button variant="submit" sz="sm">
+                                +
+                              </Button>
+                              <Button
+                                variant="submit"
+                                sz="sm"
+                                onClick={() => console.log('upvote')}
+                              >
+                                {resource.score} pts.
+                              </Button>
+                              <Button variant="submit" sz="sm">
+                                -
+                              </Button>
+                            </Row>
+                          </Col>
+                          <Col xs={8}>
+                            <Link to={`/resource/${resource.id}`}>
+                              {resource.title}
+                            </Link>{' '}
+                            ({resource.type})
+                            <Button
+                              variant="submit"
+                              size="sm"
+                              onClick={async () => {
+                                await this.props.unAssociateResourceFromNode({
+                                  node: this.state.selected,
+                                  resource: resource
+                                })
+                                await this.props.getResourcesByNode(
+                                  this.state.selected
+                                )
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </Col>
+                        </Row>
+                      </li>
+                    )
+                  })
+                : ''}
+              {/* </ul> */}
             </Modal.Body>
             <Modal.Body>
               <strong>Resources Recommended by other Users:</strong>
@@ -1333,7 +1362,7 @@ class TreeVisualization extends Component {
             </Modal>
           </Form>
           {/* End Edge Label Modal */}
-
+          {/* ------- */}
           {/* Edge Label Modal */}
           <Form>
             <Modal
