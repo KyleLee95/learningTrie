@@ -47,7 +47,7 @@ export const getResources = node => async dispatch => {
 
 export const getResourcesByNode = node => async dispatch => {
   try {
-    const res = await axios.get(`/api/resources/${node.id}`)
+    const res = await axios.put(`/api/resources/${node.id}`)
     dispatch(fetchResources(res.data))
   } catch (err) {
     console.error(err)

@@ -235,6 +235,7 @@ class NodeResourceModal extends Component {
 
   async handleResourceSubmit() {
     const tags = this.state.tags.split(', ')
+    console.log(this.state)
     await this.props.postResource({
       title: this.state.title,
       description: this.state.description,
