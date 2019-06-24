@@ -897,9 +897,12 @@ class TreeVisualization extends Component {
           {/* ------- */}
           {/* Node Resource Modal */}
           <ConnectedNodeResourceModal
+            nodes={this.props.nodes}
+            trees={this.props.trees}
             resource={this.props.resources}
             recommendation={this.props.resources}
             show={this.state.show}
+            handleClose={this.handleClose}
             selected={this.state.selected}
             target={this.state.target}
           />

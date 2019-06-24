@@ -11,39 +11,6 @@ const {
 const Op = require('sequelize').Op
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  try {
-    const resource = await Resource.findAll()
-    res.status(200).json(resource)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:nodeId', async (req, res, next) => {
-  try {
-    const node = await Node.findByPk(req.params.nodeId)
-    const resource = await node.getResources()
-    res.status(200).json(resource)
-  } catch (err) {
-    next(err)
-  }
-})
-router.get('/link', async (req, res, next) => {
-  try {
-    const resource = await Resource.findAll({
-      where: {link: req.query.link}
-    })
-    if (resource === undefined) {
-      res.status(200).send({title: 'None Found'})
-    } else {
-      res.status(200).json(resource)
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.get('/search', async (req, res, next) => {
   try {
     let resource = []
@@ -81,9 +48,43 @@ router.get('/search', async (req, res, next) => {
   }
 })
 
+router.get('/link', async (req, res, next) => {
+  try {
+    const resource = await Resource.findAll({
+      where: {link: req.query.link}
+    })
+    if (resource === undefined) {
+      res.status(200).send({title: 'None Found'})
+    } else {
+      res.status(200).json(resource)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/', async (req, res, next) => {
+  try {
+    const resource = await Resource.findAll()
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:nodeId', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.params.nodeId)
+    const resource = await node.getResources()
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
-    const resource = await Resource.findByPk(req.params.id, {
+    let resource = await Resource.findByPk(req.params.id, {
       include: [
         {model: Link, through: 'resourceLink', include: [{model: Comment}]},
         {model: ResourceTag}
@@ -99,11 +100,13 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
-    let resource = await Resource.create({
-      title: req.body.title,
-      link: req.body.link,
-      description: req.body.description,
-      type: req.body.type
+    let resource = await Resource.findOrCreate({
+      where: {
+        title: req.body.title,
+        link: req.body.link,
+        description: req.body.description,
+        type: req.body.type
+      }
     })
     const shortUrl = req.body.link
       .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
@@ -125,12 +128,12 @@ router.post('/', async (req, res, next) => {
       })
     }
 
-    await resource.addNode(node)
-    console.log(Object.keys(resource.__proto__))
+    await resource[0].addNode(node)
+    // console.log(Object.keys(resource.__proto__))
     await node.addResource(resource)
-    await resource.addUser(user)
-    await user.addResource(resource)
-    await link[0].addResource(resource)
+    await resource[0].addUser(user)
+    await user.addResource(resource[0])
+    await link[0].addResource(resource[0])
 
     res.status(201).json(resource)
   } catch (err) {

@@ -409,7 +409,7 @@ class NodeResourceModal extends Component {
     return (
       <React.Fragment>
         {/* Node Resource Modal */}
-        <Modal show={this.props.show} onHide={this.handleClose}>
+        <Modal show={this.props.show} onHide={this.props.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{this.props.selected.title}</Modal.Title>
           </Modal.Header>
@@ -452,21 +452,23 @@ class NodeResourceModal extends Component {
                             {resource.title}
                           </Link>{' '}
                           ({resource.type})
-                          <Button
-                            variant="submit"
-                            size="sm"
-                            onClick={async () => {
-                              await this.props.unAssociateResourceFromNode({
-                                node: this.props.selected,
-                                resource: resource
-                              })
-                              await this.props.getResourcesByNode(
-                                this.props.selected
-                              )
-                            }}
-                          >
-                            Remove
-                          </Button>
+                          {auth === true ? (
+                            <Button
+                              variant="submit"
+                              size="sm"
+                              onClick={async () => {
+                                await this.props.unAssociateResourceFromNode({
+                                  node: this.props.selected,
+                                  resource: resource
+                                })
+                                await this.props.getResourcesByNode(
+                                  this.props.selected
+                                )
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          ) : null}
                         </Col>
                       </Row>
                     </li>
@@ -602,7 +604,7 @@ class NodeResourceModal extends Component {
                   this.state.searchResults.map(result => {
                     return (
                       <li key={result.id}>
-                        {this.props.selected.id !== result.nodeId ? (
+                        {auth === true ? (
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
@@ -610,7 +612,15 @@ class NodeResourceModal extends Component {
                             <Button
                               size="sm"
                               variant="submit"
-                              onClick={this.handleResourceSubmit}
+                              onClick={async () => {
+                                await this.props.associateResourceToNode({
+                                  node: this.props.selected,
+                                  resource: result
+                                })
+                                await this.props.getResourcesByNode(
+                                  this.props.selected
+                                )
+                              }}
                             >
                               Add to Node
                             </Button>
@@ -801,28 +811,30 @@ class NodeResourceModal extends Component {
                 {this.state.searchExistingResourceResults.length > 0 &&
                 this.state.searchExistingResourceSearch === true ? (
                   this.state.searchExistingResourceResults.map(result => {
+                    console.log(result)
                     return (
                       <React.Fragment key={result.link}>
                         <li>
                           <Link to={`/resource/${result.id}`}>
                             {result.title}
                           </Link>
-
-                          <Button
-                            variant="submit"
-                            sz="sm"
-                            onClick={async () => {
-                              await this.props.associateResourceToNode({
-                                node: this.props.selected,
-                                resource: result
-                              })
-                              await this.props.getResourcesByNode(
-                                this.props.selected
-                              )
-                            }}
-                          >
-                            Add to Node
-                          </Button>
+                          {this.props.selected.id !== result.nodeId ? (
+                            <Button
+                              variant="submit"
+                              sz="sm"
+                              onClick={async () => {
+                                await this.props.associateResourceToNode({
+                                  node: this.props.selected,
+                                  resource: result
+                                })
+                                await this.props.getResourcesByNode(
+                                  this.props.selected
+                                )
+                              }}
+                            >
+                              Add to Node
+                            </Button>
+                          ) : null}
                         </li>
                       </React.Fragment>
                     )
@@ -835,7 +847,6 @@ class NodeResourceModal extends Component {
                 ) : null}
               </Modal.Body>
             ) : null}
-
             <Modal.Footer>
               <React.Fragment>
                 <Button
