@@ -11,6 +11,7 @@ const Conversation = require('./conversation')
 const Link = require('./link')
 const Recommendation = require('./recommendation')
 const ResourceTag = require('./resourceTag')
+const Vote = require('./vote')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -31,6 +32,7 @@ User.hasMany(Resource)
 User.hasMany(Recommendation)
 User.belongsToMany(Conversation, {as: 'sender', through: 'userConversation'})
 User.belongsToMany(Conversation, {as: 'receiver', through: 'userConversation'})
+User.belongsToMany(Vote, {through: 'userVote'})
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -74,11 +76,10 @@ Tag.belongsToMany(LearningTree, {through: 'treeTag'})
 //Resource Tag
 ResourceTag.belongsToMany(Resource, {through: 'Tags for Resource'})
 ResourceTag.belongsToMany(Recommendation, {through: 'recommendationTag'})
+
 //Conversation
 Conversation.hasMany(Message)
 Conversation.belongsToMany(User, {through: 'userConversation'})
-// Conversation.hasMany(User)
-// Conversation.belongsToMany(User, {through: 'userConversation'})
 
 //Link
 Link.hasMany(Comment)
@@ -91,9 +92,13 @@ Recommendation.belongsToMany(Link, {through: 'recommendationLink'})
 Recommendation.belongsToMany(User, {through: 'userRecommendation'})
 Recommendation.belongsToMany(Node, {through: 'nodeRecommendation'})
 Recommendation.belongsToMany(ResourceTag, {through: 'recommendationTag'})
+
 //Message
 Message.belongsTo(User)
 Message.belongsTo(Conversation)
+
+//Vote
+Vote.belongsToMany(User, {through: 'userVote'})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,

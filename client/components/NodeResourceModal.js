@@ -38,7 +38,9 @@ import {
   postResource,
   associateResourceToNode,
   unAssociateResourceFromNode,
-  getResourcesByNode
+  getResourcesByNode,
+  upvote,
+  downvote
 } from '../store/resource'
 import {ConnectedNewNode} from './index'
 import axios from 'axios'
@@ -436,13 +438,46 @@ class NodeResourceModal extends Component {
                       <Row>
                         <Col xs={4}>
                           <Row>
-                            <Button variant="submit" sz="sm">
+                            <Button
+                              variant="submit"
+                              sz="sm"
+                              id={resource.id.toString()}
+                              className="unClicked"
+                              onClick={async () => {
+                                console.log('A')
+                                const id = resource.id.toString()
+                                console.log('B')
+                                const btn = document.getElementById(id)
+                                console.log('C')
+                                console.log(btn.className)
+                                if (
+                                  btn.className === 'unClicked btn btn-submit'
+                                ) {
+                                  btn.className = 'clicked'
+                                  await this.props.upvote(resource)
+                                  console.log('D')
+                                  return
+                                } else if (btn.className === 'clicked') {
+                                  btn.className = 'unClicked'
+                                  await this.props.downvote(resource)
+                                  return
+                                }
+                                //if class-name = clicked => call downvote and set classname to be unclicked
+                                //else, set classname = clicked and call upvote
+                              }}
+                            >
                               +
                             </Button>
                             <Button variant="submit" sz="sm">
                               {resource.score} pts.
                             </Button>
-                            <Button variant="submit" sz="sm">
+                            <Button
+                              variant="submit"
+                              sz="sm"
+                              onClick={async () =>
+                                await this.props.downvote(resource)
+                              }
+                            >
                               -
                             </Button>
                           </Row>
@@ -503,6 +538,7 @@ class NodeResourceModal extends Component {
               this.props.user.id === this.props.trees[0].ownerId) ||
             auth === true ? (
               <React.Fragment>
+                {/* Controls for the general resource modal */}
                 <Button variant="submit" onClick={this.props.handleClose}>
                   Close
                 </Button>
@@ -602,6 +638,7 @@ class NodeResourceModal extends Component {
                 {/* <ul> */}
                 {this.state.searchResults.length > 0 ? (
                   this.state.searchResults.map(result => {
+                    // Conditionally render add/remove button based on if the resource is added to the node
                     return (
                       <li key={result.id}>
                         {auth === true ? (
@@ -733,6 +770,7 @@ class NodeResourceModal extends Component {
                 {/* </ul> */}
               </Modal.Body>
               <Modal.Footer>
+                {/* Search/Browse Resources controls */}
                 {this.state.search === true &&
                 this.state.recommend === false &&
                 this.state.searchResults.length === 0 ? (
@@ -799,7 +837,6 @@ class NodeResourceModal extends Component {
             </Modal.Header>
             <Modal.Body>
               <Form.Group>
-                {/* Title */}
                 <Form.Label>Search</Form.Label>
                 <Form.Control
                   name="searchExisting"
@@ -903,7 +940,9 @@ const mapDispatch = dispatch => {
       dispatch(associateResourceToNode(resource)),
     unAssociateResourceFromNode: resource =>
       dispatch(unAssociateResourceFromNode(resource)),
-    getResourcesByNode: node => dispatch(getResourcesByNode(node))
+    getResourcesByNode: node => dispatch(getResourcesByNode(node)),
+    upvote: resource => dispatch(upvote(resource)),
+    downvote: resource => dispatch(downvote(resource))
   }
 }
 

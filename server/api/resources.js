@@ -133,6 +133,26 @@ router.post('/', async (req, res, next) => {
 
 //removes resource from the selected node but does not delete
 
+router.put('/upvote', async (req, res, next) => {
+  try {
+    const resource = await Resource.findByPk(req.body.id)
+    await resource.update({score: resource.score + 1})
+    res.status(200).send(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/downvote', async (req, res, next) => {
+  try {
+    const resource = await Resource.findByPk(req.body.id)
+    await resource.update({score: resource.score - 1})
+    res.status(200).send(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/remove', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.body.node.id)

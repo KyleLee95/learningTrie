@@ -734,6 +734,8 @@ class TreeVisualization extends Component {
             <React.Fragment>
               <Col xs={1}>
                 <Button onClick={this.toggleDraw}>Draw Mode </Button>
+                <br />
+                <br />
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button

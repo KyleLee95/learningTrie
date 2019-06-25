@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 import axios from 'axios'
 import history from '../history'
 /**
@@ -10,6 +11,8 @@ const CREATE_RESOURCE = 'CREATE_RESOURCE'
 const SEARCH_RESOURCE_BY_LINK = 'SEARCH_RESOURCE_BY_LINK'
 const ASSOCIATE_RESOURCE_TO_NODE = 'ASSOCIATE_RESOURCE_TO_NODE'
 const UNASSOCIATE_RESOURCE_FROM_NODE = 'UNASSOCIATE_RESOURCE_FROM_NODE'
+const UPVOTE = 'UPVOTE'
+const DOWNVOTE = 'DOWNVOTE'
 /**
  * INITIAL STATE
  */
@@ -31,6 +34,16 @@ const assocateToNode = () => ({
 })
 const unAssociateFromNode = () => ({
   type: UNASSOCIATE_RESOURCE_FROM_NODE
+})
+
+const upvoteResource = resource => ({
+  type: UPVOTE,
+  resource
+})
+
+const downvoteResource = resource => ({
+  type: DOWNVOTE,
+  resource
 })
 /**
  * THUNK CREATORS
@@ -90,12 +103,29 @@ export const unAssociateResourceFromNode = resource => async dispatch => {
   }
 }
 
+export const upvote = resource => async dispatch => {
+  try {
+    const res = await axios.put('/api/resources/upvote', resource)
+    dispatch(upvoteResource(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const downvote = resource => async dispatch => {
+  try {
+    const res = await axios.put('/api/resources/downvote', resource)
+    dispatch(downvoteResource(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const delResource = resource => async dispatch => {
   try {
     const res = await axios.delete(`/api/resources/${resource.resource.id}`, {
       data: {resource: resource}
     })
-    console.log(res.data)
     dispatch(removeResource(resource))
     history.push(`/learningTree/${res.data.learningTreeId}`)
   } catch (err) {
@@ -138,6 +168,20 @@ export default function(state = defaultResources, action) {
       return state
     case UNASSOCIATE_RESOURCE_FROM_NODE:
       return state
+    case UPVOTE:
+      return [
+        ...state.filter(resource => {
+          return resource.id !== action.resource.id
+        }),
+        action.resource
+      ]
+    case DOWNVOTE:
+      return [
+        ...state.filter(resource => {
+          return resource.id !== action.resource.id
+        }),
+        action.resource
+      ]
     default:
       return state
   }
