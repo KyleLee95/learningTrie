@@ -85,16 +85,6 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.put('/:nodeId', async (req, res, next) => {
-  try {
-    const node = await Node.findByPk(req.params.nodeId)
-    const resource = await node.getResources()
-    res.status(200).json(resource)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.post('/', async (req, res, next) => {
   try {
     //conditionally create resources
@@ -165,6 +155,16 @@ router.put('/', async (req, res, next) => {
       type: req.body.type
     })
 
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:nodeId', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.params.nodeId)
+    const resource = await node.getResources()
     res.status(200).json(resource)
   } catch (err) {
     next(err)

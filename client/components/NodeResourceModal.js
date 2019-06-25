@@ -235,7 +235,6 @@ class NodeResourceModal extends Component {
 
   async handleResourceSubmit() {
     const tags = this.state.tags.split(', ')
-    console.log(this.state)
     await this.props.postResource({
       title: this.state.title,
       description: this.state.description,
@@ -504,7 +503,7 @@ class NodeResourceModal extends Component {
               this.props.user.id === this.props.trees[0].ownerId) ||
             auth === true ? (
               <React.Fragment>
-                <Button variant="submit" onClick={this.handleClose}>
+                <Button variant="submit" onClick={this.props.handleClose}>
                   Close
                 </Button>
 
@@ -770,7 +769,10 @@ class NodeResourceModal extends Component {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <Button variant="submit" onClick={this.handleResourceShow}>
+                    <Button
+                      variant="submit"
+                      onClick={this.handleResourceSearchShow}
+                    >
                       Close
                     </Button>
                     <Button
@@ -812,7 +814,6 @@ class NodeResourceModal extends Component {
                 {this.state.searchExistingResourceResults.length > 0 &&
                 this.state.searchExistingResourceSearch === true ? (
                   this.state.searchExistingResourceResults.map(result => {
-                    console.log(result)
                     return (
                       <React.Fragment key={result.link}>
                         <li>
