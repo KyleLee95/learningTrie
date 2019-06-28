@@ -165,8 +165,16 @@ router.put('/', async (req, res, next) => {
 router.put('/:nodeId', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.params.nodeId)
+    //Search the resource for the current user. if they're included, send an upvote/downvote/none.
 
-    const resource = await node.getResources({include: [{model: Vote}]})
+    const resource = await node.getResources({
+      include: [
+        {
+          model: Vote,
+          include: [{model: User}]
+        }
+      ]
+    })
     res.status(200).json(resource)
   } catch (err) {
     next(err)

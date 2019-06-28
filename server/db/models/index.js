@@ -102,7 +102,7 @@ Message.belongsTo(User)
 Message.belongsTo(Conversation)
 
 //Vote
-// Vote.belongsToMany(User, {through: 'userVote'})
+Vote.belongsTo(User)
 // Vote.hasMany(
 //   Resource
 //   // {through: 'resourceVote'}
