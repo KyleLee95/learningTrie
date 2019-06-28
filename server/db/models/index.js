@@ -32,7 +32,7 @@ User.hasMany(Resource)
 User.hasMany(Recommendation)
 User.belongsToMany(Conversation, {as: 'sender', through: 'userConversation'})
 User.belongsToMany(Conversation, {as: 'receiver', through: 'userConversation'})
-User.belongsToMany(Vote, {through: 'userVote'})
+User.hasMany(Vote)
 
 //Learning Tree
 LearningTree.hasMany(Review)
@@ -65,6 +65,10 @@ Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
 Resource.hasMany(Comment)
 Resource.belongsToMany(ResourceTag, {through: 'Tags for Resource'})
+Resource.hasMany(
+  Vote
+  // , {through: 'resourceVote'}
+)
 
 //Review
 Review.belongsTo(User)
@@ -98,7 +102,11 @@ Message.belongsTo(User)
 Message.belongsTo(Conversation)
 
 //Vote
-Vote.belongsToMany(User, {through: 'userVote'})
+// Vote.belongsToMany(User, {through: 'userVote'})
+// Vote.hasMany(
+//   Resource
+//   // {through: 'resourceVote'}
+// )
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -119,5 +127,6 @@ module.exports = {
   Message,
   Link,
   Recommendation,
-  ResourceTag
+  ResourceTag,
+  Vote
 }

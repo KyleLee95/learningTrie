@@ -38,15 +38,11 @@ import {
   postResource,
   associateResourceToNode,
   unAssociateResourceFromNode,
-  getResourcesByNode,
-  upvote,
-  downvote
+  getResourcesByNode
 } from '../store/resource'
-import {ConnectedNewNode} from './index'
+import {upvote, downvote, getVote} from '../store/vote'
 import axios from 'axios'
-import * as d3 from 'd3'
-import {event as currentEvent} from 'd3-selection'
-
+import {ConnectedNodeResourceModalLineItem} from './index'
 const GraphConfig = {
   NodeTypes: {
     empty: {
@@ -432,81 +428,82 @@ class NodeResourceModal extends Component {
             this.props.resources[0] &&
             this.props.resources[0].id !== undefined
               ? this.props.resources.map(resource => {
-                  //<ConnectedResourceModalItem>
+                  //refactor into its own component so that I can call a componentDidMount on
                   return (
-                    <li key={resource.id} style={{listStyleType: 'none'}}>
-                      <Row>
-                        <Col xs={4}>
-                          <Row>
-                            <Button
-                              variant="submit"
-                              sz="sm"
-                              id={resource.id.toString()}
-                              className="unClicked"
-                              onClick={async () => {
-                                console.log('A')
-                                const id = resource.id.toString()
-                                console.log('B')
-                                const btn = document.getElementById(id)
-                                console.log('C')
-                                console.log(btn.className)
-                                if (
-                                  btn.className === 'unClicked btn btn-submit'
-                                ) {
-                                  btn.className = 'clicked'
-                                  await this.props.upvote(resource)
-                                  console.log('D')
-                                  return
-                                } else if (btn.className === 'clicked') {
-                                  btn.className = 'unClicked'
-                                  await this.props.downvote(resource)
-                                  return
-                                }
-                                //if class-name = clicked => call downvote and set classname to be unclicked
-                                //else, set classname = clicked and call upvote
-                              }}
-                            >
-                              +
-                            </Button>
-                            <Button variant="submit" sz="sm">
-                              {resource.score} pts.
-                            </Button>
-                            <Button
-                              variant="submit"
-                              sz="sm"
-                              onClick={async () =>
-                                await this.props.downvote(resource)
-                              }
-                            >
-                              -
-                            </Button>
-                          </Row>
-                        </Col>
-                        <Col xs={8}>
-                          <Link to={`/resource/${resource.id}`}>
-                            {resource.title}
-                          </Link>{' '}
-                          ({resource.type})
-                          {auth === true ? (
-                            <Button
-                              variant="submit"
-                              size="sm"
-                              onClick={async () => {
-                                await this.props.unAssociateResourceFromNode({
-                                  node: this.props.selected,
-                                  resource: resource
-                                })
-                                await this.props.getResourcesByNode(
-                                  this.props.selected
-                                )
-                              }}
-                            >
-                              Remove
-                            </Button>
-                          ) : null}
-                        </Col>
-                      </Row>
-                    </li>
+                    <ConnectedNodeResourceModalLineItem
+                      key={resource.id}
+                      resource={resource}
+                      selected={this.props.selected}
+                      auth={auth}
+                    />
+                    // <li key={resource.id} style={{listStyleType: 'none'}}>
+                    //   <Row>
+                    //     <Col xs={4}>
+                    //       <Row>
+                    //         <Button
+                    //           variant="submit"
+                    //           sz="sm"
+                    //           id={resource.id.toString()}
+                    //           className="unClicked"
+                    //           onClick={async () => {
+                    //             const id = resource.id.toString()
+                    //             const btn = document.getElementById(id)
+                    //             if (
+                    //               btn.className === 'unClicked btn btn-submit'
+                    //             ) {
+                    //               btn.className = 'clicked'
+                    //               await this.props.upvote(resource)
+                    //               return null
+                    //             } else if (btn.className === 'clicked') {
+                    //               btn.className = 'unClicked'
+                    //               await this.props.downvote(resource)
+                    //               return null
+                    //             }
+                    //             //if class-name = clicked => call downvote and set classname to be unclicked
+                    //             //else, set classname = clicked and call upvote
+                    //           }}
+                    //         >
+                    //           +
+                    //         </Button>
+                    //         <Button variant="submit" sz="sm">
+                    //           {resource.score} pts.
+                    //         </Button>
+                    //         <Button
+                    //           variant="submit"
+                    //           sz="sm"
+                    //           onClick={async () =>
+                    //             await this.props.downvote(resource)
+                    //           }
+                    //         >
+                    //           -
+                    //         </Button>
+                    //       </Row>
+                    //     </Col>
+                    //     <Col xs={8}>
+                    //       <Link to={`/resource/${resource.id}`}>
+                    //         {resource.title}
+                    //       </Link>{' '}
+                    //       ({resource.type})
+                    //       {auth === true ? (
+                    //         <Button
+                    //           variant="submit"
+                    //           size="sm"
+                    //           onClick={async () => {
+                    //             await this.props.unAssociateResourceFromNode({
+                    //               node: this.props.selected,
+                    //               resource: resource
+                    //             })
+                    //             await this.props.getResourcesByNode(
+                    //               this.props.selected
+                    //             )
+                    //           }}
+                    //         >
+                    //           Remove
+                    //         </Button>
+                    //       ) : null}
+                    //     </Col>
+                    //   </Row>
+                    // </li>
                   )
                 })
               : ''}
@@ -916,7 +913,8 @@ const mapState = state => {
     nodes: state.node,
     edges: state.edge,
     resources: state.resource,
-    recommendations: state.recommendation
+    recommendations: state.recommendation,
+    vote: state.vote
   }
 }
 
@@ -942,7 +940,8 @@ const mapDispatch = dispatch => {
       dispatch(unAssociateResourceFromNode(resource)),
     getResourcesByNode: node => dispatch(getResourcesByNode(node)),
     upvote: resource => dispatch(upvote(resource)),
-    downvote: resource => dispatch(downvote(resource))
+    downvote: resource => dispatch(downvote(resource)),
+    getVote: resource => dispatch(getVote(resource))
   }
 }
 

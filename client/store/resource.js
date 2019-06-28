@@ -168,20 +168,6 @@ export default function(state = defaultResources, action) {
       return state
     case UNASSOCIATE_RESOURCE_FROM_NODE:
       return state
-    case UPVOTE:
-      return [
-        ...state.filter(resource => {
-          return resource.id !== action.resource.id
-        }),
-        action.resource
-      ]
-    case DOWNVOTE:
-      return [
-        ...state.filter(resource => {
-          return resource.id !== action.resource.id
-        }),
-        action.resource
-      ]
     default:
       return state
   }

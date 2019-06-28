@@ -6,7 +6,8 @@ const {
   User,
   Link,
   Comment,
-  ResourceTag
+  ResourceTag,
+  Vote
 } = require('../db/models')
 const Op = require('sequelize').Op
 module.exports = router
@@ -133,26 +134,6 @@ router.post('/', async (req, res, next) => {
 
 //removes resource from the selected node but does not delete
 
-router.put('/upvote', async (req, res, next) => {
-  try {
-    const resource = await Resource.findByPk(req.body.id)
-    await resource.update({score: resource.score + 1})
-    res.status(200).send(resource)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.put('/downvote', async (req, res, next) => {
-  try {
-    const resource = await Resource.findByPk(req.body.id)
-    await resource.update({score: resource.score - 1})
-    res.status(200).send(resource)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.put('/remove', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.body.node.id)
@@ -184,7 +165,8 @@ router.put('/', async (req, res, next) => {
 router.put('/:nodeId', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.params.nodeId)
-    const resource = await node.getResources()
+
+    const resource = await node.getResources({include: [{model: Vote}]})
     res.status(200).json(resource)
   } catch (err) {
     next(err)
