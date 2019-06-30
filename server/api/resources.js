@@ -140,7 +140,15 @@ router.put('/remove', async (req, res, next) => {
     const resource = await Resource.findByPk(req.body.resource.id)
     await node.removeResource(resource)
     await resource.removeNode(node)
-    res.status(200).send('success')
+    const resources = await node.getResources({
+      include: [
+        {
+          model: Vote
+          // include: [{model: User}]
+        }
+      ]
+    })
+    res.status(200).json(resources)
   } catch (err) {
     next(err)
   }
@@ -190,7 +198,16 @@ router.post('/add', async (req, res, next) => {
 
     await resource.addNode(node)
     await node.addResource(resource)
-    res.status(200).send('success')
+    const resources = await node.getResources({
+      include: [
+        {
+          model: Vote
+          // include: [{model: User}]
+        }
+      ]
+    })
+
+    res.status(200).send(resources)
   } catch (err) {
     next(err)
   }

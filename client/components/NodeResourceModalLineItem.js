@@ -16,7 +16,11 @@ class NodeResourceModalLineItem extends Component {
     }
   }
   componentDidMount() {
-    if (this.props.resource !== undefined) {
+    let voteCheck = []
+    if (
+      this.props.resource !== undefined &&
+      this.props.resource.votes !== undefined
+    ) {
       const upvotes = this.props.resource.votes.filter(vote => {
         return vote.voteType === 'upvote'
       })
@@ -28,11 +32,11 @@ class NodeResourceModalLineItem extends Component {
         score: resourceScore,
         originalScore: resourceScore
       })
-      //check if current user has  vorted
+      voteCheck = this.props.resource.votes.filter(vote => {
+        return vote.userId === this.props.user.id
+      })
     }
-    const voteCheck = this.props.resource.votes.filter(vote => {
-      return vote.userId === this.props.user.id
-    })
+
     if (voteCheck[0] !== undefined) {
       this.setState({
         voteType: voteCheck[0].voteType

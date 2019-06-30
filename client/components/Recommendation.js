@@ -179,9 +179,15 @@ class Recommendation extends Component {
             <Button
               variant="submit"
               onClick={() =>
-                this.props.convertRecommendationToResource(
-                  this.props.recommendation
-                )
+                this.props.convertRecommendationToResource({
+                  id: this.props.recommendation.id,
+                  title: this.props.recommendation.title,
+                  link: this.props.recommendation.link,
+                  description: this.props.recommendation.description,
+                  type: this.props.recommendation.type,
+                  nodeId: this.props.recommendation.nodes[0].id,
+                  tags: this.props.recommendation.ResourceTags
+                })
               }
             >
               Add to Resources

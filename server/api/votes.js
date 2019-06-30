@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Vote, Resource} = require('../db/models')
+const {User, Vote} = require('../db/models')
 module.exports = router
 
 router.get('/:resourceId', async (req, res, next) => {
@@ -29,7 +29,6 @@ router.put('/upvote', async (req, res, next) => {
       await vote[0].update({
         voteType: 'upvote'
       })
-      // console.log(Object.keys(vote[0].__proto__))
       await vote[0].setUser(user)
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'upvote') {

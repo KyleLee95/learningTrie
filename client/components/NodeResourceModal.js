@@ -423,6 +423,7 @@ class NodeResourceModal extends Component {
           </Modal.Body>
           <Modal.Body>
             <strong>Resources:</strong>
+            <hr />
             {/* <ul> */}
             {this.props.resources &&
             this.props.resources[0] &&
@@ -430,80 +431,14 @@ class NodeResourceModal extends Component {
               ? this.props.resources.map(resource => {
                   //refactor into its own component so that I can call a componentDidMount on
                   return (
-                    <ConnectedNodeResourceModalLineItem
-                      key={resource.id}
-                      resource={resource}
-                      selected={this.props.selected}
-                      auth={auth}
-                    />
-                    // <li key={resource.id} style={{listStyleType: 'none'}}>
-                    //   <Row>
-                    //     <Col xs={4}>
-                    //       <Row>
-                    //         <Button
-                    //           variant="submit"
-                    //           sz="sm"
-                    //           id={resource.id.toString()}
-                    //           className="unClicked"
-                    //           onClick={async () => {
-                    //             const id = resource.id.toString()
-                    //             const btn = document.getElementById(id)
-                    //             if (
-                    //               btn.className === 'unClicked btn btn-submit'
-                    //             ) {
-                    //               btn.className = 'clicked'
-                    //               await this.props.upvote(resource)
-                    //               return null
-                    //             } else if (btn.className === 'clicked') {
-                    //               btn.className = 'unClicked'
-                    //               await this.props.downvote(resource)
-                    //               return null
-                    //             }
-                    //             //if class-name = clicked => call downvote and set classname to be unclicked
-                    //             //else, set classname = clicked and call upvote
-                    //           }}
-                    //         >
-                    //           +
-                    //         </Button>
-                    //         <Button variant="submit" sz="sm">
-                    //           {resource.score} pts.
-                    //         </Button>
-                    //         <Button
-                    //           variant="submit"
-                    //           sz="sm"
-                    //           onClick={async () =>
-                    //             await this.props.downvote(resource)
-                    //           }
-                    //         >
-                    //           -
-                    //         </Button>
-                    //       </Row>
-                    //     </Col>
-                    //     <Col xs={8}>
-                    //       <Link to={`/resource/${resource.id}`}>
-                    //         {resource.title}
-                    //       </Link>{' '}
-                    //       ({resource.type})
-                    //       {auth === true ? (
-                    //         <Button
-                    //           variant="submit"
-                    //           size="sm"
-                    //           onClick={async () => {
-                    //             await this.props.unAssociateResourceFromNode({
-                    //               node: this.props.selected,
-                    //               resource: resource
-                    //             })
-                    //             await this.props.getResourcesByNode(
-                    //               this.props.selected
-                    //             )
-                    //           }}
-                    //         >
-                    //           Remove
-                    //         </Button>
-                    //       ) : null}
-                    //     </Col>
-                    //   </Row>
-                    // </li>
+                    <React.Fragment key={resource.id}>
+                      <ConnectedNodeResourceModalLineItem
+                        resource={resource}
+                        selected={this.props.selected}
+                        auth={auth}
+                      />
+                      <hr />
+                    </React.Fragment>
                   )
                 })
               : ''}

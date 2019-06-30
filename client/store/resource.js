@@ -29,11 +29,13 @@ const fetchResourcesByLink = resource => ({
   type: SEARCH_RESOURCE_BY_LINK,
   resource
 })
-const assocateToNode = () => ({
-  type: ASSOCIATE_RESOURCE_TO_NODE
+const assocateToNode = resource => ({
+  type: ASSOCIATE_RESOURCE_TO_NODE,
+  resource
 })
-const unAssociateFromNode = () => ({
-  type: UNASSOCIATE_RESOURCE_FROM_NODE
+const unAssociateFromNode = resource => ({
+  type: UNASSOCIATE_RESOURCE_FROM_NODE,
+  resource
 })
 
 const upvoteResource = resource => ({
@@ -97,8 +99,8 @@ export const associateResourceToNode = resource => async dispatch => {
 
 export const unAssociateResourceFromNode = resource => async dispatch => {
   try {
-    await axios.put('/api/resources/remove', resource)
-    dispatch(unAssociateFromNode())
+    const res = await axios.put('/api/resources/remove', resource)
+    dispatch(unAssociateFromNode(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -166,9 +168,9 @@ export default function(state = defaultResources, action) {
     case CREATE_RESOURCE:
       return [...state, action.resource]
     case ASSOCIATE_RESOURCE_TO_NODE:
-      return state
+      return action.resource
     case UNASSOCIATE_RESOURCE_FROM_NODE:
-      return state
+      return action.resource
     default:
       return state
   }

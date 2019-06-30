@@ -51,18 +51,6 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    // await Resource.destroy({
-    //   where: {
-    //     nodeId: req.params.id
-    //   }
-    // })
-
-    // await Recommendation.destroy({
-    //   where: {
-    //     nodeId: req.params.id
-    //   }
-    // })
-
     await Node.destroy({
       where: {
         id: req.params.id
