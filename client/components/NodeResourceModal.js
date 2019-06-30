@@ -651,9 +651,9 @@ class NodeResourceModal extends Component {
                                   node: this.props.selected,
                                   resource: result
                                 })
-                                await this.props.getResourcesByNode(
-                                  this.props.selected
-                                )
+                                // await this.props.getResourcesByNode(
+                                //   this.props.selected
+                                // )
                               }}
                             >
                               Add to Node

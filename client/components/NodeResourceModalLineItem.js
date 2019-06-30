@@ -33,11 +33,14 @@ class NodeResourceModalLineItem extends Component {
     const voteCheck = this.props.resource.votes.filter(vote => {
       return vote.userId === this.props.user.id
     })
-    if (voteCheck !== undefined) {
+    if (voteCheck[0] !== undefined) {
       this.setState({
         voteType: voteCheck[0].voteType
       })
-    }
+    } else
+      this.setState({
+        voteType: 'none'
+      })
   }
 
   componentDidUpdate(prevProps) {
@@ -121,7 +124,6 @@ class NodeResourceModalLineItem extends Component {
                   +
                 </Button>
               )}
-
               <Button variant="submit" sz="sm">
                 {this.state.score} pts.
               </Button>

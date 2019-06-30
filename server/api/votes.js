@@ -24,7 +24,7 @@ router.put('/upvote', async (req, res, next) => {
       //sets vote status to 'upvote' && +1 to score
       const user = await User.findByPk(req.user.id)
       const vote = await Vote.findOrCreate({
-        where: {resourceId: req.body.resource.id}
+        where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
       await vote[0].update({
         voteType: 'upvote'
@@ -36,9 +36,8 @@ router.put('/upvote', async (req, res, next) => {
       //resets +0 to score && vote status to none
       const user = await User.findByPk(req.user.id)
       const vote = await Vote.findOrCreate({
-        where: {resourceId: req.body.resource.id}
+        where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
-      // console.log(Object.keys(vote[0].__proto__))
       await vote[0].update({
         voteType: 'none'
       })
@@ -51,31 +50,25 @@ router.put('/upvote', async (req, res, next) => {
 })
 
 router.put('/downvote', async (req, res, next) => {
-  console.log(req.body)
   try {
     if (req.body.voteType === 'none') {
       //sets vote status to 'downvote'
       const user = await User.findByPk(req.user.id)
-
       const vote = await Vote.findOrCreate({
-        where: {resourceId: req.body.resource.id}
+        where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
       await vote[0].update({
         voteType: 'downvote'
       })
-      // console.log(Object.keys(vote[0].__proto__))
       await vote[0].setUser(user)
 
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'downvote') {
       //resets +0 to score && vote status to none
       const user = await User.findByPk(req.user.id)
-      const resource = await Resource.findByPk(req.body.resource.id)
-      await resource.update({score: resource.score - 0})
       const vote = await Vote.findOrCreate({
-        where: {resourceId: req.body.resource.id}
+        where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
-      // console.log(Object.keys(vote[0].__proto__))
       await vote[0].update({
         voteType: 'none'
       })

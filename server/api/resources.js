@@ -162,6 +162,7 @@ router.put('/', async (req, res, next) => {
   }
 })
 
+//gets the votes for a resource
 router.put('/:nodeId', async (req, res, next) => {
   try {
     const node = await Node.findByPk(req.params.nodeId)
@@ -170,8 +171,8 @@ router.put('/:nodeId', async (req, res, next) => {
     const resource = await node.getResources({
       include: [
         {
-          model: Vote,
-          include: [{model: User}]
+          model: Vote
+          // include: [{model: User}]
         }
       ]
     })
