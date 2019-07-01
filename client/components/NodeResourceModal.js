@@ -455,6 +455,9 @@ class NodeResourceModal extends Component {
                                 description: recommendation.description,
                                 nodeId: this.props.selected.id
                               })
+                              await this.props.getResourcesByNode(
+                                this.props.selected
+                              )
                             }}
                           >
                             Add to Node
