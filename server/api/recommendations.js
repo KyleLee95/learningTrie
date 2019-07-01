@@ -25,13 +25,13 @@ router.get('/:id', async (req, res, next) => {
   try {
     const recommendation = await Recommendation.findByPk(req.params.id, {
       include: [
-        // {model: Link, through: 'recommendationLink'},
         {model: ResourceTag},
         {model: Node, include: [{model: LearningTree, include: {model: User}}]}
       ]
     })
+
     // console.log(Object.keys(resource.__proto__))
-    res.status(200).json(recommendation)
+    res.status(200).json([recommendation])
   } catch (err) {
     next(err)
   }
@@ -78,7 +78,10 @@ router.post('/', async (req, res, next) => {
       })
       const user = await User.findByPk(Number(req.user.id))
       const node = await Node.findByPk(req.body.nodeId)
-      // await link[0].addRecommendation(recommendation)
+      await link[0].addRecommendation(recommendation)
+      await link[0].addResource(resource[0])
+      await recommendation.addLink(link[0])
+      await resource[0].addLink(link[0])
       await recommendation.addNode(node)
       await recommendation.addUser(user)
       await user.addRecommendation(recommendation)

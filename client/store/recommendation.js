@@ -94,9 +94,10 @@ export const putRecommendation = recommendation => async dispatch => {
 
 export const convertRecommendationToResource = recommendation => async dispatch => {
   try {
-    await axios.post(`/api/resources/`, recommendation)
+    const newResource = await axios.post(`/api/resources/`, recommendation)
     const res = await axios.delete(`/api/recommendations/${recommendation.id}`)
     dispatch(convertToResource(res.data))
+    history.push(`/resource/${newResource.data.id}`)
   } catch (err) {
     console.error(err)
   }

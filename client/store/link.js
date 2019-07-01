@@ -24,7 +24,7 @@ const createLink = link => ({type: CREATE_LINK, link})
 export const getLink = resourceId => async dispatch => {
   try {
     const res = await axios.get(`/api/links/${resourceId}`)
-
+    console.log(res.data)
     dispatch(fetchLink(res.data[0]))
   } catch (err) {
     console.error(err)

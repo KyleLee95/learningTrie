@@ -27,8 +27,8 @@ class Recommendation extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleRecommendation(Number(this.props.match.params.id))
+    await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
   }
 
@@ -79,14 +79,16 @@ class Recommendation extends Component {
 
     let authId = []
     if (
-      this.props.recommendation.nodes !== undefined &&
-      this.props.recommendation.nodes[0] !== undefined &&
-      this.props.recommendation.nodes[0].learningTree !== undefined &&
-      this.props.recommendation.nodes[0].learningTree !== undefined &&
-      this.props.recommendation.nodes[0].learningTree.users !== undefined &&
-      this.props.recommendation.nodes[0].learningTree.users[0].id !== undefined
+      this.props.recommendation[0] !== undefined &&
+      this.props.recommendation[0].nodes !== undefined &&
+      this.props.recommendation[0].nodes[0] !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree.users !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree.users[0].id !==
+        undefined
     ) {
-      this.props.recommendation.nodes[0].learningTree.users.forEach(user => {
+      this.props.recommendation[0].nodes[0].learningTree.users.forEach(user => {
         return authId.push(user.id)
       })
     }
@@ -101,9 +103,9 @@ class Recommendation extends Component {
               <Row>
                 {' '}
                 <strong>Title:</strong>{' '}
-                {this.props.recommendation &&
-                this.props.recommendation.title !== undefined
-                  ? this.props.recommendation.title
+                {this.props.recommendation[0] &&
+                this.props.recommendation[0].title !== undefined
+                  ? this.props.recommendation[0].title
                   : ''}
               </Row>
             </Col>
@@ -111,8 +113,8 @@ class Recommendation extends Component {
               <Row>
                 {' '}
                 <strong>Description:</strong>
-                {this.props.recommendation
-                  ? this.props.recommendation.description
+                {this.props.recommendation[0]
+                  ? this.props.recommendation[0].description
                   : ''}
               </Row>
             </Col>
@@ -120,8 +122,8 @@ class Recommendation extends Component {
               <Col xs={5}>
                 {' '}
                 <strong>Type:</strong>{' '}
-                {this.props.recommendation
-                  ? this.props.recommendation.type
+                {this.props.recommendation[0]
+                  ? this.props.recommendation[0].type
                   : ''}
               </Col>
             </Row>
@@ -131,15 +133,16 @@ class Recommendation extends Component {
                 <strong>Link:</strong>{' '}
                 <a
                   href={
-                    this.props.recommendation &&
-                    this.props.recommendation.link !== undefined
-                      ? this.props.recommendation.link
+                    this.props.recommendation[0] &&
+                    this.props.recommendation[0].link !== undefined
+                      ? this.props.recommendation[0].link
                       : ''
                   }
                   target="_blank"
                 >
-                  {this.props.recommendation && this.props.recommendation.link
-                    ? this.props.recommendation.link
+                  {this.props.recommendation[0] &&
+                  this.props.recommendation[0].link
+                    ? this.props.recommendation[0].link
                     : ''}
                 </a>
               </Col>
@@ -147,8 +150,9 @@ class Recommendation extends Component {
             <Row>
               <Col xs={5}>
                 <strong>Tags:</strong>
-                {this.props.recommendation.ResourceTags
-                  ? this.props.recommendation.ResourceTags.map(tag => {
+                {this.props.recommendation[0] !== undefined &&
+                this.props.recommendation[0].ResourceTags
+                  ? this.props.recommendation[0].ResourceTags.map(tag => {
                       return (
                         <Link to={`/ResourceTag/${tag.id}`} key={tag.id}>
                           <Button variant="light" size="sm" type="submit">
@@ -165,7 +169,7 @@ class Recommendation extends Component {
           <Button
             onClick={() =>
               this.props.delResource({
-                recommendation: this.props.recommendation
+                recommendation: this.props.recommendation[0]
               })
             }
             variant="submit"
@@ -180,13 +184,13 @@ class Recommendation extends Component {
               variant="submit"
               onClick={() =>
                 this.props.convertRecommendationToResource({
-                  id: this.props.recommendation.id,
-                  title: this.props.recommendation.title,
-                  link: this.props.recommendation.link,
-                  description: this.props.recommendation.description,
-                  type: this.props.recommendation.type,
-                  nodeId: this.props.recommendation.nodes[0].id,
-                  tags: this.props.recommendation.ResourceTags
+                  id: this.props.recommendation[0].id,
+                  title: this.props.recommendation[0].title,
+                  link: this.props.recommendation[0].link,
+                  description: this.props.recommendation[0].description,
+                  type: this.props.recommendation[0].type,
+                  nodeId: this.props.recommendation[0].nodes[0].id,
+                  tags: this.props.recommendation[0].ResourceTags
                 })
               }
             >
@@ -199,7 +203,9 @@ class Recommendation extends Component {
         <Row>
           <Col xs={12}>
             <strong>
-              What people have said about: {this.props.recommendation.title}:{' '}
+              What people have said about{' '}
+              {this.props.recommendation[0] !== undefined &&
+                this.props.recommendation[0].title}:{' '}
             </strong>
             <hr />
             {this.props.comments && this.props.comments.length > 0
