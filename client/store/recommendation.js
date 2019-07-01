@@ -34,8 +34,9 @@ const updateRecommendation = recommendation => ({
   recommendation
 })
 
-const convertToResource = () => ({
-  type: CONVERT_TO_RESOURCE
+const convertToResource = recommendation => ({
+  type: CONVERT_TO_RESOURCE,
+  recommendation
 })
 /**
  * THUNK CREATORS
@@ -93,11 +94,9 @@ export const putRecommendation = recommendation => async dispatch => {
 
 export const convertRecommendationToResource = recommendation => async dispatch => {
   try {
-    const res = await axios.post(`/api/resources/`, recommendation)
-    await axios.delete(`/api/recommendations/${recommendation.id}`)
-
-    dispatch(convertToResource())
-    history.push(`/resource/${res.data.id}`)
+    await axios.post(`/api/resources/`, recommendation)
+    const res = await axios.delete(`/api/recommendations/${recommendation.id}`)
+    dispatch(convertToResource(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -111,9 +110,14 @@ export default function(state = defaultRecommendations, action) {
     case GET_RECOMMENDATIONS:
       return action.recommendation
     case REMOVE_RECOMMENDATIONS:
-      return []
+      return state.filter(recommendation => {
+        return recommendation.id !== action.recommendation
+      })
     case CONVERT_TO_RESOURCE:
-      return []
+      const newState = state.filter(recommendation => {
+        return recommendation.id !== Number(action.recommendation)
+      })
+      return newState
     case UPDATE_RECOMMENDATIONS:
       return action.recommendation
     case CREATE_RECOMMENDATIONS:

@@ -12,7 +12,9 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const recommendation = await Recommendation.findAll()
+    const recommendation = await Recommendation.findAll({
+      include: [{model: ResourceTag}]
+    })
     res.status(200).json(recommendation)
   } catch (err) {
     next(err)
@@ -23,7 +25,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const recommendation = await Recommendation.findByPk(req.params.id, {
       include: [
-        {model: Link, through: 'recommendationLink'},
+        // {model: Link, through: 'recommendationLink'},
         {model: ResourceTag},
         {model: Node, include: [{model: LearningTree, include: {model: User}}]}
       ]
@@ -76,7 +78,7 @@ router.post('/', async (req, res, next) => {
       })
       const user = await User.findByPk(Number(req.user.id))
       const node = await Node.findByPk(req.body.nodeId)
-      await link[0].addRecommendation(recommendation)
+      // await link[0].addRecommendation(recommendation)
       await recommendation.addNode(node)
       await recommendation.addUser(user)
       await user.addRecommendation(recommendation)
@@ -106,16 +108,13 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    // const node = await Node.findByPk(req.body.resource.resource.nodeId, {
-    //   include: [{model: LearningTree}]
-    // })
     await Recommendation.destroy({
       where: {
         id: req.params.id
       }
     })
 
-    res.status(200).json(Recommendation)
+    res.status(200).json(req.params.id)
   } catch (err) {
     next(err)
   }

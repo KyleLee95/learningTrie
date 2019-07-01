@@ -32,7 +32,11 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
-import {postRecommendation, getRecommendations} from '../store/recommendation'
+import {
+  postRecommendation,
+  getRecommendations,
+  convertRecommendationToResource
+} from '../store/recommendation'
 import {
   getResources,
   postResource,
@@ -40,6 +44,7 @@ import {
   unAssociateResourceFromNode,
   getResourcesByNode
 } from '../store/resource'
+
 import {upvote, downvote, getVote} from '../store/vote'
 import axios from 'axios'
 import {ConnectedNodeResourceModalLineItem} from './index'
@@ -167,28 +172,6 @@ class NodeResourceModal extends Component {
   }
 
   //COMPONENT METHODS
-
-  // async componentDidMount() {
-  //   await this.props.getNodes(Number(this.props.match.params.id))
-  //   await this.props.getEdges(Number(this.props.match.params.id))
-  //   await this.props.nodes.forEach(node => {
-  //     if (node.type !== 'empty') {
-  //       this.props.putNode({
-  //         id: node.id,
-  //         type: 'empty'
-  //       })
-  //     }
-  //   })
-  // }
-
-  //MODAL HANDLERS
-  // handleClose() {
-  //   this.setState({show: false})
-  // }
-
-  // handleShow() {
-  //   this.setState({show: true})
-  // }
 
   //EDIT MODAL HANDLERS
   handleEditShow() {
@@ -458,6 +441,25 @@ class NodeResourceModal extends Component {
                           {recommendation.title}
                         </Link>{' '}
                         ({recommendation.type})
+                        {auth === true ? (
+                          <Button
+                            variant="submit"
+                            sz="sm"
+                            onClick={async () => {
+                              await this.props.convertRecommendationToResource({
+                                id: recommendation.id,
+                                link: recommendation.link,
+                                title: recommendation.title,
+                                type: recommendation.type,
+                                ResourceTags: recommendation.ResourceTags,
+                                description: recommendation.description,
+                                nodeId: this.props.selected.id
+                              })
+                            }}
+                          >
+                            Add to Node
+                          </Button>
+                        ) : null}
                       </li>
                     )
                   })
@@ -627,7 +629,6 @@ class NodeResourceModal extends Component {
                               variant="submit"
                               sz="sm"
                               onClick={async () => {
-                                console.log(result)
                                 await this.props.postRecommendation({
                                   id: result.id,
                                   link: result.link,
@@ -929,7 +930,9 @@ const mapDispatch = dispatch => {
     getResourcesByNode: node => dispatch(getResourcesByNode(node)),
     upvote: resource => dispatch(upvote(resource)),
     downvote: resource => dispatch(downvote(resource)),
-    getVote: resource => dispatch(getVote(resource))
+    getVote: resource => dispatch(getVote(resource)),
+    convertRecommendationToResource: recommendation =>
+      dispatch(convertRecommendationToResource(recommendation))
   }
 }
 
