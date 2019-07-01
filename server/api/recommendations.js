@@ -37,7 +37,16 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    //conditionally create resources
+    //create resource for indexing
+    const resource = await Resource.findOrCreate({
+      where: {
+        title: req.body.title,
+        link: req.body.link,
+        description: req.body.description,
+        type: req.body.type
+      }
+    })
+    //conditionally create recommendation
     let recommendation = await Recommendation.create({
       title: req.body.title,
       link: req.body.link,
@@ -45,6 +54,7 @@ router.post('/', async (req, res, next) => {
       type: req.body.type,
       ownerId: req.body.ownerId
     })
+
     const shortUrl = req.body.link
       .replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')
       .split('/')[0]
@@ -52,18 +62,26 @@ router.post('/', async (req, res, next) => {
       where: {url: req.body.link, shortUrl: shortUrl}
     })
 
-    req.body.tags.forEach(async tag => {
-      let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
-      await recommendation.addResourceTag(newTag[0])
-    })
-    const user = await User.findByPk(Number(req.user.id))
-    const node = await Node.findByPk(req.body.nodeId)
-    await link[0].addRecommendation(recommendation)
-    await recommendation.addNode(node)
-    await recommendation.addUser(user)
-    await user.addRecommendation(recommendation)
-    await node.addRecommendation(recommendation)
-
+    if (req.body.tags) {
+      req.body.tags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
+        await resource[0].addResourceTag(newTag[0])
+        await recommendation.addResourceTag(newTag[0])
+      })
+    } else {
+      req.body.ResourceTags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag.title}})
+        await recommendation.addResourceTag(newTag[0])
+        await resource[0].addResourceTag(newTag[0])
+      })
+      const user = await User.findByPk(Number(req.user.id))
+      const node = await Node.findByPk(req.body.nodeId)
+      await link[0].addRecommendation(recommendation)
+      await recommendation.addNode(node)
+      await recommendation.addUser(user)
+      await user.addRecommendation(recommendation)
+      await node.addRecommendation(recommendation)
+    }
     res.status(201).json(recommendation)
   } catch (err) {
     next(err)

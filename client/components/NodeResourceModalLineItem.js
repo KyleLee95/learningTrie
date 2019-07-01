@@ -47,32 +47,6 @@ class NodeResourceModalLineItem extends Component {
       })
   }
 
-  componentDidUpdate(prevProps) {
-    // if (
-    //   this.props.resource !== undefined &&
-    //   this.props.resource.id !== prevProps.resource.id
-    // ) {
-    //   const upvotes = this.props.resource.votes.filter(vote => {
-    //     return vote.voteType === 'upvote'
-    //   })
-    //   const downvotes = this.props.resource.votes.filter(vote => {
-    //     return vote.voteType === 'downvote'
-    //   })
-    //   let resourceScore = upvotes.length - downvotes.length
-    //   //check if current user has  vorted
-    //   const voteCheck = this.props.resource.votes.filter(vote => {
-    //     return vote.userId === this.props.user.id
-    //   })
-    //   if (voteCheck !== undefined) {
-    //     this.setState({
-    //       score: resourceScore,
-    //       voteType: voteCheck[0].voteType
-    //     })
-    //   }
-    // }
-    // console.log(this.state)
-  }
-
   render() {
     return (
       //conditional rendering for buttons based on upvote, downvote, none

@@ -445,6 +445,7 @@ class NodeResourceModal extends Component {
             {/* </ul> */}
           </Modal.Body>
           <Modal.Body>
+            {/* Recommendation*/}
             <strong>Resources Recommended by other Users:</strong>
             <ul>
               {this.props.recommendations &&
@@ -568,6 +569,7 @@ class NodeResourceModal extends Component {
                   </Form.Text>
                 </Form.Group>
                 {/* <ul> */}
+                {/* Renders Search Results for Search Resources */}
                 {this.state.searchResults.length > 0 ? (
                   this.state.searchResults.map(result => {
                     // Conditionally render add/remove button based on if the resource is added to the node
@@ -616,10 +618,29 @@ class NodeResourceModal extends Component {
                             </Button>
                           </React.Fragment>
                         ) : (
+                          //RECOMMENDATION LINE ITEMS
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
                             </Link>
+                            <Button
+                              variant="submit"
+                              sz="sm"
+                              onClick={async () => {
+                                console.log(result)
+                                await this.props.postRecommendation({
+                                  id: result.id,
+                                  link: result.link,
+                                  title: result.title,
+                                  type: result.type,
+                                  ResourceTags: result.ResourceTags,
+                                  description: result.description,
+                                  nodeId: this.props.selected.id
+                                })
+                              }}
+                            >
+                              Recommend
+                            </Button>
                           </React.Fragment>
                         )}
                       </li>
@@ -669,6 +690,7 @@ class NodeResourceModal extends Component {
                 ) : this.state.searchResults.length === 0 &&
                 this.state.search === true &&
                 this.state.recommend === true ? (
+                  //Recommendation form if no results are found
                   <React.Fragment>
                     <Form.Label>Title</Form.Label>
                     <Form.Control
@@ -728,7 +750,7 @@ class NodeResourceModal extends Component {
                         })
                       }}
                     >
-                      Clear Search
+                      Cancel
                     </Button>
                     <Button
                       variant="submit"
@@ -748,7 +770,18 @@ class NodeResourceModal extends Component {
                     >
                       Close
                     </Button>
-
+                    <Button
+                      variant="submit"
+                      onClick={() => {
+                        this.setState({
+                          recommend: false,
+                          search: false,
+                          searchResults: []
+                        })
+                      }}
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       variant="submit"
                       onClick={this.handleRecommendSubmit}

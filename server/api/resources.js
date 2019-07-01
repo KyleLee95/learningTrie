@@ -17,14 +17,17 @@ router.get('/search', async (req, res, next) => {
     let resource = []
     let resourcesTagged = []
     const resources = await Resource.findAll({
-      where: {title: {[Op.iLike]: `%${req.query.search}%`}}
+      where: {title: {[Op.iLike]: `%${req.query.search}%`}},
+      include: [{model: ResourceTag}]
     })
 
     const resourceTag = await ResourceTag.findOne({
       where: {title: req.query.search}
     })
     if (resourceTag !== null) {
-      resourcesTagged = await resourceTag.getResources()
+      resourcesTagged = await resourceTag.getResources({
+        include: [{model: resourceTag}]
+      })
     } else {
       resourcesTagged = []
     }
@@ -50,7 +53,8 @@ router.get('/search', async (req, res, next) => {
 router.get('/link', async (req, res, next) => {
   try {
     const resource = await Resource.findAll({
-      where: {link: req.query.link}
+      where: {link: req.query.link},
+      include: [{model: ResourceTag}]
     })
     if (resource === undefined) {
       res.status(200).send({title: 'None Found'})
