@@ -124,7 +124,6 @@ router.post('/', async (req, res, next) => {
     }
 
     await resource[0].addNode(node)
-    // console.log(Object.keys(resource.__proto__))
     await node.addResource(resource[0])
     await resource[0].addUser(user)
     await user.addResource(resource[0])
