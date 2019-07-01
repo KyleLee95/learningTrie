@@ -90,8 +90,8 @@ export const getResourceByLink = () => async dispatch => {
 
 export const associateResourceToNode = resource => async dispatch => {
   try {
-    await axios.post(`/api/resources/add`, resource)
-    dispatch(assocateToNode())
+    const res = await axios.post(`/api/resources/add`, resource)
+    dispatch(assocateToNode(res.data))
   } catch (err) {
     console.error(err)
   }

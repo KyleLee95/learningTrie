@@ -452,7 +452,7 @@ class NodeResourceModal extends Component {
               this.props.recommendations[0].id !== undefined
                 ? this.props.recommendations.map(recommendation => {
                     return (
-                      <li key={recommendation.id}>
+                      <li key={recommendation.title}>
                         <Link to={`/recommendation/${recommendation.id}`}>
                           {recommendation.title}
                         </Link>{' '}
@@ -594,7 +594,7 @@ class NodeResourceModal extends Component {
                               Add to Node
                             </Button>
                           </React.Fragment>
-                        ) : (
+                        ) : auth === true ? (
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
@@ -614,6 +614,12 @@ class NodeResourceModal extends Component {
                             >
                               Remove from Node
                             </Button>
+                          </React.Fragment>
+                        ) : (
+                          <React.Fragment>
+                            <Link to={`/resource/${result.id}`}>
+                              {result.title}{' '}
+                            </Link>
                           </React.Fragment>
                         )}
                       </li>
@@ -702,7 +708,7 @@ class NodeResourceModal extends Component {
                 {/* </ul> */}
               </Modal.Body>
               <Modal.Footer>
-                {/* Search/Browse Resources controls */}
+                {/* Search Resources controls */}
                 {this.state.search === true &&
                 this.state.recommend === false &&
                 this.state.searchResults.length === 0 ? (
@@ -715,6 +721,17 @@ class NodeResourceModal extends Component {
                     </Button>
                     <Button
                       variant="submit"
+                      onClick={() => {
+                        this.setState({
+                          search: false,
+                          searchResults: []
+                        })
+                      }}
+                    >
+                      Clear Search
+                    </Button>
+                    <Button
+                      variant="submit"
                       onClick={this.handleResourceSubmit}
                     >
                       Submit
@@ -723,6 +740,7 @@ class NodeResourceModal extends Component {
                 ) : this.state.search === true &&
                 this.state.recommend === true &&
                 this.state.searchResults.length === 0 ? (
+                  // Recommend Resource
                   <React.Fragment>
                     <Button
                       variant="submit"
@@ -730,6 +748,7 @@ class NodeResourceModal extends Component {
                     >
                       Close
                     </Button>
+
                     <Button
                       variant="submit"
                       onClick={this.handleRecommendSubmit}
@@ -738,6 +757,7 @@ class NodeResourceModal extends Component {
                     </Button>
                   </React.Fragment>
                 ) : (
+                  //Add Resource
                   <React.Fragment>
                     <Button
                       variant="submit"
