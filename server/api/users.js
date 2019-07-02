@@ -43,6 +43,8 @@ router.put('/isOwner', async (req, res, next) => {
   }
 })
 
+// router.put('/')
+
 //Associate current user as a follower of another user
 router.put('/follow/:id', async (req, res, next) => {
   // console.log(req.body)

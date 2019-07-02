@@ -17,7 +17,7 @@ import {ConnectedNewReview} from './NewReview'
 
 //TODO:
 //Forms are only prefilled the first time you edit. After that the forms empty.
-
+let auth = false
 class LearningTree extends Component {
   constructor(props, context) {
     super(props, context)
@@ -53,7 +53,7 @@ class LearningTree extends Component {
       await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     }
   }
- 
+
   //BEGIN MODAL METHODS
   async handleSubmit() {
     this.handleCloseEdit()
@@ -153,6 +153,24 @@ class LearningTree extends Component {
     } else {
       rating = checkRating.toString().slice(0, 4)
     }
+    //auth check
+
+    let authId = []
+    if (
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].users !== undefined &&
+      this.props.trees[0].users[0] !== undefined &&
+      this.props.trees[0].users[0].id !== undefined
+    ) {
+      this.props.trees[0].users.forEach(user => {
+        return authId.push(user.id)
+      })
+    }
+    if (authId.includes(this.props.user.id) === true) {
+      auth = true
+    }
 
     return (
       <React.Fragment>
@@ -170,7 +188,7 @@ class LearningTree extends Component {
               this.props.user &&
               this.props.user.id !== undefined &&
               this.props.trees[0].users[0] !== undefined &&
-              this.props.user.id !== this.props.trees[0].users[0].id ? (
+              auth === false ? (
                 <React.Fragment>
                   <Button variant="submit">
                     <Link
@@ -233,15 +251,34 @@ class LearningTree extends Component {
                     name="email"
                     type="email"
                     onChange={this.handleCollabChange}
+                    placeholder="Enter Email"
                   />
                 </Form.Group>
+                Approved Collaborators
+                {this.props.trees[0] &&
+                this.props.trees[0] &&
+                this.props.trees[0].users &&
+                this.props.trees[0].users[0].id !== undefined
+                  ? this.props.trees[0].users.map(user => {
+                      return (
+                        <li key={user.id} style={{listStyleType: 'none'}}>
+                          <Link to={`/user/${user.id}`}>{user.username}</Link>
+                          {auth === true ? (
+                            <Button sz="sm" variant="submit">
+                              Remove
+                            </Button>
+                          ) : null}
+                        </li>
+                      )
+                    })
+                  : null}
               </Modal.Body>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleCollabClose}>
+              <Button variant="submit" onClick={this.handleCollabClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={this.handleCollabSubmit}>
+              <Button variant="submit" onClick={this.handleCollabSubmit}>
                 Submit
               </Button>
             </Modal.Footer>
