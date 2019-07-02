@@ -21,12 +21,11 @@ const Vote = require('./vote')
 
 //User
 User.belongsToMany(LearningTree, {through: 'userTree'})
+User.belongsToMany(LearningTree, {through: 'favoriteTrees', as: 'favorite'})
 User.hasMany(Comment)
 User.hasMany(Review)
 User.belongsToMany(User, {as: 'followers', through: 'follower'})
 User.belongsToMany(User, {as: 'following', through: 'isFollowing'})
-// User.belongsToMany(Conversation, {through: 'userConversation'})
-// User.belongsTo(Conversation)
 User.hasMany(Message)
 User.hasMany(Resource)
 User.hasMany(Recommendation)
@@ -35,6 +34,7 @@ User.belongsToMany(Conversation, {as: 'receiver', through: 'userConversation'})
 User.hasMany(Vote)
 
 //Learning Tree
+LearningTree.belongsToMany(User, {through: 'favoriteTrees', as: 'favorite'})
 LearningTree.hasMany(Review)
 LearningTree.hasMany(Node)
 LearningTree.belongsToMany(User, {through: 'userTree'})
@@ -65,10 +65,7 @@ Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
 Resource.hasMany(Comment)
 Resource.belongsToMany(ResourceTag, {through: 'Tags for Resource'})
-Resource.hasMany(
-  Vote
-  // , {through: 'resourceVote'}
-)
+Resource.hasMany(Vote)
 
 //Review
 Review.belongsTo(User)
@@ -103,10 +100,6 @@ Message.belongsTo(Conversation)
 
 //Vote
 Vote.belongsTo(User)
-// Vote.hasMany(
-//   Resource
-//   // {through: 'resourceVote'}
-// )
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,

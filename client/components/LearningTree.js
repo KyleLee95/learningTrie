@@ -212,6 +212,7 @@ class LearningTree extends Component {
                   <Button onClick={this.handleCollabShow} variant="submit">
                     Collaborators
                   </Button>
+                  <Button variant="submit">Add to Favorites</Button>
                 </React.Fragment>
               ) : this.props.trees[0] !== undefined && auth === true ? (
                 <React.Fragment>
@@ -232,6 +233,7 @@ class LearningTree extends Component {
                   <Button onClick={this.handleCollabShow} variant="submit">
                     Collaborators
                   </Button>
+                  <Button variant="submit">Add to Favorites</Button>
                 </React.Fragment>
               ) : null}
             </Row>

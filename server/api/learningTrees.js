@@ -23,14 +23,7 @@ router.get('/allTrees', async (req, res, next) => {
     const trees = await user.getLearningTrees({
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
-    // const trees = await user.getLearningTrees({
-    //   include: [{model: Tag}, {model: Review}, {model: User}]
-    // })
-
-    // const trees = await LearningTree.findAll({
-    //   include: [{model: Tag}, {model: Review}, {model: User}]
-    // })
-
+    console.log(Object.keys(user.__proto__))
     res.status(200).json(trees)
   } catch (err) {
     next(err)
@@ -40,7 +33,7 @@ router.get('/allTrees', async (req, res, next) => {
 router.get('/favoriteTrees', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
-    const trees = await user.getLearningTrees({
+    const trees = await user.getFavorite({
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
     res.status(200).json(trees)
@@ -150,6 +143,18 @@ router.delete('/:id', async (req, res, next) => {
       }
     })
     res.status(200).send(req.params.id)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/favorite', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+    const tree = await LearningTree.findByPk(req.body.learningTreeId)
+    await tree.addFavorite(User)
+    await user.addFavorite(tree)
+    res.status(200).send(tree)
   } catch (err) {
     next(err)
   }
