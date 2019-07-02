@@ -6,7 +6,7 @@ import history from '../history'
  */
 const GET_CURRENT_USER = 'GET_CURRENT_USER'
 const REMOVE_CURRENT_USER = 'REMOVE_CURRENT_USER'
-const ADD_USER_TO_TREE = 'ADD_USER_TO_TREE'
+
 const READ_MAIL = 'READ_MAIL'
 
 /**
@@ -19,7 +19,6 @@ const defaultUser = {}
  */
 const getUser = currUser => ({type: GET_CURRENT_USER, currUser})
 const removeUser = () => ({type: REMOVE_CURRENT_USER})
-const addUserToTree = () => ({type: ADD_USER_TO_TREE})
 const toggleMail = currUser => ({type: READ_MAIL, currUser})
 
 /**
@@ -59,14 +58,6 @@ export const logout = () => async dispatch => {
   }
 }
 
-export const associateUserToTree = data => async dispatch => {
-  try {
-    await axios.put('/api/users/isOwner', data)
-    return dispatch(addUserToTree())
-  } catch (err) {
-    console.error(err)
-  }
-}
 export const readMail = () => async dispatch => {
   try {
     const res = await axios.put('/auth/checkMail')
@@ -85,8 +76,6 @@ export default function(state = defaultUser, action) {
       return action.currUser
     case REMOVE_CURRENT_USER:
       return defaultUser
-    case ADD_USER_TO_TREE:
-      return state
     case READ_MAIL:
       return action.currUser
     default:

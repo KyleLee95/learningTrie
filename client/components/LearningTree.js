@@ -7,12 +7,14 @@ import {
   fetchSelectedTree,
   fetchTrees,
   putTree,
-  delTree
+  delTree,
+  associateUserToTree,
+  unassociateUserFromTree
 } from '../store/learningTree'
 import {getTag, postTag, putTag, delTag} from '../store/tag'
 import {getReviews} from '../store/review'
 import {Link} from 'react-router-dom'
-import {me, associateUserToTree} from '../store/currentUser'
+import {me} from '../store/currentUser'
 import {ConnectedNewReview} from './NewReview'
 
 //TODO:
@@ -50,6 +52,15 @@ class LearningTree extends Component {
     const prevTree = Number(prevProps.match.params.id)
     const curTree = Number(this.props.match.params.id)
     if (prevTree !== curTree) {
+      await this.props.fetchSelectedTree(Number(this.props.match.params.id))
+    }
+    if (
+      prevProps.trees[0] !== undefined &&
+      prevProps.trees[0].users !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].users !== undefined &&
+      prevProps.trees[0].users.length !== this.props.trees[0].users.length
+    ) {
       await this.props.fetchSelectedTree(Number(this.props.match.params.id))
     }
   }
@@ -127,7 +138,6 @@ class LearningTree extends Component {
       learningTreeId: Number(this.props.match.params.id),
       email: this.state.email
     })
-    this.handleCollabClose()
   }
 
   //END COLLABORATOR MODAL
@@ -179,14 +189,14 @@ class LearningTree extends Component {
             <Row>
               {this.props.trees && this.props.trees[0] ? (
                 <h3>{this.props.trees[0].title} </h3>
-              ) : (
-                ''
-              )}
-              {this.props.trees[0] &&
+              ) : null}
+              {this.props.trees !== undefined &&
+              this.props.trees[0] &&
               this.props.trees[0] &&
               this.props.trees[0].id !== undefined &&
-              this.props.user &&
+              this.props.user !== undefined &&
               this.props.user.id !== undefined &&
+              this.props.trees[0].users !== undefined &&
               this.props.trees[0].users[0] !== undefined &&
               auth === false ? (
                 <React.Fragment>
@@ -195,13 +205,15 @@ class LearningTree extends Component {
                       to={`/learningTree/${this.props.trees[0].id}/review`}
                       style={{textDecoration: 'none', color: 'black'}}
                     >
-                      Rating: {rating}
-                      / 5 All Reviews
+                      Rating: {`${rating}/ 5 All Reviews`}
                     </Link>
                   </Button>
                   <ConnectedNewReview />
+                  <Button onClick={this.handleCollabShow} variant="submit">
+                    Collaborators
+                  </Button>
                 </React.Fragment>
-              ) : this.props.trees[0] !== undefined ? (
+              ) : this.props.trees[0] !== undefined && auth === true ? (
                 <React.Fragment>
                   <Button variant="submit" onClick={this.handleShowEdit}>
                     Edit
@@ -218,12 +230,10 @@ class LearningTree extends Component {
                     </Link>
                   </Button>
                   <Button onClick={this.handleCollabShow} variant="submit">
-                    Add Collaborator
+                    Collaborators
                   </Button>
                 </React.Fragment>
-              ) : (
-                ''
-              )}
+              ) : null}
             </Row>
             <Row>
               <Col xs={12}>
@@ -264,7 +274,18 @@ class LearningTree extends Component {
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
                           {auth === true ? (
-                            <Button sz="sm" variant="submit">
+                            <Button
+                              sz="sm"
+                              variant="submit"
+                              onClick={async () => {
+                                await this.props.unassociateUserFromTree({
+                                  learningTreeId: Number(
+                                    this.props.match.params.id
+                                  ),
+                                  email: user.email
+                                })
+                              }}
+                            >
                               Remove
                             </Button>
                           ) : null}
@@ -386,7 +407,8 @@ const mapDispatch = dispatch => {
     getReviews: treeId => dispatch(getReviews(treeId)),
     putTag: tag => dispatch(putTag(tag)),
     postTag: tag => dispatch(postTag(tag)),
-    associateUserToTree: data => dispatch(associateUserToTree(data))
+    associateUserToTree: user => dispatch(associateUserToTree(user)),
+    unassociateUserFromTree: user => dispatch(unassociateUserFromTree(user))
   }
 }
 

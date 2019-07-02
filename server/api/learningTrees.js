@@ -60,6 +60,44 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+//Associate a user as a collaborator of the learningTree
+
+router.put('/addCollaborator', async (req, res, next) => {
+  try {
+    let tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [{model: User, Tag, Review}]
+    })
+    const sanitizeEmail = req.body.email.toLowerCase()
+    const user = await User.findOne({where: {email: sanitizeEmail}})
+    await tree.addUser(user)
+    tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [{model: User, Tag, Review}]
+    })
+    res.status(200).send([tree])
+  } catch (err) {
+    next(err)
+  }
+})
+
+//Unassociate a user as a collaborator of the learningTree
+
+router.put('/removeCollaborator', async (req, res, next) => {
+  try {
+    let tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [{model: User, Tag, Review}]
+    })
+    const sanitizeEmail = req.body.email.toLowerCase()
+    const user = await User.findOne({where: {email: sanitizeEmail}})
+    await tree.removeUser(user)
+    tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [{model: User, Tag, Review}]
+    })
+    res.status(200).send([tree])
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/:id', async (req, res, next) => {
   try {
     const tree = await LearningTree.findByPk(req.params.id)

@@ -14,6 +14,8 @@ const SET_SELECTED_TREE = 'SET_SELECTED_TREE'
 const CREATE_TREE = 'CREATE_TREE'
 const UPDATE_TREE = 'UPDATE_TREE'
 const DELETE_TREE = 'DELETE_TREE'
+const ADD_USER_TO_TREE = 'ADD_USER_TO_TREE'
+const REMOVE_USER_FROM_TREE = 'ADD_USER_TO_TREE'
 /**
  * INITIAL STATE
  */
@@ -66,6 +68,9 @@ const sharedTrees = tree => ({
   type: SET_SHARED_TREES,
   tree
 })
+
+const addUserToTree = tree => ({type: ADD_USER_TO_TREE, tree})
+const removeUserFromTree = tree => ({type: REMOVE_USER_FROM_TREE, tree})
 /**
  * THUNK CREATORS
  */
@@ -141,6 +146,23 @@ export const delTree = treeId => async dispatch => {
   }
 }
 
+export const associateUserToTree = user => async dispatch => {
+  try {
+    const res = await axios.put('/api/learningTrees/addCollaborator', user)
+    return dispatch(addUserToTree(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const unassociateUserFromTree = user => async dispatch => {
+  try {
+    const res = await axios.put('/api/learningTrees/removeCollaborator', user)
+    return dispatch(removeUserFromTree(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
 /**
  * REDUCER
  */
@@ -160,6 +182,10 @@ export default function(state = defaultTree, action) {
       return action.tree.trees.filter(tree => {
         return tree.ownerId === action.tree.userId
       })
+    case ADD_USER_TO_TREE:
+      return action.tree
+    case REMOVE_USER_FROM_TREE:
+      return action.tree
     case DELETE_TREE:
       return {}
     default:
