@@ -726,11 +726,7 @@ class TreeVisualization extends Component {
       <ScrollLock>
         {/* TABS */}
         <Row>
-          {this.props.trees[0] &&
-          this.props.user &&
-          this.props.user.id !== undefined &&
-          this.props.trees[0].users !== undefined &&
-          this.props.user.id === this.props.trees[0].users[0].id ? (
+          {auth === true ? (
             <React.Fragment>
               <Col xs={1}>
                 <Button onClick={this.toggleDraw}>Draw Mode </Button>

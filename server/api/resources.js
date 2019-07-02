@@ -26,7 +26,7 @@ router.get('/search', async (req, res, next) => {
     })
     if (resourceTag !== null) {
       resourcesTagged = await resourceTag.getResources({
-        include: [{model: resourceTag}]
+        include: [{model: ResourceTag}]
       })
     } else {
       resourcesTagged = []

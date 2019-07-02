@@ -754,7 +754,7 @@ class NodeResourceModal extends Component {
                         })
                       }}
                     >
-                      Cancel
+                      Reset Search
                     </Button>
                     <Button
                       variant="submit"
