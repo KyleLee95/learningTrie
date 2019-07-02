@@ -3,7 +3,7 @@ import {ConnectedNewTree} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import {fetchTrees, fetchMyTrees} from '../store/learningTree'
+import {fetchTrees, fetchMyTrees, fetchSharedTrees} from '../store/learningTree'
 import {me} from '../store/currentUser'
 /**
  * COMPONENT
@@ -20,18 +20,18 @@ class UserHome extends Component {
           <Col xs={2}>
             <React.Fragment>
               <Card>
-                <Button variant="submit" onClick={this.props.fetchTrees}>
-                  News Feed
-                </Button>
-              </Card>
-              <Card>
-                <Button variant="submit" onClick={this.props.fetchTrees}>
+                <Button
+                  variant="submit"
+                  onClick={async () => await this.props.fetchTrees()}
+                >
                   All Trees
                 </Button>
               </Card>
               <Card>
                 <Button
-                  onClick={() => this.props.fetchMyTrees(this.props.user.id)}
+                  onClick={async () =>
+                    await this.props.fetchMyTrees(this.props.user.id)
+                  }
                   variant="submit"
                 >
                   My Trees
@@ -41,7 +41,14 @@ class UserHome extends Component {
                 <Button variant="submit">Favorite Trees</Button>
               </Card>
               <Card>
-                <Button variant="submit">Trees Shared With Me</Button>
+                <Button
+                  variant="submit"
+                  onClick={async () =>
+                    await this.props.fetchSharedTrees(this.props.user.id)
+                  }
+                >
+                  Trees Shared With Me
+                </Button>
               </Card>
 
               <ConnectedNewTree />
@@ -184,7 +191,8 @@ const mapDispatch = dispatch => {
   return {
     fetchTrees: () => dispatch(fetchTrees()),
     fetchMyTrees: userId => dispatch(fetchMyTrees(userId)),
-    me: () => dispatch(me())
+    me: () => dispatch(me()),
+    fetchSharedTrees: userId => dispatch(fetchSharedTrees(userId))
   }
 }
 

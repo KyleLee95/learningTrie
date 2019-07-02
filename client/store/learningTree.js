@@ -108,6 +108,15 @@ export const fetchMyTrees = userId => async dispatch => {
   }
 }
 
+export const fetchSharedTrees = userId => async dispatch => {
+  try {
+    const res = await axios.get('/api/learningTrees/sharedWithMe')
+    return dispatch(sharedTrees({tree: res.data, userId}))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const fetchSelectedTree = treeId => async dispatch => {
   try {
     const res = await axios.get(`/api/learningTrees/${treeId}`)
@@ -182,12 +191,18 @@ export default function(state = defaultTree, action) {
       return action.tree.trees.filter(tree => {
         return tree.ownerId === action.tree.userId
       })
+    case SET_SHARED_TREES:
+      return action.tree.tree.filter(tree => {
+        return tree.ownerId !== action.tree.userId
+      })
+    case SET_FAV_TREES:
+      return []
     case ADD_USER_TO_TREE:
       return action.tree
     case REMOVE_USER_FROM_TREE:
       return action.tree
     case DELETE_TREE:
-      return {}
+      return []
     default:
       return state
   }

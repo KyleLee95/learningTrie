@@ -4,10 +4,11 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 module.exports = router
 
-router.get('/myTrees', async (req, res, next) => {
+router.get('/myTrees/', async (req, res, next) => {
   try {
     const trees = await LearningTree.findAll({
-      include: [{model: Tag}, {model: Review}, {model: User}]
+      include: [{model: Tag}, {model: Review}, {model: User}],
+      where: {ownerId: req.user.id}
     })
 
     res.status(200).json(trees)
@@ -19,15 +20,41 @@ router.get('/myTrees', async (req, res, next) => {
 router.get('/allTrees', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
-
     const trees = await user.getLearningTrees({
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
+    // const trees = await user.getLearningTrees({
+    //   include: [{model: Tag}, {model: Review}, {model: User}]
+    // })
 
     // const trees = await LearningTree.findAll({
     //   include: [{model: Tag}, {model: Review}, {model: User}]
     // })
 
+    res.status(200).json(trees)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/favoriteTrees', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+    const trees = await user.getLearningTrees({
+      include: [{model: Tag}, {model: Review}, {model: User}]
+    })
+    res.status(200).json(trees)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/sharedWithMe', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+    const trees = await user.getLearningTrees({
+      include: [{model: Tag}, {model: Review}, {model: User}]
+    })
     res.status(200).json(trees)
   } catch (err) {
     next(err)
