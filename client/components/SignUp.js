@@ -17,7 +17,15 @@ class SignUp extends Component {
       <React.Fragment>
         <Row>
           <Col xs={12} s={12} md={12} lg={6}>
+            <div
+              style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
+            >
+              How Does It Work?
+            </div>
+            <br />
             <ReactPlayer
+              // style={{}}
+              height="70%"
               url="https://www.youtube.com/watch?v=MiTNecAPE_w/"
               play="false"
               controls={true}
@@ -33,34 +41,41 @@ class SignUp extends Component {
               </Form.Group>
 
               <Form.Group as={Row}>
-                <Form.Control name="email" type="email" placeholder="email" />
+                <Form.Label>Email</Form.Label>
+                <Form.Control name="email" type="Email" placeholder="email" />
               </Form.Group>
+
               <Form.Group as={Row}>
+                <Form.Label>First Name</Form.Label>
                 <Form.Control
                   name="firstName"
                   type="name"
-                  placeholder="first name"
+                  placeholder="First Name"
                 />
               </Form.Group>
+
               <Form.Group as={Row}>
+                <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   name="lastName"
                   type="name"
-                  placeholder="last name"
+                  placeholder="Last Name"
                 />
               </Form.Group>
               <Form.Group as={Row}>
+                <Form.Label>Username</Form.Label>
                 <Form.Control
                   name="username"
                   type="username"
-                  placeholder="username"
+                  placeholder="Username"
                 />
               </Form.Group>
               <Form.Group as={Row}>
+                <Form.Label>Password</Form.Label>
                 <Form.Control
                   name="password"
                   type="password"
-                  placeholder="password"
+                  placeholder="Password"
                 />
               </Form.Group>
               <Form.Group as={Row}>
