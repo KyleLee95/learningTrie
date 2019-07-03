@@ -16,6 +16,54 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.post('/recommendResource', async (req, res, next) => {
+  try {
+    //TODO:
+    //Create a thunk
+    //implement to the recommend button
+    //create a new conversation so that it will trigger a notification
+    const conversation = await Conversation.create({})
+    const createMessage = await Message.create({
+      content: req.body.content
+    })
+    const sender = await User.findByPk(req.user.id)
+    //ownerId from LearningTreeOwnerId
+    const receiver = await User.findByPk(req.body.ownerId)
+    await receiver.update({
+      newMessage: true
+    })
+    await sender.addMessage(createMessage)
+    await createMessage.setUser(sender)
+    await createMessage.setConversation(conversation[0])
+    if (req.body.isSender === true) {
+      await Conversation.update(
+        {
+          senderRead: true,
+          receiverRead: false
+        },
+        {where: {id: req.body.conversationId}}
+      )
+    } else {
+      await Conversation.update(
+        {
+          senderRead: false,
+          receiverRead: true
+        },
+        {where: {id: req.body.conversationId}}
+      )
+    }
+    const message = await Message.findAll({
+      where: {conversationId: req.body.conversationId},
+      include: [{model: User}, {model: Conversation}]
+    })
+
+    res.status(200).json(message)
+  } catch (err) {
+    next(err)
+  }
+})
+router.post('/addedResource', async (req, res, next) => {})
+
 router.post('/', async (req, res, next) => {
   try {
     const conversation = await Conversation.findOrCreate({

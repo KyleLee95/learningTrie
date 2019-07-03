@@ -18,11 +18,6 @@ class Inbox extends Component {
       show: false
     }
 
-    // await this.props.putConversation({
-    //   conversationId: Number(this.props.match.params.id),
-    //   senderRead: true,
-    //   receiverRead: false
-    // })
     this.handleShow = this.handleShow.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)

@@ -20,9 +20,9 @@ class SignUp extends Component {
             <div
               style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
             >
-              How Does It Work?
+              How It Works
             </div>
-            <br />
+            <hr />
             <ReactPlayer
               // style={{}}
               height="70%"
@@ -42,9 +42,8 @@ class SignUp extends Component {
 
               <Form.Group as={Row}>
                 <Form.Label>Email</Form.Label>
-                <Form.Control name="email" type="Email" placeholder="email" />
+                <Form.Control name="email" type="Email" placeholder="Email" />
               </Form.Group>
-
               <Form.Group as={Row}>
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
