@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Row, Col, Button, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import ReactPlayer from 'react-player'
 
 class SignUp extends Component {
   constructor(props, context) {
@@ -15,8 +16,14 @@ class SignUp extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col lg={7}>DEMO VIDEO LIVES HERE</Col>
-          <Col lg={{span: 4, offset: 7}}>
+          <Col xs={12} s={12} md={12} lg={6}>
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=MiTNecAPE_w/"
+              play="false"
+              controls={true}
+            />
+          </Col>
+          <Col xs={12} s={12} md={12} lg={{span: 4}}>
             <Form onSubmit={handleSubmit} name={name}>
               <Form.Group as={Row}>
                 <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>

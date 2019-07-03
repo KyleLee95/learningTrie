@@ -49,8 +49,8 @@ export const auth = (
       password,
       firstName,
       lastName,
-      dbUsername,
-      username
+      username,
+      dbUsername
     })
   } catch (authError) {
     return dispatch(getUser({error: authError}))
