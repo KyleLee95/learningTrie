@@ -23,7 +23,7 @@ const User = db.define('user', {
   },
   bio: {
     type: Sequelize.TEXT,
-    defaultValue: 'A'
+    defaultValue: ''
   },
   email: {
     type: Sequelize.STRING,

@@ -15,8 +15,14 @@ class Login extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={{span: 4, offset: 6}}>
+          <Col xs={{span: 4, offset: 4}}>
             <Form onSubmit={handleSubmit} name={name}>
+              <Form.Group as={Row}>
+                <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>
+                  Login
+                </Form.Text>
+                <hr />
+              </Form.Group>
               <Form.Group as={Row}>
                 <Form.Control name="email" type="email" placeholder="email" />
               </Form.Group>
@@ -32,12 +38,16 @@ class Login extends Component {
                   {displayName}
                 </Button>
               </Form.Group>
-
+              <hr />
+              <Form.Group as={Row}>
+                <Link to="/auth/google">
+                  <Button>{displayName} with Google </Button>
+                </Link>
+              </Form.Group>
               {error && error.response && <div> {error.response.data} </div>}
             </Form>
           </Col>
         </Row>
-        <a href="/auth/google">{displayName} with Google</a>
       </React.Fragment>
     )
   }

@@ -15,6 +15,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
       {isLoggedIn ? (
         <React.Fragment>
           {/* The navbar will show these links after you log in */}
+          <ConnectedSearch />
           <Link to="/">Home</Link>
           {/* <Link to="/blog">Blog</Link> */}
           <Link to="/explore">Explore</Link>
@@ -29,7 +30,6 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
           <a href="#" onClick={handleClick}>
             Logout
           </a>
-          <ConnectedSearch />
         </React.Fragment>
       ) : (
         <React.Fragment>
