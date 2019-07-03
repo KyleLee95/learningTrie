@@ -72,7 +72,12 @@ router.get('/:id', async (req, res, next) => {
   try {
     const tree = await LearningTree.findAll({
       where: {id: req.params.id},
-      include: [{model: User}]
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
     })
     res.status(200).json(tree)
   } catch (err) {
@@ -104,7 +109,7 @@ router.put('/addCollaborator', async (req, res, next) => {
 router.put('/removeCollaborator', async (req, res, next) => {
   try {
     let tree = await LearningTree.findByPk(req.body.learningTreeId, {
-      include: [{model: User, Tag, Review}]
+      include: [{model: User, Tag, Review}, {model: User, as: 'favorite'}]
     })
     const sanitizeEmail = req.body.email.toLowerCase()
     const user = await User.findOne({where: {email: sanitizeEmail}})
@@ -120,7 +125,14 @@ router.put('/removeCollaborator', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const tree = await LearningTree.findByPk(req.params.id)
+    const tree = await LearningTree.findByPk(req.params.id, {
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
+    })
     const updatedTree = await tree.update({
       title: req.body.title,
       description: req.body.description
@@ -135,6 +147,33 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
+router.delete('/removeFavorite/:learningTreeId', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id)
+    let tree = await LearningTree.findByPk(req.params.learningTreeId, {
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
+    })
+
+    await tree.removeFavorite(user)
+    await user.removeFavorite(tree)
+    tree = await LearningTree.findByPk(req.params.learningTreeId, {
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
+    })
+    res.status(200).send([tree])
+  } catch (err) {
+    next(err)
+  }
+})
 router.delete('/:id', async (req, res, next) => {
   try {
     await LearningTree.destroy({
@@ -148,13 +187,28 @@ router.delete('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/favorite', async (req, res, next) => {
+router.post('/addFavorite', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id)
-    const tree = await LearningTree.findByPk(req.body.learningTreeId)
-    await tree.addFavorite(User)
+    let tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
+    })
+    await tree.addFavorite(user)
+    tree = await LearningTree.findByPk(req.body.learningTreeId, {
+      include: [
+        {model: User},
+        {model: Tag},
+        {model: Review},
+        {model: User, as: 'favorite'}
+      ]
+    })
     await user.addFavorite(tree)
-    res.status(200).send(tree)
+    res.status(200).send([tree])
   } catch (err) {
     next(err)
   }
@@ -168,7 +222,6 @@ router.post('/', async (req, res, next) => {
       ownerId: req.user.id
     })
     const user = await User.findByPk(req.user.id)
-    // console.log(Object.keys(learningTree.__proto__))
     await learningTree.addUser(user)
     req.body.tags.forEach(async tag => {
       let newTag = await Tag.findOrCreate({where: {title: tag}})

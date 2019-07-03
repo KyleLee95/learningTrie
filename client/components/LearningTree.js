@@ -9,7 +9,9 @@ import {
   putTree,
   delTree,
   associateUserToTree,
-  unassociateUserFromTree
+  unassociateUserFromTree,
+  addTreeToFavorites,
+  removeTreeFromFavorites
 } from '../store/learningTree'
 import {getTag, postTag, putTag, delTag} from '../store/tag'
 import {getReviews} from '../store/review'
@@ -20,6 +22,7 @@ import {ConnectedNewReview} from './NewReview'
 //TODO:
 //Forms are only prefilled the first time you edit. After that the forms empty.
 let auth = false
+let favorite = false
 class LearningTree extends Component {
   constructor(props, context) {
     super(props, context)
@@ -166,6 +169,7 @@ class LearningTree extends Component {
     //auth check
 
     let authId = []
+    let favoriteId = []
     if (
       this.props.trees !== undefined &&
       this.props.trees[0] !== undefined &&
@@ -180,6 +184,25 @@ class LearningTree extends Component {
     }
     if (authId.includes(this.props.user.id) === true) {
       auth = true
+    }
+    //favorite check
+    if (
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].favorite !== undefined &&
+      this.props.trees[0].favorite[0] !== undefined &&
+      this.props.trees[0].favorite[0].id !== undefined
+    ) {
+      this.props.trees[0].favorite.forEach(user => {
+        return favoriteId.push(user.id)
+      })
+    }
+    if (favoriteId.includes(this.props.user.id) === true) {
+      favorite = true
+    }
+    if (favoriteId.length === 0) {
+      favorite = false
     }
 
     return (
@@ -212,7 +235,31 @@ class LearningTree extends Component {
                   <Button onClick={this.handleCollabShow} variant="submit">
                     Collaborators
                   </Button>
-                  <Button variant="submit">Add to Favorites</Button>
+                  {favorite === false ? (
+                    <Button
+                      variant="submit"
+                      onClick={async () => {
+                        await this.props.addTreeToFavorites({
+                          learningTreeId: this.props.trees[0].id
+                        })
+                        favorite = true
+                      }}
+                    >
+                      Add to Favorites
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="submit"
+                      onClick={async () => {
+                        await this.props.removeTreeFromFavorites({
+                          learningTreeId: this.props.trees[0].id
+                        })
+                        favorite = false
+                      }}
+                    >
+                      Remove from Favorites
+                    </Button>
+                  )}
                 </React.Fragment>
               ) : this.props.trees[0] !== undefined && auth === true ? (
                 <React.Fragment>
@@ -233,7 +280,31 @@ class LearningTree extends Component {
                   <Button onClick={this.handleCollabShow} variant="submit">
                     Collaborators
                   </Button>
-                  <Button variant="submit">Add to Favorites</Button>
+                  {favorite === false ? (
+                    <Button
+                      variant="submit"
+                      onClick={async () => {
+                        await this.props.addTreeToFavorites({
+                          learningTreeId: this.props.trees[0].id
+                        })
+                        favorite = true
+                      }}
+                    >
+                      Add to Favorites
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="submit"
+                      onClick={async () => {
+                        await this.props.removeTreeFromFavorites({
+                          learningTreeId: this.props.trees[0].id
+                        })
+                        favorite = false
+                      }}
+                    >
+                      Remove from Favorites
+                    </Button>
+                  )}
                 </React.Fragment>
               ) : null}
             </Row>
@@ -410,7 +481,10 @@ const mapDispatch = dispatch => {
     putTag: tag => dispatch(putTag(tag)),
     postTag: tag => dispatch(postTag(tag)),
     associateUserToTree: user => dispatch(associateUserToTree(user)),
-    unassociateUserFromTree: user => dispatch(unassociateUserFromTree(user))
+    unassociateUserFromTree: user => dispatch(unassociateUserFromTree(user)),
+    removeTreeFromFavorites: treeId =>
+      dispatch(removeTreeFromFavorites(treeId)),
+    addTreeToFavorites: treeId => dispatch(addTreeToFavorites(treeId))
   }
 }
 
