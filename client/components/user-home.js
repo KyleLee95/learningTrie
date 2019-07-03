@@ -3,7 +3,12 @@ import {ConnectedNewTree} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import {fetchTrees, fetchMyTrees, fetchSharedTrees} from '../store/learningTree'
+import {
+  fetchTrees,
+  fetchMyTrees,
+  fetchSharedTrees,
+  fetchFavoriteTrees
+} from '../store/learningTree'
 import {me} from '../store/currentUser'
 /**
  * COMPONENT
@@ -38,7 +43,12 @@ class UserHome extends Component {
                 </Button>
               </Card>
               <Card>
-                <Button variant="submit">Favorite Trees</Button>
+                <Button
+                  variant="submit"
+                  onClick={async () => await this.props.fetchFavoriteTrees()}
+                >
+                  Favorite Trees
+                </Button>
               </Card>
               <Card>
                 <Button
@@ -192,7 +202,8 @@ const mapDispatch = dispatch => {
     fetchTrees: () => dispatch(fetchTrees()),
     fetchMyTrees: userId => dispatch(fetchMyTrees(userId)),
     me: () => dispatch(me()),
-    fetchSharedTrees: userId => dispatch(fetchSharedTrees(userId))
+    fetchSharedTrees: userId => dispatch(fetchSharedTrees(userId)),
+    fetchFavoriteTrees: () => dispatch(fetchFavoriteTrees())
   }
 }
 

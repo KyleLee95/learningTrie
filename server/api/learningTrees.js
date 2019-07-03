@@ -23,7 +23,6 @@ router.get('/allTrees', async (req, res, next) => {
     const trees = await user.getLearningTrees({
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
-    console.log(Object.keys(user.__proto__))
     res.status(200).json(trees)
   } catch (err) {
     next(err)

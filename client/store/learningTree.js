@@ -143,9 +143,9 @@ export const fetchSelectedTree = treeId => async dispatch => {
   }
 }
 
-export const fetchFavoritreTrees = () => async dispatch => {
+export const fetchFavoriteTrees = () => async dispatch => {
   try {
-    const res = await axios.get(`/api/learningTrees/favoriteTrees}`)
+    const res = await axios.get(`/api/learningTrees/favoriteTrees`)
     return dispatch(favTrees(res.data))
   } catch (err) {
     console.error(err)
