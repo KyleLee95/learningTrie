@@ -5,7 +5,9 @@
  */
 export {ConnectedNav} from './navbar'
 export {default as UserHome} from './user-home'
-export {Login, Signup} from './auth-form'
+// export {Login, Signup} from './auth-form'
+export {ConnectedLogin} from './Login'
+export {ConnectedSignUp} from './SignUp'
 export {ConnectedSidebar} from './Sidebar'
 export {ConnectedTreeVisualization} from './TreeVisualization'
 export {ConnectedLearningTree} from './LearningTree'

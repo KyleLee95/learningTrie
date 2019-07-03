@@ -11,7 +11,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
       <h2>🌎pen Source Ed</h2>
     </Link>
 
-    <Navbar.Collapse id="basic-navbar-nav">
+    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
       {isLoggedIn ? (
         <React.Fragment>
           {/* The navbar will show these links after you log in */}
@@ -34,9 +34,10 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
       ) : (
         <React.Fragment>
           {/* The navbar will show these links before you log in */}
+
           <Link to="/login">Login</Link>
+
           <Link to="/signup">Sign Up</Link>
-          <ConnectedSearch />
         </React.Fragment>
       )}
     </Navbar.Collapse>
