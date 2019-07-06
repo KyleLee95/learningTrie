@@ -16,7 +16,7 @@ class SignUp extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={12} s={12} md={12} lg={6}>
+          <Col xs={12} s={12} md={12} lg={6} xl={6}>
             <div
               style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
             >
@@ -31,7 +31,7 @@ class SignUp extends Component {
               controls={true}
             />
           </Col>
-          <Col xs={12} s={12} md={12} lg={{span: 4}}>
+          <Col xs={12} s={12} md={12} lg={6} xl={6}>
             <Form onSubmit={handleSubmit} name={name}>
               <Form.Group as={Row}>
                 <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>

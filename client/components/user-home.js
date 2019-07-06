@@ -22,7 +22,7 @@ class UserHome extends Component {
     return (
       <div>
         <Row>
-          <Col xs={2}>
+          <Col xs={12} lg={2}>
             <React.Fragment>
               <Card>
                 <Button
@@ -60,27 +60,26 @@ class UserHome extends Component {
                   Trees Shared With Me
                 </Button>
               </Card>
-
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col lg={9}>
+          <Col xs={12} lg={9}>
             <Card>
               <Card.Body>
                 <Row>
-                  <Col lg={4}>
+                  <Col xs={4} lg={4}>
                     <Card.Title>title </Card.Title>
                   </Col>
-                  <Col lg={1}>
+                  <Col xs={1} lg={1}>
                     <Card.Title>owner</Card.Title>
                   </Col>
-                  <Col lg={3}>
+                  <Col xs={3} lg={3}>
                     <Card.Title>description</Card.Title>
                   </Col>
-                  <Col lg={1}>
+                  <Col xs={2} lg={1}>
                     <Card.Title>rating</Card.Title>
                   </Col>
-                  <Col lg={3}>
+                  <Col xs={0} s={0} md={0} lg={3} xl={3}>
                     <Card.Title>tags</Card.Title>
                   </Col>
                 </Row>
@@ -163,7 +162,7 @@ class UserHome extends Component {
                               </Card.Title>
                             </Link>
                           </Col>
-                          <Col xs={3}>
+                          <Col xs={0} s={0} md={0} lg={3} xl={3}>
                             <Card.Title>
                               {tree && tree.tags && tree.tags.length > 0
                                 ? tree.tags.map(tag => {
