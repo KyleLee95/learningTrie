@@ -64,7 +64,7 @@ router.get('/search', async (req, res, next) => {
 
     let treeTags = []
     const tag = await Tag.findOne({
-      where: {title: req.query.search}
+      where: {title: {[Op.iLike]: `%${req.query.search}`}}
     })
     if (tag !== null) {
       treeTags = await tag.getLearningTrees({
