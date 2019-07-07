@@ -116,6 +116,7 @@ const GraphConfig = {
 
 const NODE_KEY = 'id' // Allows D3 to correctly update DOM
 let auth = false
+let disable = true
 class NodeResourceModal extends Component {
   constructor(props, context) {
     super(props, context)
@@ -387,6 +388,8 @@ class NodeResourceModal extends Component {
     if (authId.includes(this.props.user.id) === true) {
       auth = true
     }
+    //disable check
+
     return (
       <React.Fragment>
         {/* Node Resource Modal */}
@@ -760,12 +763,26 @@ class NodeResourceModal extends Component {
                     >
                       Reset Search
                     </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleResourceSubmit}
-                    >
-                      Submit
-                    </Button>
+                    {/* Disable submit button until all fields are filled out */}
+                    {this.state.title !== undefined &&
+                    this.state.description !== undefined &&
+                    this.state.type !== undefined &&
+                    this.state.tags !== undefined ? (
+                      <Button
+                        variant="submit"
+                        onClick={this.handleResourceSubmit}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="submit"
+                        disabled
+                        onClick={this.handleResourceSubmit}
+                      >
+                        Submit
+                      </Button>
+                    )}
                   </React.Fragment>
                 ) : this.state.search === true &&
                 this.state.recommend === true &&
@@ -790,12 +807,25 @@ class NodeResourceModal extends Component {
                     >
                       Cancel
                     </Button>
-                    <Button
-                      variant="submit"
-                      onClick={this.handleRecommendSubmit}
-                    >
-                      Submit
-                    </Button>
+                    {this.state.title !== undefined &&
+                    this.state.description !== undefined &&
+                    this.state.type !== undefined &&
+                    this.state.tags !== undefined ? (
+                      <Button
+                        variant="submit"
+                        onClick={this.handleRecommendSubmit}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="submit"
+                        disabled
+                        onClick={this.handleRecommendSubmit}
+                      >
+                        Submit
+                      </Button>
+                    )}
                   </React.Fragment>
                 ) : (
                   //Add Resource
