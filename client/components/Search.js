@@ -12,7 +12,6 @@ class Search extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    // this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
   handleChange(e) {
@@ -28,22 +27,20 @@ class Search extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group controlId="search">
-            <Form.Control
-              onChange={this.handleChange}
-              name="search"
-              type="search"
-              placeholder="Search"
-            />
-          </Form.Group>
-
-          <Button variant="submit" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </React.Fragment>
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Group controlId="search">
+          <Form.Control
+            onChange={this.handleChange}
+            name="search"
+            type="search"
+            placeholder="Search"
+            size="md"
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
     )
   }
 }

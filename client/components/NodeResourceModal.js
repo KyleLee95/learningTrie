@@ -689,6 +689,10 @@ class NodeResourceModal extends Component {
                       placeholder="Enter tags"
                       onChange={this.handleResourceChange}
                     />
+                    <Form.Text className="text-muted">
+                      Separate with a comma and a space. Ex. 'Machine Learning,
+                      TensorFlow, JavaScript
+                    </Form.Text>
                     {/* </Form.Group> */}
                   </React.Fragment>
                 ) : this.state.searchResults.length === 0 &&

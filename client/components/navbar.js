@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Navbar, Row, Col, Button} from 'react-bootstrap'
+import {Navbar, Row, Col, Form, FormControl, Button} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
 const Nav = ({handleClick, isLoggedIn, user}) => (
   <Navbar>
@@ -11,11 +11,10 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
       <h2>🌎pen Source Ed</h2>
     </Link>
     <ConnectedSearch />
-    <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+    <Navbar.Collapse className="justify-content-end">
       {isLoggedIn ? (
         <React.Fragment>
           {/* The navbar will show these links after you log in */}
-
           <Link to="/">Home</Link>
           {/* <Link to="/blog">Blog</Link> */}
           <Link to="/explore">Explore</Link>
