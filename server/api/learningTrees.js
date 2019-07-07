@@ -66,7 +66,7 @@ router.get('/search', async (req, res, next) => {
     const tag = await Tag.findOne({
       where: {title: req.query.search}
     })
-    if (Tag !== null) {
+    if (tag !== null) {
       treeTags = await tag.getLearningTrees({
         include: [{model: Tag}]
       })
