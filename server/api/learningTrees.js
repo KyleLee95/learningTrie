@@ -61,7 +61,25 @@ router.get('/search', async (req, res, next) => {
         title: {[Op.iLike]: `%${req.query.search}%`}
       }
     })
-    res.status(200).json(trees)
+
+    let treeTags = []
+    const tag = await Tag.findOne({
+      where: {title: req.query.search}
+    })
+    if (Tag !== null) {
+      treeTags = await tag.getLearningTrees({
+        include: [{model: Tag}]
+      })
+    } else {
+      treeTags = []
+    }
+
+    let treeArr = [...trees, ...treeTags]
+
+    const uniqueSearch = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
+      return treeArr.find(a => a.id === id)
+    })
+    res.status(200).json(uniqueSearch)
   } catch (err) {
     next(err)
   }

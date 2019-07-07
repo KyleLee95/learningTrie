@@ -10,12 +10,12 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
       <h2>🌎pen Source Ed</h2>
     </Link>
-
-    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+    <ConnectedSearch />
+    <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
       {isLoggedIn ? (
         <React.Fragment>
           {/* The navbar will show these links after you log in */}
-          <ConnectedSearch />
+
           <Link to="/">Home</Link>
           {/* <Link to="/blog">Blog</Link> */}
           <Link to="/explore">Explore</Link>

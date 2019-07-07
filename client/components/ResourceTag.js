@@ -7,13 +7,9 @@ import {getSingleResourceTag} from '../store/resourceTag'
 class ResourceTag extends Component {
   constructor(props, context) {
     super(props, context)
-    // this.state = {
-    //   show: false
-    // }
-    // this.handleShow = this.handleShow.bind(this)
-    // this.handleClose = this.handleClose.bind(this)
-    // this.handleChange = this.handleChange.bind(this)
-    // this.handleSubmit = this.handleSubmit.bind(this)
+    this.state = {
+      show: false
+    }
   }
   async componentDidMount() {
     await this.props.getSingleResourceTag(Number(this.props.match.params.id))
