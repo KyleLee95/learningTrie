@@ -261,14 +261,15 @@ class NodeResourceModal extends Component {
       tags: tags,
       ownerId: this.props.trees[0].ownerId
     })
+
     await this.props.recommendMessage({
       description: this.state.description,
       type: this.state.type,
       link: this.state.link,
       nodeId: this.props.selected.id,
-      tags: tags,
+      title: this.state.title,
       treeName: this.props.trees[0].title,
-      nodeTitle: this.state.selected.title,
+      nodeTitle: this.props.selected.title,
       ownerId: this.props.trees[0].ownerId,
       isSender: true
     })

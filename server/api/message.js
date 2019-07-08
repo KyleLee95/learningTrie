@@ -18,10 +18,6 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/recommendResource', async (req, res, next) => {
   try {
-    //TODO:
-    //Create a thunk
-    //implement to the recommend button
-    //create a new conversation so that it will trigger a notification
     const sender = await User.findByPk(req.user.id)
     const receiver = await User.findByPk(req.body.ownerId)
     const conversation = await Conversation.create({
@@ -32,7 +28,7 @@ router.post('/recommendResource', async (req, res, next) => {
       receiver: receiver.username
     })
     const createMessage = await Message.create({
-      content: `${sender.username} recommended resource: ${
+      content: `${req.user.username} recommended resource: ${
         req.body.title
       } to node ${req.body.nodeTitle}`
     })
@@ -44,7 +40,7 @@ router.post('/recommendResource', async (req, res, next) => {
     })
     await sender.addMessage(createMessage)
     await createMessage.setUser(sender)
-    await createMessage.setConversation(conversation[0])
+    await createMessage.setConversation(conversation)
     await conversation.addUser(sender)
     await conversation.addUser(receiver)
     if (req.body.isSender === true) {
