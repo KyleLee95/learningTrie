@@ -68,7 +68,12 @@ class SearchResult extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.trees !== undefined && this.props.trees.length > 0
+            {this.props.trees !== undefined &&
+            this.props.trees.length > 0 &&
+            this.props.trees &&
+            this.props.trees[0] !== undefined &&
+            this.props.trees[0].users !== undefined &&
+            this.props.trees[0].users[0] !== undefined
               ? this.props.trees.map(tree => {
                   return (
                     <Card key={tree.id}>

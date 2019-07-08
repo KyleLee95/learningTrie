@@ -69,7 +69,6 @@ class NodeResourceModalLineItem extends Component {
                       voteType: 'none',
                       score: this.state.score - 1
                     })
-                    // await this.props.getResourcesByNode(this.props.selected)
                   }}
                 >
                   +
@@ -95,8 +94,6 @@ class NodeResourceModalLineItem extends Component {
                         score: this.state.score + 2
                       })
                     }
-
-                    // await this.props.getResourcesByNode(this.props.selected)
                   }}
                 >
                   +

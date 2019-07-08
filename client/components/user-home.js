@@ -86,7 +86,10 @@ class UserHome extends Component {
                 </Row>
               </Card.Body>
             </Card>
-            {this.props.trees && this.props.trees[0] !== undefined
+            {this.props.trees &&
+            this.props.trees[0] !== undefined &&
+            this.props.trees[0].users !== undefined &&
+            this.props.trees[0].users[0] !== undefined
               ? this.props.trees.map(tree => {
                   return (
                     <Card key={tree.id}>

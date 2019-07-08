@@ -346,7 +346,8 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {auth === true ? (
+                          {auth === true &&
+                          user.id !== this.props.trees[0].ownerId ? (
                             <Button
                               sz="sm"
                               variant="submit"

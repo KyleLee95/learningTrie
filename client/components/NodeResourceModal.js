@@ -44,7 +44,7 @@ import {
   unAssociateResourceFromNode,
   getResourcesByNode
 } from '../store/resource'
-
+import {recommendMessage} from '../store/message'
 import {upvote, downvote, getVote} from '../store/vote'
 import axios from 'axios'
 import {ConnectedNodeResourceModalLineItem} from './index'
@@ -260,6 +260,17 @@ class NodeResourceModal extends Component {
       nodeId: this.props.selected.id,
       tags: tags,
       ownerId: this.props.trees[0].ownerId
+    })
+    await this.props.recommendMessage({
+      description: this.state.description,
+      type: this.state.type,
+      link: this.state.link,
+      nodeId: this.props.selected.id,
+      tags: tags,
+      treeName: this.props.trees[0].title,
+      nodeTitle: this.state.selected.title,
+      ownerId: this.props.trees[0].ownerId,
+      isSender: true
     })
     this.handleRecommendClose()
   }
@@ -642,7 +653,21 @@ class NodeResourceModal extends Component {
                                   type: result.type,
                                   ResourceTags: result.ResourceTags,
                                   description: result.description,
-                                  nodeId: this.props.selected.id
+                                  nodeId: this.props.selected.id,
+                                  nodeTitle: this.props.selected.title,
+                                  treeName: this.props.trees[0].title
+                                })
+                                await this.props.recommendMessage({
+                                  id: result.id,
+                                  link: result.link,
+                                  title: result.title,
+                                  type: result.type,
+                                  ResourceTags: result.ResourceTags,
+                                  description: result.description,
+                                  nodeId: this.props.selected.id,
+                                  nodeTitle: this.props.selected.title,
+                                  treeName: this.props.trees[0].title,
+                                  isSender: true
                                 })
                               }}
                             >
@@ -969,7 +994,8 @@ const mapDispatch = dispatch => {
     downvote: resource => dispatch(downvote(resource)),
     getVote: resource => dispatch(getVote(resource)),
     convertRecommendationToResource: recommendation =>
-      dispatch(convertRecommendationToResource(recommendation))
+      dispatch(convertRecommendationToResource(recommendation)),
+    recommendMessage: message => dispatch(recommendMessage(message))
   }
 }
 

@@ -22,26 +22,38 @@ router.post('/recommendResource', async (req, res, next) => {
     //Create a thunk
     //implement to the recommend button
     //create a new conversation so that it will trigger a notification
-    const conversation = await Conversation.create({})
-    const createMessage = await Message.create({
-      content: req.body.content
-    })
     const sender = await User.findByPk(req.user.id)
-    //ownerId from LearningTreeOwnerId
     const receiver = await User.findByPk(req.body.ownerId)
+    const conversation = await Conversation.create({
+      subject: `New Resource Recommended to ${req.body.treeName}`,
+      senderRead: true,
+      receiverRead: false,
+      sender: sender.username,
+      receiver: receiver.username
+    })
+    const createMessage = await Message.create({
+      content: `${sender.username} recommended resource: ${
+        req.body.title
+      } to node ${req.body.nodeTitle}`
+    })
+
+    //ownerId from LearningTreeOwnerId
+
     await receiver.update({
       newMessage: true
     })
     await sender.addMessage(createMessage)
     await createMessage.setUser(sender)
     await createMessage.setConversation(conversation[0])
+    await conversation.addUser(sender)
+    await conversation.addUser(receiver)
     if (req.body.isSender === true) {
       await Conversation.update(
         {
           senderRead: true,
           receiverRead: false
         },
-        {where: {id: req.body.conversationId}}
+        {where: {id: conversation.id}}
       )
     } else {
       await Conversation.update(
@@ -49,11 +61,11 @@ router.post('/recommendResource', async (req, res, next) => {
           senderRead: false,
           receiverRead: true
         },
-        {where: {id: req.body.conversationId}}
+        {where: {id: conversation.id}}
       )
     }
     const message = await Message.findAll({
-      where: {conversationId: req.body.conversationId},
+      where: {conversationId: conversation.id},
       include: [{model: User}, {model: Conversation}]
     })
 

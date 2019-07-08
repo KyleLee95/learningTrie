@@ -18,7 +18,7 @@ router.get('/search', async (req, res, next) => {
     let resourcesTagged = []
     const resources = await Resource.findAll({
       where: {title: {[Op.iLike]: `%${req.query.search}%`}},
-      include: [{model: ResourceTag}]
+      include: [{model: ResourceTag}, {model: User}]
     })
 
     const resourceTag = await ResourceTag.findOne({
@@ -26,7 +26,7 @@ router.get('/search', async (req, res, next) => {
     })
     if (resourceTag !== null) {
       resourcesTagged = await resourceTag.getResources({
-        include: [{model: ResourceTag}]
+        include: [{model: ResourceTag}, {model: User}]
       })
     } else {
       resourcesTagged = []

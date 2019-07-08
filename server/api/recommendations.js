@@ -38,7 +38,6 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log('req.body', req.body)
   try {
     //create resource for indexing
     const resource = await Resource.findOrCreate({
@@ -83,7 +82,7 @@ router.post('/', async (req, res, next) => {
     await link[0].addRecommendation(recommendation)
     await link[0].addResource(resource[0])
     await recommendation.addLink(link[0])
-    console.log(Object.keys(recommendation.__proto__))
+    // console.log(Object.keys(recommendation.__proto__))
     await recommendation.addNode(node)
     await recommendation.addUser(user)
     await user.addRecommendation(recommendation)
