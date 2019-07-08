@@ -17,7 +17,8 @@ import {
   ConnectedRecommendation,
   ConnectedExplore,
   ConnectedConversation,
-  ConnectedResourceTag
+  ConnectedResourceTag,
+  ConnectedAdminControl
 } from './components'
 import {me} from './store'
 
@@ -30,7 +31,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, isAdmin} = this.props
 
     return (
       <Switch>
@@ -62,6 +63,12 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
             <Route path="/inbox" component={ConnectedInbox} />
             <Route path="/conversation/:id" component={ConnectedConversation} />
+            {/* <Route path="/admin" component={ConnectedAdminControl} /> */}
+          </Switch>
+        )}
+        {isAdmin && (
+          <Switch>
+            <Route path="/admin" component={ConnectedAdminControl} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
@@ -78,7 +85,9 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.currUser.id
+    isLoggedIn: !!state.currUser.id,
+    isAdmin: state.currUser.rank === 'admin',
+    user: state.currUser
   }
 }
 

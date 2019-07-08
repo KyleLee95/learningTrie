@@ -53,9 +53,9 @@ const User = db.define('user', {
   googleId: {
     type: Sequelize.STRING
   },
-  isAdmin: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
+  rank: {
+    type: Sequelize.ENUM(['admin', 'moderator', 'basic']),
+    defaultValue: 'basic',
     allowNull: false
   },
   newMessage: {

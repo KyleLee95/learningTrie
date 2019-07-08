@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Navbar, Row, Col, Form, FormControl, Button} from 'react-bootstrap'
 import {ConnectedSearch} from '.'
+
 const Nav = ({handleClick, isLoggedIn, user}) => (
   <Navbar>
     <Link to="/" style={{color: 'black', textDecoration: 'none'}}>
@@ -18,6 +19,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
           <Link to="/">Home</Link>
           {/* <Link to="/blog">Blog</Link> */}
           {/* <Link to="/explore">Explore</Link> */}
+          {user.rank === 'admin' ? <Link to="/admin">admin</Link> : null}
           {user.newMessage === true ? (
             <Link to="/inbox" style={{color: 'red'}}>
               Inbox

@@ -397,7 +397,10 @@ class NodeResourceModal extends Component {
         return authId.push(user.id)
       })
     }
-    if (authId.includes(this.props.user.id) === true) {
+    if (
+      authId.includes(this.props.user.id) === true ||
+      this.props.user.rank === 'admin'
+    ) {
       auth = true
     }
     //disable check
