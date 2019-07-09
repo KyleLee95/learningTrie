@@ -29,6 +29,17 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/admin', async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'email', 'username', 'rank']
+    })
+    res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //Associate current user as a follower of another user
 router.put('/follow/:id', async (req, res, next) => {
   // console.log(req.body)

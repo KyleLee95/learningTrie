@@ -22,6 +22,7 @@ const defaultUsers = []
 const getSingleUser = users => ({type: GET_USERS, users})
 const followUser = users => ({type: FOLLOW_USER, users})
 const unfollowUser = users => ({type: UNFOLLOW_USER, users})
+const getUsers = users => ({type: GET_USERS, users})
 
 // const removeUser = () => ({type: REMOVE_USER})
 // const addUserToTree = () => ({type: ADD_USER_TO_TREE})
@@ -33,6 +34,15 @@ export const fetchSingleUser = userId => async dispatch => {
   try {
     const res = await axios.get(`/api/users/${userId}`)
     return dispatch(getSingleUser(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const fetchUsers = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/users/admin')
+    return dispatch(getUsers(res.data))
   } catch (err) {
     console.error(err)
   }

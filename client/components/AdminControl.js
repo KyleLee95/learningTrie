@@ -13,29 +13,54 @@ import {
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
-import {UserCard} from '.'
-import moment from 'moment'
-import {ConnectedUserProfileOverview} from './UserProfileOverview'
+import {
+  fetchSingleUser,
+  addFollower,
+  removeFollower,
+  fetchUsers
+} from '../store/user'
 
 class AdminControl extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {}
   }
-
   async componentDidMount() {
-    await this.props.fetchSingleUser(Number(this.props.match.params.id))
-    console.log('A')
+    await this.props.fetchUsers()
   }
-  async componentDidUpdate(prevProps) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      await this.props.fetchSingleUser(Number(this.props.match.params.id))
-    }
-  }
-
   render() {
-    return 'HELLO WORLD'
+    return (
+      <React.Fragment>
+        {' '}
+        {this.props.user.rank !== 'admin' ? (
+          'You do not have sufficient privilege'
+        ) : (
+          <Tabs defaultActiveKey="home">
+            <Tab eventKey="home" title="Home">
+              Home
+            </Tab>
+            <Tab eventKey="users" title="users">
+              {this.props.users === undefined
+                ? null
+                : this.props.users.map(user => {
+                    return (
+                      <li key={user.id}>
+                        {' '}
+                        id: {user.id} username: {user.username}{' '}
+                      </li>
+                    )
+                  })}
+            </Tab>
+            <Tab eventKey="resource" title="resource">
+              resource{' '}
+            </Tab>
+            <Tab eventKey="learning trees" title="learning trees">
+              learning trees
+            </Tab>
+          </Tabs>
+        )}
+      </React.Fragment>
+    )
   }
 }
 
@@ -43,7 +68,8 @@ const mapDispatch = dispatch => {
   return {
     fetchSingleUser: userId => dispatch(fetchSingleUser(userId)),
     addFollower: userId => dispatch(addFollower(userId)),
-    removeFollower: userId => dispatch(removeFollower(userId))
+    removeFollower: userId => dispatch(removeFollower(userId)),
+    fetchUsers: () => dispatch(fetchUsers())
   }
 }
 

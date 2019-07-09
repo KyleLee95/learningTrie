@@ -213,8 +213,6 @@ class TreeVisualization extends Component {
       prevProps.nodes.length + 1 === this.props.nodes.length
     ) {
       this.state.objects.push(this.props.nodes[this.props.nodes.length - 1])
-      // console.log('objects', this.state.objects)
-      // console.log('actions', this.state.actions)
     } else if (
       prevProps.edges !== undefined &&
       prevProps.edges.length !== 0 &&
@@ -286,13 +284,7 @@ class TreeVisualization extends Component {
   async onCreateNode(x, y) {
     if (this.props.user.id === this.props.trees[0].ownerId) {
       const type = 'empty'
-      // const counter = 1000
       let id = Date.now()
-      // if (this.props.nodes.length === 0) {
-      //   id = Date.now()
-      // } else {
-      //   id = Date.now()
-      // }
       const viewNode = {
         //prevents the node and edge with the same ID from being selected
         id: id,
@@ -300,9 +292,7 @@ class TreeVisualization extends Component {
         nodeType: 'Root',
         type,
         x: x,
-        // 796.4899291992188,,
         y: y,
-        // 407.50421142578125,
         treeId: this.props.trees[0].id
       }
       this.state.actions.push('postNode')
@@ -314,29 +304,31 @@ class TreeVisualization extends Component {
 
   async onUpdateNode(node) {
     if (this.props.user.id === this.props.trees[0].ownerId) {
-      if (node.id === this.state.target.id) {
-        await this.props.putNode({
-          id: this.state.target.id,
-          title: this.state.target.title,
-          description: this.state.target.description,
-          nodeType: this.state.target.nodeType,
-          type: 'custom',
-          x: node.x,
-          y: node.y
-        })
-      } else if (node.id === this.state.selected.id) {
-        await this.props.putNode({
-          id: node.id,
-          title: node.title,
-          description: node.description,
-          nodeType: node.nodeType,
-          type: node.type,
-          x: node.x,
-          y: node.y
-        })
-      }
-    } else {
-      return ''
+      // if (node.id === this.state.target.id) {
+      //   await this.props.putNode({
+      //     id: this.state.target.id,
+      //     title: this.state.target.title,
+      //     description: this.state.target.description,
+      //     nodeType: this.state.target.nodeType,
+      //     type: 'custom',
+      //     x: node.x,
+      //     y: node.y
+      //   })
+      // } else
+      // if (node.id === this.state.selected.id) {
+      await this.props.putNode({
+        id: node.id,
+        title: node.title,
+        description: node.description,
+        nodeType: node.nodeType,
+        type: node.type,
+        x: node.x,
+        y: node.y
+      })
+      // }
+      // } else {
+      //   return ''
+      // }
     }
   }
 
@@ -364,24 +356,24 @@ class TreeVisualization extends Component {
         type: 'custom'
       })
       return ''
-    } else if (
-      this.state.selected.id !== undefined &&
-      node !== null &&
-      node.id !== this.state.selected.id &&
-      this.state.target.id === undefined
-      //selects a target node
-    ) {
-      this.setState({
-        target: node
-      })
-      //updates target node to be red
-      await this.props.putNode({
-        id: this.state.target.id,
-        x: this.state.target.x,
-        y: this.state.target.y,
-        type: 'custom'
-      })
-      return ''
+      // } else if (
+      //   this.state.selected.id !== undefined &&
+      //   node !== null &&
+      //   node.id !== this.state.selected.id &&
+      //   this.state.target.id === undefined
+      //   //selects a target node
+      // ) {
+      //   this.setState({
+      //     target: node
+      //   })
+      //   //updates target node to be red
+      //   await this.props.putNode({
+      //     id: this.state.target.id,
+      //     x: this.state.target.x,
+      //     y: this.state.target.y,
+      //     type: 'custom'
+      //   })
+      //   return ''
     } else if (node !== null && this.state.selected.id === node.id) {
       //shows modal for selected node
       this.handleShow()
@@ -676,13 +668,13 @@ class TreeVisualization extends Component {
   }
 
   toggleDraw(event) {
-    d3
-      .select('svg')
-      .selectAll('circle')
-      .dispatchEvent(d3.event.sourceEvent.shiftKey)
-    this.setState({
-      drawing: true
-    })
+    console.log(Object.keys(this.state.selected))
+    d3.event.sourceEvent.shiftKey = true
+    // const circles = d3.select('svg').selectAll('circle')
+    // console.log(circles)
+    // circles[0].setState({
+    //   drawingEdge: true
+    // })
   }
   render() {
     const selected = this.state.selected
@@ -732,9 +724,9 @@ class TreeVisualization extends Component {
           {auth === true ? (
             <React.Fragment>
               <Col xs={1}>
-                <Button onClick={this.toggleDraw}>Draw Mode </Button>
+                {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <br />
-                <br />
+                <br /> */}
                 <ConnectedNewNode createNode={this.createNode} />
                 <br />
                 <Button

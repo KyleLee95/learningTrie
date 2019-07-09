@@ -19,7 +19,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
           <Link to="/">Home</Link>
           {/* <Link to="/blog">Blog</Link> */}
           {/* <Link to="/explore">Explore</Link> */}
-          {user.rank === 'admin' ? <Link to="/admin">admin</Link> : null}
+          {user.rank === 'admin' ? <Link to="/admin">Admin</Link> : null}
           {user.newMessage === true ? (
             <Link to="/inbox" style={{color: 'red'}}>
               Inbox
