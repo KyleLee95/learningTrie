@@ -723,14 +723,22 @@ class TreeVisualization extends Component {
         <Row>
           {auth === true ? (
             <React.Fragment>
-              <div style={{border: '1px solid '}}>
-                <Col xs={1}>
-                  {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
+              <Col
+                xs={12}
+                s={12}
+                md={12}
+                lg={1}
+                xl={1}
+                // style={{border: '1px solid', backgroundColor: '#95989c'}}
+              >
+                {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <br />
                 <br /> */}
-                  <ConnectedNewNode createNode={this.createNode} />
-                  <br />
+                <ConnectedNewNode createNode={this.createNode} />
+                <br />
+                <Card>
                   <Button
+                    variant="light"
                     onClick={async () => {
                       const node = {
                         id: this.state.selected.id,
@@ -750,9 +758,10 @@ class TreeVisualization extends Component {
                   >
                     Delete Node
                   </Button>
-                  <br />
-                  <br />
-                  {/* <Button
+                </Card>
+                <br />
+                <br />
+                {/* <Button
                   variant="primary"
                   onClick={() =>
                     this.onCreateEdge(this.state.selected, this.state.target)
@@ -760,10 +769,11 @@ class TreeVisualization extends Component {
                 >
                   Add Edge
                 </Button> */}
-                  {/* <br />
+                {/* <br />
                 <br /> */}
+                {/* <Card>
                   <Button
-                    variant="primary"
+                    variant="submit"
                     onClick={() => {
                       this.setState({
                         selected: {},
@@ -773,114 +783,123 @@ class TreeVisualization extends Component {
                   >
                     Clear Selected
                   </Button>
-                  <br />
-                  <br />
-                </Col>
-              </div>
-              <Col xs={11}>
-                <div id="graph" style={{width: '100%', height: '40vw'}}>
-                  {this.props.nodes &&
-                  this.props.nodes[0] !== undefined &&
-                  this.props.edges &&
-                  this.props.edges[0] !== undefined ? (
-                    <GraphView
-                      ref="GraphView"
-                      nodeKey={NODE_KEY}
-                      nodes={this.props.nodes}
-                      edges={this.props.edges}
-                      selected={selected}
-                      nodeTypes={NodeTypes}
-                      nodeSubtypes={NodeSubtypes}
-                      edgeTypes={EdgeTypes}
-                      onSelectNode={this.onSelectNode}
-                      onCreateNode={this.onCreateNode}
-                      onUpdateNode={this.onUpdateNode}
-                      onDeleteNode={this.onDeleteNode}
-                      onSelectEdge={this.onSelectEdge}
-                      onCreateEdge={this.onCreateEdge}
-                      onSwapEdge={this.onSwapEdge}
-                      onDeleteEdge={this.onDeleteEdge}
-                      canCreateEdge={this.canCreateEdge}
-                      renderNode={this.renderNode}
-                      onUndo={this.onUndo}
-                    />
-                  ) : (
-                    <GraphView
-                      ref="GraphView"
-                      nodeKey={NODE_KEY}
-                      nodes={this.props.nodes}
-                      edges={this.props.edges}
-                      selected={selected}
-                      nodeTypes={NodeTypes}
-                      nodeSubtypes={NodeSubtypes}
-                      edgeTypes={EdgeTypes}
-                      onSelectNode={this.onSelectNode}
-                      onCreateNode={this.onCreateNode}
-                      onUpdateNode={this.onUpdateNode}
-                      onDeleteNode={this.onDeleteNode}
-                      onSelectEdge={this.onSelectEdge}
-                      onCreateEdge={this.onCreateEdge}
-                      onSwapEdge={this.onSwapEdge}
-                      onDeleteEdge={this.onDeleteEdge}
-                      canCreateEdge={this.canCreateEdge}
-                      onUndo={this.onUndo}
-                    />
-                  )}
-                </div>
+                </Card> */}
+                <br />
+                <br />
+              </Col>
+              <Col
+                xs={11}
+                // style={{border: '2px solid', backgroundColor: '#95989c'}}
+                id="graph"
+                style={{width: '150%', height: '42vw'}}
+              >
+                {/* <div id="graph" fluid style={{width: '120%', height: '40vw'}}> */}
+                {this.props.nodes &&
+                this.props.nodes[0] !== undefined &&
+                this.props.edges &&
+                this.props.edges[0] !== undefined ? (
+                  <GraphView
+                    ref="GraphView"
+                    style={{width: '100%'}}
+                    nodeKey={NODE_KEY}
+                    nodes={this.props.nodes}
+                    edges={this.props.edges}
+                    selected={selected}
+                    nodeTypes={NodeTypes}
+                    nodeSubtypes={NodeSubtypes}
+                    edgeTypes={EdgeTypes}
+                    onSelectNode={this.onSelectNode}
+                    onCreateNode={this.onCreateNode}
+                    onUpdateNode={this.onUpdateNode}
+                    onDeleteNode={this.onDeleteNode}
+                    onSelectEdge={this.onSelectEdge}
+                    onCreateEdge={this.onCreateEdge}
+                    onSwapEdge={this.onSwapEdge}
+                    onDeleteEdge={this.onDeleteEdge}
+                    canCreateEdge={this.canCreateEdge}
+                    renderNode={this.renderNode}
+                    onUndo={this.onUndo}
+                  />
+                ) : (
+                  <GraphView
+                    ref="GraphView"
+                    style={{width: '100%'}}
+                    nodeKey={NODE_KEY}
+                    nodes={this.props.nodes}
+                    edges={this.props.edges}
+                    selected={selected}
+                    nodeTypes={NodeTypes}
+                    nodeSubtypes={NodeSubtypes}
+                    edgeTypes={EdgeTypes}
+                    onSelectNode={this.onSelectNode}
+                    onCreateNode={this.onCreateNode}
+                    onUpdateNode={this.onUpdateNode}
+                    onDeleteNode={this.onDeleteNode}
+                    onSelectEdge={this.onSelectEdge}
+                    onCreateEdge={this.onCreateEdge}
+                    onSwapEdge={this.onSwapEdge}
+                    onDeleteEdge={this.onDeleteEdge}
+                    canCreateEdge={this.canCreateEdge}
+                    onUndo={this.onUndo}
+                  />
+                )}
+                {/* </div> */}
               </Col>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Col xs={12}>
-                <div id="graph" style={{width: '100%', height: '40vw'}}>
-                  {this.props.nodes &&
-                  this.props.nodes[0] !== undefined &&
-                  this.props.edges &&
-                  this.props.edges[0] !== undefined ? (
-                    <GraphView
-                      ref="GraphView"
-                      nodeKey={NODE_KEY}
-                      nodes={this.props.nodes}
-                      edges={this.props.edges}
-                      selected={selected}
-                      nodeTypes={NodeTypes}
-                      nodeSubtypes={NodeSubtypes}
-                      edgeTypes={EdgeTypes}
-                      onSelectNode={this.onSelectNode}
-                      onCreateNode={this.onCreateNode}
-                      onUpdateNode={this.onUpdateNode}
-                      onDeleteNode={this.onDeleteNode}
-                      onSelectEdge={this.onSelectEdge}
-                      onCreateEdge={this.onCreateEdge}
-                      onSwapEdge={this.onSwapEdge}
-                      onDeleteEdge={this.onDeleteEdge}
-                      canCreateEdge={this.canCreateEdge}
-                      renderNode={this.renderNode}
-                      onUndo={this.onUndo}
-                    />
-                  ) : (
-                    <GraphView
-                      ref="GraphView"
-                      nodeKey={NODE_KEY}
-                      nodes={this.props.nodes}
-                      edges={this.props.edges}
-                      selected={selected}
-                      nodeTypes={NodeTypes}
-                      nodeSubtypes={NodeSubtypes}
-                      edgeTypes={EdgeTypes}
-                      onSelectNode={this.onSelectNode}
-                      onCreateNode={this.onCreateNode}
-                      onUpdateNode={this.onUpdateNode}
-                      onDeleteNode={this.onDeleteNode}
-                      onSelectEdge={this.onSelectEdge}
-                      onCreateEdge={this.onCreateEdge}
-                      onSwapEdge={this.onSwapEdge}
-                      onDeleteEdge={this.onDeleteEdge}
-                      canCreateEdge={this.canCreateEdge}
-                      onUndo={this.onUndo}
-                    />
-                  )}
-                </div>
+              <Col xs={12} s={12} md={12} lg={11} xl={11}>
+                {/* <div id="graph" style={{width: '100%', height: '40vw'}}> */}
+                {this.props.nodes &&
+                this.props.nodes[0] !== undefined &&
+                this.props.edges &&
+                this.props.edges[0] !== undefined ? (
+                  <GraphView
+                    ref="GraphView"
+                    style={{width: '100%'}}
+                    nodeKey={NODE_KEY}
+                    nodes={this.props.nodes}
+                    edges={this.props.edges}
+                    selected={selected}
+                    nodeTypes={NodeTypes}
+                    nodeSubtypes={NodeSubtypes}
+                    edgeTypes={EdgeTypes}
+                    onSelectNode={this.onSelectNode}
+                    onCreateNode={this.onCreateNode}
+                    onUpdateNode={this.onUpdateNode}
+                    onDeleteNode={this.onDeleteNode}
+                    onSelectEdge={this.onSelectEdge}
+                    onCreateEdge={this.onCreateEdge}
+                    onSwapEdge={this.onSwapEdge}
+                    onDeleteEdge={this.onDeleteEdge}
+                    canCreateEdge={this.canCreateEdge}
+                    renderNode={this.renderNode}
+                    onUndo={this.onUndo}
+                  />
+                ) : (
+                  <GraphView
+                    ref="GraphView"
+                    style={{width: '100%'}}
+                    nodeKey={NODE_KEY}
+                    nodes={this.props.nodes}
+                    edges={this.props.edges}
+                    selected={selected}
+                    nodeTypes={NodeTypes}
+                    nodeSubtypes={NodeSubtypes}
+                    edgeTypes={EdgeTypes}
+                    onSelectNode={this.onSelectNode}
+                    onCreateNode={this.onCreateNode}
+                    onUpdateNode={this.onUpdateNode}
+                    onDeleteNode={this.onDeleteNode}
+                    onSelectEdge={this.onSelectEdge}
+                    onCreateEdge={this.onCreateEdge}
+                    onSwapEdge={this.onSwapEdge}
+                    onDeleteEdge={this.onDeleteEdge}
+                    canCreateEdge={this.canCreateEdge}
+                    onUndo={this.onUndo}
+                  />
+                )}
+                {/* </div> */}
               </Col>
             </React.Fragment>
           )}

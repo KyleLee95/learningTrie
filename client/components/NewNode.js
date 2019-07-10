@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Modal, Button, Form} from 'react-bootstrap'
+import {Modal, Button, Form, Card} from 'react-bootstrap'
 
 class NewNode extends Component {
   constructor(props, context) {
@@ -41,9 +41,11 @@ class NewNode extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="primary" onClick={this.handleShow}>
-          Add Node
-        </Button>
+        <Card>
+          <Button variant="light" onClick={this.handleShow}>
+            Add Node
+          </Button>
+        </Card>
         <Form>
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
