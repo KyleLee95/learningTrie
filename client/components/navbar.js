@@ -49,9 +49,13 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
           <React.Fragment>
             {/* The navbar will show these links before you log in */}
 
-            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/login" style={{color: 'white'}}>
+              Login
+            </NavLink>
 
-            <NavLink to="/signup">Sign Up</NavLink>
+            <NavLink to="/signup" style={{color: 'white'}}>
+              Sign Up
+            </NavLink>
           </React.Fragment>
         )}
       </Navbar.Collapse>
