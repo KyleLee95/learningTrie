@@ -16,11 +16,7 @@ import {me} from '../store/currentUser'
 class UserHome extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      treeColor: 'black',
-      userColor: 'black',
-      hover: false
-    }
+    this.state = {}
   }
   async componentDidMount() {
     await this.props.fetchTrees()
@@ -30,7 +26,7 @@ class UserHome extends Component {
     return (
       <div>
         <Row>
-          <Col xs={12} lg={2}>
+          <Col xs={2} lg={2}>
             <React.Fragment>
               <Card>
                 <Button
@@ -71,7 +67,9 @@ class UserHome extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col xs={12} lg={8}>
+          <br />
+          <br />
+          <Col xs={8} lg={8}>
             {this.props.trees &&
             this.props.trees[0] !== undefined &&
             this.props.trees[0].users !== undefined &&
@@ -84,7 +82,7 @@ class UserHome extends Component {
                           <Card.Title>
                             <Row>
                               <Col>
-                                <React.Fragment className="link">
+                                <React.Fragment>
                                   <Link
                                     to={`/learningTree/${tree.id}`}
                                     style={{color: 'black'}}

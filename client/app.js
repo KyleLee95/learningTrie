@@ -5,8 +5,9 @@ import Routes from './routes'
 
 const App = () => {
   return (
-    <div className="container-fluid" display="flex">
+    <div className="container-fluid">
       <ConnectedNav />
+      <br />
       <Routes />
     </div>
   )

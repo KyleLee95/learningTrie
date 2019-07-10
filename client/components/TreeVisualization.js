@@ -751,23 +751,19 @@ class TreeVisualization extends Component {
                 </Button>
                 <br />
                 <br />
-                <Button
+                {/* <Button
                   variant="primary"
                   onClick={() =>
                     this.onCreateEdge(this.state.selected, this.state.target)
                   }
                 >
                   Add Edge
-                </Button>
-                <br />
-                <br />
+                </Button> */}
+                {/* <br />
+                <br /> */}
                 <Button
                   variant="primary"
-                  onClick={async () => {
-                    await this.props.putNode({
-                      id: this.state.target.id,
-                      type: 'empty'
-                    })
+                  onClick={() => {
                     this.setState({
                       selected: {},
                       target: {}

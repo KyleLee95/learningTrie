@@ -27,20 +27,23 @@ class Search extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group controlId="search">
-          <Form.Control
-            onChange={this.handleChange}
-            name="search"
-            type="search"
-            placeholder="Search"
-            size="md"
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
+      <form onSubmit={this.handleSubmit}>
+        {/* <Form.Group controlId="search" className="bg-dark"> */}
+        <input
+          onChange={this.handleChange}
+          name="search"
+          type="search"
+          placeholder=" Search"
+          className="bg-dark"
+          size="lg"
+          style={{
+            backgroundColor: '#24292F',
+            border: '0px solid #24292F',
+            borderRadius: '5px'
+          }}
+        />
+        {/* </Form.Group> */}
+      </form>
     )
   }
 }

@@ -112,7 +112,7 @@ class UserProfile extends Component {
                     </Card>
                   </Col>
                 </Row>
-                {user
+                {user && user.learningTrees
                   ? user.learningTrees.map(tree => {
                       return (
                         <Card key={tree.id}>
