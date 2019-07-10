@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {ConnectedNewTree} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import {
   fetchTrees,
   fetchMyTrees,
@@ -14,6 +14,14 @@ import {me} from '../store/currentUser'
  * COMPONENT
  */
 class UserHome extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      treeColor: 'black',
+      userColor: 'black',
+      hover: false
+    }
+  }
   async componentDidMount() {
     await this.props.fetchTrees()
   }
@@ -63,111 +71,63 @@ class UserHome extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col xs={12} lg={10}>
-            <Card>
-              <Card.Body>
-                {/* 4, 1 3, 1, 3 */}
-                <Row>
-                  <Col xs={4} s={4} md={4} lg={4} xl={4}>
-                    <Card.Title>title </Card.Title>
-                  </Col>
-                  <Col xs={1} s={0} md={0} lg={1} xl={1}>
-                    <Card.Title>owner</Card.Title>
-                  </Col>
-                  <Col xs={3} s={3} md={3} lg={3} xl={3}>
-                    <Card.Title>description</Card.Title>
-                  </Col>
-                  <Col xs={1} s={2} md={2} lg={2} xl={1}>
-                    <Card.Title>rating</Card.Title>
-                  </Col>
-                  <Col xs={3} s={3} md={3} lg={3} xl={3}>
-                    <Card.Title>tags</Card.Title>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+          <Col xs={12} lg={8}>
             {this.props.trees &&
             this.props.trees[0] !== undefined &&
             this.props.trees[0].users !== undefined &&
             this.props.trees[0].users[0] !== undefined
               ? this.props.trees.map(tree => {
                   return (
-                    <Card key={tree.id}>
-                      <Card.Body>
-                        <Row>
-                          <Col xs={4}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/learningTree/${tree.id}`}
-                            >
-                              <Card.Title>{tree.title} </Card.Title>
-                            </Link>
-                          </Col>
-                          <Col xs={1}>
-                            {tree.ownerId === this.props.user.id ? (
-                              <Link
-                                style={{
-                                  textDecoration: 'none',
-                                  color: '#000000'
-                                }}
-                                to={`/learningTree/${tree.id}`}
-                              >
-                                {' '}
-                                <Card.Title>me</Card.Title>
-                              </Link>
-                            ) : (
-                              `${
-                                tree.users.filter(user => {
-                                  return tree.ownerId === user.id
-                                })[0].firstName
-                              }
-                            ${
-                              tree.users.filter(user => {
-                                return tree.ownerId === user.id
-                              })[0].lastName
-                            }`
-                            )}
-                          </Col>
-                          <Col xs={3}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/learningTree/${tree.id}`}
-                            >
-                              <Card.Title>{tree.description} </Card.Title>
-                            </Link>
-                          </Col>
-                          <Col xs={1}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/learningTree/${tree.id}`}
-                            >
-                              <Card.Title>
-                                {tree.reviews !== undefined
-                                  ? tree.reviews.reduce(
-                                      (accumulator, review) => {
-                                        return (
-                                          accumulator +
-                                          review.rating / tree.reviews.length
+                    <React.Fragment key={tree.id}>
+                      <Card>
+                        <Card.Body>
+                          <Card.Title>
+                            <Row>
+                              <Col>
+                                <React.Fragment className="link">
+                                  <Link
+                                    to={`/learningTree/${tree.id}`}
+                                    style={{color: 'black'}}
+                                  >
+                                    {tree.title} | Score:{' '}
+                                    {tree.reviews !== undefined
+                                      ? tree.reviews.reduce(
+                                          (accumulator, review) => {
+                                            return (
+                                              accumulator +
+                                              review.rating /
+                                                tree.reviews.length
+                                            )
+                                          },
+                                          0
                                         )
-                                      },
-                                      0
-                                    )
-                                  : 0}{' '}
-                                / 5
-                              </Card.Title>
-                            </Link>
-                          </Col>
-                          <Col xs={0} s={0} md={0} lg={3} xl={3}>
-                            <Card.Title>
+                                      : 0}
+                                    / 5 |
+                                  </Link>{' '}
+                                  created by:{' '}
+                                  <Link
+                                    to={`/user/${tree.ownerId}`}
+                                    style={{color: 'black'}}
+                                  >
+                                    {tree.users.filter(user => {
+                                      return user.id === tree.ownerId
+                                    })[0] !== undefined
+                                      ? tree.users.filter(user => {
+                                          return user.id === tree.ownerId
+                                        })[0].username
+                                      : null}
+                                  </Link>
+                                </React.Fragment>
+                              </Col>
+                            </Row>
+                          </Card.Title>
+                          <Card.Subtitle className="text-muted">
+                            {tree.description}
+                          </Card.Subtitle>
+                          <hr />
+                          <Row>
+                            <Col>
+                              Tags:
                               {tree && tree.tags && tree.tags.length > 0
                                 ? tree.tags.map(tag => {
                                     return (
@@ -178,12 +138,13 @@ class UserHome extends Component {
                                       </Link>
                                     )
                                   })
-                                : ''}{' '}
-                            </Card.Title>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
+                                : null}
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                      <br />
+                    </React.Fragment>
                   )
                 })
               : ''}
