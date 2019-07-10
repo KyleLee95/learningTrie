@@ -37,7 +37,6 @@ class NodeResourceModalLineItem extends Component {
       voteCheck = this.props.resource.votes.filter(vote => {
         return vote.userId === this.props.user.id
       })
-      console.log(voteCheck)
     }
 
     if (voteCheck.length > 0) {
@@ -52,8 +51,6 @@ class NodeResourceModalLineItem extends Component {
 
   render() {
     return (
-      //conditional rendering for buttons based on upvote, downvote, none
-      //check
       <li style={{listStyleType: 'none'}}>
         <Row>
           <Col xs={4}>

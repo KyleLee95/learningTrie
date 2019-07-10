@@ -14,6 +14,9 @@ const Node = db.define('node', {
   description: {
     type: Sequelize.TEXT
   },
+  question: {
+    type: Sequelize.TEXT
+  },
   nodeType: {
     type: Sequelize.ENUM('Root', 'Core Concept', 'Sub-Concept')
   },

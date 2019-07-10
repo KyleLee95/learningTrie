@@ -124,7 +124,6 @@ let auth = false
 class TreeVisualization extends Component {
   constructor(props, context) {
     super(props, context)
-
     this.state = {
       graph: {
         nodes: [],
@@ -157,11 +156,10 @@ class TreeVisualization extends Component {
     this.canCreateEdge = this.canCreateEdge.bind(this)
     this.onDeleteEdge = this.onDeleteEdge.bind(this)
     //Node method bindings
-    this.onCreateNode = this.onCreateNode.bind(this)
     this.onUpdateNode = this.onUpdateNode.bind(this)
     this.onSelectNode = this.onSelectNode.bind(this)
     this.onDeleteNode = this.onDeleteNode.bind(this)
-    this.createNode = this.createNode.bind(this)
+    this.onCreateNode = this.onCreateNode.bind(this)
     //Modal method bindings
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -270,41 +268,29 @@ class TreeVisualization extends Component {
     }
   }
 
-  //START NODE HANDLERS
-  async createNode(title, description, id, resource) {
-    //passed to new Node component
-    const type = 'empty'
-
-    const viewNode = {
-      id,
-      title,
-      description,
-      nodeType: 'Root',
-      type,
-      x: 796.4899291992188,
-      y: 407.50421142578125,
-      treeId: this.props.trees[0].id,
-      resource
-    }
-    await this.props.postNode(viewNode)
-  }
-
   async onCreateNode(x, y) {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
-      const type = 'empty'
-      let id = Date.now()
-      const viewNode = {
-        //prevents the node and edge with the same ID from being selected
-        id: id,
+    if (auth === true) {
+      // const type = 'empty'
+      // let id = Date.now()
+      // const viewNode = {
+      //   //prevents the node and edge with the same ID from being selected
+      //   id: id,
+      //   title: 'Double Click To Edit',
+      //   nodeType: 'Root',
+      //   type,
+      //   x: x,
+      //   y: y,
+      //   treeId: this.props.trees[0].id
+      // }
+      await this.props.postNode({
         title: 'Double Click To Edit',
+        question: '',
         nodeType: 'Root',
-        type,
+        type: 'empty',
         x: x,
         y: y,
         treeId: this.props.trees[0].id
-      }
-      this.state.actions.push('postNode')
-      await this.props.postNode(viewNode)
+      })
     } else {
       return ''
     }
@@ -328,6 +314,7 @@ class TreeVisualization extends Component {
         id: node.id,
         title: node.title,
         description: node.description,
+        question: node.question,
         nodeType: node.nodeType,
         type: node.type,
         x: node.x,
@@ -402,6 +389,7 @@ class TreeVisualization extends Component {
           id: this.state.target.id,
           title: this.state.target.title,
           description: this.state.target.description,
+          question: this.state.target.question,
           nodeType: this.state.target.nodeType,
           type: 'empty'
           // x: this.state.target.x,
@@ -528,6 +516,7 @@ class TreeVisualization extends Component {
     await this.props.putNode({
       title: this.state.title,
       description: this.state.description,
+      question: this.state.question,
       id: this.state.selected.id,
       x: this.state.selected.x,
       y: this.state.selected.y
@@ -676,7 +665,6 @@ class TreeVisualization extends Component {
   }
 
   toggleDraw(event) {
-    console.log(Object.keys(this.state.selected))
     d3.event.sourceEvent.shiftKey = true
     // const circles = d3.select('svg').selectAll('circle')
     // console.log(circles)
@@ -742,7 +730,12 @@ class TreeVisualization extends Component {
                 {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <br />
                 <br /> */}
-                <ConnectedNewNode createNode={this.createNode} />
+                {this.props.trees && this.props.trees[0] ? (
+                  <ConnectedNewNode treeId={this.props.trees[0].id} />
+                ) : (
+                  <ConnectedNewNode treeId={null} />
+                )}
+
                 <br />
                 <Card>
                   <Button
@@ -752,6 +745,7 @@ class TreeVisualization extends Component {
                         id: this.state.selected.id,
                         title: this.state.selected.title,
                         description: this.state.selected.description,
+                        question: this.state.selected.question,
                         nodeType: this.state.selected.nodeType,
                         type: this.state.selected.type,
                         x: this.state.selected.x,

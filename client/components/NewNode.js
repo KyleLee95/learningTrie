@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button, Form, Card} from 'react-bootstrap'
+import {postNode} from '../store/node'
 
 class NewNode extends Component {
   constructor(props, context) {
@@ -13,6 +14,8 @@ class NewNode extends Component {
       show: false
     }
   }
+
+  //START NODE HANDLERS
 
   handleChange(e) {
     this.setState({
@@ -31,11 +34,16 @@ class NewNode extends Component {
     this.setState({
       show: false
     })
-    await this.props.createNode(
-      this.state.title,
-      this.state.description,
-      this.state.resource
-    )
+    await this.props.postNode({
+      title: this.state.title,
+      description: this.state.description,
+      question: this.state.question,
+      nodeType: 'Root',
+      type: 'empty',
+      x: 796.4899291992188,
+      y: 407.50421142578125,
+      treeId: this.props.treeId
+    })
   }
 
   render() {
@@ -84,14 +92,6 @@ class NewNode extends Component {
                   placeholder="Add Description"
                   onChange={this.handleChange}
                 />
-
-                {/* <Form.Label>Resource</Form.Label>
-                <Form.Control
-                  name="resource"
-                  type="resource"
-                  placeholder="Add Resoure"
-                  onChange={this.handleChange}
-                /> */}
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
@@ -116,5 +116,10 @@ class NewNode extends Component {
 const mapState = state => {
   return {nodes: state.node}
 }
+const mapDispatch = dispatch => {
+  return {
+    postNode: node => dispatch(postNode(node))
+  }
+}
 
-export const ConnectedNewNode = connect(mapState, null)(NewNode)
+export const ConnectedNewNode = connect(mapState, mapDispatch)(NewNode)

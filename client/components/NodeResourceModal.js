@@ -190,10 +190,12 @@ class NodeResourceModal extends Component {
   }
 
   async handleEditSubmit() {
+    console.log(this.state)
     this.setState({editShow: false})
     await this.props.putNode({
       title: this.state.title,
       description: this.state.description,
+      question: this.state.question,
       id: this.props.selected.id,
       x: this.props.selected.x,
       y: this.props.selected.y
@@ -423,6 +425,16 @@ class NodeResourceModal extends Component {
               : ''}
           </Modal.Body>
           <Modal.Body>
+            <strong>Focus Question:</strong>
+            {this.props.nodes &&
+            this.props.selected.id !== undefined &&
+            this.props.selected.question !== undefined
+              ? this.props.nodes.find(node => {
+                  return node.id === this.props.selected.id
+                }).question
+              : ''}
+          </Modal.Body>
+          <Modal.Body>
             <strong>Resources:</strong>
             <hr />
             {/* <ul> */}
@@ -543,6 +555,20 @@ class NodeResourceModal extends Component {
                   placeholder="Enter title"
                   onChange={this.handleEditChange}
                 />
+                {/* Focus Question */}
+                <Form.Label>Focus Question</Form.Label>
+                <Form.Control
+                  name="question"
+                  type="question"
+                  placeholder="Add Focus Question"
+                  onChange={this.handleEditChange}
+                />
+                <Form.Text className="text-muted">
+                  A good Focus Question can help you figure out what you're
+                  supposed to learn from a concept. If you were learning about
+                  baking bread, for example, you might ask 'What does yeast do
+                  in the process of baking bread?'
+                </Form.Text>
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   name="description"

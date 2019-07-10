@@ -14,11 +14,12 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     const node = await Node.create({
-      // id: req.body.id,
       title: req.body.title,
       description: req.body.description,
+      question: req.body.question,
       type: req.body.type,
       x: req.body.x,
       y: req.body.y,
@@ -38,6 +39,7 @@ router.put('/', async (req, res, next) => {
     const updatedNode = await node.update({
       type: req.body.type,
       title: req.body.title,
+      question: req.body.question,
       description: req.body.description,
       x: req.body.x,
       y: req.body.y
