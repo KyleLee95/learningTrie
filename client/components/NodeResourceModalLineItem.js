@@ -19,7 +19,9 @@ class NodeResourceModalLineItem extends Component {
     let voteCheck = []
     if (
       this.props.resource !== undefined &&
-      this.props.resource.votes !== undefined
+      this.props.resource.votes !== undefined &&
+      this.props.user !== undefined &&
+      this.props.user.id !== undefined
     ) {
       const upvotes = this.props.resource.votes.filter(vote => {
         return vote.voteType === 'upvote'
@@ -35,9 +37,10 @@ class NodeResourceModalLineItem extends Component {
       voteCheck = this.props.resource.votes.filter(vote => {
         return vote.userId === this.props.user.id
       })
+      console.log(voteCheck)
     }
 
-    if (voteCheck[0] !== undefined) {
+    if (voteCheck.length > 0) {
       this.setState({
         voteType: voteCheck[0].voteType
       })

@@ -61,8 +61,22 @@ class NewNode extends Component {
                   placeholder="Enter title"
                   onChange={this.handleChange}
                 />
-
+                {/* Focus Question */}
+                <Form.Label>Focus Question</Form.Label>
+                <Form.Control
+                  name="question"
+                  type="question"
+                  placeholder="Add Focus Question"
+                  onChange={this.handleChange}
+                />
+                <Form.Text className="text-muted">
+                  A good Focus Question can help you figure out what you're
+                  supposed to learn from a concept. If you were learning about
+                  baking bread, for example, you might ask 'What does yeast do
+                  in the process of baking bread?'
+                </Form.Text>
                 {/* Description */}
+
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   name="description"

@@ -78,6 +78,14 @@ const GraphConfig = {
           <circle cx="50" cy="50" r="45" fill="currentColor" />
         </symbol>
       )
+    },
+    special: {
+      shapeId: '#special',
+      shape: (
+        <symbol viewBox="-27 0 154 154" id="special" width="154" height="154">
+          <rect transform="translate(50) rotate(45)" width="109" height="109" />
+        </symbol>
+      )
     }
   },
   NodeSubtypes: {},

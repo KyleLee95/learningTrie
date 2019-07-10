@@ -4,6 +4,7 @@ import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {getSingleResourceTag} from '../store/resourceTag'
+import {ConnectedResourceTagLineItem} from './ResourceTagLineItem'
 class ResourceTag extends Component {
   constructor(props, context) {
     super(props, context)
@@ -28,7 +29,7 @@ class ResourceTag extends Component {
         <Row>
           <Col xs={12}>
             <h3>
-              Resources also tagged with:
+              Resources also tagged with:{' '}
               {this.props.resourceTag &&
               this.props.resourceTag.title !== undefined
                 ? this.props.resourceTag.title
@@ -38,95 +39,67 @@ class ResourceTag extends Component {
         </Row>
         <Row>
           <Col xs={12}>
-            <Card>
-              <Card.Body>
-                <Row>
-                  <Col xs={4}>
-                    <Card.Title>Title </Card.Title>
-                  </Col>
-                  <Col xs={3}>
-                    {' '}
-                    <Card.Title>Description</Card.Title>
-                  </Col>
-                  <Col xs={1}>
-                    <Card.Title>Rating</Card.Title>
-                  </Col>
-                  <Col xs={3}>
-                    <Card.Title>Tags</Card.Title>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
             {this.props.resourceTag.resources &&
-            this.props.resourceTag.resources.length
+            this.props.resourceTag.resources.length &&
+            this.props.user !== undefined &&
+            this.props.user.id !== undefined
               ? this.props.resourceTag.resources.map(resource => {
                   return (
-                    <Card key={resource.id}>
-                      <Card.Body>
-                        <Row>
-                          <Col xs={4}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/resource/${resource.id}`}
-                            >
-                              <Card.Title>{resource.title} </Card.Title>
-                            </Link>
-                          </Col>
-
-                          <Col xs={3}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/resource/${resource.id}`}
-                            >
-                              <Card.Title>{resource.description} </Card.Title>
-                            </Link>
-                          </Col>
-                          <Col xs={1}>
-                            <Link
-                              style={{
-                                textDecoration: 'none',
-                                color: '#000000'
-                              }}
-                              to={`/resource/${resource.id}`}
-                            >
-                              <Card.Title>
-                                {/* {resource.reviews.length > 0
-                                  ? resource.reviews.reduce((acc, review) => {
-                                      return review.rating + acc
-                                    }, 0) / resource.reviews.length
-                                  : 0}{' '} */}
-                                / 5
-                              </Card.Title>
-                            </Link>
-                          </Col>
-                          <Col xs={3}>
-                            <Card.Title>
-                              {resource.ResourceTags &&
-                              resource.ResourceTags.length > 0
-                                ? resource.ResourceTags.map(tag => {
-                                    return (
-                                      <Link
-                                        to={`/resourceTag/${tag.id}`}
-                                        key={tag.id}
-                                      >
-                                        <Button size="sm" variant="light">
-                                          {tag.title}
-                                        </Button>
-                                      </Link>
-                                    )
-                                  })
-                                : null}
-                            </Card.Title>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
+                    <ConnectedResourceTagLineItem
+                      key={resource.id}
+                      resource={resource}
+                    />
+                    // <React.Fragment key={resource.id}>
+                    //   <Card>
+                    //     <Card.Body>
+                    //       <Card.Title>
+                    //         <Row>
+                    //           <Col>
+                    //             <React.Fragment>
+                    //               <Link
+                    //                 to={`/resource/${resource.id}`}
+                    //                 style={{color: 'black'}}
+                    //               >
+                    //                 {resource.title} | Score:{' '}
+                    //                 {resource && resource !== undefined
+                    //                   ? resource.votes.filter(vote => {
+                    //                       return vote.voteType === 'upvote'
+                    //                     }).length -
+                    //                     resource.votes.filter(vote => {
+                    //                       return vote.voteType === 'downvote'
+                    //                     }).length
+                    //                   : null}
+                    //               </Link>{' '}
+                    //             </React.Fragment>
+                    //           </Col>
+                    //         </Row>
+                    //       </Card.Title>
+                    //       <Card.Subtitle className="text-muted">
+                    //         {resource.description}
+                    //       </Card.Subtitle>
+                    //       <hr />
+                    //       <Row>
+                    //         <Col>
+                    //           Tags:
+                    //           {resource &&
+                    //           resource.ResourceTags &&
+                    //           resource.ResourceTags.length > 0
+                    //             ? resource.ResourceTags.map(tag => {
+                    //                 return (
+                    //                   <Link to={`/tag/${tag.id}`} key={tag.id}>
+                    //                     <Button size="sm" variant="light">
+                    //                       {tag.title}{' '}
+                    //                     </Button>
+                    //                   </Link>
+                    //                 )
+                    //               })
+                    //             : null}
+                    //         </Col>
+                    //       </Row>
+                    //     </Card.Body>
+                    //   </Card>
+                    //   <br />
+                    // </React.Fragment>
                   )
                 })
               : ''}
