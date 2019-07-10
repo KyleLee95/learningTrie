@@ -19,7 +19,11 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
         {isLoggedIn ? (
           <React.Fragment>
             {/* The navbar will show these links after you log in */}
-            <NavLink style={{color: 'white'}} to="/">
+            <NavLink
+              activestyle={{textDecoration: 'underline'}}
+              style={{color: 'white'}}
+              to="/"
+            >
               Home
             </NavLink>
             {/* <Link to="/blog">Blog</Link> */}
@@ -28,7 +32,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
               <NavLink
                 to="/admin"
                 style={{color: 'white'}}
-                activeStyle={{textDecoration: 'underline'}}
+                activestyle={{textDecoration: 'underline'}}
               >
                 Admin
               </NavLink>
@@ -37,7 +41,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
               <NavLink
                 to="/inbox"
                 style={{color: 'red'}}
-                activeStyle={{textDecoration: 'underline'}}
+                activestyle={{textDecoration: 'underline'}}
               >
                 Inbox
               </NavLink>
@@ -45,7 +49,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
               <NavLink
                 to="/inbox"
                 style={{color: 'white'}}
-                activeStyle={{textDecoration: 'underline'}}
+                activestyle={{textDecoration: 'underline'}}
               >
                 Inbox
               </NavLink>
@@ -53,7 +57,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
             <NavLink
               to={`/user/${user.id}`}
               style={{color: 'white'}}
-              activeStyle={{textDecoration: 'underline'}}
+              activestyle={{textDecoration: 'underline'}}
             >
               Profile
             </NavLink>
@@ -61,7 +65,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
               href="#"
               onClick={handleClick}
               style={{color: 'white'}}
-              activeStyle={{textDecoration: 'underline'}}
+              activestyle={{textDecoration: 'underline'}}
             >
               Logout
             </a>
@@ -77,7 +81,7 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
             <NavLink
               to="/signup"
               style={{color: 'white'}}
-              activeStyle={{textDecoration: 'underline'}}
+              activestyle={{textDecoration: 'underline'}}
             >
               <Button variant="outline-light">Sign Up</Button>
             </NavLink>

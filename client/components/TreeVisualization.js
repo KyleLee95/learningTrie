@@ -723,35 +723,36 @@ class TreeVisualization extends Component {
         <Row>
           {auth === true ? (
             <React.Fragment>
-              <Col xs={1}>
-                {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
+              <div style={{border: '1px solid '}}>
+                <Col xs={1}>
+                  {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <br />
                 <br /> */}
-                <ConnectedNewNode createNode={this.createNode} />
-                <br />
-                <Button
-                  onClick={async () => {
-                    const node = {
-                      id: this.state.selected.id,
-                      title: this.state.selected.title,
-                      description: this.state.selected.description,
-                      nodeType: this.state.selected.nodeType,
-                      type: this.state.selected.type,
-                      x: this.state.selected.x,
-                      y: this.state.selected.y
-                    }
-                    this.setState({
-                      selected: {}
-                    })
-                    await this.props.delEdge(node)
-                    await this.props.delNode(node)
-                  }}
-                >
-                  Delete Node
-                </Button>
-                <br />
-                <br />
-                {/* <Button
+                  <ConnectedNewNode createNode={this.createNode} />
+                  <br />
+                  <Button
+                    onClick={async () => {
+                      const node = {
+                        id: this.state.selected.id,
+                        title: this.state.selected.title,
+                        description: this.state.selected.description,
+                        nodeType: this.state.selected.nodeType,
+                        type: this.state.selected.type,
+                        x: this.state.selected.x,
+                        y: this.state.selected.y
+                      }
+                      this.setState({
+                        selected: {}
+                      })
+                      await this.props.delEdge(node)
+                      await this.props.delNode(node)
+                    }}
+                  >
+                    Delete Node
+                  </Button>
+                  <br />
+                  <br />
+                  {/* <Button
                   variant="primary"
                   onClick={() =>
                     this.onCreateEdge(this.state.selected, this.state.target)
@@ -759,22 +760,23 @@ class TreeVisualization extends Component {
                 >
                   Add Edge
                 </Button> */}
-                {/* <br />
+                  {/* <br />
                 <br /> */}
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    this.setState({
-                      selected: {},
-                      target: {}
-                    })
-                  }}
-                >
-                  Clear Selected
-                </Button>
-                <br />
-                <br />
-              </Col>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      this.setState({
+                        selected: {},
+                        target: {}
+                      })
+                    }}
+                  >
+                    Clear Selected
+                  </Button>
+                  <br />
+                  <br />
+                </Col>
+              </div>
               <Col xs={11}>
                 <div id="graph" style={{width: '100%', height: '40vw'}}>
                   {this.props.nodes &&
