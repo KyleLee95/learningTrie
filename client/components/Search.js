@@ -39,7 +39,8 @@ class Search extends Component {
           style={{
             backgroundColor: '#24292F',
             border: '0px solid #24292F',
-            borderRadius: '5px'
+            borderRadius: '5px',
+            color: 'white'
           }}
         />
         {/* </Form.Group> */}

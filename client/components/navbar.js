@@ -25,23 +25,44 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
             {/* <Link to="/blog">Blog</Link> */}
             {/* <Link to="/explore">Explore</Link> */}
             {user.rank === 'admin' ? (
-              <Link to="/admin" style={{color: 'white'}}>
+              <NavLink
+                to="/admin"
+                style={{color: 'white'}}
+                activeStyle={{textDecoration: 'underline'}}
+              >
                 Admin
-              </Link>
+              </NavLink>
             ) : null}
             {user.newMessage === true ? (
-              <NavLink to="/inbox" style={{color: 'red'}}>
+              <NavLink
+                to="/inbox"
+                style={{color: 'red'}}
+                activeStyle={{textDecoration: 'underline'}}
+              >
                 Inbox
               </NavLink>
             ) : (
-              <NavLink to="/inbox" style={{color: 'white'}}>
+              <NavLink
+                to="/inbox"
+                style={{color: 'white'}}
+                activeStyle={{textDecoration: 'underline'}}
+              >
                 Inbox
               </NavLink>
             )}
-            <NavLink to={`/user/${user.id}`} style={{color: 'white'}}>
+            <NavLink
+              to={`/user/${user.id}`}
+              style={{color: 'white'}}
+              activeStyle={{textDecoration: 'underline'}}
+            >
               Profile
             </NavLink>
-            <a href="#" onClick={handleClick} style={{color: 'white'}}>
+            <a
+              href="#"
+              onClick={handleClick}
+              style={{color: 'white'}}
+              activeStyle={{textDecoration: 'underline'}}
+            >
               Logout
             </a>
           </React.Fragment>
@@ -53,8 +74,12 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
               Login
             </NavLink>
 
-            <NavLink to="/signup" style={{color: 'white'}}>
-              Sign Up
+            <NavLink
+              to="/signup"
+              style={{color: 'white'}}
+              activeStyle={{textDecoration: 'underline'}}
+            >
+              <Button variant="outline-light">Sign Up</Button>
             </NavLink>
           </React.Fragment>
         )}
