@@ -229,6 +229,7 @@ class Comment extends Component {
                 type="content"
                 as="textarea"
                 rows="10"
+                defaultValue={this.props.comment.content}
                 onChange={this.handleChange}
               />
             </Modal.Body>
