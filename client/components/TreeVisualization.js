@@ -725,7 +725,12 @@ class TreeVisualization extends Component {
                 md={12}
                 lg={1}
                 xl={1}
-                // style={{border: '1px solid', backgroundColor: '#95989c'}}
+                style={
+                  {
+                    // border: '1px solid',
+                    // backgroundColor: '#F9F9F9'
+                  }
+                }
               >
                 {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
                 <br />
@@ -936,6 +941,7 @@ class TreeVisualization extends Component {
                     name="handleText"
                     type="handleText"
                     placeholder="Enter Assocation Label"
+                    defaultValue={this.state.selected.handleText}
                     onChange={this.handleEdgeLabelChange}
                   />
                 </Form.Group>

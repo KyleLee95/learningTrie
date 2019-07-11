@@ -80,6 +80,7 @@ class LearningTree extends Component {
     })
 
     await this.props.me()
+    await this.props.fetchSelectedTree(Number(this.props.match.params.id))
   }
 
   handleCloseEdit() {
@@ -170,6 +171,7 @@ class LearningTree extends Component {
 
     let authId = []
     let favoriteId = []
+    let tags = ''
     if (
       this.props.trees !== undefined &&
       this.props.trees[0] !== undefined &&
@@ -203,6 +205,18 @@ class LearningTree extends Component {
     }
     if (favoriteId.length === 0) {
       favorite = false
+    }
+
+    //Tags
+    if (
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].tags !== undefined
+    ) {
+      this.props.trees[0].tags.forEach(tag => {
+        tags += `${tag.title}, `
+      })
+      tags = tags.slice(0, tags.length - 2)
     }
 
     return (
@@ -382,57 +396,60 @@ class LearningTree extends Component {
           </Form>
 
           {/* Edit Form Modal */}
-          <Form>
-            <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Learning Tree</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Modal.Body>
-                  <Form.Group controlId="title">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                      name="title"
-                      type="title"
-                      // value={this.state.title || ''}
-                      onChange={this.handleChange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="description">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                      name="description"
-                      as="textarea"
-                      // value={this.state.description || ''}
-                      rows="3"
-                      onChange={this.handleChange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="tags">
-                    <Form.Label>Tags</Form.Label>
-                    <Form.Control
-                      name="tags"
-                      // value={this.state.description || ''}
+          {this.props.trees &&
+            this.props.trees[0] && (
+              <Form>
+                <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit Learning Tree</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Modal.Body>
+                      <Form.Group controlId="title">
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control
+                          name="title"
+                          type="title"
+                          defaultValue={this.props.trees[0].title}
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                          name="description"
+                          as="textarea"
+                          defaultValue={this.props.trees[0].description}
+                          rows="3"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="tags">
+                        <Form.Label>Tags</Form.Label>
+                        <Form.Control
+                          name="tags"
+                          defaultValue={tags}
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                    </Modal.Body>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleCloseEdit}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      // disabled={!enabled}
+                      onClick={this.handleSubmit}
+                    >
+                      Submit
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Form>
+            )}
 
-                      onChange={this.handleChange}
-                    />
-                  </Form.Group>
-                </Modal.Body>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={this.handleCloseEdit}>
-                  Close
-                </Button>
-                <Button
-                  variant="primary"
-                  disabled={!enabled}
-                  onClick={this.handleSubmit}
-                >
-                  Submit
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </Form>
           {/* Delete Check Modal */}
           {this.props.trees ? (
             <Modal show={this.state.show} onHide={this.handleClose}>

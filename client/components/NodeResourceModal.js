@@ -190,7 +190,6 @@ class NodeResourceModal extends Component {
   }
 
   async handleEditSubmit() {
-    console.log(this.state)
     this.setState({editShow: false})
     await this.props.putNode({
       title: this.state.title,
@@ -553,6 +552,7 @@ class NodeResourceModal extends Component {
                   name="title"
                   type="title"
                   placeholder="Enter title"
+                  defaultValue={this.props.selected.title}
                   onChange={this.handleEditChange}
                 />
                 {/* Focus Question */}
@@ -561,6 +561,7 @@ class NodeResourceModal extends Component {
                   name="question"
                   type="question"
                   placeholder="Add Focus Question"
+                  defaultValue={this.props.selected.question}
                   onChange={this.handleEditChange}
                 />
                 <Form.Text className="text-muted">
@@ -574,6 +575,7 @@ class NodeResourceModal extends Component {
                   name="description"
                   type="description"
                   placeholder="Enter description"
+                  defaultValue={this.props.selected.description}
                   onChange={this.handleEditChange}
                 />
               </Form.Group>
