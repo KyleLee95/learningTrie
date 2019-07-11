@@ -733,8 +733,8 @@ class TreeVisualization extends Component {
                 }
               >
                 {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
-                <br />
-                <br /> */}
+                  <br />
+                  <br /> */}
                 {this.props.trees && this.props.trees[0] ? (
                   <ConnectedNewNode treeId={this.props.trees[0].id} />
                 ) : (
@@ -769,33 +769,36 @@ class TreeVisualization extends Component {
                 <br />
                 <br />
                 {/* <Button
-                  variant="primary"
-                  onClick={() =>
-                    this.onCreateEdge(this.state.selected, this.state.target)
-                  }
-                >
-                  Add Edge
-                </Button> */}
-                {/* <br />
-                <br /> */}
-                {/* <Card>
-                  <Button
-                    variant="submit"
-                    onClick={() => {
-                      this.setState({
-                        selected: {},
-                        target: {}
-                      })
-                    }}
+                    variant="primary"
+                    onClick={() =>
+                      this.onCreateEdge(this.state.selected, this.state.target)
+                    }
                   >
-                    Clear Selected
-                  </Button>
-                </Card> */}
+                    Add Edge
+                  </Button> */}
+                {/* <br />
+                  <br /> */}
+                {/* <Card>
+                    <Button
+                      variant="submit"
+                      onClick={() => {
+                        this.setState({
+                          selected: {},
+                          target: {}
+                        })
+                      }}
+                    >
+                      Clear Selected
+                    </Button>
+                  </Card> */}
                 <br />
                 <br />
               </Col>
               <Col
-                xs={11}
+                xs={12}
+                s={12}
+                lg={11}
+                xl={11}
                 // style={{border: '2px solid', backgroundColor: '#95989c'}}
                 id="graph"
                 style={{width: '150%', height: '42vw'}}
@@ -855,7 +858,15 @@ class TreeVisualization extends Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Col xs={12} s={12} md={12} lg={11} xl={11}>
+              <Col
+                xs={12}
+                s={12}
+                md={12}
+                lg={12}
+                xl={12}
+                id="graph"
+                style={{width: '150%', height: '42vw'}}
+              >
                 {/* <div id="graph" style={{width: '100%', height: '40vw'}}> */}
                 {this.props.nodes &&
                 this.props.nodes[0] !== undefined &&

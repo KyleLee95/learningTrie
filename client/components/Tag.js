@@ -9,13 +9,6 @@ import {getReviews} from '../store/review'
 class Tag extends Component {
   constructor(props, context) {
     super(props, context)
-    // this.state = {
-    //   show: false
-    // }
-    // this.handleShow = this.handleShow.bind(this)
-    // this.handleClose = this.handleClose.bind(this)
-    // this.handleChange = this.handleChange.bind(this)
-    // this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
     await this.props.getSingleTag(Number(this.props.match.params.id))
@@ -29,7 +22,6 @@ class Tag extends Component {
 
   render() {
     return (
-      //Proably wrong and I hate this but it works
       <React.Fragment>
         <Row>
           <Col xs={12}>

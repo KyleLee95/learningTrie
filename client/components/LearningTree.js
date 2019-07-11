@@ -221,262 +221,264 @@ class LearningTree extends Component {
 
     return (
       <React.Fragment>
-        <div>
-          <Row>
-            <Col xs={12}>
-              <Row>
-                {this.props.trees && this.props.trees[0] ? (
-                  <h3>{this.props.trees[0].title} </h3>
-                ) : null}
-                {this.props.trees !== undefined &&
-                this.props.trees[0] &&
-                this.props.trees[0] &&
-                this.props.trees[0].id !== undefined &&
-                this.props.user !== undefined &&
-                this.props.user.id !== undefined &&
-                this.props.trees[0].users !== undefined &&
-                this.props.trees[0].users[0] !== undefined &&
-                auth === false ? (
-                  <React.Fragment>
-                    <Button variant="submit">
-                      <Link
-                        to={`/learningTree/${this.props.trees[0].id}/review`}
-                        style={{textDecoration: 'none', color: 'black'}}
-                      >
-                        Rating: {`${rating}/ 5 All Reviews`}
-                      </Link>
-                    </Button>
-                    <ConnectedNewReview />
-                    <Button onClick={this.handleCollabShow} variant="submit">
-                      Collaborators
-                    </Button>
-                    {favorite === false ? (
-                      <Button
-                        variant="submit"
-                        onClick={async () => {
-                          await this.props.addTreeToFavorites({
-                            learningTreeId: this.props.trees[0].id
-                          })
-                          favorite = true
-                        }}
-                      >
-                        Add to Favorites
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="submit"
-                        onClick={async () => {
-                          await this.props.removeTreeFromFavorites({
-                            learningTreeId: this.props.trees[0].id
-                          })
-                          favorite = false
-                        }}
-                      >
-                        Remove from Favorites
-                      </Button>
-                    )}
-                  </React.Fragment>
-                ) : this.props.trees[0] !== undefined && auth === true ? (
-                  <React.Fragment>
-                    <Button variant="submit" onClick={this.handleShowEdit}>
-                      Edit
-                    </Button>
-                    <Button variant="submit" onClick={this.handleShow}>
-                      Delete
-                    </Button>
-                    <Button variant="submit">
-                      <Link
-                        to={`/learningTree/${this.props.trees[0].id}/review`}
-                        style={{textDecoration: 'none', color: 'black'}}
-                      >
-                        Rating: {rating}/ 5 All Reviews
-                      </Link>
-                    </Button>
-                    <Button onClick={this.handleCollabShow} variant="submit">
-                      Collaborators
-                    </Button>
-                    {favorite === false ? (
-                      <Button
-                        variant="submit"
-                        onClick={async () => {
-                          await this.props.addTreeToFavorites({
-                            learningTreeId: this.props.trees[0].id
-                          })
-                          favorite = true
-                        }}
-                      >
-                        Add to Favorites
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="submit"
-                        onClick={async () => {
-                          await this.props.removeTreeFromFavorites({
-                            learningTreeId: this.props.trees[0].id
-                          })
-                          favorite = false
-                        }}
-                      >
-                        Remove from Favorites
-                      </Button>
-                    )}
-                  </React.Fragment>
-                ) : null}
-              </Row>
-              <Row>
-                <Col xs={12}>
-                  <ConnectedTreeVisualization match={this.props.match} />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          {/* Add User as Collaborator Modal */}
-
-          <Form>
-            <Modal
-              show={this.state.showCollaborator}
-              onHide={this.handleCollabClose}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Add Collaborator</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Modal.Body>
-                  <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      name="email"
-                      type="email"
-                      onChange={this.handleCollabChange}
-                      placeholder="Enter Email"
-                    />
-                  </Form.Group>
-                  Approved Collaborators
-                  {this.props.trees[0] &&
+        <Row>
+          <Col xs={12}>
+            <Row>
+              <Col xs={12}>
+                <Row className="justify-content-space-evenly">
+                  {this.props.trees && this.props.trees[0] ? (
+                    <h3>{this.props.trees[0].title} </h3>
+                  ) : null}
+                  {this.props.trees !== undefined &&
                   this.props.trees[0] &&
-                  this.props.trees[0].users &&
-                  this.props.trees[0].users[0].id !== undefined
-                    ? this.props.trees[0].users.map(user => {
-                        return (
-                          <li key={user.id} style={{listStyleType: 'none'}}>
-                            <Link to={`/user/${user.id}`}>{user.username}</Link>
-                            {auth === true &&
-                            user.id !== this.props.trees[0].ownerId ? (
-                              <Button
-                                sz="sm"
-                                variant="submit"
-                                onClick={async () => {
-                                  await this.props.unassociateUserFromTree({
-                                    learningTreeId: Number(
-                                      this.props.match.params.id
-                                    ),
-                                    email: user.email
-                                  })
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            ) : null}
-                          </li>
-                        )
-                      })
-                    : null}
-                </Modal.Body>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="submit" onClick={this.handleCollabClose}>
-                  Close
-                </Button>
-                <Button variant="submit" onClick={this.handleCollabSubmit}>
-                  Submit
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </Form>
+                  this.props.trees[0] &&
+                  this.props.trees[0].id !== undefined &&
+                  this.props.user !== undefined &&
+                  this.props.user.id !== undefined &&
+                  this.props.trees[0].users !== undefined &&
+                  this.props.trees[0].users[0] !== undefined &&
+                  auth === false ? (
+                    <React.Fragment>
+                      <Button variant="submit">
+                        <Link
+                          to={`/learningTree/${this.props.trees[0].id}/review`}
+                          style={{textDecoration: 'none', color: 'black'}}
+                        >
+                          Rating: {`${rating}/ 5 All Reviews`}
+                        </Link>
+                      </Button>
+                      <ConnectedNewReview />
+                      <Button onClick={this.handleCollabShow} variant="submit">
+                        Collaborators
+                      </Button>
+                      {favorite === false ? (
+                        <Button
+                          variant="submit"
+                          onClick={async () => {
+                            await this.props.addTreeToFavorites({
+                              learningTreeId: this.props.trees[0].id
+                            })
+                            favorite = true
+                          }}
+                        >
+                          Add to Favorites
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="submit"
+                          onClick={async () => {
+                            await this.props.removeTreeFromFavorites({
+                              learningTreeId: this.props.trees[0].id
+                            })
+                            favorite = false
+                          }}
+                        >
+                          Remove from Favorites
+                        </Button>
+                      )}
+                    </React.Fragment>
+                  ) : this.props.trees[0] !== undefined && auth === true ? (
+                    <React.Fragment>
+                      <Button variant="submit" onClick={this.handleShowEdit}>
+                        Edit
+                      </Button>
+                      <Button variant="submit" onClick={this.handleShow}>
+                        Delete
+                      </Button>
+                      <Button variant="submit">
+                        <Link
+                          to={`/learningTree/${this.props.trees[0].id}/review`}
+                          style={{textDecoration: 'none', color: 'black'}}
+                        >
+                          Rating: {rating}/ 5 All Reviews
+                        </Link>
+                      </Button>
+                      <Button onClick={this.handleCollabShow} variant="submit">
+                        Collaborators
+                      </Button>
+                      {favorite === false ? (
+                        <Button
+                          variant="submit"
+                          onClick={async () => {
+                            await this.props.addTreeToFavorites({
+                              learningTreeId: this.props.trees[0].id
+                            })
+                            favorite = true
+                          }}
+                        >
+                          Add to Favorites
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="submit"
+                          onClick={async () => {
+                            await this.props.removeTreeFromFavorites({
+                              learningTreeId: this.props.trees[0].id
+                            })
+                            favorite = false
+                          }}
+                        >
+                          Remove from Favorites
+                        </Button>
+                      )}
+                    </React.Fragment>
+                  ) : null}
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <ConnectedTreeVisualization match={this.props.match} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
-          {/* Edit Form Modal */}
-          {this.props.trees &&
-            this.props.trees[0] && (
-              <Form>
-                <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Edit Learning Tree</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Modal.Body>
-                      <Form.Group controlId="title">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                          name="title"
-                          type="title"
-                          defaultValue={this.props.trees[0].title}
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          name="description"
-                          as="textarea"
-                          defaultValue={this.props.trees[0].description}
-                          rows="3"
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="tags">
-                        <Form.Label>Tags</Form.Label>
-                        <Form.Control
-                          name="tags"
-                          defaultValue={tags}
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                    </Modal.Body>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleCloseEdit}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="primary"
-                      // disabled={!enabled}
-                      onClick={this.handleSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              </Form>
-            )}
+        {/* Add User as Collaborator Modal */}
 
-          {/* Delete Check Modal */}
-          {this.props.trees ? (
-            <Modal show={this.state.show} onHide={this.handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Delete Tree</Modal.Title>
-              </Modal.Header>
+        <Form>
+          <Modal
+            show={this.state.showCollaborator}
+            onHide={this.handleCollabClose}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Add Collaborator</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <Modal.Body>
-                <Modal.Body>
-                  <Form.Text>
-                    Are you sure you want to delete{' '}
-                    {this.props.trees[0] ? this.props.trees[0].title : ''}?
-                  </Form.Text>
-                </Modal.Body>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    name="email"
+                    type="email"
+                    onChange={this.handleCollabChange}
+                    placeholder="Enter Email"
+                  />
+                </Form.Group>
+                Approved Collaborators
+                {this.props.trees[0] &&
+                this.props.trees[0] &&
+                this.props.trees[0].users &&
+                this.props.trees[0].users[0].id !== undefined
+                  ? this.props.trees[0].users.map(user => {
+                      return (
+                        <li key={user.id} style={{listStyleType: 'none'}}>
+                          <Link to={`/user/${user.id}`}>{user.username}</Link>
+                          {auth === true &&
+                          user.id !== this.props.trees[0].ownerId ? (
+                            <Button
+                              sz="sm"
+                              variant="submit"
+                              onClick={async () => {
+                                await this.props.unassociateUserFromTree({
+                                  learningTreeId: Number(
+                                    this.props.match.params.id
+                                  ),
+                                  email: user.email
+                                })
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          ) : null}
+                        </li>
+                      )
+                    })
+                  : null}
               </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={this.handleClose}>
-                  No
-                </Button>
-                <Button variant="primary" onClick={this.handleDelete}>
-                  Yes
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          ) : (
-            ''
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="submit" onClick={this.handleCollabClose}>
+                Close
+              </Button>
+              <Button variant="submit" onClick={this.handleCollabSubmit}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Form>
+
+        {/* Edit Form Modal */}
+        {this.props.trees &&
+          this.props.trees[0] && (
+            <Form>
+              <Modal show={this.state.showEdit} onHide={this.handleCloseEdit}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Edit Learning Tree</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Modal.Body>
+                    <Form.Group controlId="title">
+                      <Form.Label>Title</Form.Label>
+                      <Form.Control
+                        name="title"
+                        type="title"
+                        defaultValue={this.props.trees[0].title}
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="description">
+                      <Form.Label>Description</Form.Label>
+                      <Form.Control
+                        name="description"
+                        as="textarea"
+                        defaultValue={this.props.trees[0].description}
+                        rows="3"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="tags">
+                      <Form.Label>Tags</Form.Label>
+                      <Form.Control
+                        name="tags"
+                        defaultValue={tags}
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                  </Modal.Body>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.handleCloseEdit}>
+                    Close
+                  </Button>
+                  <Button
+                    variant="primary"
+                    // disabled={!enabled}
+                    onClick={this.handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Form>
           )}
-        </div>
+
+        {/* Delete Check Modal */}
+        {this.props.trees ? (
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Delete Tree</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Modal.Body>
+                <Form.Text>
+                  Are you sure you want to delete{' '}
+                  {this.props.trees[0] ? this.props.trees[0].title : ''}?
+                </Form.Text>
+              </Modal.Body>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                No
+              </Button>
+              <Button variant="primary" onClick={this.handleDelete}>
+                Yes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ) : (
+          ''
+        )}
       </React.Fragment>
     )
   }
