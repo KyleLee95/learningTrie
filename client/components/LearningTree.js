@@ -503,6 +503,10 @@ class LearningTree extends Component {
                         defaultValue={tags}
                         onChange={this.handleChange}
                       />
+                      <Form.Text className="text-muted">
+                        Separate with a comma and a space. Ex. 'Machine
+                        Learning, TensorFlow, JavaScript
+                      </Form.Text>
                     </Form.Group>
                   </Modal.Body>
                 </Modal.Body>
