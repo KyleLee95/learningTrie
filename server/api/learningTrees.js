@@ -163,9 +163,11 @@ router.put('/:id', async (req, res, next) => {
         {model: User, as: 'favorite'}
       ]
     })
+    console.log(req.body)
     const updatedTree = await tree.update({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      isPrivate: req.body.private
     })
     req.body.tags.forEach(async tag => {
       let newTag = await Tag.findOrCreate({where: {title: tag}})
@@ -249,6 +251,7 @@ router.post('/', async (req, res, next) => {
     const learningTree = await LearningTree.create({
       title: req.body.title,
       description: req.body.description,
+      isPrivate: req.body.private,
       ownerId: req.user.id
     })
     const user = await User.findByPk(req.user.id)

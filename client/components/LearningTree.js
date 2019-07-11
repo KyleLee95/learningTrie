@@ -1,4 +1,5 @@
 /* eslint-disable complexity */
+/* eslint-disable max-statements */
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
@@ -69,12 +70,23 @@ class LearningTree extends Component {
   }
 
   //BEGIN MODAL METHODS
+  //EDIT \/\/\/\/
   async handleSubmit() {
+    console.log(this.state)
     this.handleCloseEdit()
-    const tags = this.state.tags.split(', ')
+    let tags = this.props.trees[0].tags
+    let privateCheck = false
+    if (this.state.private === 'true') {
+      privateCheck = true
+    }
+    if (this.state.tags !== undefined) {
+      tags = this.state.tags.split(', ')
+    }
+
     await this.props.putTree({
       title: this.state.title,
       description: this.state.description,
+      private: privateCheck,
       tags: tags,
       id: Number(this.props.match.params.id)
     })
@@ -464,6 +476,25 @@ class LearningTree extends Component {
                         rows="3"
                         onChange={this.handleChange}
                       />
+                    </Form.Group>
+                    <Form.Group controlId="private">
+                      <Form.Label>Private</Form.Label>
+                      <Form.Control
+                        name="private"
+                        as="select"
+                        onChange={this.handleChange}
+                        defaultValue={this.props.trees[0].isPrivate.toString()}
+                      >
+                        <option>Select</option>
+                        <option value={true}>True</option>
+                        <option value={false}>False</option>
+                      </Form.Control>
+                      <Form.Text className="text-muted">
+                        True: Only you and approved users can see this Tree.
+                        <br />
+                        False (default): Anyone can see this Tree. Approved
+                        users may make edits
+                      </Form.Text>
                     </Form.Group>
                     <Form.Group controlId="tags">
                       <Form.Label>Tags</Form.Label>

@@ -22,10 +22,16 @@ class NewTree extends Component {
 
   //Handles Modal
   async handleSubmit() {
+    let privateCheck = false
     const tags = this.state.tags.split(', ')
+
+    if (this.state.private === 'True') {
+      privateCheck = true
+    }
     await this.props.postTree({
       title: this.state.title,
       description: this.state.description,
+      isPrivate: privateCheck,
       tags: tags
     })
 
@@ -90,15 +96,20 @@ class NewTree extends Component {
                 </Form.Group>
                 <Form.Group controlId="private">
                   <Form.Label>Private</Form.Label>
-                  <Form.Control as="select">
-                    <option>True</option>
-                    <option>False</option>
+                  <Form.Control
+                    name="private"
+                    as="select"
+                    onChange={this.handleChange}
+                  >
+                    <option>Select</option>
+                    <option value={true}>True</option>
+                    <option value={false}>False</option>
                   </Form.Control>
                   <Form.Text className="text-muted">
                     True: Only you and approved users can see this Tree.
                     <br />
-                    False: Anyone can see this Tree. Approved users may make
-                    edits
+                    False (default): Anyone can see this Tree. Approved users
+                    may make edits
                   </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="tags">
