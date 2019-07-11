@@ -16,7 +16,7 @@ import {connect} from 'react-redux'
 import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
 import {UserCard} from '.'
 import moment from 'moment'
-import {ConnectedUserProfileOverview} from './UserProfileOverview'
+import {ConnectedResourceTagLineItem} from './ResourceTagLineItem'
 
 class UserProfile extends Component {
   constructor(props, context) {
@@ -199,90 +199,13 @@ class UserProfile extends Component {
                   : 'No Comments Found'}
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
-                <Card>
-                  <Card.Body>
-                    <Row>
-                      <Col xs={3}>
-                        <Card.Title>Title</Card.Title>
-                      </Col>
-                      <Col xs={4}>
-                        <Card.Title>Description</Card.Title>
-                      </Col>
-                      <Col xs={3}>
-                        <Card.Title>Type</Card.Title>
-                      </Col>
-                      <Col xs={2}>
-                        <Card.Title>Comments</Card.Title>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
                 {user && user.resources !== undefined
                   ? user.resources.map(resource => {
                       return (
-                        <Card key={resource.id}>
-                          <Card.Body>
-                            <Row>
-                              <Col xs={3}>
-                                <Link
-                                  to={`/resource/${resource.id}`}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#000000'
-                                  }}
-                                >
-                                  <Card.Title>
-                                    {resource.title} ({
-                                      resource.links[0].shortUrl
-                                    })
-                                  </Card.Title>
-                                </Link>
-                              </Col>
-                              <Col xs={4}>
-                                <Card.Title>
-                                  <Link
-                                    to={`/resource/${resource.id}`}
-                                    style={{
-                                      textDecoration: 'none',
-                                      color: '#000000'
-                                    }}
-                                  >
-                                    {resource.description.length > 250
-                                      ? `${resource.description.slice(
-                                          0,
-                                          250
-                                        )}${'...'}`
-                                      : `${resource.description}`}
-                                  </Link>
-                                </Card.Title>
-                              </Col>
-                              <Col xs={3}>
-                                <Link
-                                  to={`/resource/${resource.id}`}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#000000'
-                                  }}
-                                >
-                                  <Card.Title>{resource.type}</Card.Title>
-                                </Link>
-                              </Col>
-                              <Col xs={2}>
-                                <Link
-                                  to={`/resource/${resource.id}`}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#000000'
-                                  }}
-                                >
-                                  <Card.Title>
-                                    {resource.links[0].comments.length}
-                                  </Card.Title>
-                                </Link>
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
+                        <ConnectedResourceTagLineItem
+                          key={resource.id}
+                          resource={resource}
+                        />
                       )
                     })
                   : 'No Resources Found'}

@@ -6,7 +6,8 @@ const {
   Tag,
   Comment,
   Resource,
-  Link
+  Link,
+  Vote
 } = require('../db/models')
 module.exports = router
 //da fuq am I using this for? I think this ileftover from boilerplate lmao. probably delete this at some poiint but I'm too afraid to.
@@ -155,7 +156,10 @@ router.get('/:id', async (req, res, next) => {
         },
         {model: User, as: 'followers'},
         {model: User, as: 'following'},
-        {model: Resource, include: [{model: Link, include: [{model: Comment}]}]}
+        {
+          model: Resource,
+          include: [{model: Link, include: [{model: Comment}]}, {model: Vote}]
+        }
       ]
     })
     res.status(200).json(users)

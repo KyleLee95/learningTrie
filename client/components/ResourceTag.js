@@ -49,57 +49,6 @@ class ResourceTag extends Component {
                       key={resource.id}
                       resource={resource}
                     />
-                    // <React.Fragment key={resource.id}>
-                    //   <Card>
-                    //     <Card.Body>
-                    //       <Card.Title>
-                    //         <Row>
-                    //           <Col>
-                    //             <React.Fragment>
-                    //               <Link
-                    //                 to={`/resource/${resource.id}`}
-                    //                 style={{color: 'black'}}
-                    //               >
-                    //                 {resource.title} | Score:{' '}
-                    //                 {resource && resource !== undefined
-                    //                   ? resource.votes.filter(vote => {
-                    //                       return vote.voteType === 'upvote'
-                    //                     }).length -
-                    //                     resource.votes.filter(vote => {
-                    //                       return vote.voteType === 'downvote'
-                    //                     }).length
-                    //                   : null}
-                    //               </Link>{' '}
-                    //             </React.Fragment>
-                    //           </Col>
-                    //         </Row>
-                    //       </Card.Title>
-                    //       <Card.Subtitle className="text-muted">
-                    //         {resource.description}
-                    //       </Card.Subtitle>
-                    //       <hr />
-                    //       <Row>
-                    //         <Col>
-                    //           Tags:
-                    //           {resource &&
-                    //           resource.ResourceTags &&
-                    //           resource.ResourceTags.length > 0
-                    //             ? resource.ResourceTags.map(tag => {
-                    //                 return (
-                    //                   <Link to={`/tag/${tag.id}`} key={tag.id}>
-                    //                     <Button size="sm" variant="light">
-                    //                       {tag.title}{' '}
-                    //                     </Button>
-                    //                   </Link>
-                    //                 )
-                    //               })
-                    //             : null}
-                    //         </Col>
-                    //       </Row>
-                    //     </Card.Body>
-                    //   </Card>
-                    //   <br />
-                    // </React.Fragment>
                   )
                 })
               : ''}
