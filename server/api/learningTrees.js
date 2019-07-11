@@ -1,8 +1,53 @@
 const router = require('express').Router()
-const {User, LearningTree, Tag, Review} = require('../db/models')
+const {
+  User,
+  LearningTree,
+  Tag,
+  Review,
+  ResourceTag,
+  Resource
+} = require('../db/models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 module.exports = router
+
+router.get('/search', async (req, res, next) => {
+  try {
+    //trees
+    const trees = await LearningTree.findAll({
+      include: [{model: Tag}, {model: Review}, {model: User}],
+      where: {
+        title: {[Op.iLike]: `%${req.query.search}%`}
+      }
+    })
+
+    let treeTags = []
+    const tag = await Tag.findOne({
+      where: {title: {[Op.iLike]: `%${req.query.search}`}}
+    })
+    if (tag !== null) {
+      treeTags = await tag.getLearningTrees({
+        include: [{model: Tag}]
+      })
+    } else {
+      treeTags = []
+    }
+
+    let treeArr = [...trees, ...treeTags]
+
+    const uniqueSearch = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
+      return treeArr.find(a => a.id === id)
+    })
+
+    //resources
+
+    //users
+
+    res.status(200).json(uniqueSearch)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.get('/myTrees/', async (req, res, next) => {
   try {
@@ -48,38 +93,6 @@ router.get('/sharedWithMe', async (req, res, next) => {
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
     res.status(200).json(trees)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/search', async (req, res, next) => {
-  try {
-    const trees = await LearningTree.findAll({
-      include: [{model: Tag}, {model: Review}, {model: User}],
-      where: {
-        title: {[Op.iLike]: `%${req.query.search}%`}
-      }
-    })
-
-    let treeTags = []
-    const tag = await Tag.findOne({
-      where: {title: {[Op.iLike]: `%${req.query.search}`}}
-    })
-    if (tag !== null) {
-      treeTags = await tag.getLearningTrees({
-        include: [{model: Tag}]
-      })
-    } else {
-      treeTags = []
-    }
-
-    let treeArr = [...trees, ...treeTags]
-
-    const uniqueSearch = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
-      return treeArr.find(a => a.id === id)
-    })
-    res.status(200).json(uniqueSearch)
   } catch (err) {
     next(err)
   }

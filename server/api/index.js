@@ -15,7 +15,7 @@ router.use('/links', require('./links'))
 router.use('/recommendations', require('./recommendations'))
 router.use('/resourceTags', require('./resourceTags'))
 router.use('/votes', require('./votes'))
-
+router.use('/search', require('./search'))
 router.use((req, res, next) => {
   const error = new Error('Not Found')
   error.status = 404
