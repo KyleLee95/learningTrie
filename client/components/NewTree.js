@@ -74,7 +74,6 @@ class NewTree extends Component {
                   <Form.Control
                     name="title"
                     type="title"
-                    // value={this.state.title}
                     placeholder="Ex. Machine Learning for Beginners"
                     onChange={this.handleChange}
                   />
@@ -88,6 +87,19 @@ class NewTree extends Component {
                     rows="3"
                     onChange={this.handleChange}
                   />
+                </Form.Group>
+                <Form.Group controlId="private">
+                  <Form.Label>Private</Form.Label>
+                  <Form.Control as="select">
+                    <option>True</option>
+                    <option>False</option>
+                  </Form.Control>
+                  <Form.Text className="text-muted">
+                    True: Only you and approved users can see this Tree.
+                    <br />
+                    False: Anyone can see this Tree. Approved users may make
+                    edits
+                  </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="tags">
                   <Form.Label>Tags</Form.Label>

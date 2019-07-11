@@ -170,8 +170,10 @@ class LearningTree extends Component {
     //auth check
 
     let authId = []
+    let canSee = false
     let favoriteId = []
     let tags = ''
+
     if (
       this.props.trees !== undefined &&
       this.props.trees[0] !== undefined &&
@@ -219,7 +221,43 @@ class LearningTree extends Component {
       tags = tags.slice(0, tags.length - 2)
     }
 
-    return (
+    //can see
+
+    if (
+      auth === true &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate !== true
+    ) {
+      canSee = true
+    } else if (
+      auth === false &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate !== true
+    ) {
+      canSee = false
+    } else if (
+      auth === false &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate !== false
+    ) {
+      canSee = true
+    } else if (
+      auth === true &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate !== false
+    ) {
+      canSee = true
+    }
+
+    if (this.props.user && this.props.user.rank === 'admin') {
+      canSee = true
+    }
+
+    return canSee === true ? (
       <React.Fragment>
         <Row>
           <Col xs={12}>
@@ -480,6 +518,8 @@ class LearningTree extends Component {
           ''
         )}
       </React.Fragment>
+    ) : (
+      'You are not authorized to see this tree'
     )
   }
 }

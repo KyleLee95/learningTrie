@@ -31,7 +31,7 @@ class UserHome extends Component {
     return (
       <div>
         <Row>
-          <Col xs={2} lg={2}>
+          <Col xs={12} sm={12} md={2} lg={2} xl={2}>
             <React.Fragment>
               <Card>
                 <Button
@@ -104,9 +104,8 @@ class UserHome extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <br />
-          <br />
-          <Col xs={8} lg={8}>
+
+          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             {this.props.trees &&
             this.props.trees[0] !== undefined &&
             this.props.trees[0].users !== undefined &&

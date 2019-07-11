@@ -210,9 +210,9 @@ class UserProfile extends Component {
                     })
                   : 'No Resources Found'}
               </Tab>
-              <Tab eventKey="groups" title="Groups">
+              {/* <Tab eventKey="groups" title="Groups">
                 Groups
-              </Tab>
+              </Tab> */}
               <Tab
                 eventKey="followers"
                 title={`Followers (${
