@@ -137,14 +137,16 @@ class Resource extends Component {
               </Col>
             </Row>
           </Col>
-          <Button
-            onClick={() =>
-              this.props.delResource({resource: this.props.resource})
-            }
-            variant="submit"
-          >
-            Delete
-          </Button>
+          {this.props.user.rank === 'admin' ? (
+            <Button
+              onClick={() =>
+                this.props.delResource({resource: this.props.resource})
+              }
+              variant="submit"
+            >
+              Delete
+            </Button>
+          ) : null}
           <Button onClick={this.handleShow} variant="submit">
             Edit
           </Button>
@@ -258,7 +260,8 @@ const mapState = state => {
   return {
     resource: state.resource,
     comments: state.comment,
-    link: state.link
+    link: state.link,
+    user: state.currUser
   }
 }
 
