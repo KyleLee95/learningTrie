@@ -16,7 +16,6 @@ class ResourceCommentForm extends Component {
     e.preventDefault()
     if (this.state.content.length < 0) {
       //prevents
-      console.log()
     }
     await this.props.postComment({
       content: this.state.content,

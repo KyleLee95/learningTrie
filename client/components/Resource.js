@@ -196,6 +196,7 @@ class Resource extends Component {
                   name="title"
                   type="title"
                   placeholder="Enter Title"
+                  defaultValue={this.props.resource.title}
                   onChange={this.handleChange}
                 />
                 <Form.Label>Description</Form.Label>
@@ -203,6 +204,7 @@ class Resource extends Component {
                   name="description"
                   type="description"
                   placeholder="Enter Description"
+                  defaultValue={this.props.resource.description}
                   onChange={this.handleChange}
                 />
                 <Form.Label>Link</Form.Label>
@@ -210,12 +212,14 @@ class Resource extends Component {
                   name="link"
                   type="link"
                   placeholder="Enter Link"
+                  defaultValue={this.props.resource.link}
                   onChange={this.handleChange}
                 />
                 <Form.Label>Type</Form.Label>
                 <Form.Control
                   as="select"
                   name="type"
+                  defaultValue={this.props.resource.type}
                   onChange={this.handleChange}
                 >
                   {options.map(option => {
