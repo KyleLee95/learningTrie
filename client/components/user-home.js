@@ -16,7 +16,12 @@ import {me} from '../store/currentUser'
 class UserHome extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {}
+    this.state = {
+      all: true,
+      my: false,
+      fav: false,
+      shared: false
+    }
   }
   async componentDidMount() {
     await this.props.fetchTrees()
@@ -30,36 +35,68 @@ class UserHome extends Component {
             <React.Fragment>
               <Card>
                 <Button
-                  variant="submit"
-                  onClick={async () => await this.props.fetchTrees()}
+                  variant="light"
+                  active={this.state.all}
+                  onClick={async () => {
+                    await this.props.fetchTrees()
+                    this.setState({
+                      all: true,
+                      my: false,
+                      fav: false,
+                      shared: false
+                    })
+                  }}
                 >
                   All Trees
                 </Button>
               </Card>
               <Card>
                 <Button
-                  onClick={async () =>
+                  active={this.state.my}
+                  onClick={async () => {
                     await this.props.fetchMyTrees(this.props.user.id)
-                  }
-                  variant="submit"
+                    this.setState({
+                      all: false,
+                      my: true,
+                      fav: false,
+                      shared: false
+                    })
+                  }}
+                  variant="light"
                 >
                   My Trees
                 </Button>
               </Card>
               <Card>
                 <Button
-                  variant="submit"
-                  onClick={async () => await this.props.fetchFavoriteTrees()}
+                  active={this.state.fav}
+                  variant="light"
+                  onClick={async () => {
+                    this.setState({
+                      all: false,
+                      my: false,
+                      fav: true,
+                      shared: false
+                    })
+                    await this.props.fetchFavoriteTrees()
+                  }}
                 >
                   Favorite Trees
                 </Button>
               </Card>
               <Card>
                 <Button
-                  variant="submit"
-                  onClick={async () =>
+                  active={this.state.shared}
+                  variant="light"
+                  onClick={async () => {
+                    this.setState({
+                      all: false,
+                      my: false,
+                      fav: false,
+                      shared: true
+                    })
                     await this.props.fetchSharedTrees(this.props.user.id)
-                  }
+                  }}
                 >
                   Trees Shared With Me
                 </Button>

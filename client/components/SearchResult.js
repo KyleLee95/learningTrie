@@ -2,12 +2,23 @@ import React, {Component} from 'react'
 import {Form, Row, Col, Button, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchSearchTrees} from '../store/learningTree'
+import {
+  fetchSearchTrees,
+  fetchTrees,
+  fetchMyTrees,
+  fetchSharedTrees,
+  fetchFavoriteTrees
+} from '../store/learningTree'
 import {ConnectedNewTree} from '.'
 class SearchResult extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {}
+    this.state = {
+      all: false,
+      my: false,
+      fav: false,
+      shared: false
+    }
   }
 
   componentDidMount() {
@@ -25,21 +36,72 @@ class SearchResult extends Component {
           <Col xs={2}>
             <React.Fragment>
               <Card>
-                <Button variant="submit">All Trees</Button>
+                <Button
+                  variant="light"
+                  active={this.state.all}
+                  onClick={async () => {
+                    await this.props.fetchTrees()
+                    this.setState({
+                      all: true,
+                      my: false,
+                      fav: false,
+                      shared: false
+                    })
+                  }}
+                >
+                  All Trees
+                </Button>
               </Card>
               <Card>
                 <Button
-                  onClick={() => this.props.fetchMyTrees(this.props.user.id)}
-                  variant="submit"
+                  active={this.state.my}
+                  onClick={async () => {
+                    await this.props.fetchMyTrees(this.props.user.id)
+                    this.setState({
+                      all: false,
+                      my: true,
+                      fav: false,
+                      shared: false
+                    })
+                  }}
+                  variant="light"
                 >
                   My Trees
                 </Button>
               </Card>
               <Card>
-                <Button variant="submit">Favorite Trees</Button>
+                <Button
+                  active={this.state.fav}
+                  variant="light"
+                  onClick={async () => {
+                    this.setState({
+                      all: false,
+                      my: false,
+                      fav: true,
+                      shared: false
+                    })
+                    await this.props.fetchFavoriteTrees()
+                  }}
+                >
+                  Favorite Trees
+                </Button>
               </Card>
               <Card>
-                <Button variant="submit">Trees Shared With Me</Button>
+                <Button
+                  active={this.state.shared}
+                  variant="light"
+                  onClick={async () => {
+                    this.setState({
+                      all: false,
+                      my: false,
+                      fav: false,
+                      shared: true
+                    })
+                    await this.props.fetchSharedTrees(this.props.user.id)
+                  }}
+                >
+                  Trees Shared With Me
+                </Button>
               </Card>
 
               <ConnectedNewTree />
@@ -60,7 +122,7 @@ class SearchResult extends Component {
                           <Card.Title>
                             <Row>
                               <Col>
-                                <React.Fragment >
+                                <React.Fragment>
                                   <Link
                                     to={`/learningTree/${tree.id}`}
                                     style={{color: 'black'}}
@@ -140,7 +202,12 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchSearchTrees: search => dispatch(fetchSearchTrees(search))
+    fetchSearchTrees: search => dispatch(fetchSearchTrees(search)),
+    fetchTrees: () => dispatch(fetchTrees()),
+    fetchMyTrees: userId => dispatch(fetchMyTrees(userId)),
+    me: () => dispatch(me()),
+    fetchSharedTrees: userId => dispatch(fetchSharedTrees(userId)),
+    fetchFavoriteTrees: () => dispatch(fetchFavoriteTrees())
   }
 }
 
