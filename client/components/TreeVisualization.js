@@ -60,18 +60,15 @@ const GraphConfig = {
     },
     custom: {
       // required to show empty nodes
-      typeText: 'node to be associated',
       shapeId: '#custom', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="custom" key="0">
-          <circle cx="50" cy="50" r="45" fill="red" />
+          <circle cx="50" cy="50" r="45" fill="currentColor" />
         </symbol>
       )
     },
     target: {
-      // required to show empty nodes
-      // typeText: 'Hello',
-      //USING THIS ONE
+      // NOT BEING USED
       shapeId: '#empty', // relates to the type property of a node
       shape: (
         <symbol viewBox="0 0 100 100" id="empty" key="0">
@@ -84,6 +81,22 @@ const GraphConfig = {
       shape: (
         <symbol viewBox="-27 0 154 154" id="special" width="154" height="154">
           <rect transform="translate(50) rotate(45)" width="109" height="109" />
+        </symbol>
+      )
+    },
+    poly: {
+      shapeId: '#poly',
+      shape: (
+        <symbol viewBox="0 0 88 72" id="poly" width="88" height="88">
+          <path d="M 0 36 18 0 70 0 88 36 70 72 18 72Z" />
+        </symbol>
+      )
+    },
+    skinny: {
+      shapeId: '#skinny',
+      shape: (
+        <symbol viewBox="0 0 154 54" width="154" height="54" id="skinny">
+          <rect x="0" y="0" rx="2" ry="2" width="154" height="54" />
         </symbol>
       )
     }
@@ -202,14 +215,14 @@ class TreeVisualization extends Component {
   async componentDidMount() {
     await this.props.getNodes(Number(this.props.match.params.id))
     await this.props.getEdges(Number(this.props.match.params.id))
-    await this.props.nodes.forEach(node => {
-      if (node.type !== 'empty') {
-        this.props.putNode({
-          id: node.id,
-          type: 'empty'
-        })
-      }
-    })
+    // await this.props.nodes.forEach(node => {
+    //   if (node.type !== 'empty') {
+    //     this.props.putNode({
+    //       id: node.id,
+    //       type: 'empty'
+    //     })
+    //   }
+    // })
   }
 
   componentDidUpdate(prevProps) {
@@ -719,7 +732,7 @@ class TreeVisualization extends Component {
         <Row>
           {auth === true ? (
             <React.Fragment>
-              <Col
+              {/* <Col
                 xs={12}
                 s={12}
                 md={12}
@@ -727,14 +740,14 @@ class TreeVisualization extends Component {
                 xl={1}
                 style={
                   {
-                    // border: '1px solid',
-                    // backgroundColor: '#F9F9F9'
+                    border: '1px solid',
+                    backgroundColor: '#F9F9F9'
                   }
                 }
               >
-                {/* <Button onClick={this.toggleDraw}>Draw Mode </Button>
+                <Button onClick={this.toggleDraw}>Draw Mode </Button>
                   <br />
-                  <br /> */}
+                  <br />
                 {this.props.trees && this.props.trees[0] ? (
                   <ConnectedNewNode treeId={this.props.trees[0].id} />
                 ) : (
@@ -768,17 +781,17 @@ class TreeVisualization extends Component {
                 </Card>
                 <br />
                 <br />
-                {/* <Button
+                <Button
                     variant="primary"
                     onClick={() =>
                       this.onCreateEdge(this.state.selected, this.state.target)
                     }
                   >
                     Add Edge
-                  </Button> */}
-                {/* <br />
-                  <br /> */}
-                {/* <Card>
+                  </Button>
+                <br />
+                  <br />
+                <Card>
                     <Button
                       variant="submit"
                       onClick={() => {
@@ -790,20 +803,21 @@ class TreeVisualization extends Component {
                     >
                       Clear Selected
                     </Button>
-                  </Card> */}
+                  </Card>
                 <br />
                 <br />
-              </Col>
-              <Col
+              </Col> */}
+              {/* <Col
                 xs={12}
                 s={12}
-                lg={11}
-                xl={11}
+                lg={12}
+                xl={12}
                 // style={{border: '2px solid', backgroundColor: '#95989c'}}
                 id="graph"
                 style={{width: '150%', height: '42vw'}}
-              >
-                {/* <div id="graph" fluid style={{width: '120%', height: '40vw'}}> */}
+              > */}
+
+              <div id="graph" style={{width: '120%', height: '45vw'}}>
                 {this.props.nodes &&
                 this.props.nodes[0] !== undefined &&
                 this.props.edges &&
@@ -853,8 +867,8 @@ class TreeVisualization extends Component {
                     onUndo={this.onUndo}
                   />
                 )}
-                {/* </div> */}
-              </Col>
+              </div>
+              {/* </Col> */}
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -865,7 +879,7 @@ class TreeVisualization extends Component {
                 lg={12}
                 xl={12}
                 id="graph"
-                style={{width: '150%', height: '42vw'}}
+                style={{width: '120%', height: '45vw'}}
               >
                 {/* <div id="graph" style={{width: '100%', height: '40vw'}}> */}
                 {this.props.nodes &&
@@ -942,19 +956,24 @@ class TreeVisualization extends Component {
               onHide={this.handleEdgeLabelClose}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Associtation Label</Modal.Title>
+                <Modal.Title>Association Label</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form.Group>
                   {/* Title */}
-                  <Form.Label>Associtation Label</Form.Label>
+                  <Form.Label>Association Label</Form.Label>
                   <Form.Control
                     name="handleText"
                     type="handleText"
-                    placeholder="Enter Assocation Label"
+                    placeholder="Enter Association Label"
                     defaultValue={this.state.selected.handleText}
                     onChange={this.handleEdgeLabelChange}
                   />
+                  <Form.Text className="text-muted">
+                    Association labels describe how the idea/concept of the
+                    source node is related to the idea/concept of the target
+                    node
+                  </Form.Text>
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>

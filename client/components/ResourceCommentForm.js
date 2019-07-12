@@ -55,6 +55,7 @@ class ResourceCommentForm extends Component {
             />
             <br />
             {/* </Form.Group> */}
+
             <Button
               variant="primary"
               onClick={this.handleSubmit}

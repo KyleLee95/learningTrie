@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Row, Col, Button} from 'react-bootstrap'
+import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {upvote, downvote, getVote} from '../store/vote'
 import {unAssociateResourceFromNode} from '../store/resource'
@@ -75,8 +75,9 @@ class NodeResourceModalLineItem extends Component {
                 </Button>
               ) : (
                 //posts the upvote
+
                 <Button
-                  variant="submit"
+                  variant="outline-secondary"
                   sz="sm"
                   onClick={async () => {
                     await this.props.upvote({
@@ -104,6 +105,7 @@ class NodeResourceModalLineItem extends Component {
               </Button>
               {this.state.voteType === 'downvote' ? (
                 //deletes downvote
+
                 <Button
                   variant="danger"
                   sz="sm"
@@ -122,8 +124,9 @@ class NodeResourceModalLineItem extends Component {
                 </Button>
               ) : (
                 //posts a downvote
+
                 <Button
-                  variant="submit"
+                  variant="outline-secondary"
                   sz="sm"
                   onClick={async () => {
                     await this.props.downvote({

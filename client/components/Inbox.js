@@ -63,14 +63,18 @@ class Inbox extends Component {
   render() {
     return (
       <React.Fragment>
-        <h3>Conversations</h3>
+        <h3>Inbox</h3>
         <hr />
         <Row>
-          <Col xs={1}>
-            <Button onClick={this.handleShow}>New Conversation</Button>
+          <Col xs={12} sm={12} md={12} lg={2} xl={2}>
+            <Card>
+              <Button variant="light" onClick={this.handleShow}>
+                New Conversation
+              </Button>
+            </Card>
           </Col>
 
-          <Col xs={{span: 9, offset: 1}}>
+          <Col xs={{span: 9}}>
             <ul style={{listStyle: 'none'}}>
               {this.props.conversations && this.props.conversations.length > 0
                 ? this.props.conversations.map(conversation => {

@@ -83,8 +83,9 @@ class ResourceTagLineItem extends Component {
                       </Button>
                     ) : (
                       //posts the upvote
+
                       <Button
-                        variant="submit"
+                        variant="outline-secondary"
                         sz="sm"
                         onClick={async () => {
                           await this.props.upvote({
@@ -130,8 +131,9 @@ class ResourceTagLineItem extends Component {
                       </Button>
                     ) : (
                       //posts a downvote
+
                       <Button
-                        variant="submit"
+                        variant="outline-secondary"
                         sz="sm"
                         onClick={async () => {
                           await this.props.downvote({

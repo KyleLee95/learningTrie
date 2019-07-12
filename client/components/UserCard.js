@@ -11,13 +11,13 @@ export const UserCard = props => (
     }}
   >
     <Card>
-      <Card.Img
+      {/* <Card.Img
         variant="top"
         src={props.follower.avatar}
         style={{width: '18rem'}}
         fluid="true"
         alt="IMAGE"
-      />
+      /> */}
       <Card.Body>
         <Card.Title>
           {props.follower.firstName} {props.follower.lastName}

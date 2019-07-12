@@ -565,10 +565,10 @@ class NodeResourceModal extends Component {
                   onChange={this.handleEditChange}
                 />
                 <Form.Text className="text-muted">
-                  A good Focus Question can help you figure out what you're
-                  supposed to learn from a concept. If you were learning about
-                  baking bread, for example, you might ask 'What does yeast do
-                  in the process of baking bread?'
+                  Focus Questions can help you figure out what you're supposed
+                  to learn from a concept and direct your learning. For example,
+                  if you were learning about baking bread you might ask: 'What
+                  does yeast do in the process of baking bread?'
                 </Form.Text>
                 <Form.Label>Description</Form.Label>
                 <Form.Control

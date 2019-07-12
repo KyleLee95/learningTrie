@@ -1,7 +1,15 @@
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
 import React, {Component} from 'react'
-import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  Modal,
+  Button,
+  Form,
+  DropdownButton,
+  Dropdown
+} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
 import {
@@ -30,7 +38,8 @@ class LearningTree extends Component {
     this.state = {
       showEdit: false,
       show: false,
-      showCollaborator: false
+      showCollaborator: false,
+      shape: 'Circle'
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -161,6 +170,7 @@ class LearningTree extends Component {
   render() {
     const {description, title} = this.state
     let enabled
+    const shapes = ['Circle', 'Square', 'Rectangle', 'Diamond', 'Hexagon']
     if (description !== undefined && title !== undefined) {
       enabled = description.length > 0 && title.length > 0
     }
@@ -371,6 +381,14 @@ class LearningTree extends Component {
                           Remove from Favorites
                         </Button>
                       )}
+                      {/* pass the node shape down as props to tree viz so that it creates the correct shape */}
+                      <DropdownButton variant="submit" title="Node Shape">
+                        {shapes.map(shape => {
+                          return (
+                            <Dropdown.Item key={shape}>{shape}</Dropdown.Item>
+                          )
+                        })}
+                      </DropdownButton>
                     </React.Fragment>
                   ) : null}
                 </Row>

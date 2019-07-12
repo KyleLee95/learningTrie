@@ -81,15 +81,9 @@ class Comment extends Component {
     let form = document.getElementById(id)
     console.log(form)
     form.style.display = 'block'
-
-    // this.setState({
-    //   replyShow: 'block'
-    // })
-    // console.log(this.state.replyShow)
   }
   handleReplyClose(id) {
     let form = document.getElementById(id)
-    // console.log(form)
     form.style.display = 'none'
   }
   handleReplyChange(e) {

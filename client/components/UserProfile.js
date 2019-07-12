@@ -39,9 +39,9 @@ class UserProfile extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={2}>
+          <Col xs={12} sm={12} md={12} lg={3} xl={3}>
             <Card border="light">
-              <Card.Img variant="top" src={user ? user.avatar : ''} />
+              {/* <Card.Img variant="top" src={user ? user.avatar : ''} /> */}
               <Card.Title>
                 <Row>
                   <Col xs={{offset: 1, span: 11}}>
@@ -79,12 +79,13 @@ class UserProfile extends Component {
                   )}
                 </Row>
               </Card.Title>
+
               <Card.Body>
                 <Row>{user ? user.bio : ''}</Row>
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={10}>
+          <Col xs={9}>
             <Tabs defaultActiveKey="trees">
               <Tab eventKey="trees" title="Learning Trees">
                 <br />
@@ -123,11 +124,11 @@ class UserProfile extends Component {
                                         to={`/user/${tree.ownerId}`}
                                         style={{color: 'black'}}
                                       >
-                                        {tree.users.filter(user => {
-                                          return user.id === tree.ownerId
+                                        {tree.users.filter(profile => {
+                                          return profile.id === tree.ownerId
                                         })[0] !== undefined
-                                          ? tree.users.filter(user => {
-                                              return user.id === tree.ownerId
+                                          ? tree.users.filter(profile => {
+                                              return profile.id === tree.ownerId
                                             })[0].username
                                           : null}
                                       </Link>
@@ -179,7 +180,10 @@ class UserProfile extends Component {
                                 comment.createdAt
                               ).fromNow()} to `}
                               {
-                                <Link to={`/resource/${comment.resource.id}`}>
+                                <Link
+                                  to={`/resource/${comment.resource.id}`}
+                                  style={{color: 'black'}}
+                                >
                                   {`${comment.resource.title} (${
                                     comment.link.shortUrl
                                   })`}

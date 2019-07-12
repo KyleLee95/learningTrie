@@ -64,7 +64,7 @@ class NewTree extends Component {
     return (
       <React.Fragment>
         <Card>
-          <Button variant="submit" onClick={this.handleShow}>
+          <Button variant="light" onClick={this.handleShow}>
             New Tree
           </Button>
         </Card>

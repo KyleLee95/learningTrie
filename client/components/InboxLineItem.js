@@ -18,7 +18,7 @@ export const InboxLineItem = props => {
             <Card>
               <Link
                 to={`/conversation/${props.conversation.id}`}
-                style={{textDecoration: 'none'}}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 <Row>
                   <Col lg={{span: 3, offset: 1}}>
@@ -48,7 +48,7 @@ export const InboxLineItem = props => {
             <Card>
               <Link
                 to={`/conversation/${props.conversation.id}`}
-                style={{textDecoration: 'none'}}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 <Row>
                   <Col lg={{span: 3, offset: 1}}>
@@ -71,7 +71,7 @@ export const InboxLineItem = props => {
         <li
           id={`${props.conversation.id.toString()}`}
           key={props.conversation.id}
-          style={{fontWeight: 'none'}}
+          style={{fontWeight: 'none', color: 'black'}}
           onClick={() =>
             props.toggleRead(props.conversation.id.toString(), false)
           }
@@ -79,7 +79,7 @@ export const InboxLineItem = props => {
           <Card>
             <Link
               to={`/conversation/${props.conversation.id}`}
-              style={{textDecoration: 'none'}}
+              style={{textDecoration: 'none', color: 'black'}}
             >
               <Row>
                 <Col lg={{span: 3, offset: 1}}>
@@ -101,7 +101,7 @@ export const InboxLineItem = props => {
         <li
           id={`${props.conversation.id.toString()}`}
           key={props.conversation.id}
-          style={{fontWeight: 'bold'}}
+          style={{fontWeight: 'bold', color: 'black'}}
           onClick={() =>
             props.toggleRead(props.conversation.id.toString(), false)
           }
@@ -109,7 +109,7 @@ export const InboxLineItem = props => {
           <Card>
             <Link
               to={`/conversation/${props.conversation.id}`}
-              style={{textDecoration: 'none'}}
+              style={{textDecoration: 'none', color: 'black'}}
             >
               <Row>
                 <Col lg={{span: 3, offset: 1}}>
