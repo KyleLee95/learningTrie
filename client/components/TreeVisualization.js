@@ -249,7 +249,6 @@ class TreeVisualization extends Component {
         shape: this.props.shape
       })
     }
-    console.log(this.state)
   }
 
   //END COMPONENT METHODS

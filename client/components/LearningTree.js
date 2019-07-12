@@ -252,33 +252,37 @@ class LearningTree extends Component {
     //can see
 
     if (
+      //auth true && isPrivate false
       auth === true &&
       this.props.trees !== undefined &&
       this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate !== true
+      this.props.trees[0].isPrivate === false
     ) {
       canSee = true
     } else if (
+      //auth true && isPrivate === true
+      auth === true &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate === true
+    ) {
+      canSee = true
+    } else if (
+      //auth false && isPrivate === false
       auth === false &&
       this.props.trees !== undefined &&
       this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate !== true
+      this.props.trees[0].isPrivate === false
+    ) {
+      canSee = true
+    } else if (
+      //auth false && isPrivate === true
+      auth === false &&
+      this.props.trees !== undefined &&
+      this.props.trees[0] !== undefined &&
+      this.props.trees[0].isPrivate === true
     ) {
       canSee = false
-    } else if (
-      auth === false &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate !== false
-    ) {
-      canSee = true
-    } else if (
-      auth === true &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate !== false
-    ) {
-      canSee = true
     }
 
     if (this.props.user && this.props.user.rank === 'admin') {
@@ -413,7 +417,7 @@ class LearningTree extends Component {
                         placement="left"
                         trigger="click"
                         overlay={
-                          <Popover id="tooltip-left">
+                          <Popover id="tooltip-left" title="Controls">
                             <ul>
                               <li>To create a node: shift + click </li>
                               <li>
