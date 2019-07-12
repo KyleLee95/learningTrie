@@ -34,10 +34,11 @@ User.belongsToMany(Conversation, {as: 'receiver', through: 'userConversation'})
 User.hasMany(Vote)
 
 //Learning Tree
+LearningTree.belongsToMany(User, {through: 'userTree'})
 LearningTree.belongsToMany(User, {through: 'favoriteTrees', as: 'favorite'})
 LearningTree.hasMany(Review)
 LearningTree.hasMany(Node)
-LearningTree.belongsToMany(User, {through: 'userTree'})
+
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
 LearningTree.belongsToMany(Tag, {through: 'treeTag'})

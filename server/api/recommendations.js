@@ -40,6 +40,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     //create resource for indexing
+    const user = await User.findByPk(Number(req.user.id))
+    const node = await Node.findByPk(req.body.nodeId)
     const resource = await Resource.findOrCreate({
       where: {
         title: req.body.title,
@@ -54,7 +56,8 @@ router.post('/', async (req, res, next) => {
       link: req.body.link,
       description: req.body.description,
       type: req.body.type,
-      ownerId: req.body.ownerId
+      ownerId: req.body.ownerId,
+      owner: user.username
     })
 
     const shortUrl = req.body.link
@@ -77,12 +80,10 @@ router.post('/', async (req, res, next) => {
         await resource[0].addResourceTag(newTag[0])
       })
     }
-    const user = await User.findByPk(Number(req.user.id))
-    const node = await Node.findByPk(req.body.nodeId)
+
     await link[0].addRecommendation(recommendation)
     await link[0].addResource(resource[0])
     await recommendation.addLink(link[0])
-    // console.log(Object.keys(recommendation.__proto__))
     await recommendation.addNode(node)
     await recommendation.addUser(user)
     await user.addRecommendation(recommendation)

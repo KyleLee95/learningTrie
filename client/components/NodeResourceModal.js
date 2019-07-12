@@ -465,11 +465,14 @@ class NodeResourceModal extends Component {
               this.props.recommendations[0].id !== undefined
                 ? this.props.recommendations.map(recommendation => {
                     return (
-                      <li key={recommendation.title}>
+                      <li key={recommendation.id}>
                         <Link to={`/recommendation/${recommendation.id}`}>
                           {recommendation.title}
                         </Link>{' '}
-                        ({recommendation.type})
+                        ({recommendation.type}) by{' '}
+                        <Link to={`/user/${recommendation.owner.id}`}>
+                          {recommendation.owner}
+                        </Link>
                         {auth === true ? (
                           <Button
                             variant="submit"

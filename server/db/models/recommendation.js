@@ -31,6 +31,9 @@ const Recommendation = db.define('recommendation', {
   },
   ownerId: {
     type: Sequelize.INTEGER
+  },
+  owner: {
+    type: Sequelize.STRING
   }
 })
 

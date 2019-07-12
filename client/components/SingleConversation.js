@@ -64,14 +64,14 @@ class Conversation extends Component {
                   <Card>
                     <Row>
                       <Col xs={2} lg={2}>
-                        <Card.Img
+                        {/* <Card.Img
                           variant="top"
                           src={
                             message.user.avatar !== undefined
                               ? message.user.avatar
                               : null
                           }
-                        />
+                        /> */}
                         <Card.Title>{message.user.username}</Card.Title>
                       </Col>
                       <Col xs={10} lg={10}>
@@ -91,7 +91,7 @@ class Conversation extends Component {
             <Card>
               <Row>
                 <Col xs={2} lg={2}>
-                  <Card.Img variant="top" src={this.props.user.avatar} />
+                  {/* <Card.Img variant="top" src={this.props.user.avatar} /> */}
                   <Card.Title>{this.props.user.username}</Card.Title>
                 </Col>
                 <Col xs={10} lg={10}>
