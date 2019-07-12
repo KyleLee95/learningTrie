@@ -74,7 +74,7 @@ class Inbox extends Component {
             </Card>
           </Col>
 
-          <Col xs={{span: 9}}>
+          <Col xs={12} sm={12} md={12} lg={9} xl={9}>
             <ul style={{listStyle: 'none'}}>
               {this.props.conversations && this.props.conversations.length > 0
                 ? this.props.conversations.map(conversation => {
