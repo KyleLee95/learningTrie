@@ -38,7 +38,6 @@ class ResourceTagLineItem extends Component {
       })
     }
     if (voteCheck.length > 0) {
-      console.log(voteCheck)
       this.setState({
         voteType: voteCheck[0].voteType
       })
@@ -173,7 +172,7 @@ class ResourceTagLineItem extends Component {
                 resource.ResourceTags.length > 0
                   ? resource.ResourceTags.map(tag => {
                       return (
-                        <Link to={`/tag/${tag.id}`} key={tag.id}>
+                        <Link to={`/resourceTag/${tag.id}`} key={tag.id}>
                           <Button size="sm" variant="light">
                             {tag.title}{' '}
                           </Button>

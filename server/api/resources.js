@@ -167,6 +167,18 @@ router.put('/', async (req, res, next) => {
       link: req.body.link,
       type: req.body.type
     })
+    if (req.body.tags) {
+      req.body.tags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
+
+        await resource.addResourceTag(newTag[0])
+      })
+    } else {
+      req.body.ResourceTags.forEach(async tag => {
+        let newTag = await ResourceTag.findOrCreate({where: {title: tag.title}})
+        await resource.addResourceTag(newTag[0])
+      })
+    }
 
     res.status(200).json(resource)
   } catch (err) {

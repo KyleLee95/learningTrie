@@ -50,6 +50,7 @@ class Conversation extends Component {
         <Row>
           <Col lg={{span: 10, offset: 1}}>
             <h3>
+              Subject:{' '}
               {this.props.conversations[0] !== undefined
                 ? this.props.conversations[0].subject
                 : ''}
@@ -104,32 +105,26 @@ class Conversation extends Component {
             })}
 
             <Card>
-              <Row>
-                <Col xs={2} lg={2}>
-                  {/* <Card.Img variant="top" src={this.props.user.avatar} /> */}
-                  <Card.Title>{this.props.user.username}</Card.Title>
-                </Col>
-                <Col xs={10} lg={10}>
-                  <Form>
-                    <Form.Row>
-                      <Form.Label>Reply</Form.Label>
-                      <Form.Control
-                        value={this.state.content.value}
-                        id="content"
-                        as="textarea"
-                        resize="both"
-                        rows="5"
-                        cols="300"
-                        name="content"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Row>
-                    <Form.Row>
-                      <Button onClick={this.handleSubmit}>Submit</Button>
-                    </Form.Row>
-                  </Form>
-                </Col>
-              </Row>
+              <Card.Header>Replying as: {this.props.user.username}</Card.Header>
+              <Card.Body>
+                <Form>
+                  <Form.Row>
+                    <Form.Control
+                      value={this.state.content.value}
+                      id="content"
+                      as="textarea"
+                      resize="both"
+                      rows="5"
+                      cols="300"
+                      name="content"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Row>
+                  <Form.Row>
+                    <Button onClick={this.handleSubmit}>Submit</Button>
+                  </Form.Row>
+                </Form>
+              </Card.Body>
             </Card>
           </Col>
         </Row>
