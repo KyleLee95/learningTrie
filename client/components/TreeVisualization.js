@@ -67,15 +67,15 @@ const GraphConfig = {
         </symbol>
       )
     },
-    target: {
-      // NOT BEING USED
-      shapeId: '#empty', // relates to the type property of a node
-      shape: (
-        <symbol viewBox="0 0 100 100" id="empty" key="0">
-          <circle cx="50" cy="50" r="45" fill="currentColor" />
-        </symbol>
-      )
-    },
+    // target: {
+    //   // NOT BEING USED
+    //   shapeId: '#empty', // relates to the type property of a node
+    //   shape: (
+    //     <symbol viewBox="0 0 100 100" id="empty" key="0">
+    //       <circle cx="50" cy="50" r="45" fill="currentColor" />
+    //     </symbol>
+    //   )
+    // },
     special: {
       shapeId: '#special',
       shape: (
@@ -156,6 +156,7 @@ class TreeVisualization extends Component {
       search: false,
       recommend: false,
       searchResults: [],
+      shape: 'empty',
       target: {},
       drawing: false,
       actions: [],
@@ -207,7 +208,7 @@ class TreeVisualization extends Component {
     //Undo
     this.onUndo = this.onUndo.bind(this)
     //toggleDraw
-    this.toggleDraw = this.toggleDraw.bind(this)
+    // this.toggleDraw = this.toggleDraw.bind(this)
   }
 
   //COMPONENT METHODS
@@ -240,8 +241,15 @@ class TreeVisualization extends Component {
       //pushes new node into objects array so that you can undo the action
 
       this.state.objects.push(this.props.edges[this.props.edges.length - 1])
-    // console.log('objects', this.state.objects)
-    // console.log('actions', this.state.actions)
+    if (
+      this.props.shape !== prevProps.shape &&
+      this.props.shape !== 'Node Shape'
+    ) {
+      this.setState({
+        shape: this.props.shape
+      })
+    }
+    console.log(this.state)
   }
 
   //END COMPONENT METHODS
@@ -299,7 +307,7 @@ class TreeVisualization extends Component {
         title: 'Double Click To Edit',
         question: '',
         nodeType: 'Root',
-        type: 'empty',
+        type: this.state.shape,
         x: x,
         y: y,
         treeId: this.props.trees[0].id
@@ -351,8 +359,8 @@ class TreeVisualization extends Component {
       await this.props.putNode({
         id: this.state.target.id,
         x: this.state.target.x,
-        y: this.state.target.y,
-        type: 'empty'
+        y: this.state.target.y
+        // type: 'empty'
       })
       this.setState({
         target: node
@@ -360,8 +368,8 @@ class TreeVisualization extends Component {
       await this.props.putNode({
         id: this.state.target.id,
         x: this.state.target.x,
-        y: this.state.target.y,
-        type: 'custom'
+        y: this.state.target.y
+        // type: 'custom'
       })
       return ''
       // } else if (
@@ -403,8 +411,8 @@ class TreeVisualization extends Component {
           title: this.state.target.title,
           description: this.state.target.description,
           question: this.state.target.question,
-          nodeType: this.state.target.nodeType,
-          type: 'empty'
+          nodeType: this.state.target.nodeType
+          // type: 'empty'
           // x: this.state.target.x,
           // y: this.state.target.y
         })
@@ -677,14 +685,14 @@ class TreeVisualization extends Component {
     })
   }
 
-  toggleDraw(event) {
-    d3.event.sourceEvent.shiftKey = true
-    // const circles = d3.select('svg').selectAll('circle')
-    // console.log(circles)
-    // circles[0].setState({
-    //   drawingEdge: true
-    // })
-  }
+  // toggleDraw(event) {
+  //   d3.event.sourceEvent.shiftKey = true
+  //   // const circles = d3.select('svg').selectAll('circle')
+  //   // console.log(circles)
+  //   // circles[0].setState({
+  //   //   drawingEdge: true
+  //   // })
+  // }
   render() {
     const selected = this.state.selected
     const NodeTypes = GraphConfig.NodeTypes

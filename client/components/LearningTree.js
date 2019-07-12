@@ -28,8 +28,6 @@ import {Link} from 'react-router-dom'
 import {me} from '../store/currentUser'
 import {ConnectedNewReview} from './NewReview'
 
-//TODO:
-//Forms are only prefilled the first time you edit. After that the forms empty.
 let auth = false
 let favorite = false
 class LearningTree extends Component {
@@ -39,7 +37,8 @@ class LearningTree extends Component {
       showEdit: false,
       show: false,
       showCollaborator: false,
-      shape: 'Circle'
+      shape: 'Node Shape',
+      title: 'Node Shape'
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -81,7 +80,6 @@ class LearningTree extends Component {
   //BEGIN MODAL METHODS
   //EDIT \/\/\/\/
   async handleSubmit() {
-    console.log(this.state)
     this.handleCloseEdit()
     let tags = this.props.trees[0].tags
     let privateCheck = false
@@ -170,7 +168,12 @@ class LearningTree extends Component {
   render() {
     const {description, title} = this.state
     let enabled
-    const shapes = ['Circle', 'Square', 'Rectangle', 'Diamond', 'Hexagon']
+    const shapes = [
+      {name: 'circle', type: 'empty'},
+      {name: 'rectangle', type: 'skinny'},
+      {name: 'diamond', type: 'special'},
+      {name: 'hexagon', type: 'poly'}
+    ]
     if (description !== undefined && title !== undefined) {
       enabled = description.length > 0 && title.length > 0
     }
@@ -382,10 +385,23 @@ class LearningTree extends Component {
                         </Button>
                       )}
                       {/* pass the node shape down as props to tree viz so that it creates the correct shape */}
-                      <DropdownButton variant="submit" title="Node Shape">
+                      <DropdownButton
+                        variant="submit"
+                        title={`${this.state.title}`}
+                      >
                         {shapes.map(shape => {
                           return (
-                            <Dropdown.Item key={shape}>{shape}</Dropdown.Item>
+                            <Dropdown.Item
+                              key={shape.name}
+                              onClick={() => {
+                                this.setState({
+                                  shape: shape.type,
+                                  title: shape.name
+                                })
+                              }}
+                            >
+                              {shape.name}
+                            </Dropdown.Item>
                           )
                         })}
                       </DropdownButton>
@@ -396,7 +412,10 @@ class LearningTree extends Component {
             </Row>
             <Row>
               <Col xs={12}>
-                <ConnectedTreeVisualization match={this.props.match} />
+                <ConnectedTreeVisualization
+                  match={this.props.match}
+                  shape={this.state.shape}
+                />
               </Col>
             </Row>
           </Col>
