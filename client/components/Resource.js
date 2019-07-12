@@ -1,6 +1,6 @@
 /*eslint-disable complexity*/
 import React, {Component} from 'react'
-import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
+import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {
   getSingleResource,
@@ -8,15 +8,22 @@ import {
   putResource,
   postResource
 } from '../store/resource'
+import {upvote, downvote, getVote} from '../store/vote'
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
-import {ConnectedComment, ConnectedResourceCommentForm} from '.'
+import {
+  ConnectedComment,
+  ConnectedResourceCommentForm,
+  ConnectedResourceTagLineItem
+} from '.'
 import {Link} from 'react-router-dom'
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      show: false
+      show: false,
+      score: 0,
+      voteType: 'none'
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -25,9 +32,41 @@ class Resource extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getSingleResource(Number(this.props.match.params.id))
+    await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
+    let voteCheck = []
+    if (
+      this.props.resource !== undefined &&
+      this.props.resource.votes !== undefined &&
+      this.props.resource.votes.length > 0 &&
+      this.props.user !== undefined &&
+      this.props.user.id !== undefined
+    ) {
+      const upvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'upvote'
+      })
+      const downvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'downvote'
+      })
+      let resourceScore = upvotes.length - downvotes.length
+      this.setState({
+        score: resourceScore,
+        originalScore: resourceScore
+      })
+      voteCheck = this.props.resource.votes.filter(vote => {
+        return vote.userId === this.props.user.id
+      })
+    }
+    console.log(voteCheck)
+    if (voteCheck.length > 0) {
+      this.setState({
+        voteType: voteCheck[0].voteType
+      })
+    } else
+      this.setState({
+        voteType: 'none'
+      })
   }
 
   handleShow() {
@@ -58,6 +97,17 @@ class Resource extends Component {
     this.handleClose()
   }
   render() {
+    let tags = ''
+    if (
+      this.props.resource &&
+      this.props.resource.ResourceTags &&
+      this.props.resource.ResourceTags.length > 0
+    ) {
+      this.props.resource.ResourceTags.forEach(tag => {
+        tags += `${tag.title}, `
+      })
+    }
+
     const options = [
       'Select Type',
       'Paper',
@@ -74,11 +124,12 @@ class Resource extends Component {
       'Practice Problem Set',
       'Exercise'
     ]
+    const resource = this.props.resource
     return (
       <div>
         <Row>
           <Col xs={12}>
-            <Col xs={5}>
+            {/* <Col xs={5}>
               <Row>
                 {' '}
                 <strong>Title:</strong>{' '}
@@ -119,8 +170,8 @@ class Resource extends Component {
                     : ''}
                 </a>
               </Col>
-            </Row>
-            <Row>
+            </Row> */}
+            {/* <Row>
               <Col xs={5}>
                 <strong>Tags:</strong>{' '}
                 {this.props.resource && this.props.resource.ResourceTags
@@ -134,6 +185,153 @@ class Resource extends Component {
                       )
                     })
                   : null}
+              </Col>
+            </Row> */}
+            <Row>
+              <Col xs={5}>
+                {this.props.resource !== undefined &&
+                this.props.resource.votes !== undefined ? (
+                  <React.Fragment>
+                    <Card>
+                      <Card.Body>
+                        <Card.Title>
+                          <Row>
+                            <Col>
+                              <React.Fragment>
+                                <Link
+                                  to={`/resource/${resource.id}`}
+                                  style={{color: 'black'}}
+                                >
+                                  {resource.title} | Score:{' '}
+                                </Link>{' '}
+                                {this.state.voteType === 'upvote' ? (
+                                  //deletes an upvote
+                                  <Button
+                                    variant="success"
+                                    sz="sm"
+                                    onClick={async () => {
+                                      await this.props.upvote({
+                                        resource: this.props.resource,
+                                        voteType: 'upvote'
+                                      })
+                                      this.setState({
+                                        voteType: 'none',
+                                        score: this.state.score - 1
+                                      })
+                                    }}
+                                  >
+                                    +
+                                  </Button>
+                                ) : (
+                                  //posts the upvote
+
+                                  <Button
+                                    variant="outline-secondary"
+                                    sz="sm"
+                                    onClick={async () => {
+                                      await this.props.upvote({
+                                        resource: this.props.resource,
+                                        voteType: 'none'
+                                      })
+                                      if (this.state.voteType === 'none') {
+                                        this.setState({
+                                          voteType: 'upvote',
+                                          score: this.state.score + 1
+                                        })
+                                      } else if (
+                                        this.state.voteType === 'downvote'
+                                      ) {
+                                        this.setState({
+                                          voteType: 'upvote',
+                                          score: this.state.score + 2
+                                        })
+                                      }
+                                    }}
+                                  >
+                                    +
+                                  </Button>
+                                )}
+                                <Button variant="submit" sz="sm">
+                                  {this.state.score} pts.
+                                </Button>
+                                {this.state.voteType === 'downvote' ? (
+                                  //deletes downvote
+                                  <Button
+                                    variant="danger"
+                                    sz="sm"
+                                    onClick={async () => {
+                                      await this.props.downvote({
+                                        resource: this.props.resource,
+                                        voteType: 'none'
+                                      })
+                                      this.setState({
+                                        voteType: 'none',
+                                        score: this.state.score + 1
+                                      })
+                                    }}
+                                  >
+                                    -
+                                  </Button>
+                                ) : (
+                                  //posts a downvote
+
+                                  <Button
+                                    variant="outline-secondary"
+                                    sz="sm"
+                                    onClick={async () => {
+                                      await this.props.downvote({
+                                        resource: this.props.resource,
+                                        voteType: 'downvote'
+                                      })
+                                      if (this.state.voteType === 'upvote') {
+                                        this.setState({
+                                          voteType: 'downvote',
+                                          score: this.state.score - 2
+                                        })
+                                      } else if (
+                                        this.state.voteType === 'none'
+                                      ) {
+                                        this.setState({
+                                          voteType: 'downvote',
+                                          score: this.state.score - 1
+                                        })
+                                      }
+                                    }}
+                                  >
+                                    -
+                                  </Button>
+                                )}
+                              </React.Fragment>
+                            </Col>
+                          </Row>
+                        </Card.Title>
+                        <Card.Subtitle className="text-muted">
+                          {resource.description}
+                        </Card.Subtitle>
+                        <hr />
+                        <Row>
+                          <Col>
+                            Tags:
+                            {resource &&
+                            resource.ResourceTags &&
+                            resource.ResourceTags.length > 0
+                              ? resource.ResourceTags.map(tag => {
+                                  return (
+                                    <Link to={`/tag/${tag.id}`} key={tag.id}>
+                                      <Button size="sm" variant="light">
+                                        {tag.title}{' '}
+                                      </Button>
+                                    </Link>
+                                  )
+                                })
+                              : null}
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                    <br />
+                  </React.Fragment>
+                ) : null}
               </Col>
             </Row>
           </Col>
@@ -228,6 +426,14 @@ class Resource extends Component {
                     return <option key={option}>{option}</option>
                   })}
                 </Form.Control>
+                <Form.Label>Tags</Form.Label>
+                <Form.Control
+                  name="tags"
+                  type="tags"
+                  placeholder="Enter Tags"
+                  defaultValue={tags}
+                  onChange={this.handleChange}
+                />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
@@ -252,7 +458,10 @@ const mapDispatch = dispatch => {
     delResource: resource => dispatch(delResource(resource)),
     putResource: resource => dispatch(putResource(resource)),
     getComments: resourceId => dispatch(getComments(resourceId)),
-    getLink: resourceId => dispatch(getLink(resourceId))
+    getLink: resourceId => dispatch(getLink(resourceId)),
+    upvote: resource => dispatch(upvote(resource)),
+    downvote: resource => dispatch(downvote(resource)),
+    getVote: resource => dispatch(getVote(resource))
   }
 }
 
@@ -261,7 +470,8 @@ const mapState = state => {
     resource: state.resource,
     comments: state.comment,
     link: state.link,
-    user: state.currUser
+    user: state.currUser,
+    vote: state.vote
   }
 }
 

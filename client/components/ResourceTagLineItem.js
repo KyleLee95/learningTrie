@@ -18,6 +18,7 @@ class ResourceTagLineItem extends Component {
     if (
       this.props.resource !== undefined &&
       this.props.resource.votes !== undefined &&
+      this.props.resource.votes.length > 0 &&
       this.props.user !== undefined &&
       this.props.user.id !== undefined
     ) {
@@ -36,8 +37,8 @@ class ResourceTagLineItem extends Component {
         return vote.userId === this.props.user.id
       })
     }
-
     if (voteCheck.length > 0) {
+      console.log(voteCheck)
       this.setState({
         voteType: voteCheck[0].voteType
       })
