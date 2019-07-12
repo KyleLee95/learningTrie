@@ -46,7 +46,9 @@ class AdminControl extends Component {
                     return (
                       <li key={user.id}>
                         {' '}
-                        id: {user.id} username: {user.username}{' '}
+                        <Link to={`/user/${user.id}`}>
+                          id: {user.id} username: {user.username}{' '}
+                        </Link>
                       </li>
                     )
                   })}
