@@ -87,7 +87,7 @@ const GraphConfig = {
     poly: {
       shapeId: '#poly',
       shape: (
-        <symbol viewBox="0 0 88 72" id="poly" width="88" height="88">
+        <symbol viewBox="0 0 88 72" id="poly" width="90" height="88">
           <path d="M 0 36 18 0 70 0 88 36 70 72 18 72Z" />
         </symbol>
       )

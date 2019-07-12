@@ -169,10 +169,10 @@ class LearningTree extends Component {
     const {description, title} = this.state
     let enabled
     const shapes = [
-      {name: 'circle', type: 'empty'},
-      {name: 'rectangle', type: 'skinny'},
-      {name: 'diamond', type: 'special'},
-      {name: 'hexagon', type: 'poly'}
+      {name: 'Circle', type: 'empty'},
+      {name: 'Rectangle', type: 'skinny'},
+      {name: 'Diamond', type: 'special'},
+      {name: 'Hexagon', type: 'poly'}
     ]
     if (description !== undefined && title !== undefined) {
       enabled = description.length > 0 && title.length > 0
