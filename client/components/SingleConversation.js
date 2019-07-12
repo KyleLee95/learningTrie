@@ -59,35 +59,47 @@ class Conversation extends Component {
         <Row>
           <Col lg={{span: 10, offset: 1}}>
             {this.props.messages.map(message => {
-              return (
+              return message.messageType === 'message' ? (
                 <React.Fragment key={message.id}>
                   <Card>
-                    <Row>
-                      <Col xs={2} lg={2}>
-                        {/* <Card.Img
-                          variant="top"
-                          src={
-                            message.user.avatar !== undefined
-                              ? message.user.avatar
-                              : null
-                          }
-                        /> */}
-                        <Card.Title>{message.user.username}</Card.Title>
-                      </Col>
-                      <Col xs={10} lg={10}>
-                        <Card.Title>
-                          {moment(message.createdAt).format(
-                            'MMMM Do YYYY, h:mma'
-                          )}
-                        </Card.Title>
-                        <hr />
-                        <Card.Body>{message.content}</Card.Body>
-                      </Col>
-                    </Row>
+                    <Card.Header>
+                      <Link to={`/user/${message.user.id}`}>
+                        {message.user.username}
+                      </Link>{' '}
+                      {moment(message.createdAt).format('MMMM Do YYYY, h:mma')}
+                    </Card.Header>
+
+                    {/* <hr /> */}
+                    <Card.Body>{message.content}</Card.Body>
                   </Card>
+                  <br />
+                </React.Fragment>
+              ) : (
+                <React.Fragment key={message.id}>
+                  <Card>
+                    <Card.Header>
+                      <Link to={`/user/${message.user.id}`}>
+                        {message.user.username}
+                      </Link>{' '}
+                      {moment(message.createdAt).format('MMMM Do YYYY, h:mma')}
+                    </Card.Header>
+
+                    {/* <hr /> */}
+                    <Card.Body>
+                      <Link to={`/user/${message.user.id}`}>
+                        {message.user.username}
+                      </Link>{' '}
+                      {message.content} in{' '}
+                      <Link to={`/learningTree/${message.treeId}`}>
+                        {message.tree}
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                  <br />
                 </React.Fragment>
               )
             })}
+
             <Card>
               <Row>
                 <Col xs={2} lg={2}>

@@ -272,7 +272,9 @@ class NodeResourceModal extends Component {
       treeName: this.props.trees[0].title,
       nodeTitle: this.props.selected.title,
       ownerId: this.props.trees[0].ownerId,
-      isSender: true
+      isSender: true,
+      tree: this.props.trees[0].title,
+      treeId: this.props.trees[0].id
     })
     this.handleRecommendClose()
   }
@@ -692,6 +694,7 @@ class NodeResourceModal extends Component {
                                   nodeTitle: this.props.selected.title,
                                   treeName: this.props.trees[0].title
                                 })
+                                console.log(this.props)
                                 await this.props.recommendMessage({
                                   id: result.id,
                                   link: result.link,
@@ -701,8 +704,10 @@ class NodeResourceModal extends Component {
                                   description: result.description,
                                   nodeId: this.props.selected.id,
                                   nodeTitle: this.props.selected.title,
-                                  treeName: this.props.trees[0].title,
-                                  isSender: true
+                                  isSender: true,
+                                  messageType: 'recommendation',
+                                  tree: this.props.trees[0].title,
+                                  treeId: this.props.trees[0].id
                                 })
                               }}
                             >

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Message, User, Conversation} = require('../db/models')
+const {Message, User, Conversation, Recommendation} = require('../db/models')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -27,13 +27,15 @@ router.post('/recommendResource', async (req, res, next) => {
       sender: sender.username,
       receiver: receiver.username
     })
-    const createMessage = await Message.create({
-      content: `${req.user.username} recommended resource: ${
-        req.body.title
-      } to node ${req.body.nodeTitle}`
-    })
 
-    //ownerId from LearningTreeOwnerId
+    const createMessage = await Message.create({
+      messageType: 'recommendation',
+      content: `recommended resource: ${req.body.title} to node ${
+        req.body.nodeTitle
+      }`,
+      tree: req.body.tree,
+      treeId: req.body.treeId
+    })
 
     await receiver.update({
       newMessage: true
@@ -60,7 +62,7 @@ router.post('/recommendResource', async (req, res, next) => {
         {where: {id: conversation.id}}
       )
     }
-    const message = await Message.findAll({
+    let message = await Message.findAll({
       where: {conversationId: conversation.id},
       include: [{model: User}, {model: Conversation}]
     })
@@ -84,7 +86,8 @@ router.post('/', async (req, res, next) => {
     })
     const receiver = await User.findByPk(checkReceiver.id)
     const createMessage = await Message.create({
-      content: req.body.content
+      content: req.body.content,
+      messageType: 'message'
     })
     await receiver.update({
       newMessage: true
