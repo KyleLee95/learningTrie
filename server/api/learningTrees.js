@@ -68,7 +68,17 @@ router.get('/allTrees', async (req, res, next) => {
     const trees = await user.getLearningTrees({
       include: [{model: Tag}, {model: Review}, {model: User}]
     })
-    res.status(200).json(trees)
+    const favoriteTrees = await user.getFavorite({
+      include: [{model: Tag}, {model: Review}, {model: User}]
+    })
+
+    let treeArr = [...trees, ...favoriteTrees]
+
+    const uniqueSet = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
+      return treeArr.find(a => a.id === id)
+    })
+
+    res.status(200).json(uniqueSet)
   } catch (err) {
     next(err)
   }

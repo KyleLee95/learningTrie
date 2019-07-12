@@ -463,15 +463,17 @@ class LearningTree extends Component {
             </Modal.Header>
             <Modal.Body>
               <Modal.Body>
-                <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    name="email"
-                    type="email"
-                    onChange={this.handleCollabChange}
-                    placeholder="Enter Email"
-                  />
-                </Form.Group>
+                {auth === true || this.props.user.rank === 'admin' ? (
+                  <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      name="email"
+                      type="email"
+                      onChange={this.handleCollabChange}
+                      placeholder="Enter Email"
+                    />
+                  </Form.Group>
+                ) : null}
                 Approved Collaborators
                 {this.props.trees[0] &&
                 this.props.trees[0] &&
@@ -508,9 +510,11 @@ class LearningTree extends Component {
               <Button variant="submit" onClick={this.handleCollabClose}>
                 Close
               </Button>
-              <Button variant="submit" onClick={this.handleCollabSubmit}>
-                Submit
-              </Button>
+              {auth === true || this.props.user.rank === 'admin' ? (
+                <Button variant="submit" onClick={this.handleCollabSubmit}>
+                  Submit
+                </Button>
+              ) : null}
             </Modal.Footer>
           </Modal>
         </Form>

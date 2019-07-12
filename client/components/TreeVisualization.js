@@ -879,7 +879,7 @@ class TreeVisualization extends Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Col
+              {/* <Col
                 xs={12}
                 s={12}
                 md={12}
@@ -887,8 +887,8 @@ class TreeVisualization extends Component {
                 xl={12}
                 id="graph"
                 style={{width: '120%', height: '45vw'}}
-              >
-                {/* <div id="graph" style={{width: '100%', height: '40vw'}}> */}
+              > */}
+              <div id="graph" style={{width: '100%', height: '45vw'}}>
                 {this.props.nodes &&
                 this.props.nodes[0] !== undefined &&
                 this.props.edges &&
@@ -938,8 +938,8 @@ class TreeVisualization extends Component {
                     onUndo={this.onUndo}
                   />
                 )}
-                {/* </div> */}
-              </Col>
+              </div>
+              {/* </Col> */}
             </React.Fragment>
           )}
 
