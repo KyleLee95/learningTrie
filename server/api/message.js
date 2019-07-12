@@ -30,7 +30,7 @@ router.post('/recommendResource', async (req, res, next) => {
 
     const createMessage = await Message.create({
       messageType: 'recommendation',
-      content: `recommended resource: ${req.body.title} to node ${
+      content: `recommended the resource ${req.body.title} to node ${
         req.body.nodeTitle
       }`,
       tree: req.body.tree,

@@ -86,7 +86,10 @@ class Conversation extends Component {
 
                     {/* <hr /> */}
                     <Card.Body>
-                      <Link to={`/user/${message.user.id}`}>
+                      <Link
+                        to={`/user/${message.user.id}`}
+                        style={{color: 'black'}}
+                      >
                         {message.user.username}
                       </Link>{' '}
                       {message.content} in{' '}

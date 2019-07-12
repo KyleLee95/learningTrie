@@ -2,6 +2,20 @@ const router = require('express').Router()
 const {Conversation, User, Message} = require('../db/models')
 module.exports = router
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const conversations = await Conversation.findAll({
+      where: {
+        id: req.params.id
+      },
+      include: [{model: User}]
+    })
+    res.status(200).json(conversations)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/', async (req, res, next) => {
   try {
     const conversations = await Conversation.findAll({
@@ -11,18 +25,6 @@ router.get('/', async (req, res, next) => {
           where: {id: req.user.id}
         }
       ]
-    })
-    res.status(200).json(conversations)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:id', async (req, res, next) => {
-  try {
-    const conversations = await Conversation.findAll({
-      where: req.body.conversationId,
-      include: [{model: User}]
     })
     res.status(200).json(conversations)
   } catch (err) {

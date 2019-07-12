@@ -128,6 +128,7 @@ export const InboxLineItem = props => {
           </Card>
         </li>
       )}
+      <br />
     </React.Fragment>
   )
 }
