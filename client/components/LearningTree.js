@@ -8,7 +8,10 @@ import {
   Button,
   Form,
   DropdownButton,
-  Dropdown
+  Dropdown,
+  OverlayTrigger,
+  Tooltip,
+  Popover
 } from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {ConnectedTreeVisualization, ConnectedSidebar} from '.'
@@ -288,7 +291,7 @@ class LearningTree extends Component {
           <Col xs={12}>
             <Row>
               <Col xs={12}>
-                <Row className="justify-content-space-evenly">
+                <Row className="justify-content-space-between">
                   {this.props.trees && this.props.trees[0] ? (
                     <h3>{this.props.trees[0].title} </h3>
                   ) : null}
@@ -345,6 +348,7 @@ class LearningTree extends Component {
                       <Button variant="submit" onClick={this.handleShowEdit}>
                         Edit
                       </Button>
+                      <br />
                       <Button variant="submit" onClick={this.handleShow}>
                         Delete
                       </Button>
@@ -405,6 +409,28 @@ class LearningTree extends Component {
                           )
                         })}
                       </DropdownButton>
+                      <OverlayTrigger
+                        placement="left"
+                        trigger="click"
+                        overlay={
+                          <Popover id="tooltip-left">
+                            <ul>
+                              <li>To create a node: shift + click </li>
+                              <li>
+                                {' '}
+                                To create an association edge: shift + click (on
+                                source node) + drag (to target node)
+                              </li>
+                              <li>
+                                To delete a node/edge: select the node and then
+                                press backspace/delete on your keyboard
+                              </li>
+                            </ul>
+                          </Popover>
+                        }
+                      >
+                        <Button variant="submit">Controls Info</Button>
+                      </OverlayTrigger>
                     </React.Fragment>
                   ) : null}
                 </Row>
