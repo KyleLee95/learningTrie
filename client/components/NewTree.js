@@ -11,7 +11,8 @@ class NewTree extends Component {
     this.state = {
       show: false,
       title: '',
-      description: ''
+      description: '',
+      private: 'False'
     }
     //Bindings
     this.handleShow = this.handleShow.bind(this)
@@ -28,6 +29,7 @@ class NewTree extends Component {
     if (this.state.private === 'True') {
       privateCheck = true
     }
+
     await this.props.postTree({
       title: this.state.title,
       description: this.state.description,
@@ -53,6 +55,7 @@ class NewTree extends Component {
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value})
+    console.log(this.state)
   }
 
   render() {
@@ -100,11 +103,12 @@ class NewTree extends Component {
                     name="private"
                     as="select"
                     onChange={this.handleChange}
+                    // defaultValue={this.state.private}
                   >
                     {/* NOT WORKING NOT SURE WHY */}
                     <option>Select</option>
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
+                    <option>True</option>
+                    <option>False</option>
                   </Form.Control>
                   <Form.Text className="text-muted">
                     True: Only you and approved users can see this Tree.

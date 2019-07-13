@@ -131,7 +131,6 @@ router.get('/:id', async (req, res, next) => {
 //Associate a user as a collaborator of the learningTree
 
 router.put('/addCollaborator', async (req, res, next) => {
-  console.log('req.body', req.body)
   try {
     let tree = await LearningTree.findByPk(req.body.learningTreeId, {
       include: [{model: User, Tag, Review}]
@@ -292,7 +291,7 @@ router.post('/', async (req, res, next) => {
     const learningTree = await LearningTree.create({
       title: req.body.title,
       description: req.body.description,
-      isPrivate: req.body.private,
+      isPrivate: req.body.isPrivate,
       ownerId: req.user.id
     })
     const user = await User.findByPk(req.user.id)
