@@ -309,9 +309,26 @@ class Resource extends Component {
                             </Col>
                           </Row>
                         </Card.Title>
+                        <Card.Subtitle>
+                          <a
+                            href={
+                              this.props.resource &&
+                              this.props.resource.link !== undefined
+                                ? this.props.resource.link
+                                : ''
+                            }
+                            target="_blank"
+                          >
+                            {this.props.resource && this.props.resource.link
+                              ? this.props.resource.link
+                              : ''}
+                          </a>
+                        </Card.Subtitle>
+                        <br />
                         <Card.Subtitle className="text-muted">
                           {resource.description}
                         </Card.Subtitle>
+
                         <hr />
                         <Row>
                           <Col>
