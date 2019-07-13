@@ -199,25 +199,65 @@ class LearningTree extends Component {
     //auth check
 
     let authId = []
-    let canSee = false
+    let editorId = []
+    let viewerId = []
+    let modId = []
     let favoriteId = []
+
+    let canSee = false
+    let canEdit = false
+    let isMod = false
+
     let tags = ''
 
-    if (
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].users !== undefined &&
-      this.props.trees[0].users[0] !== undefined &&
-      this.props.trees[0].users[0].id !== undefined
-    ) {
-      this.props.trees[0].users.forEach(user => {
-        return authId.push(user.id)
-      })
+    if (this.props.trees !== undefined && this.props.trees[0] !== undefined) {
+      if (this.props.trees[0].isPrivate === true) {
+        if (
+          this.props.trees[0].viewer !== undefined &&
+          this.props.trees[0].viewer[0] !== undefined &&
+          this.props.trees[0].viewer[0].id !== undefined
+        ) {
+          //Viewer check
+          this.props.trees[0].viewer.forEach(viewer => {
+            return viewerId.push(viewer.id)
+          })
+          if (viewerId.includes(this.props.user.id) === true) {
+            canSee = true
+          }
+        }
+      }
+
+      if (
+        this.props.trees[0].editor !== undefined &&
+        this.props.trees[0].editor[0] !== undefined &&
+        this.props.trees[0].editor[0].id !== undefined
+      ) {
+        //Editor Check
+        this.props.trees[0].editor.forEach(editor => {
+          return editor.push(editor.id)
+        })
+        if (editorId.includes(this.props.user.id) === true) {
+          canEdit = true
+        }
+      }
+
+      if (
+        this.props.trees[0].moderator !== undefined &&
+        this.props.trees[0].moderator[0] !== undefined &&
+        this.props.trees[0].moderator[0].id !== undefined
+      ) {
+        //Moderator Check
+        this.props.trees[0].moderator.forEach(moderator => {
+          return modId.push(moderator.id)
+        })
+      }
+      if (modId.includes(this.props.user.id) === true) {
+        isMod = true
+      }
+    } else {
+      canSee = true
     }
-    if (authId.includes(this.props.user.id) === true) {
-      auth = true
-    }
+
     //favorite check
     if (
       this.props.trees !== undefined &&
@@ -250,44 +290,15 @@ class LearningTree extends Component {
       tags = tags.slice(0, tags.length - 2)
     }
 
-    //can see
-
     if (
-      //auth true && isPrivate false
-      auth === true &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate === false
+      (this.props.user && this.props.user.rank === 'admin') ||
+      (this.props.trees !== undefined &&
+        this.props.trees[0] !== undefined &&
+        this.props.user.id === this.props.trees[0].ownerId)
     ) {
       canSee = true
-    } else if (
-      //auth true && isPrivate === true
-      auth === true &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate === true
-    ) {
-      canSee = true
-    } else if (
-      //auth false && isPrivate === false
-      auth === false &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate === false
-    ) {
-      canSee = true
-    } else if (
-      //auth false && isPrivate === true
-      auth === false &&
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].isPrivate === true
-    ) {
-      canSee = false
-    }
-
-    if (this.props.user && this.props.user.rank === 'admin') {
-      canSee = true
+      canEdit = true
+      isMod = true
     }
 
     return canSee === true ? (
@@ -308,7 +319,7 @@ class LearningTree extends Component {
                   this.props.user.id !== undefined &&
                   this.props.trees[0].users !== undefined &&
                   this.props.trees[0].users[0] !== undefined &&
-                  auth === false ? (
+                  canEdit === false ? (
                     <React.Fragment>
                       <Button variant="submit">
                         <Link
@@ -348,7 +359,7 @@ class LearningTree extends Component {
                         </Button>
                       )}
                     </React.Fragment>
-                  ) : this.props.trees[0] !== undefined && auth === true ? (
+                  ) : this.props.trees[0] !== undefined && isMod === true ? (
                     <React.Fragment>
                       <Button variant="submit" onClick={this.handleShowEdit}>
                         Edit
@@ -464,7 +475,7 @@ class LearningTree extends Component {
             </Modal.Header>
             <Modal.Body>
               <Modal.Body>
-                {auth === true || this.props.user.rank === 'admin' ? (
+                {isMod === true || this.props.user.rank === 'admin' ? (
                   <React.Fragment>
                     <Form.Label>Enter Username</Form.Label>
                     <Form.Group controlId="username">
@@ -531,7 +542,7 @@ class LearningTree extends Component {
               <Button variant="submit" onClick={this.handleCollabClose}>
                 Close
               </Button>
-              {auth === true || this.props.user.rank === 'admin' ? (
+              {isMod === true || this.props.user.rank === 'admin' ? (
                 <Button variant="submit" onClick={this.handleCollabSubmit}>
                   Submit
                 </Button>

@@ -101,6 +101,7 @@ class NewTree extends Component {
                     as="select"
                     onChange={this.handleChange}
                   >
+                    {/* NOT WORKING NOT SURE WHY */}
                     <option>Select</option>
                     <option value={true}>True</option>
                     <option value={false}>False</option>
