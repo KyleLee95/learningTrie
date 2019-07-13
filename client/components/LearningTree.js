@@ -162,7 +162,8 @@ class LearningTree extends Component {
     e.preventDefault()
     await this.props.associateUserToTree({
       learningTreeId: Number(this.props.match.params.id),
-      email: this.state.email
+      username: this.state.username,
+      permission: this.state.permission
     })
   }
 
@@ -464,15 +465,35 @@ class LearningTree extends Component {
             <Modal.Body>
               <Modal.Body>
                 {auth === true || this.props.user.rank === 'admin' ? (
-                  <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      name="email"
-                      type="email"
-                      onChange={this.handleCollabChange}
-                      placeholder="Enter Email"
-                    />
-                  </Form.Group>
+                  <React.Fragment>
+                    <Form.Label>Enter Username</Form.Label>
+                    <Form.Group controlId="username">
+                      <Form.Control
+                        name="username"
+                        type="username"
+                        onChange={this.handleCollabChange}
+                        placeholder="Enter username to them as a collaborator"
+                      />
+                    </Form.Group>
+                    <Form.Label>Set Permissions</Form.Label>
+                    <Form.Group controlId="permission">
+                      <Form.Control
+                        as="select"
+                        name="permission"
+                        type="permission"
+                        onChange={this.handleCollabChange}
+                      >
+                        <option>Select</option>
+                        <option>Viewer</option>
+                        <option>Editor</option>
+                        <option>Moderator</option>
+                      </Form.Control>
+                      <Form.Text className="text-muted">
+                        Viewer allows other users to see the tree if it is set
+                        to private
+                      </Form.Text>
+                    </Form.Group>
+                  </React.Fragment>
                 ) : null}
                 Approved Collaborators
                 {this.props.trees[0] &&
@@ -493,7 +514,7 @@ class LearningTree extends Component {
                                   learningTreeId: Number(
                                     this.props.match.params.id
                                   ),
-                                  email: user.email
+                                  username: user.username
                                 })
                               }}
                             >

@@ -39,6 +39,8 @@ User.hasMany(Vote)
 //Learning Tree
 LearningTree.belongsToMany(User, {through: 'userTree'})
 LearningTree.belongsToMany(User, {through: 'favoriteTrees', as: 'favorite'})
+// LearningTree.hasMany(User, {as: 'editor'})
+// LearningTree.hasMany(User, {as: 'moderator'})
 LearningTree.belongsToMany(User, {through: 'canEdit', as: 'editor'})
 LearningTree.belongsToMany(User, {through: 'canView', as: 'viewer'})
 LearningTree.belongsToMany(User, {through: 'isMod', as: 'moderator'})

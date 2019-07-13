@@ -116,7 +116,10 @@ router.get('/:id', async (req, res, next) => {
         {model: User},
         {model: Tag},
         {model: Review},
-        {model: User, as: 'favorite'}
+        {model: User, as: 'favorite'},
+        {model: User, as: 'editor'},
+        {model: User, as: 'viewer'},
+        {model: User, as: 'moderator'}
       ]
     })
     res.status(200).json(tree)
@@ -128,15 +131,33 @@ router.get('/:id', async (req, res, next) => {
 //Associate a user as a collaborator of the learningTree
 
 router.put('/addCollaborator', async (req, res, next) => {
+  console.log('req.body', req.body)
   try {
     let tree = await LearningTree.findByPk(req.body.learningTreeId, {
       include: [{model: User, Tag, Review}]
     })
-    const sanitizeEmail = req.body.email.toLowerCase()
-    const user = await User.findOne({where: {email: sanitizeEmail}})
+    const sanitizeUsername = req.body.username.toLowerCase()
+    const user = await User.findOne({where: {dbUsername: sanitizeUsername}})
     await tree.addUser(user)
+    if (req.body.permission === 'Viewer') {
+      await tree.addViewer(user)
+    }
+    if (req.body.permission === 'Editor') {
+      await tree.addEditor(user)
+    }
+    if (req.body.permission === 'Moderator') {
+      await tree.addModerator(user)
+    }
     tree = await LearningTree.findByPk(req.body.learningTreeId, {
-      include: [{model: User, Tag, Review}]
+      include: [
+        {model: User},
+        {model: User, as: 'favorite'},
+        {model: User, as: 'editor'},
+        {model: User, as: 'viewer'},
+        {model: User, as: 'moderator'},
+        {model: Tag},
+        {model: Review}
+      ]
     })
     res.status(200).send([tree])
   } catch (err) {
@@ -151,11 +172,22 @@ router.put('/removeCollaborator', async (req, res, next) => {
     let tree = await LearningTree.findByPk(req.body.learningTreeId, {
       include: [{model: User, Tag, Review}, {model: User, as: 'favorite'}]
     })
-    const sanitizeEmail = req.body.email.toLowerCase()
-    const user = await User.findOne({where: {email: sanitizeEmail}})
+    const sanitizeUsername = req.body.username.toLowerCase()
+    const user = await User.findOne({where: {dbUsername: sanitizeUsername}})
     await tree.removeUser(user)
+    await tree.removeEditor(user)
+    await tree.removeViewer(user)
+    await tree.removeModerator(user)
     tree = await LearningTree.findByPk(req.body.learningTreeId, {
-      include: [{model: User, Tag, Review}]
+      include: [
+        {model: User},
+        {model: User, as: 'favorite'},
+        {model: User, as: 'editor'},
+        {model: User, as: 'viewer'},
+        {model: User, as: 'moderator'},
+        {model: Tag},
+        {model: Review}
+      ]
     })
     res.status(200).send([tree])
   } catch (err) {
@@ -173,7 +205,6 @@ router.put('/:id', async (req, res, next) => {
         {model: User, as: 'favorite'}
       ]
     })
-    console.log(req.body)
     const updatedTree = await tree.update({
       title: req.body.title,
       description: req.body.description,
