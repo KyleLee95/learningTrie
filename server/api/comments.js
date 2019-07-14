@@ -82,18 +82,26 @@ router.post('/', async (req, res, next) => {
 
 // Reply
 router.post('/reply', async (req, res, next) => {
-  console.log('req.body', req.body)
-  console.log('req.user', req.user.id)
   try {
+    console.log(req.body)
     let comment = await Comment.create({
       content: req.body.content,
       isChild: req.body.isChild
     })
     const user = await User.findByPk(Number(req.user.id))
-    console.log('user', user.data)
+
     const link = await Link.findByPk(req.body.linkId)
     const parent = await Comment.findByPk(req.body.parentId)
-    const resource = await Resource.findByPk(req.body.resourceId)
+    let resource = await Resource.findByPk(req.body.resourceId)
+    if (resource === null) {
+      resource = await Resource.findOne({
+        where: {
+          link: req.body.resourceLink
+        }
+      })
+    }
+
+    console.log(resource)
 
     await user.addComment(comment)
     await comment.setResource(resource)

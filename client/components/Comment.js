@@ -1,3 +1,4 @@
+/*eslint-disable complexity */
 import React, {Component} from 'react'
 import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
@@ -10,6 +11,7 @@ import {
 } from '../store/comment'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
+let recommendationCheck = false
 class Comment extends Component {
   constructor(props, context) {
     super(props, context)
@@ -79,7 +81,7 @@ class Comment extends Component {
 
   handleReplyShow(id) {
     let form = document.getElementById(id)
-    console.log(form)
+
     form.style.display = 'block'
   }
   handleReplyClose(id) {
@@ -96,6 +98,7 @@ class Comment extends Component {
     await this.props.postReply({
       parentId,
       resourceId: Number(this.props.resource.id),
+      resourceLink: this.props.recommendation[0].link,
       linkId: Number(this.props.link.id),
       content: this.state.reply,
       isChild: true
@@ -133,12 +136,15 @@ class Comment extends Component {
                     </Button>
                   </React.Fragment>
                 )}
-                <Button
-                  variant="submit"
-                  onClick={() => this.handleReplyShow(this.props.comment.id)}
-                >
-                  Reply
-                </Button>
+                {this.props.isRec === false ? (
+                  <Button
+                    variant="submit"
+                    onClick={() => this.handleReplyShow(this.props.comment.id)}
+                  >
+                    Reply
+                  </Button>
+                ) : null}
+
                 {/* \/\/\/\/\/\/\/\ reply form \/\/\/\/\/\/\/\/ */}
                 <Form
                   id={`${this.props.comment.id.toString()}`}
@@ -260,7 +266,8 @@ const mapState = state => {
     resource: state.resource,
     link: state.link,
     comments: state.comment,
-    user: state.currUser
+    user: state.currUser,
+    recommendation: state.recommendation
   }
 }
 

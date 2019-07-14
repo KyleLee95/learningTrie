@@ -242,7 +242,13 @@ class Recommendation extends Component {
             <hr />
             {this.props.comments && this.props.comments.length > 0
               ? this.props.comments.map(comment => {
-                  return <ConnectedComment key={comment.id} comment={comment} />
+                  return (
+                    <ConnectedComment
+                      key={comment.id}
+                      comment={comment}
+                      isRec={true}
+                    />
+                  )
                 })
               : 'No comments yet.'}
           </Col>

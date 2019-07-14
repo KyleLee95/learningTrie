@@ -21,6 +21,7 @@ class ResourceCommentForm extends Component {
       content: this.state.content,
       userId: this.props.user.id,
       resourceId: Number(this.props.resourceId),
+      resourceLink: this.props.recommendation[0].link,
       linkId: Number(this.props.linkId)
     })
     this.setState({
@@ -79,6 +80,7 @@ const mapDispatch = dispatch => {
 const mapState = state => {
   return {
     resource: state.resource,
+    recommendation: state.recommendation,
     user: state.currUser
   }
 }
