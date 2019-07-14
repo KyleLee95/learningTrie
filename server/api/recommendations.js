@@ -21,6 +21,17 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/node/:id', async (req, res, next) => {
+  try {
+    const node = await Node.findByPk(req.params.id)
+    const recommendations = await node.getRecommendations({
+      include: [{model: ResourceTag}, {model: User}]
+    })
+    res.status(200).json(recommendations)
+  } catch (err) {
+    next(err)
+  }
+})
 router.get('/:id', async (req, res, next) => {
   try {
     const recommendation = await Recommendation.findByPk(req.params.id, {

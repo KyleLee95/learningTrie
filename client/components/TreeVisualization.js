@@ -32,7 +32,11 @@ import {
   delEdge,
   delSelectedEdge
 } from '../store/edge'
-import {postRecommendation, getRecommendations} from '../store/recommendation'
+import {
+  postRecommendation,
+  getRecommendations,
+  getRecommendationsByNode
+} from '../store/recommendation'
 import {
   getResources,
   postResource,
@@ -317,7 +321,7 @@ class TreeVisualization extends Component {
   }
 
   async onUpdateNode(node) {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
+    if (this.props.canEdit === true) {
       // if (node.id === this.state.target.id) {
       //   await this.props.putNode({
       //     id: this.state.target.id,
@@ -402,7 +406,7 @@ class TreeVisualization extends Component {
         selected: node
       })
       await this.props.getResourcesByNode(this.state.selected)
-      await this.props.getRecommendations()
+      await this.props.getRecommendationsByNode(this.state.selected)
     } else if (node === null) {
       if (this.state.target.id !== undefined) {
         await this.props.putNode({
@@ -425,7 +429,7 @@ class TreeVisualization extends Component {
   }
 
   async onDeleteNode(node) {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
+    if (this.props.canEdit === true) {
       this.setState({
         selected: {}
       })
@@ -464,7 +468,7 @@ class TreeVisualization extends Component {
   }
 
   canDeleteEdge() {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
+    if (this.props.canEdit === true) {
       return true
     } else {
       return false
@@ -472,7 +476,7 @@ class TreeVisualization extends Component {
   }
 
   async onDeleteEdge() {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
+    if (this.props.canEdit === true) {
       await this.props.delSelectedEdge(this.state.selected)
       this.state.actions.push('deleteEdge')
       this.state.objects.push(this.state.selected)
@@ -485,7 +489,7 @@ class TreeVisualization extends Component {
   }
 
   canCreateEdge(startNode, endNode) {
-    if (this.props.user.id === this.props.trees[0].ownerId) {
+    if (this.props.canEdit === true) {
       return true
     } else {
       return false
@@ -737,212 +741,59 @@ class TreeVisualization extends Component {
       <ScrollLock>
         {/* TABS */}
         <Row>
-          {auth === true ? (
-            <React.Fragment>
-              {/* <Col
-                xs={12}
-                s={12}
-                md={12}
-                lg={1}
-                xl={1}
-                style={
-                  {
-                    border: '1px solid',
-                    backgroundColor: '#F9F9F9'
-                  }
-                }
-              >
-                <Button onClick={this.toggleDraw}>Draw Mode </Button>
-                  <br />
-                  <br />
-                {this.props.trees && this.props.trees[0] ? (
-                  <ConnectedNewNode treeId={this.props.trees[0].id} />
-                ) : (
-                  <ConnectedNewNode treeId={null} />
-                )}
-
-                <br />
-                <Card>
-                  <Button
-                    variant="light"
-                    onClick={async () => {
-                      const node = {
-                        id: this.state.selected.id,
-                        title: this.state.selected.title,
-                        description: this.state.selected.description,
-                        question: this.state.selected.question,
-                        nodeType: this.state.selected.nodeType,
-                        type: this.state.selected.type,
-                        x: this.state.selected.x,
-                        y: this.state.selected.y
-                      }
-                      this.setState({
-                        selected: {}
-                      })
-                      await this.props.delEdge(node)
-                      await this.props.delNode(node)
-                    }}
-                  >
-                    Delete Node
-                  </Button>
-                </Card>
-                <br />
-                <br />
-                <Button
-                    variant="primary"
-                    onClick={() =>
-                      this.onCreateEdge(this.state.selected, this.state.target)
-                    }
-                  >
-                    Add Edge
-                  </Button>
-                <br />
-                  <br />
-                <Card>
-                    <Button
-                      variant="submit"
-                      onClick={() => {
-                        this.setState({
-                          selected: {},
-                          target: {}
-                        })
-                      }}
-                    >
-                      Clear Selected
-                    </Button>
-                  </Card>
-                <br />
-                <br />
-              </Col> */}
-              {/* <Col
-                xs={12}
-                s={12}
-                lg={12}
-                xl={12}
-                // style={{border: '2px solid', backgroundColor: '#95989c'}}
-                id="graph"
-                style={{width: '150%', height: '42vw'}}
-              > */}
-
-              <div id="graph" style={{width: '120%', height: '45vw'}}>
-                {this.props.nodes &&
-                this.props.nodes[0] !== undefined &&
-                this.props.edges &&
-                this.props.edges[0] !== undefined ? (
-                  <GraphView
-                    ref="GraphView"
-                    style={{width: '100%'}}
-                    nodeKey={NODE_KEY}
-                    nodes={this.props.nodes}
-                    edges={this.props.edges}
-                    selected={selected}
-                    nodeTypes={NodeTypes}
-                    nodeSubtypes={NodeSubtypes}
-                    edgeTypes={EdgeTypes}
-                    onSelectNode={this.onSelectNode}
-                    onCreateNode={this.onCreateNode}
-                    onUpdateNode={this.onUpdateNode}
-                    onDeleteNode={this.onDeleteNode}
-                    onSelectEdge={this.onSelectEdge}
-                    onCreateEdge={this.onCreateEdge}
-                    onSwapEdge={this.onSwapEdge}
-                    onDeleteEdge={this.onDeleteEdge}
-                    canCreateEdge={this.canCreateEdge}
-                    renderNode={this.renderNode}
-                    onUndo={this.onUndo}
-                  />
-                ) : (
-                  <GraphView
-                    ref="GraphView"
-                    style={{width: '100%'}}
-                    nodeKey={NODE_KEY}
-                    nodes={this.props.nodes}
-                    edges={this.props.edges}
-                    selected={selected}
-                    nodeTypes={NodeTypes}
-                    nodeSubtypes={NodeSubtypes}
-                    edgeTypes={EdgeTypes}
-                    onSelectNode={this.onSelectNode}
-                    onCreateNode={this.onCreateNode}
-                    onUpdateNode={this.onUpdateNode}
-                    onDeleteNode={this.onDeleteNode}
-                    onSelectEdge={this.onSelectEdge}
-                    onCreateEdge={this.onCreateEdge}
-                    onSwapEdge={this.onSwapEdge}
-                    onDeleteEdge={this.onDeleteEdge}
-                    canCreateEdge={this.canCreateEdge}
-                    onUndo={this.onUndo}
-                  />
-                )}
-              </div>
-              {/* </Col> */}
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {/* <Col
-                xs={12}
-                s={12}
-                md={12}
-                lg={12}
-                xl={12}
-                id="graph"
-                style={{width: '120%', height: '45vw'}}
-              > */}
-              <div id="graph" style={{width: '100%', height: '45vw'}}>
-                {this.props.nodes &&
-                this.props.nodes[0] !== undefined &&
-                this.props.edges &&
-                this.props.edges[0] !== undefined ? (
-                  <GraphView
-                    ref="GraphView"
-                    style={{width: '100%'}}
-                    nodeKey={NODE_KEY}
-                    nodes={this.props.nodes}
-                    edges={this.props.edges}
-                    selected={selected}
-                    nodeTypes={NodeTypes}
-                    nodeSubtypes={NodeSubtypes}
-                    edgeTypes={EdgeTypes}
-                    onSelectNode={this.onSelectNode}
-                    onCreateNode={this.onCreateNode}
-                    onUpdateNode={this.onUpdateNode}
-                    onDeleteNode={this.onDeleteNode}
-                    onSelectEdge={this.onSelectEdge}
-                    onCreateEdge={this.onCreateEdge}
-                    onSwapEdge={this.onSwapEdge}
-                    onDeleteEdge={this.onDeleteEdge}
-                    canCreateEdge={this.canCreateEdge}
-                    renderNode={this.renderNode}
-                    onUndo={this.onUndo}
-                  />
-                ) : (
-                  <GraphView
-                    ref="GraphView"
-                    style={{width: '100%'}}
-                    nodeKey={NODE_KEY}
-                    nodes={this.props.nodes}
-                    edges={this.props.edges}
-                    selected={selected}
-                    nodeTypes={NodeTypes}
-                    nodeSubtypes={NodeSubtypes}
-                    edgeTypes={EdgeTypes}
-                    onSelectNode={this.onSelectNode}
-                    onCreateNode={this.onCreateNode}
-                    onUpdateNode={this.onUpdateNode}
-                    onDeleteNode={this.onDeleteNode}
-                    onSelectEdge={this.onSelectEdge}
-                    onCreateEdge={this.onCreateEdge}
-                    onSwapEdge={this.onSwapEdge}
-                    onDeleteEdge={this.onDeleteEdge}
-                    canCreateEdge={this.canCreateEdge}
-                    onUndo={this.onUndo}
-                  />
-                )}
-              </div>
-              {/* </Col> */}
-            </React.Fragment>
+          <div id="graph" style={{width: '100%', height: '45vw'}}>
+            {this.props.nodes &&
+            this.props.nodes[0] !== undefined &&
+            this.props.edges &&
+            this.props.edges[0] !== undefined ? (
+              <GraphView
+                ref="GraphView"
+                style={{width: '100%'}}
+                nodeKey={NODE_KEY}
+                nodes={this.props.nodes}
+                edges={this.props.edges}
+                selected={selected}
+                nodeTypes={NodeTypes}
+                nodeSubtypes={NodeSubtypes}
+                edgeTypes={EdgeTypes}
+                onSelectNode={this.onSelectNode}
+                onCreateNode={this.onCreateNode}
+                onUpdateNode={this.onUpdateNode}
+                onDeleteNode={this.onDeleteNode}
+                onSelectEdge={this.onSelectEdge}
+                onCreateEdge={this.onCreateEdge}
+                onSwapEdge={this.onSwapEdge}
+                onDeleteEdge={this.onDeleteEdge}
+                canCreateEdge={this.canCreateEdge}
+                renderNode={this.renderNode}
+                onUndo={this.onUndo}
+              />
+            ) : (
+              <GraphView
+                ref="GraphView"
+                style={{width: '100%'}}
+                nodeKey={NODE_KEY}
+                nodes={this.props.nodes}
+                edges={this.props.edges}
+                selected={selected}
+                nodeTypes={NodeTypes}
+                nodeSubtypes={NodeSubtypes}
+                edgeTypes={EdgeTypes}
+                onSelectNode={this.onSelectNode}
+                onCreateNode={this.onCreateNode}
+                onUpdateNode={this.onUpdateNode}
+                onDeleteNode={this.onDeleteNode}
+                onSelectEdge={this.onSelectEdge}
+                onCreateEdge={this.onCreateEdge}
+                onSwapEdge={this.onSwapEdge}
+                onDeleteEdge={this.onDeleteEdge}
+                canCreateEdge={this.canCreateEdge}
+                onUndo={this.onUndo}
+              />
+            )}
+          </div>
+          {/* </Col> */}
           )}
-
           {/* ------- */}
           {/* Node Resource Modal */}
           <ConnectedNodeResourceModal
@@ -954,6 +805,8 @@ class TreeVisualization extends Component {
             handleClose={this.handleClose}
             selected={this.state.selected}
             target={this.state.target}
+            canEdit={this.props.canEdit}
+            isMod={this.props.isMod}
           />
           {/* ------- */}
           {/* Edge Label Modal */}
@@ -1033,7 +886,8 @@ const mapDispatch = dispatch => {
       dispatch(associateResourceToNode(resource)),
     unAssociateResourceFromNode: resource =>
       dispatch(unAssociateResourceFromNode(resource)),
-    getResourcesByNode: node => dispatch(getResourcesByNode(node))
+    getResourcesByNode: node => dispatch(getResourcesByNode(node)),
+    getRecommendationsByNode: node => dispatch(getRecommendationsByNode(node))
   }
 }
 

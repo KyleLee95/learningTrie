@@ -45,7 +45,7 @@ export const getMessages = conversationId => async dispatch => {
 
 export const postMessage = message => async dispatch => {
   try {
-    const res = await axios.post('/api/messages', message)
+    const res = await axios.post('/api/messages/', message)
     dispatch(createMessage(res.data))
   } catch (err) {
     console.error(err)

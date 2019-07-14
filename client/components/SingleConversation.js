@@ -121,7 +121,14 @@ class Conversation extends Component {
                     />
                   </Form.Row>
                   <Form.Row>
-                    <Button onClick={this.handleSubmit}>Submit</Button>
+                    {this.props.conversations &&
+                    this.props.conversations[0] &&
+                    this.props.conversations[0].users &&
+                    this.props.conversations[0].users.length > 0 ? (
+                      <Button onClick={this.handleSubmit}>Submit</Button>
+                    ) : (
+                      <Button onClick={this.handleSubmit}>Submit</Button>
+                    )}
                   </Form.Row>
                 </Form>
               </Card.Body>

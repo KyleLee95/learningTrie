@@ -18,6 +18,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/recommendResource', async (req, res, next) => {
   try {
+    console.log(req.body)
     const sender = await User.findByPk(req.user.id)
     const receiver = await User.findByPk(req.body.ownerId)
     const conversation = await Conversation.create({
@@ -75,13 +76,18 @@ router.post('/recommendResource', async (req, res, next) => {
 router.post('/addedResource', async (req, res, next) => {})
 
 router.post('/', async (req, res, next) => {
+  console.log(req.body)
   try {
     const conversation = await Conversation.findOrCreate({
       where: {id: req.body.conversationId}
     })
 
     const sender = await User.findByPk(req.user.id)
-    const checkReceiver = req.body.users.find(user => {
+    let checkReceiver
+    if (req.body.users === undefined) {
+      checkReceiver = conversation[0].getUsers()
+    }
+    checkReceiver = req.body.users.find(user => {
       return user.id !== req.user.id
     })
     const receiver = await User.findByPk(checkReceiver.id)

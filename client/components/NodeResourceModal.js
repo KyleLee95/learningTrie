@@ -254,6 +254,7 @@ class NodeResourceModal extends Component {
     const tags = this.state.tags.split(', ')
     e.preventDefault()
     await this.props.postRecommendation({
+      nodeTitle: this.props.selected.title,
       title: this.state.title,
       description: this.state.description,
       type: this.state.type,
@@ -505,10 +506,7 @@ class NodeResourceModal extends Component {
           </Modal.Body>
           {/* RENDERS NODE RESOURCE CONTROLS */}
           <Modal.Footer>
-            {(this.props.trees[0] &&
-              this.props.trees[0].ownerId &&
-              this.props.user.id === this.props.trees[0].ownerId) ||
-            auth === true ? (
+            {this.props.canEdit === true ? (
               <React.Fragment>
                 {/* Controls for the general resource modal */}
                 <Button variant="submit" onClick={this.props.handleClose}>
@@ -692,9 +690,10 @@ class NodeResourceModal extends Component {
                                   description: result.description,
                                   nodeId: this.props.selected.id,
                                   nodeTitle: this.props.selected.title,
-                                  treeName: this.props.trees[0].title
+                                  treeName: this.props.trees[0].title,
+                                  ownerId: this.props.trees[0].ownerId
                                 })
-                                console.log(this.props)
+
                                 await this.props.recommendMessage({
                                   id: result.id,
                                   link: result.link,
@@ -707,7 +706,8 @@ class NodeResourceModal extends Component {
                                   isSender: true,
                                   messageType: 'recommendation',
                                   tree: this.props.trees[0].title,
-                                  treeId: this.props.trees[0].id
+                                  treeId: this.props.trees[0].id,
+                                  ownerId: this.props.trees[0].ownerId
                                 })
                               }}
                             >

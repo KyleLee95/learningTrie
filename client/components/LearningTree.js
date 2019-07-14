@@ -498,6 +498,9 @@ class LearningTree extends Component {
                 <ConnectedTreeVisualization
                   match={this.props.match}
                   shape={this.state.shape}
+                  canEdit={canEdit}
+                  canSee={canSee}
+                  isMod={isMod}
                 />
               </Col>
             </Row>
@@ -589,8 +592,8 @@ class LearningTree extends Component {
                 <br />
                 {this.props.trees[0] &&
                 this.props.trees[0] &&
-                this.props.trees[0].users &&
-                this.props.trees[0].users[0].id !== undefined
+                this.props.trees[0].viewer &&
+                this.props.trees[0].viewer[0] !== undefined
                   ? this.props.trees[0].viewer.map(user => {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
@@ -656,7 +659,7 @@ class LearningTree extends Component {
                 {this.props.trees[0] &&
                 this.props.trees[0] &&
                 this.props.trees[0].moderator &&
-                this.props.trees[0].moderator[0].id !== undefined
+                this.props.trees[0].moderator[0] !== undefined
                   ? this.props.trees[0].moderator.map(user => {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>

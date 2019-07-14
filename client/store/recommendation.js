@@ -4,6 +4,7 @@ import history from '../history'
  * ACTION TYPES
  */
 const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS'
+const GET_RECOMMENDATIONS_BY_NODE = 'GET_RECOMMENDATIONS_BY_NODE'
 const REMOVE_RECOMMENDATIONS = 'REMOVE_RECOMMENDATIONS'
 const UPDATE_RECOMMENDATIONS = 'UPDATE_RECOMMENDATIONS'
 const CREATE_RECOMMENDATIONS = 'CREATE_RECOMMENDATIONS'
@@ -19,6 +20,11 @@ const defaultRecommendations = []
  */
 const fetchRecommendations = recommendation => ({
   type: GET_RECOMMENDATIONS,
+  recommendation
+})
+
+const fetchRecommendationsByNode = recommendation => ({
+  type: GET_RECOMMENDATIONS_BY_NODE,
   recommendation
 })
 const removeRecommendation = recommendation => ({
@@ -46,6 +52,15 @@ export const getRecommendations = () => async dispatch => {
   try {
     const res = await axios.get(`/api/recommendations/`)
     dispatch(fetchRecommendations(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getRecommendationsByNode = node => async dispatch => {
+  try {
+    const res = await axios.get(`/api/recommendations/node/${node.id}`)
+    dispatch(fetchRecommendationsByNode(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -118,6 +133,8 @@ export default function(state = defaultRecommendations, action) {
         return recommendation.id !== Number(action.recommendation)
       })
       return newState
+    case GET_RECOMMENDATIONS_BY_NODE:
+      return action.recommendation
     case UPDATE_RECOMMENDATIONS:
       return action.recommendation
     case CREATE_RECOMMENDATIONS:
