@@ -565,8 +565,7 @@ class LearningTree extends Component {
                         return (
                           <li key={user.id} style={{listStyleType: 'none'}}>
                             <Link to={`/user/${user.id}`}>{user.username}</Link>
-                            {(auth === true &&
-                              user.id !== this.props.trees[0].ownerId) ||
+                            {user.id !== this.props.trees[0].ownerId &&
                             isMod === true ? (
                               <Button
                                 sz="sm"
@@ -598,8 +597,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {(auth === true &&
-                            user.id !== this.props.trees[0].ownerId) ||
+                          {user.id !== this.props.trees[0].ownerId &&
                           isMod === true ? (
                             <Button
                               sz="sm"
@@ -631,8 +629,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {(auth === true &&
-                            user.id !== this.props.trees[0].ownerId) ||
+                          {user.id !== this.props.trees[0].ownerId ||
                           isMod === true ? (
                             <Button
                               sz="sm"
@@ -664,8 +661,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {(auth === true &&
-                            user.id !== this.props.trees[0].ownerId) ||
+                          {user.id !== this.props.trees[0].ownerId ||
                           isMod === true ? (
                             <Button
                               sz="sm"

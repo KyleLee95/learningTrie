@@ -15,85 +15,84 @@ class SignUp extends Component {
     const {name, displayName, handleSubmit, error} = this.props
     return (
       <React.Fragment>
-        <Jumbotron fluid>
-          <Row>
-            <Col xs={12} s={12} md={12} lg={6} xl={6}>
-              <div
-                style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
-              >
-                How It Works
-              </div>
-              <hr />
-              <ReactPlayer
-                // style={{}}
-                height="70%"
-                url="https://www.youtube.com/watch?v=MiTNecAPE_w/"
-                play="false"
-                controls={true}
-              />
-            </Col>
-            <Col xs={12} s={12} md={12} lg={6} xl={6}>
-              <Form onSubmit={handleSubmit} name={name}>
-                <Form.Group as={Row}>
-                  <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>
-                    Sign Up
-                  </Form.Text>
-                  <hr />
-                </Form.Group>
-
-                <Form.Group as={Row}>
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control name="email" type="Email" placeholder="Email" />
-                </Form.Group>
-                <Form.Group as={Row}>
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    name="firstName"
-                    type="name"
-                    placeholder="First Name"
-                  />
-                </Form.Group>
-
-                <Form.Group as={Row}>
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    name="lastName"
-                    type="name"
-                    placeholder="Last Name"
-                  />
-                </Form.Group>
-                <Form.Group as={Row}>
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    name="username"
-                    type="username"
-                    placeholder="Username"
-                  />
-                </Form.Group>
-                <Form.Group as={Row}>
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                  />
-                </Form.Group>
-                <Form.Group as={Row}>
-                  <Button type="submit" variant="primary">
-                    {displayName}
-                  </Button>
-                </Form.Group>
+        {/* <Jumbotron fluid> */}
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={6} xl={6}>
+            {/* <div
+              style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
+            >
+              How It Works
+            </div>
+            <hr />
+            <ReactPlayer
+              height="70%"
+              url="https://www.youtube.com/watch?v=MiTNecAPE_w/"
+              play="false"
+              controls={true}
+            /> */}
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={6} xl={6}>
+            <Form onSubmit={handleSubmit} name={name}>
+              <Form.Group as={Row}>
+                <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>
+                  Sign Up
+                </Form.Text>
                 <hr />
-                <Form.Group as={Row}>
-                  <Link to="/auth/google">
-                    <Button>{displayName} with Google </Button>
-                  </Link>
-                </Form.Group>
-                {error && error.response && <div> {error.response.data} </div>}
-              </Form>
-            </Col>
-          </Row>
-        </Jumbotron>
+              </Form.Group>
+
+              <Form.Group as={Row}>
+                <Form.Label>Email</Form.Label>
+                <Form.Control name="email" type="Email" placeholder="Email" />
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  name="firstName"
+                  type="name"
+                  placeholder="First Name"
+                />
+              </Form.Group>
+
+              <Form.Group as={Row}>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  name="lastName"
+                  type="name"
+                  placeholder="Last Name"
+                />
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  name="username"
+                  type="username"
+                  placeholder="Username"
+                />
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Button type="submit" variant="primary">
+                  {displayName}
+                </Button>
+              </Form.Group>
+              {/* <hr /> */}
+              {/* <Form.Group as={Row}>
+                <Link to="/auth/google">
+                  <Button>{displayName} with Google </Button>
+                </Link>
+              </Form.Group> */}
+              {error && error.response && <div> {error.response.data} </div>}
+            </Form>
+          </Col>
+        </Row>
+        {/* </Jumbotron> */}
       </React.Fragment>
     )
   }
