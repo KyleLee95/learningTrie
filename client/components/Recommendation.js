@@ -115,7 +115,13 @@ class Recommendation extends Component {
     if (authId.includes(this.props.user.id) === true) {
       auth = true
     }
-    console.log(authId)
+
+    if (
+      this.props.user.rank === 'admin' ||
+      this.props.user.rank === 'moderator'
+    ) {
+      auth = true
+    }
     return (
       <div>
         <Row>

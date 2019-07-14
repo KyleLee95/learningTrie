@@ -123,12 +123,16 @@ class Comment extends Component {
                   | posted: {moment(this.props.comment.createdAt).fromNow()}
                 </Card.Title>
                 <Card.Body>{this.props.comment.content}</Card.Body>
-                <Button variant="submit" onClick={this.handleDeleteShow}>
-                  Delete
-                </Button>
-                <Button variant="submit" onClick={this.handleShow}>
-                  Edit
-                </Button>
+                {this.props.user.id !== this.props.comment.user.id ? null : (
+                  <React.Fragment>
+                    <Button variant="submit" onClick={this.handleDeleteShow}>
+                      Delete
+                    </Button>
+                    <Button variant="submit" onClick={this.handleShow}>
+                      Edit
+                    </Button>
+                  </React.Fragment>
+                )}
                 <Button
                   variant="submit"
                   onClick={() => this.handleReplyShow(this.props.comment.id)}
@@ -255,7 +259,8 @@ const mapState = state => {
   return {
     resource: state.resource,
     link: state.link,
-    comments: state.comment
+    comments: state.comment,
+    user: state.currUser
   }
 }
 

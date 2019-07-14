@@ -128,6 +128,14 @@ class Resource extends Component {
       'Practice Problem Set',
       'Exercise'
     ]
+
+    let auth = false
+    if (
+      this.props.user.rank === 'moderator' ||
+      this.props.user.rank === 'admin'
+    ) {
+      auth = true
+    }
     const resource = this.props.resource
     return (
       <div>
@@ -301,19 +309,21 @@ class Resource extends Component {
               </Col>
             </Row>
           </Col>
-          {this.props.user.rank === 'admin' ? (
-            <Button
-              onClick={() =>
-                this.props.delResource({resource: this.props.resource})
-              }
-              variant="submit"
-            >
-              Delete
-            </Button>
-          ) : null}
-          <Button onClick={this.handleShow} variant="submit">
-            Edit
-          </Button>
+          {auth === false ? null : (
+            <React.Fragment>
+              <Button
+                onClick={() =>
+                  this.props.delResource({resource: this.props.resource})
+                }
+                variant="submit"
+              >
+                Delete
+              </Button>
+              <Button onClick={this.handleShow} variant="submit">
+                Edit
+              </Button>
+            </React.Fragment>
+          )}
         </Row>
         <Row>
           <Col xs={12}>

@@ -91,6 +91,18 @@ router.get('/:id', async (req, res, next) => {
   try {
     let resource = await Resource.findByPk(req.params.id, {
       include: [
+        {
+          model: Node,
+          include: [
+            {
+              model: LearningTree,
+              include: [
+                {model: User, as: 'editor'},
+                {model: User, as: 'moderator'}
+              ]
+            }
+          ]
+        },
         {model: Link, through: 'resourceLink', include: [{model: Comment}]},
         {model: ResourceTag},
         {model: Vote}
