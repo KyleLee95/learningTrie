@@ -74,7 +74,10 @@ class UserProfile extends Component {
   }
 
   render() {
-    const user = this.props.users[0]
+    let user = []
+    if (this.props.users !== undefined && this.props.users[0] !== undefined) {
+      user = this.props.users[0]
+    }
 
     return (
       <React.Fragment>
@@ -120,9 +123,9 @@ class UserProfile extends Component {
                 </Row>
               </Card.Title>
 
-              <Card.Body>
-                <Row>{user ? user.bio : ''}</Row>
-              </Card.Body>
+              {/* <Card.Body>
+                <Row>{this.props.user ? user.bio : ''}</Row>
+              </Card.Body> */}
             </Card>
           </Col>
           <Col xs={9}>
@@ -130,7 +133,7 @@ class UserProfile extends Component {
               <Tab eventKey="trees" title="Learning Trees">
                 <br />
                 <br />
-                {user && user.learningTrees
+                {user && user.learningTrees !== undefined
                   ? user.learningTrees.map(tree => {
                       return (
                         <React.Fragment key={tree.id}>
