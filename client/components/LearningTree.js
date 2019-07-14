@@ -41,7 +41,7 @@ class LearningTree extends Component {
       show: false,
       showCollaborator: false,
       shape: 'Node Shape',
-      title: 'Node Shape'
+      nodeTitle: 'Node Shape'
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -225,39 +225,77 @@ class LearningTree extends Component {
             canSee = true
           }
         }
-      }
 
-      if (
-        this.props.trees[0].editor !== undefined &&
-        this.props.trees[0].editor[0] !== undefined &&
-        this.props.trees[0].editor[0].id !== undefined
-      ) {
-        //Editor Check
-        this.props.trees[0].editor.forEach(editor => {
-          return editor.push(editor.id)
-        })
-        if (editorId.includes(this.props.user.id) === true) {
+        if (
+          this.props.trees[0].editor !== undefined &&
+          this.props.trees[0].editor[0] !== undefined &&
+          this.props.trees[0].editor[0].id !== undefined
+        ) {
+          //Editor Check
+          this.props.trees[0].editor.forEach(editor => {
+            return editorId.push(editor.id)
+          })
+          if (editorId.includes(this.props.user.id) === true) {
+            canEdit = true
+            canSee = true
+          }
+        }
+
+        if (
+          this.props.trees[0].moderator !== undefined &&
+          this.props.trees[0].moderator[0] !== undefined &&
+          this.props.trees[0].moderator[0].id !== undefined
+        ) {
+          //Moderator Check
+          this.props.trees[0].moderator.forEach(moderator => {
+            return modId.push(moderator.id)
+          })
+        }
+        if (modId.includes(this.props.user.id) === true) {
+          isMod = true
           canEdit = true
+          canSee = true
+        }
+      } else {
+        if (
+          this.props.trees &&
+          this.props.trees[0] !== undefined &&
+          this.props.trees[0].isPrivate === false
+        ) {
+          canSee = true
+          if (
+            this.props.trees[0].editor !== undefined &&
+            this.props.trees[0].editor[0] !== undefined &&
+            this.props.trees[0].editor[0].id !== undefined
+          ) {
+            //Editor Check
+            this.props.trees[0].editor.forEach(editor => {
+              return editorId.push(editor.id)
+            })
+            if (editorId.includes(this.props.user.id) === true) {
+              canEdit = true
+              canSee = true
+            }
+          }
+
+          if (
+            this.props.trees[0].moderator !== undefined &&
+            this.props.trees[0].moderator[0] !== undefined &&
+            this.props.trees[0].moderator[0].id !== undefined
+          ) {
+            //Moderator Check
+            this.props.trees[0].moderator.forEach(moderator => {
+              return modId.push(moderator.id)
+            })
+          }
+          if (modId.includes(this.props.user.id) === true) {
+            isMod = true
+            canEdit = true
+            canSee = true
+          }
         }
       }
-
-      if (
-        this.props.trees[0].moderator !== undefined &&
-        this.props.trees[0].moderator[0] !== undefined &&
-        this.props.trees[0].moderator[0].id !== undefined
-      ) {
-        //Moderator Check
-        this.props.trees[0].moderator.forEach(moderator => {
-          return modId.push(moderator.id)
-        })
-      }
-      if (modId.includes(this.props.user.id) === true) {
-        isMod = true
-      }
-    } else {
-      canSee = true
     }
-
     //favorite check
     if (
       this.props.trees !== undefined &&
@@ -319,7 +357,7 @@ class LearningTree extends Component {
                   this.props.user.id !== undefined &&
                   this.props.trees[0].users !== undefined &&
                   this.props.trees[0].users[0] !== undefined &&
-                  canEdit === false ? (
+                  isMod === false ? (
                     <React.Fragment>
                       <Button variant="submit">
                         <Link
@@ -365,9 +403,12 @@ class LearningTree extends Component {
                         Edit
                       </Button>
                       <br />
-                      <Button variant="submit" onClick={this.handleShow}>
-                        Delete
-                      </Button>
+                      {isMod === true ? (
+                        <Button variant="submit" onClick={this.handleShow}>
+                          Delete
+                        </Button>
+                      ) : null}
+
                       <Button variant="submit">
                         <Link
                           to={`/learningTree/${this.props.trees[0].id}/review`}
@@ -407,7 +448,7 @@ class LearningTree extends Component {
                       {/* pass the node shape down as props to tree viz so that it creates the correct shape */}
                       <DropdownButton
                         variant="submit"
-                        title={`${this.state.title}`}
+                        title={`${this.state.nodeTitle}`}
                       >
                         {shapes.map(shape => {
                           return (
@@ -416,7 +457,7 @@ class LearningTree extends Component {
                               onClick={() => {
                                 this.setState({
                                   shape: shape.type,
-                                  title: shape.name
+                                  nodeTitle: shape.name
                                 })
                               }}
                             >
@@ -506,17 +547,123 @@ class LearningTree extends Component {
                     </Form.Group>
                   </React.Fragment>
                 ) : null}
-                Approved Collaborators
+                <hr />
+                Owner
+                <br />
                 {this.props.trees[0] &&
                 this.props.trees[0] &&
                 this.props.trees[0].users &&
                 this.props.trees[0].users[0].id !== undefined
-                  ? this.props.trees[0].users.map(user => {
+                  ? this.props.trees[0].users
+                      .filter(owner => {
+                        return owner.id === this.props.trees[0].ownerId
+                      })
+                      .map(user => {
+                        return (
+                          <li key={user.id} style={{listStyleType: 'none'}}>
+                            <Link to={`/user/${user.id}`}>{user.username}</Link>
+                            {(auth === true &&
+                              user.id !== this.props.trees[0].ownerId) ||
+                            isMod === true ? (
+                              <Button
+                                sz="sm"
+                                variant="submit"
+                                onClick={async () => {
+                                  await this.props.unassociateUserFromTree({
+                                    learningTreeId: Number(
+                                      this.props.match.params.id
+                                    ),
+                                    username: user.username
+                                  })
+                                }}
+                              >
+                                Remove
+                              </Button>
+                            ) : null}
+                          </li>
+                        )
+                      })
+                  : null}
+                <hr />
+                View (And Recommend) Only
+                <br />
+                {this.props.trees[0] &&
+                this.props.trees[0] &&
+                this.props.trees[0].users &&
+                this.props.trees[0].users[0].id !== undefined
+                  ? this.props.trees[0].viewer.map(user => {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {auth === true &&
-                          user.id !== this.props.trees[0].ownerId ? (
+                          {(auth === true &&
+                            user.id !== this.props.trees[0].ownerId) ||
+                          isMod === true ? (
+                            <Button
+                              sz="sm"
+                              variant="submit"
+                              onClick={async () => {
+                                await this.props.unassociateUserFromTree({
+                                  learningTreeId: Number(
+                                    this.props.match.params.id
+                                  ),
+                                  username: user.username
+                                })
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          ) : null}
+                        </li>
+                      )
+                    })
+                  : null}
+                <hr />
+                Can Edit
+                <br />
+                {this.props.trees[0] &&
+                this.props.trees[0] &&
+                this.props.trees[0].editor &&
+                this.props.trees[0].editor[0] !== undefined
+                  ? this.props.trees[0].editor.map(user => {
+                      return (
+                        <li key={user.id} style={{listStyleType: 'none'}}>
+                          <Link to={`/user/${user.id}`}>{user.username}</Link>
+                          {(auth === true &&
+                            user.id !== this.props.trees[0].ownerId) ||
+                          isMod === true ? (
+                            <Button
+                              sz="sm"
+                              variant="submit"
+                              onClick={async () => {
+                                await this.props.unassociateUserFromTree({
+                                  learningTreeId: Number(
+                                    this.props.match.params.id
+                                  ),
+                                  username: user.username
+                                })
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          ) : null}
+                        </li>
+                      )
+                    })
+                  : null}
+                <hr />
+                Moderators
+                <br />
+                {this.props.trees[0] &&
+                this.props.trees[0] &&
+                this.props.trees[0].moderator &&
+                this.props.trees[0].moderator[0].id !== undefined
+                  ? this.props.trees[0].moderator.map(user => {
+                      return (
+                        <li key={user.id} style={{listStyleType: 'none'}}>
+                          <Link to={`/user/${user.id}`}>{user.username}</Link>
+                          {(auth === true &&
+                            user.id !== this.props.trees[0].ownerId) ||
+                          isMod === true ? (
                             <Button
                               sz="sm"
                               variant="submit"
