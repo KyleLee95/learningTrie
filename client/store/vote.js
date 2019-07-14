@@ -46,7 +46,6 @@ export const upvote = resource => async dispatch => {
 export const downvote = resource => async dispatch => {
   try {
     const res = await axios.put('/api/votes/downvote', resource)
-
     dispatch(downvoteResource(res.data))
   } catch (err) {
     console.error(err)

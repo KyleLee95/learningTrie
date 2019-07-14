@@ -133,64 +133,6 @@ class Resource extends Component {
       <div>
         <Row>
           <Col xs={12}>
-            {/* <Col xs={5}>
-              <Row>
-                {' '}
-                <strong>Title:</strong>{' '}
-                {this.props.resource && this.props.resource.title !== undefined
-                  ? this.props.resource.title
-                  : ''}
-              </Row>
-            </Col>
-            <Col xs={5}>
-              <Row>
-                {' '}
-                <strong>Description:</strong>
-                {this.props.resource ? this.props.resource.description : ''}
-              </Row>
-            </Col>
-            <Row>
-              <Col xs={5}>
-                {' '}
-                <strong>Type:</strong>{' '}
-                {this.props.resource ? this.props.resource.type : ''}
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={5}>
-                {' '}
-                <strong>Link:</strong>{' '}
-                <a
-                  href={
-                    this.props.resource &&
-                    this.props.resource.link !== undefined
-                      ? this.props.resource.link
-                      : ''
-                  }
-                  target="_blank"
-                >
-                  {this.props.resource && this.props.resource.link
-                    ? this.props.resource.link
-                    : ''}
-                </a>
-              </Col>
-            </Row> */}
-            {/* <Row>
-              <Col xs={5}>
-                <strong>Tags:</strong>{' '}
-                {this.props.resource && this.props.resource.ResourceTags
-                  ? this.props.resource.ResourceTags.map(tag => {
-                      return (
-                        <Link key={tag.id} to={`/resourceTag/${tag.id}`}>
-                          <Button variant="light" size="sm">
-                            {tag.title}
-                          </Button>
-                        </Link>
-                      )
-                    })
-                  : null}
-              </Col>
-            </Row> */}
             <Row>
               <Col xs={5}>
                 {this.props.resource !== undefined &&
@@ -266,7 +208,7 @@ class Resource extends Component {
                                     onClick={async () => {
                                       await this.props.downvote({
                                         resource: this.props.resource,
-                                        voteType: 'none'
+                                        voteType: 'downvote'
                                       })
                                       this.setState({
                                         voteType: 'none',
@@ -285,7 +227,7 @@ class Resource extends Component {
                                     onClick={async () => {
                                       await this.props.downvote({
                                         resource: this.props.resource,
-                                        voteType: 'downvote'
+                                        voteType: 'none'
                                       })
                                       if (this.state.voteType === 'upvote') {
                                         this.setState({

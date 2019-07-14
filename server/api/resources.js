@@ -12,6 +12,18 @@ const {
 const Op = require('sequelize').Op
 module.exports = router
 
+router.get('/user/:userId', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id)
+    const resource = user.getResource({
+      include: [{model: ResourceTag}, {model: Vote}]
+    })
+    res.status(200).json(resource)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/search', async (req, res, next) => {
   try {
     let resource = []

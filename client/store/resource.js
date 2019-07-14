@@ -11,6 +11,7 @@ const CREATE_RESOURCE = 'CREATE_RESOURCE'
 const SEARCH_RESOURCE_BY_LINK = 'SEARCH_RESOURCE_BY_LINK'
 const ASSOCIATE_RESOURCE_TO_NODE = 'ASSOCIATE_RESOURCE_TO_NODE'
 const UNASSOCIATE_RESOURCE_FROM_NODE = 'UNASSOCIATE_RESOURCE_FROM_NODE'
+const GET_RESOURCES_BY_USER = 'GET_RESOURCES_BY_USER'
 const UPVOTE = 'UPVOTE'
 const DOWNVOTE = 'DOWNVOTE'
 /**
@@ -47,6 +48,11 @@ const downvoteResource = resource => ({
   type: DOWNVOTE,
   resource
 })
+
+const fetchResourcesByUser = resource => ({
+  type: GET_RESOURCES_BY_USER,
+  resource
+})
 /**
  * THUNK CREATORS
  */
@@ -55,6 +61,15 @@ export const getResources = node => async dispatch => {
   try {
     const res = await axios.get(`/api/resources/${node.id}`)
     dispatch(fetchResources(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getResourcesByUser = user => async dispatch => {
+  try {
+    const res = await axios.get(`/api/resources/user/${user.id}`)
+    dispatch(fetchResourcesByUser(res.data))
   } catch (err) {
     console.error(err)
   }
@@ -169,6 +184,8 @@ export default function(state = defaultResources, action) {
     case ASSOCIATE_RESOURCE_TO_NODE:
       return action.resource
     case UNASSOCIATE_RESOURCE_FROM_NODE:
+      return action.resource
+    case GET_RESOURCES_BY_USER:
       return action.resource
     default:
       return state

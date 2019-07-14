@@ -6,6 +6,7 @@ const {
   Tag,
   Comment,
   Resource,
+  ResourceTag,
   Link,
   Vote
 } = require('../db/models')
@@ -158,7 +159,11 @@ router.get('/:id', async (req, res, next) => {
         {model: User, as: 'following'},
         {
           model: Resource,
-          include: [{model: Link, include: [{model: Comment}]}, {model: Vote}]
+          include: [
+            {model: Link, include: [{model: Comment}]},
+            {model: Vote},
+            {model: ResourceTag}
+          ]
         }
       ]
     })

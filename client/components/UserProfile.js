@@ -13,19 +13,59 @@ import {
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchSingleUser, addFollower, removeFollower} from '../store/user'
+import {
+  fetchSingleUser,
+  addFollower,
+  removeFollower,
+  getResourcesByUser
+} from '../store/user'
 import {UserCard} from '.'
+import {upvote, downvote, getVote} from '../store/vote'
 import moment from 'moment'
 import {ConnectedResourceTagLineItem} from './ResourceTagLineItem'
 
 class UserProfile extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {}
+    this.state = {
+      score: 0,
+      voteType: 'none'
+    }
   }
 
   async componentDidMount() {
     await this.props.fetchSingleUser(Number(this.props.match.params.id))
+    let voteCheck = []
+    if (
+      this.props.resource !== undefined &&
+      this.props.resource.votes !== undefined &&
+      this.props.resource.votes.length > 0 &&
+      this.props.user !== undefined &&
+      this.props.user.id !== undefined
+    ) {
+      const upvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'upvote'
+      })
+      const downvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'downvote'
+      })
+      let resourceScore = upvotes.length - downvotes.length
+      this.setState({
+        score: resourceScore,
+        originalScore: resourceScore
+      })
+      voteCheck = this.props.resource.votes.filter(vote => {
+        return vote.userId === this.props.user.id
+      })
+    }
+    if (voteCheck.length > 0) {
+      this.setState({
+        voteType: voteCheck[0].voteType
+      })
+    } else
+      this.setState({
+        voteType: 'none'
+      })
   }
   async componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
@@ -265,7 +305,11 @@ const mapDispatch = dispatch => {
   return {
     fetchSingleUser: userId => dispatch(fetchSingleUser(userId)),
     addFollower: userId => dispatch(addFollower(userId)),
-    removeFollower: userId => dispatch(removeFollower(userId))
+    removeFollower: userId => dispatch(removeFollower(userId)),
+    upvote: resource => dispatch(upvote(resource)),
+    downvote: resource => dispatch(downvote(resource)),
+    getVote: resource => dispatch(getVote(resource)),
+    getResourcesByUser: user => dispatch(getResourcesByUser(user))
   }
 }
 
@@ -273,6 +317,7 @@ const mapState = state => {
   return {
     user: state.currUser,
     trees: state.tree,
+    vote: state.vote,
     users: state.users
   }
 }
