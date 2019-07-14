@@ -793,7 +793,7 @@ class TreeVisualization extends Component {
             )}
           </div>
           {/* </Col> */}
-          )}
+
           {/* ------- */}
           {/* Node Resource Modal */}
           <ConnectedNodeResourceModal

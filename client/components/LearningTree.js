@@ -778,9 +778,7 @@ class LearningTree extends Component {
               </Button>
             </Modal.Footer>
           </Modal>
-        ) : (
-          ''
-        )}
+        ) : null}
       </React.Fragment>
     ) : (
       'You are not authorized to see this tree'
