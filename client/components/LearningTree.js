@@ -565,23 +565,6 @@ class LearningTree extends Component {
                         return (
                           <li key={user.id} style={{listStyleType: 'none'}}>
                             <Link to={`/user/${user.id}`}>{user.username}</Link>
-                            {user.id !== this.props.trees[0].ownerId &&
-                            isMod === true ? (
-                              <Button
-                                sz="sm"
-                                variant="submit"
-                                onClick={async () => {
-                                  await this.props.unassociateUserFromTree({
-                                    learningTreeId: Number(
-                                      this.props.match.params.id
-                                    ),
-                                    username: user.username
-                                  })
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            ) : null}
                           </li>
                         )
                       })
@@ -597,8 +580,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {user.id !== this.props.trees[0].ownerId &&
-                          isMod === true ? (
+                          {isMod === true ? (
                             <Button
                               sz="sm"
                               variant="submit"
@@ -629,8 +611,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {user.id !== this.props.trees[0].ownerId ||
-                          isMod === true ? (
+                          {isMod === true ? (
                             <Button
                               sz="sm"
                               variant="submit"
@@ -661,8 +642,7 @@ class LearningTree extends Component {
                       return (
                         <li key={user.id} style={{listStyleType: 'none'}}>
                           <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          {user.id !== this.props.trees[0].ownerId ||
-                          isMod === true ? (
+                          {isMod === true ? (
                             <Button
                               sz="sm"
                               variant="submit"
