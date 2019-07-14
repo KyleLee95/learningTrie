@@ -293,7 +293,7 @@ class TreeVisualization extends Component {
   }
 
   async onCreateNode(x, y) {
-    if (auth === true) {
+    if (this.props.canEdit === true) {
       // const type = 'empty'
       // let id = Date.now()
       // const viewNode = {

@@ -77,16 +77,20 @@ class Inbox extends Component {
           <Col xs={12} sm={12} md={12} lg={9} xl={9}>
             <ul style={{listStyle: 'none'}}>
               {this.props.conversations && this.props.conversations.length > 0
-                ? this.props.conversations.map(conversation => {
-                    return (
-                      <InboxLineItem
-                        user={this.props.user}
-                        key={conversation.id}
-                        conversation={conversation}
-                        toggleRead={this.toggleRead}
-                      />
-                    )
-                  })
+                ? this.props.conversations
+                    .sort(function(a, b) {
+                      return new Date(a.updatedAt) - new Date(b.updatedAt)
+                    })
+                    .map(conversation => {
+                      return (
+                        <InboxLineItem
+                          user={this.props.user}
+                          key={conversation.id}
+                          conversation={conversation}
+                          toggleRead={this.toggleRead}
+                        />
+                      )
+                    })
                 : 'none found'}
             </ul>
           </Col>

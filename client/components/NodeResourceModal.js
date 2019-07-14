@@ -450,7 +450,8 @@ class NodeResourceModal extends Component {
                       <ConnectedNodeResourceModalLineItem
                         resource={resource}
                         selected={this.props.selected}
-                        auth={auth}
+                        canEdit={this.props.canEdit}
+                        isMod={this.props.isMod}
                       />
                       <hr />
                     </React.Fragment>
@@ -476,7 +477,7 @@ class NodeResourceModal extends Component {
                         <Link to={`/user/${recommendation.owner.id}`}>
                           {recommendation.owner}
                         </Link>
-                        {auth === true ? (
+                        {this.props.canEdit === true ? (
                           <Button
                             variant="submit"
                             sz="sm"

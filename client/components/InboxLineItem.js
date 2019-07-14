@@ -28,7 +28,7 @@ export const InboxLineItem = props => {
                   </Col>
                   <Col lg={5}>{props.conversation.subject}</Col>
                   <Col lg={3}>
-                    {moment(props.conversation.createdAt).format(
+                    {moment(props.conversation.updatedAt).format(
                       'MMMM Do YYYY, h:mm:ss a'
                     )}
                   </Col>

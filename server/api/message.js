@@ -83,11 +83,13 @@ router.post('/', async (req, res, next) => {
     })
 
     const sender = await User.findByPk(req.user.id)
-    let checkReceiver
+    let users
     if (req.body.users === undefined) {
-      checkReceiver = conversation[0].getUsers()
+      users = conversation[0].getUsers()
+    } else {
+      users = req.body.users
     }
-    checkReceiver = req.body.users.find(user => {
+    const checkReceiver = users.find(user => {
       return user.id !== req.user.id
     })
     const receiver = await User.findByPk(checkReceiver.id)
