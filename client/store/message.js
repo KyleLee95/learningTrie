@@ -67,9 +67,7 @@ export const recommendMessage = message => async dispatch => {
 export default function(state = defaultMessages, action) {
   switch (action.type) {
     case GET_MESSAGES:
-      return action.message.sort(function(a, b) {
-        return new Date(a.createdAt) - new Date(b.createdAt)
-      })
+      return action.message
     case CREATE_MESSAGE:
       return action.message.sort(function(a, b) {
         return new Date(a.createdAt) - new Date(b.createdAt)

@@ -49,14 +49,15 @@ class Recommendation extends Component {
     })
   }
 
-  handleSubmit() {
-    this.props.putRecommendation({
+  async handleSubmit() {
+    await this.props.putRecommendation({
       id: Number(this.props.match.params.id),
       title: this.state.title,
       description: this.state.description,
       link: this.state.link,
       type: this.state.type
     })
+    await this.props.getSingleRecommendation(Number(this.props.match.params.id))
     this.handleClose()
   }
   render() {
@@ -84,17 +85,37 @@ class Recommendation extends Component {
       this.props.recommendation[0].nodes[0] !== undefined &&
       this.props.recommendation[0].nodes[0].learningTree !== undefined &&
       this.props.recommendation[0].nodes[0].learningTree !== undefined &&
-      this.props.recommendation[0].nodes[0].learningTree.users !== undefined &&
-      this.props.recommendation[0].nodes[0].learningTree.users[0].id !==
+      this.props.recommendation[0].nodes[0].learningTree.editor !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree.editor[0] !== undefined
+    ) {
+      this.props.recommendation[0].nodes[0].learningTree.editor.forEach(
+        user => {
+          return authId.push(user.id)
+        }
+      )
+    }
+
+    if (
+      this.props.recommendation[0] !== undefined &&
+      this.props.recommendation[0].nodes !== undefined &&
+      this.props.recommendation[0].nodes[0] !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree !== undefined &&
+      this.props.recommendation[0].nodes[0].learningTree.moderator !==
+        undefined &&
+      this.props.recommendation[0].nodes[0].learningTree.moderator[0] !==
         undefined
     ) {
-      this.props.recommendation[0].nodes[0].learningTree.users.forEach(user => {
-        return authId.push(user.id)
-      })
+      this.props.recommendation[0].nodes[0].learningTree.moderator.forEach(
+        user => {
+          return authId.push(user.id)
+        }
+      )
     }
     if (authId.includes(this.props.user.id) === true) {
       auth = true
     }
+    console.log(authId)
     return (
       <div>
         <Row>
@@ -166,19 +187,24 @@ class Recommendation extends Component {
               </Col>
             </Row>
           </Col>
-          <Button
-            onClick={() =>
-              this.props.delResource({
-                recommendation: this.props.recommendation[0]
-              })
-            }
-            variant="submit"
-          >
-            Delete
-          </Button>
-          <Button onClick={this.handleShow} variant="submit">
-            Edit
-          </Button>
+          {auth === false ? null : (
+            <React.Fragment>
+              <Button
+                onClick={() =>
+                  this.props.delResource({
+                    recommendation: this.props.recommendation[0]
+                  })
+                }
+                variant="submit"
+              >
+                Delete
+              </Button>
+              <Button onClick={this.handleShow} variant="submit">
+                Edit
+              </Button>
+            </React.Fragment>
+          )}
+
           {auth === false ? null : (
             <Button
               variant="submit"

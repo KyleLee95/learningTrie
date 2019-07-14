@@ -37,7 +37,18 @@ router.get('/:id', async (req, res, next) => {
     const recommendation = await Recommendation.findByPk(req.params.id, {
       include: [
         {model: ResourceTag},
-        {model: Node, include: [{model: LearningTree, include: {model: User}}]}
+        {
+          model: Node,
+          include: [
+            {
+              model: LearningTree,
+              include: [
+                {model: User, as: 'editor'},
+                {model: User, as: 'moderator'}
+              ]
+            }
+          ]
+        }
       ]
     })
 

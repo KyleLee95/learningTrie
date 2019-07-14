@@ -79,7 +79,7 @@ class Inbox extends Component {
               {this.props.conversations && this.props.conversations.length > 0
                 ? this.props.conversations
                     .sort(function(a, b) {
-                      return new Date(a.updatedAt) - new Date(b.updatedAt)
+                      return new Date(b.updatedAt) - new Date(a.updatedAt)
                     })
                     .map(conversation => {
                       return (

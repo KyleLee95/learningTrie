@@ -94,7 +94,9 @@ export const putConversation = conversation => async dispatch => {
 export default function(state = defaultConversations, action) {
   switch (action.type) {
     case GET_CONVERSATIONS:
-      return action.conversation
+      return action.conversation.sort(function(a, b) {
+        return new Date(b.updatedAt) - new Date(a.updatedAt)
+      })
     case REMOVE_CONVERSATION:
       return state.filter(
         conversation => conversation.id !== action.conversation
