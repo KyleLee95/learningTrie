@@ -417,7 +417,7 @@ class NodeResourceModal extends Component {
             <Modal.Title>{this.props.selected.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <strong>Description:</strong>
+            <strong>Description:</strong>{' '}
             {this.props.nodes &&
             this.props.selected.id !== undefined &&
             this.props.selected.description !== undefined
@@ -427,7 +427,7 @@ class NodeResourceModal extends Component {
               : ''}
           </Modal.Body>
           <Modal.Body>
-            <strong>Focus Question:</strong>
+            <strong>Focus Question:</strong>{' '}
             {this.props.nodes &&
             this.props.selected.id !== undefined &&
             this.props.selected.question !== undefined
@@ -437,8 +437,7 @@ class NodeResourceModal extends Component {
               : ''}
           </Modal.Body>
           <Modal.Body>
-            <strong>Resources:</strong>
-            <hr />
+            <strong>Resources:</strong> <hr />
             {/* <ul> */}
             {this.props.resources &&
             this.props.resources[0] &&

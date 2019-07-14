@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Row, Col, Button, Form, Jumbotron} from 'react-bootstrap'
+import {Link, NavLink} from 'react-router-dom'
+import {Row, Col, Button, Form, Carousel, Navbar} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
 import ReactPlayer from 'react-player'
@@ -15,84 +15,126 @@ class SignUp extends Component {
     const {name, displayName, handleSubmit, error} = this.props
     return (
       <React.Fragment>
-        {/* <Jumbotron fluid> */}
         <Row>
           <Col xs={12} sm={12} md={12} lg={6} xl={6}>
-            {/* <div
-              style={{fontWeight: 'bold', fontSize: '20pt', paddingTop: '2%'}}
-            >
-              How It Works
-            </div>
-            <hr />
-            <ReactPlayer
-              height="70%"
-              url="https://www.youtube.com/watch?v=MiTNecAPE_w/"
-              play="false"
-              controls={true}
-            /> */}
+            <Carousel style={{paddingTop: '10%'}}>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="/carousel0.png"
+                  alt="Welcome"
+                />
+                {/* <Carousel.Caption> */}
+                {/* <h3 style={{color: 'black'}}>🌎pen Source Ed</h3>
+                <p style={{color: 'black'}}>
+                  A community driven learning platform and visualization tool
+                  that helps you see what you're learning.
+                </p>
+                </Carousel.Caption> */}
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="/carousel1.png"
+                  alt="First slide"
+                />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="/carousel2.png"
+                  alt="Second slide"
+                />
+              </Carousel.Item>
+            </Carousel>
           </Col>
+
           <Col xs={12} sm={12} md={12} lg={6} xl={6}>
-            <Form onSubmit={handleSubmit} name={name}>
-              <Form.Group as={Row}>
-                <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>
-                  Sign Up
-                </Form.Text>
-                <hr />
-              </Form.Group>
+            <Row>
+              <Col xs={{span: 10, offset: 1}}>
+                <Form onSubmit={handleSubmit} name={name}>
+                  <Form.Group as={Row}>
+                    <Form.Text style={{fontWeight: 'bold', fontSize: '20pt'}}>
+                      Sign Up
+                    </Form.Text>
+                    <hr />
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      name="email"
+                      type="Email"
+                      placeholder="Email"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control
+                      name="firstName"
+                      type="name"
+                      placeholder="First Name"
+                    />
+                  </Form.Group>
 
-              <Form.Group as={Row}>
-                <Form.Label>Email</Form.Label>
-                <Form.Control name="email" type="Email" placeholder="Email" />
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  name="firstName"
-                  type="name"
-                  placeholder="First Name"
-                />
-              </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      name="lastName"
+                      type="name"
+                      placeholder="Last Name"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                      name="username"
+                      type="username"
+                      placeholder="Username"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Button type="submit" variant="primary">
+                      {displayName}
+                    </Button>
+                  </Form.Group>
 
-              <Form.Group as={Row}>
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  name="lastName"
-                  type="name"
-                  placeholder="Last Name"
-                />
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  name="username"
-                  type="username"
-                  placeholder="Username"
-                />
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                />
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Button type="submit" variant="primary">
-                  {displayName}
-                </Button>
-              </Form.Group>
-              {/* <hr /> */}
-              {/* <Form.Group as={Row}>
-                <Link to="/auth/google">
-                  <Button>{displayName} with Google </Button>
-                </Link>
-              </Form.Group> */}
-              {error && error.response && <div> {error.response.data} </div>}
-            </Form>
+                  {error &&
+                    error.response && <div> {error.response.data} </div>}
+                </Form>
+              </Col>
+            </Row>
           </Col>
         </Row>
-        {/* </Jumbotron> */}
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <Row>
+          {/* <Col> */}
+          <Navbar style={{backgroundColor: '#24292e', width: '100%'}}>
+            <Navbar.Collapse className="justify-content-center">
+              <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
+                About
+              </NavLink>
+              <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
+                Contact
+              </NavLink>
+              {/* <NavLink to="/">Ring</NavLink>
+              <NavLink to="/">Bannana Phone</NavLink> */}
+            </Navbar.Collapse>
+          </Navbar>
+          {/* </Col> */}
+        </Row>
       </React.Fragment>
     )
   }
