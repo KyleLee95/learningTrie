@@ -112,7 +112,7 @@ class NodeResourceModalLineItem extends Component {
                   onClick={async () => {
                     await this.props.downvote({
                       resource: this.props.resource,
-                      voteType: 'none'
+                      voteType: 'downvote'
                     })
                     this.setState({
                       voteType: 'none',
@@ -131,7 +131,7 @@ class NodeResourceModalLineItem extends Component {
                   onClick={async () => {
                     await this.props.downvote({
                       resource: this.props.resource,
-                      voteType: 'downvote'
+                      voteType: 'none'
                     })
                     if (this.state.voteType === 'upvote') {
                       this.setState({
