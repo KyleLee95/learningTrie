@@ -527,16 +527,16 @@ class LearningTree extends Component {
               <Modal.Body>
                 {isMod === true || this.props.user.rank === 'admin' ? (
                   <React.Fragment>
-                    <Form.Label>Enter Username</Form.Label>
+                    <Form.Label>Username</Form.Label>
                     <Form.Group controlId="username">
                       <Form.Control
                         name="username"
                         type="username"
                         onChange={this.handleCollabChange}
-                        placeholder="Enter username to them as a collaborator"
+                        placeholder="Enter Username"
                       />
                     </Form.Group>
-                    <Form.Label>Set Permissions</Form.Label>
+                    <Form.Label>Permissions</Form.Label>
                     <Form.Group controlId="permission">
                       <Form.Control
                         as="select"
@@ -544,7 +544,7 @@ class LearningTree extends Component {
                         type="permission"
                         onChange={this.handleCollabChange}
                       >
-                        <option>Select</option>
+                        <option>Select Permission level</option>
                         <option>Viewer</option>
                         <option>Editor</option>
                         <option>Moderator</option>

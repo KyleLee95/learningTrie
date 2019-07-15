@@ -46,7 +46,6 @@ LearningTree.belongsToMany(User, {through: 'canView', as: 'viewer'})
 LearningTree.belongsToMany(User, {through: 'isMod', as: 'moderator'})
 LearningTree.hasMany(Review)
 LearningTree.hasMany(Node)
-
 LearningTree.hasMany(Node)
 LearningTree.hasMany(Edge)
 LearningTree.belongsToMany(Tag, {through: 'treeTag'})
@@ -60,6 +59,7 @@ Comment.belongsTo(Comment, {as: 'parent'})
 
 //Node
 Node.belongsToMany(Resource, {through: 'nodeResource'})
+// Node.belongsToMany(Resource, {through: 'nodeRecommendation'})
 Node.belongsToMany(Recommendation, {through: 'nodeRecommendation'})
 Node.belongsTo(LearningTree)
 Node.belongsToMany(Edge, {through: 'nodeEdge'})
@@ -70,8 +70,13 @@ Edge.belongsToMany(Node, {through: 'nodeEdge'})
 
 //Resource
 Resource.belongsToMany(Node, {through: 'nodeResource'})
+// Resource.belongsToMany(Node, {through: 'nodeResource', as: 'resource'})
 Resource.belongsToMany(Link, {through: 'resourceLink'})
 Resource.belongsToMany(User, {through: 'UserResource'})
+// Resource.belongsToMany(Node, {
+//   through: 'nodeRecommendation',
+//   as: 'recommendation'
+// })
 Resource.hasMany(Comment)
 Resource.belongsToMany(ResourceTag, {through: 'Tags for Resource'})
 Resource.hasMany(Vote)

@@ -19,9 +19,9 @@ class NodeResourceModalLineItem extends Component {
     let voteCheck = []
     if (
       this.props.resource !== undefined &&
-      this.props.resource.votes !== undefined &&
-      this.props.user !== undefined &&
-      this.props.user.id !== undefined
+      this.props.resource.votes !== undefined
+      // this.props.user !== undefined &&
+      // this.props.user.id !== undefined
     ) {
       const upvotes = this.props.resource.votes.filter(vote => {
         return vote.voteType === 'upvote'
@@ -100,9 +100,12 @@ class NodeResourceModalLineItem extends Component {
                   +
                 </Button>
               )}
+
+              {/* Shows Score */}
               <Button variant="submit" sz="sm">
                 {this.state.score} pts.
               </Button>
+
               {this.state.voteType === 'downvote' ? (
                 //deletes downvote
 
