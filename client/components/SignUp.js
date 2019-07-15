@@ -126,9 +126,9 @@ class SignUp extends Component {
               <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
                 About
               </NavLink>
-              <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
+              {/* <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
                 Contact
-              </NavLink>
+              </NavLink> */}
               {/* <NavLink to="/">Ring</NavLink>
               <NavLink to="/">Bannana Phone</NavLink> */}
             </Navbar.Collapse>

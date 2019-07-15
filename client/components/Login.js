@@ -38,12 +38,12 @@ class Login extends Component {
                   {displayName}
                 </Button>
               </Form.Group>
-              <hr />
+              {/* <hr />
               <Form.Group as={Row}>
                 <Link to="/auth/google">
                   <Button>{displayName} with Google </Button>
                 </Link>
-              </Form.Group>
+              </Form.Group> */}
               {error && error.response && <div> {error.response.data} </div>}
             </Form>
           </Col>
