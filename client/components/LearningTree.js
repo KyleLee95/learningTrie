@@ -493,19 +493,15 @@ class LearningTree extends Component {
                 </Row>
               </Col>
             </Row>
-            <Row>
-              <Col xs={12}>
-                <ConnectedTreeVisualization
-                  match={this.props.match}
-                  shape={this.state.shape}
-                  canEdit={canEdit}
-                  canSee={canSee}
-                  isMod={isMod}
-                />
-              </Col>
-            </Row>
           </Col>
         </Row>
+        <ConnectedTreeVisualization
+          match={this.props.match}
+          shape={this.state.shape}
+          canEdit={canEdit}
+          canSee={canSee}
+          isMod={isMod}
+        />
 
         {/* Add User as Collaborator Modal */}
 
