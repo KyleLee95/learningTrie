@@ -54,105 +54,114 @@ class NodeResourceModalLineItem extends Component {
       <li style={{listStyleType: 'none'}}>
         <Row>
           <Col xs={4}>
-            <Row>
-              {this.state.voteType === 'upvote' ? (
-                //deletes an upvote
-                <Button
-                  variant="success"
-                  sz="sm"
-                  onClick={async () => {
-                    await this.props.upvote({
-                      resource: this.props.resource,
-                      voteType: 'upvote'
-                    })
-                    this.setState({
-                      voteType: 'none',
-                      score: this.state.score - 1
-                    })
-                  }}
-                >
-                  +
+            {this.props.user.id === undefined ? (
+              <Row>
+                {/* Shows Score */}
+                <Button variant="submit" sz="sm">
+                  {this.state.score} pts.
                 </Button>
-              ) : (
-                //posts the upvote
-
-                <Button
-                  variant="outline-secondary"
-                  sz="sm"
-                  onClick={async () => {
-                    await this.props.upvote({
-                      resource: this.props.resource,
-                      voteType: 'none'
-                    })
-                    if (this.state.voteType === 'none') {
-                      this.setState({
-                        voteType: 'upvote',
-                        score: this.state.score + 1
+              </Row>
+            ) : (
+              <Row>
+                {this.state.voteType === 'upvote' ? (
+                  //deletes an upvote
+                  <Button
+                    variant="success"
+                    sz="sm"
+                    onClick={async () => {
+                      await this.props.upvote({
+                        resource: this.props.resource,
+                        voteType: 'upvote'
                       })
-                    } else if (this.state.voteType === 'downvote') {
                       this.setState({
-                        voteType: 'upvote',
-                        score: this.state.score + 2
-                      })
-                    }
-                  }}
-                >
-                  +
-                </Button>
-              )}
-
-              {/* Shows Score */}
-              <Button variant="submit" sz="sm">
-                {this.state.score} pts.
-              </Button>
-
-              {this.state.voteType === 'downvote' ? (
-                //deletes downvote
-
-                <Button
-                  variant="danger"
-                  sz="sm"
-                  onClick={async () => {
-                    await this.props.downvote({
-                      resource: this.props.resource,
-                      voteType: 'downvote'
-                    })
-                    this.setState({
-                      voteType: 'none',
-                      score: this.state.score + 1
-                    })
-                  }}
-                >
-                  -
-                </Button>
-              ) : (
-                //posts a downvote
-
-                <Button
-                  variant="outline-secondary"
-                  sz="sm"
-                  onClick={async () => {
-                    await this.props.downvote({
-                      resource: this.props.resource,
-                      voteType: 'none'
-                    })
-                    if (this.state.voteType === 'upvote') {
-                      this.setState({
-                        voteType: 'downvote',
-                        score: this.state.score - 2
-                      })
-                    } else if (this.state.voteType === 'none') {
-                      this.setState({
-                        voteType: 'downvote',
+                        voteType: 'none',
                         score: this.state.score - 1
                       })
-                    }
-                  }}
-                >
-                  -
+                    }}
+                  >
+                    +
+                  </Button>
+                ) : (
+                  //posts the upvote
+
+                  <Button
+                    variant="outline-secondary"
+                    sz="sm"
+                    onClick={async () => {
+                      await this.props.upvote({
+                        resource: this.props.resource,
+                        voteType: 'none'
+                      })
+                      if (this.state.voteType === 'none') {
+                        this.setState({
+                          voteType: 'upvote',
+                          score: this.state.score + 1
+                        })
+                      } else if (this.state.voteType === 'downvote') {
+                        this.setState({
+                          voteType: 'upvote',
+                          score: this.state.score + 2
+                        })
+                      }
+                    }}
+                  >
+                    +
+                  </Button>
+                )}
+
+                {/* Shows Score */}
+                <Button variant="submit" sz="sm">
+                  {this.state.score} pts.
                 </Button>
-              )}
-            </Row>
+
+                {this.state.voteType === 'downvote' ? (
+                  //deletes downvote
+
+                  <Button
+                    variant="danger"
+                    sz="sm"
+                    onClick={async () => {
+                      await this.props.downvote({
+                        resource: this.props.resource,
+                        voteType: 'downvote'
+                      })
+                      this.setState({
+                        voteType: 'none',
+                        score: this.state.score + 1
+                      })
+                    }}
+                  >
+                    -
+                  </Button>
+                ) : (
+                  //posts a downvote
+
+                  <Button
+                    variant="outline-secondary"
+                    sz="sm"
+                    onClick={async () => {
+                      await this.props.downvote({
+                        resource: this.props.resource,
+                        voteType: 'none'
+                      })
+                      if (this.state.voteType === 'upvote') {
+                        this.setState({
+                          voteType: 'downvote',
+                          score: this.state.score - 2
+                        })
+                      } else if (this.state.voteType === 'none') {
+                        this.setState({
+                          voteType: 'downvote',
+                          score: this.state.score - 1
+                        })
+                      }
+                    }}
+                  >
+                    -
+                  </Button>
+                )}
+              </Row>
+            )}
           </Col>
           <Col xs={8}>
             <Link to={`/resource/${this.props.resource.id}`}>

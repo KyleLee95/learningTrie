@@ -40,10 +40,11 @@ class ResourceTag extends Component {
         <Row>
           <Col xs={12}>
             {this.props.resourceTag.resources &&
-            this.props.resourceTag.resources.length &&
-            this.props.user !== undefined &&
-            this.props.user.id !== undefined
-              ? this.props.resourceTag.resources.map(resource => {
+            this.props.resourceTag.resources.length
+              ? // &&
+                // this.props.user !== undefined &&
+                // this.props.user.id !== undefined
+                this.props.resourceTag.resources.map(resource => {
                   return (
                     <ConnectedResourceTagLineItem
                       key={resource.id}
