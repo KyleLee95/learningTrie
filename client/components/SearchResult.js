@@ -33,7 +33,7 @@ class SearchResult extends Component {
     return (
       <div>
         <Row>
-          <Col xs={2}>
+          <Col xs={12} sm={12} md={2} lg={2} xl={2} style={{paddingTop: '5vh'}}>
             <React.Fragment>
               <Card>
                 <Button
@@ -107,7 +107,7 @@ class SearchResult extends Component {
               <ConnectedNewTree />
             </React.Fragment>
           </Col>
-          <Col xs={10}>
+          <Col xs={12} sm={12} md={8} lg={8} xl={8} style={{paddingTop: '5vh'}}>
             {this.props.trees !== undefined &&
             this.props.trees.length > 0 &&
             this.props.trees &&

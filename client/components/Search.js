@@ -43,6 +43,9 @@ class Search extends Component {
             color: 'white'
           }}
         />
+        <Button variant="submit" type="submit" style={{color: 'white'}}>
+          Search
+        </Button>
         {/* </Form.Group> */}
       </form>
     )
