@@ -31,7 +31,7 @@ class UserHome extends Component {
     return (
       <div>
         <Row>
-          <Col xs={12} sm={12} md={2} lg={2} xl={2}>
+          <Col xs={12} sm={12} md={2} lg={2} xl={2} style={{paddingTop: '5vh'}}>
             <React.Fragment>
               <Card>
                 <Button
@@ -105,7 +105,7 @@ class UserHome extends Component {
             </React.Fragment>
           </Col>
 
-          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
+          <Col xs={12} sm={12} md={8} lg={8} xl={8} style={{paddingTop: '5vh'}}>
             {this.props.trees &&
             this.props.trees[0] !== undefined &&
             this.props.trees[0].users !== undefined &&

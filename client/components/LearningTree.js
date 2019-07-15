@@ -346,8 +346,12 @@ class LearningTree extends Component {
             <Row>
               <Col xs={12}>
                 <Row
-                  className="justify-content-space-evenly"
-                  style={{paddingLeft: '1%'}}
+                  // className="justify-content-space-evenly"
+                  style={{
+                    backgroundColor: '#F9F9F9',
+                    border: '1px solid #24292e',
+                    justifyContent: 'space-evenly'
+                  }}
                 >
                   {this.props.trees && this.props.trees[0] ? (
                     <h3>{this.props.trees[0].title} </h3>
@@ -365,9 +369,9 @@ class LearningTree extends Component {
                       <Button variant="submit">
                         <Link
                           to={`/learningTree/${this.props.trees[0].id}/review`}
-                          style={{textDecoration: 'none', color: 'black'}}
+                          style={{textDecoration: 'none', color: 'white'}}
                         >
-                          Rating: {`${rating}/ 5 All Reviews`}
+                          Rating: {`${rating}/ 5 `}
                         </Link>
                       </Button>
                       <ConnectedNewReview />
@@ -417,7 +421,7 @@ class LearningTree extends Component {
                           to={`/learningTree/${this.props.trees[0].id}/review`}
                           style={{textDecoration: 'none', color: 'black'}}
                         >
-                          Rating: {rating}/ 5 All Reviews
+                          Rating: {rating}/ 5
                         </Link>
                       </Button>
                       <Button onClick={this.handleCollabShow} variant="submit">
