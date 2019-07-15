@@ -17,6 +17,8 @@ import {
   ConnectedResourceTagLineItem
 } from '.'
 import {Link} from 'react-router-dom'
+
+let score = 0
 class Resource extends Component {
   constructor(props, context) {
     super(props, context)
@@ -137,6 +139,32 @@ class Resource extends Component {
       auth = true
     }
     const resource = this.props.resource
+
+    let voteCheck = []
+    if (
+      this.props.resource !== undefined &&
+      this.props.resource.votes !== undefined &&
+      this.props.resource.votes.length > 0
+      // &&
+      // this.props.user !== undefined &&
+      // this.props.user.id !== undefined
+    ) {
+      const upvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'upvote'
+      })
+      const downvotes = this.props.resource.votes.filter(vote => {
+        return vote.voteType === 'downvote'
+      })
+      let resourceScore = upvotes.length - downvotes.length
+      score = resourceScore
+      // this.setState({
+      //   score: resourceScore
+      //   originalScore: resourceScore
+      // })
+      voteCheck = this.props.resource.votes.filter(vote => {
+        return vote.userId === this.props.user.id
+      })
+    }
     return (
       <div>
         <Row>
@@ -160,7 +188,7 @@ class Resource extends Component {
                                 </Link>
                                 {this.props.user.id === undefined ? (
                                   <Button variant="submit" sz="sm">
-                                    {this.state.score} pts.
+                                    {score} pts.
                                   </Button>
                                 ) : (
                                   <React.Fragment>
@@ -214,7 +242,7 @@ class Resource extends Component {
 
                                     {/* Shows Score */}
                                     <Button variant="submit" sz="sm">
-                                      {this.state.score} pts.
+                                      {score} pts.
                                     </Button>
 
                                     {this.state.voteType === 'downvote' ? (
