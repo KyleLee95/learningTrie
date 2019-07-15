@@ -12,7 +12,7 @@ import './socket'
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />
+      <App style={{height: '100%'}} />
     </Router>
   </Provider>,
   document.getElementById('app')
