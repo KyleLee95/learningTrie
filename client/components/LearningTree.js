@@ -345,7 +345,10 @@ class LearningTree extends Component {
           <Col xs={12}>
             <Row>
               <Col xs={12}>
-                <Row className="justify-content-space-between">
+                <Row
+                  className="justify-content-space-evenly"
+                  style={{paddingLeft: '1%'}}
+                >
                   {this.props.trees && this.props.trees[0] ? (
                     <h3>{this.props.trees[0].title} </h3>
                   ) : null}
@@ -495,14 +498,17 @@ class LearningTree extends Component {
             </Row>
           </Col>
         </Row>
-        <ConnectedTreeVisualization
-          match={this.props.match}
-          shape={this.state.shape}
-          canEdit={canEdit}
-          canSee={canSee}
-          isMod={isMod}
-        />
-
+        <Row>
+          <Col xs={12}>
+            <ConnectedTreeVisualization
+              match={this.props.match}
+              shape={this.state.shape}
+              canEdit={canEdit}
+              canSee={canSee}
+              isMod={isMod}
+            />
+          </Col>
+        </Row>
         {/* Add User as Collaborator Modal */}
 
         <Form>

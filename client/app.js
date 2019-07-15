@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div className="container-fluid">
       <ConnectedNav />
-      <br />
+
       <Routes />
     </div>
   )

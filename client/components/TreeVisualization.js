@@ -741,14 +741,14 @@ class TreeVisualization extends Component {
       <ScrollLock>
         {/* TABS */}
 
-        <div id="graph" style={{width: '100vw', height: '85vh'}}>
+        <div id="graph" style={{width: '110vw', height: '80vh'}}>
           {this.props.nodes &&
           this.props.nodes[0] !== undefined &&
           this.props.edges &&
           this.props.edges[0] !== undefined ? (
             <GraphView
               ref="GraphView"
-              style={{width: '100%', height: '45vh'}}
+              style={{width: '100vw', height: '45vh', paddLeft: '-1%'}}
               nodeKey={NODE_KEY}
               nodes={this.props.nodes}
               edges={this.props.edges}
@@ -771,7 +771,7 @@ class TreeVisualization extends Component {
           ) : (
             <GraphView
               ref="GraphView"
-              style={{width: '100%', height: '45vh'}}
+              style={{width: '100vw', height: '45vh'}}
               nodeKey={NODE_KEY}
               nodes={this.props.nodes}
               edges={this.props.edges}
@@ -791,62 +791,64 @@ class TreeVisualization extends Component {
               onUndo={this.onUndo}
             />
           )}
-        </div>
-        {/* </Col> */}
+          {/* </div> */}
+          {/* </Col> */}
 
-        {/* ------- */}
-        {/* Node Resource Modal */}
-        <ConnectedNodeResourceModal
-          nodes={this.props.nodes}
-          trees={this.props.trees}
-          resource={this.props.resources}
-          recommendation={this.props.resources}
-          show={this.state.show}
-          handleClose={this.handleClose}
-          selected={this.state.selected}
-          target={this.state.target}
-          canEdit={this.props.canEdit}
-          isMod={this.props.isMod}
-        />
-        {/* ------- */}
-        {/* Edge Label Modal */}
-        <Form>
-          <Modal
-            show={this.state.edgeLabelShow}
-            onHide={this.handleEdgeLabelClose}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Association Label</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group>
-                {/* Title */}
-                <Form.Label>Association Label</Form.Label>
-                <Form.Control
-                  name="handleText"
-                  type="handleText"
-                  placeholder="Enter Association Label"
-                  defaultValue={this.state.selected.handleText}
-                  onChange={this.handleEdgeLabelChange}
-                />
-                <Form.Text className="text-muted">
-                  Association labels describe how the idea/concept of the source
-                  node is related to the idea/concept of the target node
-                </Form.Text>
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <React.Fragment>
-                <Button variant="submit" onClick={this.handleEdgeLabelClose}>
-                  Close
-                </Button>
-                <Button variant="submit" onClick={this.handleEdgeLabelSubmit}>
-                  Submit
-                </Button>
-              </React.Fragment>
-            </Modal.Footer>
-          </Modal>
-        </Form>
+          {/* ------- */}
+          {/* Node Resource Modal */}
+          <ConnectedNodeResourceModal
+            nodes={this.props.nodes}
+            trees={this.props.trees}
+            resource={this.props.resources}
+            recommendation={this.props.resources}
+            show={this.state.show}
+            handleClose={this.handleClose}
+            selected={this.state.selected}
+            target={this.state.target}
+            canEdit={this.props.canEdit}
+            isMod={this.props.isMod}
+          />
+          {/* ------- */}
+          {/* Edge Label Modal */}
+          <Form>
+            <Modal
+              show={this.state.edgeLabelShow}
+              onHide={this.handleEdgeLabelClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Association Label</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group>
+                  {/* Title */}
+                  <Form.Label>Association Label</Form.Label>
+                  <Form.Control
+                    name="handleText"
+                    type="handleText"
+                    placeholder="Enter Association Label"
+                    defaultValue={this.state.selected.handleText}
+                    onChange={this.handleEdgeLabelChange}
+                  />
+                  <Form.Text className="text-muted">
+                    Association labels describe how the idea/concept of the
+                    source node is related to the idea/concept of the target
+                    node
+                  </Form.Text>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <React.Fragment>
+                  <Button variant="submit" onClick={this.handleEdgeLabelClose}>
+                    Close
+                  </Button>
+                  <Button variant="submit" onClick={this.handleEdgeLabelSubmit}>
+                    Submit
+                  </Button>
+                </React.Fragment>
+              </Modal.Footer>
+            </Modal>
+          </Form>
+        </div>
         {/* End Edge Label Modal */}
       </ScrollLock>
     )

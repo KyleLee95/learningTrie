@@ -9,7 +9,7 @@ import {ConnectedSearch} from '.'
 const Nav = ({handleClick, isLoggedIn, user}) => (
   <Row>
     {/* <Col xs={12}> */}
-    <Navbar style={{backgroundColor: '#24292e', width: '100%'}}>
+    <Navbar style={{backgroundColor: '#24292e', width: '100vw'}}>
       <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
         <h2>🌎pen Source Ed</h2>
       </NavLink>
@@ -89,7 +89,6 @@ const Nav = ({handleClick, isLoggedIn, user}) => (
         )}
       </Navbar.Collapse>
     </Navbar>
-    {/* </Col> */}
   </Row>
 )
 
