@@ -5,7 +5,8 @@ const {
   Tag,
   Review,
   ResourceTag,
-  Resource
+  Resource,
+  Vote
 } = require('../db/models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
@@ -42,7 +43,8 @@ router.get('/search', async (req, res, next) => {
     //resources
 
     const resources = await Resource.findAll({
-      where: {title: {[Op.iLike]: `%${req.query.search}`}}
+      where: {title: {[Op.iLike]: `%${req.query.search}`}},
+      include: [{model: ResourceTag}, {model: Vote}]
     })
 
     //users
@@ -57,7 +59,7 @@ router.get('/search', async (req, res, next) => {
       users: users
     }
 
-    res.status(200).json(search)
+    res.status(200).json([search])
   } catch (err) {
     next(err)
   }
