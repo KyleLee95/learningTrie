@@ -1,6 +1,6 @@
 /*eslint-disable complexity*/
 import React, {Component} from 'react'
-import {Row, Col, Modal, Button, Form} from 'react-bootstrap'
+import {Row, Col, Modal, Button, Form, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {
   getSingleRecommendation,
@@ -10,6 +10,7 @@ import {
 } from '../store/recommendation'
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
+import {getRecommendationVote} from '../store/vote'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
 import {Link} from 'react-router-dom'
 
@@ -28,8 +29,11 @@ class Recommendation extends Component {
 
   async componentDidMount() {
     await this.props.getSingleRecommendation(Number(this.props.match.params.id))
+
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
+    if (this.props.recommendation && this.props.recommendation[0])
+      await this.props.getRecommendationVote(this.props.recommendation[0].link)
   }
 
   handleShow() {
@@ -125,7 +129,7 @@ class Recommendation extends Component {
     return (
       <div>
         <Row>
-          <Col xs={12}>
+          {/* <Col xs={12}>
             <Col xs={5}>
               <Row>
                 {' '}
@@ -190,6 +194,200 @@ class Recommendation extends Component {
                       )
                     })
                   : null}
+              </Col>
+            </Row>
+          </Col> */}
+
+          <Col xs={12}>
+            <Row>
+              <Col xs={5}>
+                {this.props.recommendation !== undefined &&
+                this.props.recommendation[0] &&
+                this.props.vote !== undefined ? (
+                  <React.Fragment>
+                    <Card>
+                      <Card.Body>
+                        <Card.Title>
+                          <Row>
+                            <Col>
+                              <React.Fragment>
+                                <Link
+                                  to={`/recommendation/${
+                                    this.props.recommendation[0].id
+                                  }`}
+                                  style={{color: 'black'}}
+                                >
+                                  {this.props.recommendation[0].title} | Score:{' '}
+                                </Link>
+                                {this.props.user.id === undefined ? (
+                                  <Button variant="submit" sz="sm">
+                                    {this.state.score} pts.
+                                  </Button>
+                                ) : (
+                                  <React.Fragment>
+                                    {this.state.voteType === 'upvote' ? (
+                                      //deletes an upvote
+                                      <Button
+                                        variant="success"
+                                        sz="sm"
+                                        onClick={async () => {
+                                          await this.props.upvote({
+                                            recommendation: this.props
+                                              .recommendation[0],
+                                            voteType: 'upvote'
+                                          })
+                                          this.setState({
+                                            voteType: 'none',
+                                            score: this.state.score - 1
+                                          })
+                                        }}
+                                      >
+                                        +
+                                      </Button>
+                                    ) : (
+                                      //posts the upvote
+
+                                      <Button
+                                        variant="outline-secondary"
+                                        sz="sm"
+                                        onClick={async () => {
+                                          await this.props.upvote({
+                                            resource: this.props
+                                              .recommendation[0],
+                                            voteType: 'none'
+                                          })
+                                          if (this.state.voteType === 'none') {
+                                            this.setState({
+                                              voteType: 'upvote',
+                                              score: this.state.score + 1
+                                            })
+                                          } else if (
+                                            this.state.voteType === 'downvote'
+                                          ) {
+                                            this.setState({
+                                              voteType: 'upvote',
+                                              score: this.state.score + 2
+                                            })
+                                          }
+                                        }}
+                                      >
+                                        +
+                                      </Button>
+                                    )}
+
+                                    {/* Shows Score */}
+                                    <Button variant="submit" sz="sm">
+                                      {this.state.score} pts.
+                                    </Button>
+
+                                    {this.state.voteType === 'downvote' ? (
+                                      //deletes downvote
+
+                                      <Button
+                                        variant="danger"
+                                        sz="sm"
+                                        onClick={async () => {
+                                          await this.props.downvote({
+                                            resource: this.props
+                                              .recommendation[0],
+                                            voteType: 'downvote'
+                                          })
+                                          this.setState({
+                                            voteType: 'none',
+                                            score: this.state.score + 1
+                                          })
+                                        }}
+                                      >
+                                        -
+                                      </Button>
+                                    ) : (
+                                      //posts a downvote
+
+                                      <Button
+                                        variant="outline-secondary"
+                                        sz="sm"
+                                        onClick={async () => {
+                                          await this.props.downvote({
+                                            resource: this.props
+                                              .recommendation[0],
+                                            voteType: 'none'
+                                          })
+                                          if (
+                                            this.state.voteType === 'upvote'
+                                          ) {
+                                            this.setState({
+                                              voteType: 'downvote',
+                                              score: this.state.score - 2
+                                            })
+                                          } else if (
+                                            this.state.voteType === 'none'
+                                          ) {
+                                            this.setState({
+                                              voteType: 'downvote',
+                                              score: this.state.score - 1
+                                            })
+                                          }
+                                        }}
+                                      >
+                                        -
+                                      </Button>
+                                    )}
+                                  </React.Fragment>
+                                )}
+                              </React.Fragment>
+                            </Col>
+                          </Row>
+                        </Card.Title>
+                        <Card.Subtitle>
+                          <a
+                            href={
+                              this.props.recommendation[0] &&
+                              this.props.recommendation.link !== undefined
+                                ? this.props.resource.link
+                                : ''
+                            }
+                            target="_blank"
+                          >
+                            {this.props.recommendation[0] &&
+                            this.props.recommendation[0].link
+                              ? this.props.recommendation[0].link
+                              : ''}
+                          </a>
+                        </Card.Subtitle>
+                        <br />
+                        <Card.Subtitle className="text-muted">
+                          {this.props.recommendation[0].description}
+                        </Card.Subtitle>
+
+                        <hr />
+                        <Row>
+                          <Col>
+                            Tags:
+                            {this.props.recommendation[0] &&
+                            this.props.recommendation[0].ResourceTags &&
+                            this.props.recommendation[0].ResourceTags.length > 0
+                              ? this.props.recommendation[0].ResourceTags.map(
+                                  tag => {
+                                    return (
+                                      <Link
+                                        to={`/resourceTag/${tag.id}`}
+                                        key={tag.id}
+                                      >
+                                        <Button size="sm" variant="light">
+                                          {tag.title}{' '}
+                                        </Button>
+                                      </Link>
+                                    )
+                                  }
+                                )
+                              : null}
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                    <br />
+                  </React.Fragment>
+                ) : null}
               </Col>
             </Row>
           </Col>
@@ -321,7 +519,9 @@ const mapDispatch = dispatch => {
     putRecommendation: recommendation =>
       dispatch(putRecommendation(recommendation)),
     getComments: resourceId => dispatch(getComments(resourceId)),
-    getLink: resourceId => dispatch(getLink(resourceId))
+    getLink: resourceId => dispatch(getLink(resourceId)),
+    getRecommendationVote: recommendationId =>
+      dispatch(getRecommendationVote(recommendationId))
   }
 }
 
@@ -330,7 +530,8 @@ const mapState = state => {
     recommendation: state.recommendation,
     comments: state.comment,
     link: state.link,
-    user: state.currUser
+    user: state.currUser,
+    vote: state.vote
   }
 }
 

@@ -54,8 +54,17 @@ export const downvote = resource => async dispatch => {
 
 export const getVote = resource => async dispatch => {
   try {
-    const res = await axios.get(`/api/votes/${resource.id}`)
+    const res = await axios.get(`/api/votes/resource/${resource.id}`)
 
+    dispatch(fetchVote(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getRecommendationVote = link => async dispatch => {
+  try {
+    const res = await axios.get(`/api/votes/recommendation/${link}`)
     dispatch(fetchVote(res.data))
   } catch (err) {
     console.error(err)

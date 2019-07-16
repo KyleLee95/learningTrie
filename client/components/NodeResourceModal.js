@@ -528,6 +528,7 @@ class NodeResourceModal extends Component {
                 >
                   Search Resources
                 </Button>
+                {/* Renders the Recommend Resource Button for admins */}
                 {this.props.user.rank === 'admin' ||
                 this.props.user.rank === 'moderator' ? (
                   <Button variant="submit" onClick={this.handleRecommendShow}>

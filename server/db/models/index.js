@@ -107,7 +107,7 @@ Recommendation.belongsToMany(Link, {through: 'recommendationLink'})
 Recommendation.belongsToMany(User, {through: 'userRecommendation'})
 Recommendation.belongsToMany(Node, {through: 'nodeRecommendation'})
 Recommendation.belongsToMany(ResourceTag, {through: 'recommendationTag'})
-
+// Recommendation.hasMany(Vote)
 //Message
 Message.belongsTo(User)
 Message.belongsTo(Conversation)
