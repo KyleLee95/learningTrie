@@ -35,15 +35,29 @@ router.get('/search', async (req, res, next) => {
 
     let treeArr = [...trees, ...treeTags]
 
-    const uniqueSearch = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
+    const uniqueTrees = Array.from(new Set(treeArr.map(a => a.id))).map(id => {
       return treeArr.find(a => a.id === id)
     })
 
     //resources
 
+    const resources = await Resource.findAll({
+      where: {title: {[Op.iLike]: `%${req.query.search}`}}
+    })
+
     //users
 
-    res.status(200).json(uniqueSearch)
+    const users = await User.findAll({
+      where: {dbUsername: {[Op.iLike]: `%${req.query.search}`}}
+    })
+
+    let search = {
+      trees: uniqueTrees,
+      resources: resources,
+      users: users
+    }
+
+    res.status(200).json(search)
   } catch (err) {
     next(err)
   }
