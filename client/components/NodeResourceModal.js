@@ -528,14 +528,18 @@ class NodeResourceModal extends Component {
                 >
                   Search Resources
                 </Button>
+                {this.props.user.rank === 'admin' ||
+                this.props.user.rank === 'moderator' ? (
+                  <Button variant="submit" onClick={this.handleRecommendShow}>
+                    Recommend Resource
+                  </Button>
+                ) : null}
               </React.Fragment>
             ) : this.props.user.id !== undefined ? (
               <Button variant="submit" onClick={this.handleRecommendShow}>
                 Recommend Resource
               </Button>
-            ) : (
-              ''
-            )}
+            ) : null}
             {/* END RENDERS NODE RESOURCE CONTROLS */}
           </Modal.Footer>
         </Modal>

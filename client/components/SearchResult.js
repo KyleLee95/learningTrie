@@ -123,7 +123,8 @@ class SearchResult extends Component {
                 this.props.trees.length > 0 &&
                 this.props.trees &&
                 this.props.trees[0] !== undefined &&
-                this.props.trees[0].resources !== undefined
+                this.props.trees[0].resources !== undefined &&
+                this.props.trees[0].resources[0] !== undefined
                   ? this.props.trees[0].resources.map(resource => {
                       return (
                         <ConnectedResourceTagLineItem
@@ -132,10 +133,32 @@ class SearchResult extends Component {
                         />
                       )
                     })
-                  : null}
+                  : 'No Results Found'}
               </Tab>
               <Tab eventKey="users" title="Users">
-                Users
+                {this.props.trees !== undefined &&
+                this.props.trees.length > 0 &&
+                this.props.trees &&
+                this.props.trees[0] !== undefined &&
+                this.props.trees[0].users !== undefined &&
+                this.props.trees[0].users[0] !== undefined
+                  ? this.props.trees[0].users.map(user => {
+                      return (
+                        <Card key={user.id}>
+                          <Card.Header>
+                            <Link to={`/user/${user.id}`}>{user.username}</Link>
+                          </Card.Header>
+                          <Card.Body>
+                            <Card.Text>
+                              With supporting text below as a natural lead-in to
+                              additional content.
+                            </Card.Text>
+                            <Button variant="primary">Go somewhere</Button>
+                          </Card.Body>
+                        </Card>
+                      )
+                    })
+                  : 'No Results Found'}
               </Tab>
             </Tabs>
           </Col>

@@ -10,6 +10,7 @@ import {
   fetchFavoriteTrees
 } from '../store/learningTree'
 import {me} from '../store/currentUser'
+import history from 'history'
 /**
  * COMPONENT
  */

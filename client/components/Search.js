@@ -43,9 +43,21 @@ class Search extends Component {
             color: 'white'
           }}
         />
-        <Button variant="submit" type="submit" style={{color: 'white'}}>
+
+        <Button
+          variant="submit"
+          type="submit"
+          style={{color: 'white'}}
+          onClick={() => {
+            this.props.fetchSearchTrees(`search=${this.state.search}`)
+            history.push('/search')
+          }}
+        >
+          {/* <Link style={{color: 'white'}} to="/search"> */}
           Search
+          {/* </Link> */}
         </Button>
+
         {/* </Form.Group> */}
       </form>
     )
