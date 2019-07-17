@@ -41,14 +41,18 @@ router.get('/recommendation/:link', async (req, res, next) => {
 
 router.put('/recommendation/upvote', async (req, res, next) => {
   try {
-    const recommendation = await Recommendation.findByPk(
-      req.body.recommendation.id
-    )
+    const recommendation = await Recommendation.findOne({
+      where: {
+        link: req.body.recommendation.link
+      }
+    })
+
     const resource = await Resource.findOne({
       where: {
         link: req.body.recommendation.link
       }
     })
+
     const vote = await Vote.findOrCreate({
       where: {resourceId: resource.id, userId: req.user.id}
     })
@@ -56,8 +60,6 @@ router.put('/recommendation/upvote', async (req, res, next) => {
     await vote[0].setUser(user)
     if (req.body.voteType === 'none') {
       if (vote[0].voteType === 'downvote') {
-        //NOT CORRECT
-
         await vote[0].update({
           voteType: 'upvote'
         })
@@ -109,6 +111,9 @@ router.put('/recommendation/downvote', async (req, res, next) => {
       where: {
         link: req.body.recommendation.link
       }
+    })
+    await recommendation.update({
+      score: resource.score
     })
     const vote = await Vote.findOrCreate({
       where: {resourceId: resource.id, userId: req.user.id}
@@ -174,6 +179,10 @@ router.put('/upvote', async (req, res, next) => {
         }
       })
 
+      await recommendation.update({
+        score: resource.score
+      })
+
       const vote = await Vote.findOrCreate({
         where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
@@ -217,6 +226,9 @@ router.put('/upvote', async (req, res, next) => {
         where: {
           link: resource.link
         }
+      })
+      await recommendation.update({
+        score: resource.score
       })
 
       await vote[0].update({

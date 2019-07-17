@@ -73,13 +73,19 @@ router.post('/', async (req, res, next) => {
       }
     })
     //conditionally create recommendation
-    let recommendation = await Recommendation.create({
-      title: req.body.title,
-      link: req.body.link,
-      description: req.body.description,
-      type: req.body.type,
-      ownerId: req.body.ownerId,
-      owner: user.username
+    let recommendation = await Recommendation.findOrCreate({
+      where: {
+        title: req.body.title,
+        link: req.body.link,
+        description: req.body.description,
+        type: req.body.type,
+        ownerId: req.body.ownerId,
+        owner: user.username
+      }
+    })
+
+    await recommendation[0].update({
+      score: resource[0].score
     })
 
     const shortUrl = req.body.link
@@ -93,26 +99,26 @@ router.post('/', async (req, res, next) => {
       req.body.tags.forEach(async tag => {
         let newTag = await ResourceTag.findOrCreate({where: {title: tag}})
         await resource[0].addResourceTag(newTag[0])
-        await recommendation.addResourceTag(newTag[0])
+        await recommendation[0].addResourceTag(newTag[0])
       })
     } else {
       req.body.ResourceTags.forEach(async tag => {
         let newTag = await ResourceTag.findOrCreate({where: {title: tag.title}})
-        await recommendation.addResourceTag(newTag[0])
+        await recommendation[0].addResourceTag(newTag[0])
         await resource[0].addResourceTag(newTag[0])
       })
     }
 
-    await link[0].addRecommendation(recommendation)
+    await link[0].addRecommendation(recommendation[0])
     await link[0].addResource(resource[0])
-    await recommendation.addLink(link[0])
-    await recommendation.addNode(node)
-    await recommendation.addUser(user)
-    await user.addRecommendation(recommendation)
-    await node.addRecommendation(recommendation)
+    await recommendation[0].addLink(link[0])
+    await recommendation[0].addNode(node)
+    await recommendation[0].addUser(user)
+    await user.addRecommendation(recommendation[0])
+    await node.addRecommendation(recommendation[0])
     await resource[0].addLink(link[0])
 
-    res.status(201).json(recommendation)
+    res.status(201).json(recommendation[0])
   } catch (err) {
     next(err)
   }
