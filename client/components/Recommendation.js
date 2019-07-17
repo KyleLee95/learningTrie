@@ -42,7 +42,6 @@ class Recommendation extends Component {
       score: this.props.recommendation[0].score,
       voteType: this.props.vote.voteType
     })
-    console.log(this.state)
   }
 
   handleShow() {

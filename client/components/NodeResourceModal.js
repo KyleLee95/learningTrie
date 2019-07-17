@@ -47,7 +47,10 @@ import {
 import {recommendMessage} from '../store/message'
 import {upvote, downvote, getVote} from '../store/vote'
 import axios from 'axios'
-import {ConnectedNodeResourceModalLineItem} from './index'
+import {
+  ConnectedNodeResourceModalLineItem,
+  ConnectedNodeResourceModalRecommendationLineItem
+} from './index'
 const GraphConfig = {
   NodeTypes: {
     empty: {
@@ -442,21 +445,16 @@ class NodeResourceModal extends Component {
           <Modal.Body>
             {/* Recommendation*/}
             <strong>Resources Recommended by other Users:</strong>
-            <ul>
-              {this.props.recommendations &&
-              this.props.recommendations[0] &&
-              this.props.recommendations[0].id !== undefined
-                ? this.props.recommendations.map(recommendation => {
-                    return (
-                      <li key={recommendation.id}>
-                        <Link to={`/recommendation/${recommendation.id}`}>
-                          {recommendation.title}
-                        </Link>{' '}
-                        ({recommendation.type}) by{' '}
-                        <Link to={`/user/${recommendation.owner.id}`}>
-                          {recommendation.owner}
-                        </Link>
-                        {this.props.canEdit === true ? (
+            {/* <ul> */}
+            {/* <li key={recommendation.id}>
+                       <Link to={`/recommendation/${recommendation.id}`}>
+                      {recommendation.title}
+                    </Link>{' '}
+                    ({recommendation.type}) by{' '}
+                    <Link to={`/user/${recommendation.owner.id}`}>
+                     {recommendation.owner}
+                     </Link>
+                    {this.props.canEdit === true ? (
                           <Button
                             variant="submit"
                             sz="sm"
@@ -476,13 +474,20 @@ class NodeResourceModal extends Component {
                             }}
                           >
                             Add to Node
-                          </Button>
-                        ) : null}
-                      </li>
-                    )
-                  })
-                : ''}
-            </ul>
+                          </Button> */}
+            {this.props.recommendations &&
+            this.props.recommendations[0] &&
+            this.props.recommendations[0].id !== undefined
+              ? this.props.recommendations.map(recommendation => {
+                  return (
+                    <ConnectedNodeResourceModalRecommendationLineItem
+                      key={recommendation.id}
+                      recommendation={recommendation}
+                    />
+                  )
+                })
+              : ''}
+            {/* </ul> */}
           </Modal.Body>
           {/* RENDERS NODE RESOURCE CONTROLS */}
           <Modal.Footer>

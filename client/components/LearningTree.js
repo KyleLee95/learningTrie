@@ -561,8 +561,7 @@ class LearningTree extends Component {
                 <br />
                 {this.props.trees[0] &&
                 this.props.trees[0] &&
-                this.props.trees[0].users &&
-                this.props.trees[0].users[0].id !== undefined
+                this.props.trees[0].users
                   ? this.props.trees[0].users
                       .filter(owner => {
                         return owner.id === this.props.trees[0].ownerId
@@ -712,18 +711,21 @@ class LearningTree extends Component {
                         onChange={this.handleChange}
                       />
                     </Form.Group>
+
                     <Form.Group controlId="private">
                       <Form.Label>Private</Form.Label>
-                      <Form.Control
-                        name="private"
-                        as="select"
-                        onChange={this.handleChange}
-                        defaultValue={this.props.trees[0].isPrivate.toString()}
-                      >
-                        <option>Select</option>
-                        <option value={true}>True</option>
-                        <option value={false}>False</option>
-                      </Form.Control>
+                      {this.props.trees[0] && this.props.trees[0].isPrivate ? (
+                        <Form.Control
+                          name="private"
+                          as="select"
+                          onChange={this.handleChange}
+                          defaultValue={this.props.trees[0].isPrivate.toString()}
+                        >
+                          <option>Select</option>
+                          <option value={true}>True</option>
+                          <option value={false}>False</option>
+                        </Form.Control>
+                      ) : null}
                       <Form.Text className="text-muted">
                         True: Only you and approved users can see this Tree.
                         <br />

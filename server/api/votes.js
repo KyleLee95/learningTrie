@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 const router = require('express').Router()
 const {User, Vote, Resource, Recommendation} = require('../db/models')
 module.exports = router
@@ -83,7 +84,6 @@ router.put('/recommendation/upvote', async (req, res, next) => {
   }
 })
 router.put('/recommendation/downvote', async (req, res, next) => {
-  console.log(req.body)
   try {
     const recommendation = await Recommendation.findByPk(
       req.body.recommendation.id
@@ -145,21 +145,37 @@ router.put('/upvote', async (req, res, next) => {
       const vote = await Vote.findOrCreate({
         where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
+
+      //change the score of the vote before updating vote type
+      if (vote[0].voteType === 'none') {
+        await resource.update({
+          score: resource.score + 1
+        })
+        if (recommendation !== null) {
+          await recommendation.update({
+            score: recommendation.score + 1
+          })
+        }
+      } else if (vote[0].voteType === 'downvote') {
+        await resource.update({
+          score: resource.score + 2
+        })
+        if (recommendation !== null) {
+          await recommendation.update({
+            score: recommendation.score + 2
+          })
+        }
+      }
+      //set vote to be upvote
       await vote[0].update({
         voteType: 'upvote'
       })
+
       await vote[0].setUser(user)
-      await resource.update({
-        score: resource.score + 1
-      })
-      if (recommendation !== null) {
-        await recommendation.update({
-          score: recommendation.score + 1
-        })
-      }
 
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'upvote') {
+      //sets vote status to none and subtracts 1
       const resource = await Resource.findByPk(req.body.resource.id)
       const user = await User.findByPk(req.user.id)
       const vote = await Vote.findOrCreate({
@@ -170,6 +186,7 @@ router.put('/upvote', async (req, res, next) => {
           link: resource.link
         }
       })
+
       await vote[0].update({
         voteType: 'none'
       })
@@ -203,12 +220,24 @@ router.put('/downvote', async (req, res, next) => {
       const recommendation = await Recommendation.findOne({
         where: {link: resource.link}
       })
-      if (recommendation !== null) {
-        await recommendation.update({
-          score: recommendation.score - 1
-        })
-      }
 
+      if (recommendation !== null) {
+        if (vote[0].voteType === 'upvote') {
+          await recommendation.update({
+            score: recommendation.score - 2
+          })
+          await resource.update({
+            score: resource.score - 2
+          })
+        } else if (vote[0].voteType === 'none') {
+          await recommendation.update({
+            score: recommendation.score - 1
+          })
+          await resource.update({
+            score: resource.score - 1
+          })
+        }
+      }
       await vote[0].update({
         voteType: 'downvote'
       })
@@ -227,9 +256,13 @@ router.put('/downvote', async (req, res, next) => {
       })
       if (recommendation !== null) {
         await recommendation.update({
-          score: recommendation.score - 1
+          score: recommendation.score + 1
         })
       }
+
+      await resource.update({
+        score: resource.score + 1
+      })
 
       await vote[0].update({
         voteType: 'none'

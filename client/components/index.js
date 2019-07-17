@@ -38,3 +38,6 @@ export {ConnectedNodeResourceModal} from './NodeResourceModal'
 export {ConnectedNodeResourceModalLineItem} from './NodeResourceModalLineItem'
 export {ConnectedAdminControl} from './AdminControl'
 export {ConnectedResourceTagLineItem} from './ResourceTagLineItem'
+export {
+  ConnectedNodeResourceModalRecommendationLineItem
+} from './NodeResourceModalRecommendationLineItem'
