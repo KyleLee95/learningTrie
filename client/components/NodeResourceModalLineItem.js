@@ -55,14 +55,16 @@ class NodeResourceModalLineItem extends Component {
         <Row>
           <Col xs={4}>
             {this.props.user.id === undefined ? (
-              <Row>
-                {/* Shows Score */}
+              ({
+                /* Shows Score */
+              },
+              (
                 <Button variant="submit" sz="sm">
                   {this.state.score} pts.
                 </Button>
-              </Row>
+              ))
             ) : (
-              <Row>
+              <React.Fragment>
                 {this.state.voteType === 'upvote' ? (
                   //deletes an upvote
                   <Button
@@ -160,7 +162,7 @@ class NodeResourceModalLineItem extends Component {
                     -
                   </Button>
                 )}
-              </Row>
+              </React.Fragment>
             )}
           </Col>
           <Col xs={8}>

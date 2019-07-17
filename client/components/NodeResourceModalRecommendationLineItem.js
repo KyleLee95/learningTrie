@@ -35,6 +35,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
   render() {
     return (
       <li style={{listStyleType: 'none'}}>
+        <hr />
         <Row>
           <Col xs={12}>
             {this.props.user.id === undefined ? (
@@ -150,6 +151,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                     -
                   </Button>
                 )}
+                {'  '}
                 <Link to={`/recommendation/${this.props.recommendation.id}`}>
                   {this.props.recommendation.title}
                 </Link>{' '}
