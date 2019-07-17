@@ -129,7 +129,7 @@ class UserProfile extends Component {
             <Tabs defaultActiveKey="trees">
               <Tab eventKey="trees" title="Learning Trees">
                 <br />
-                <br />
+
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={8} xl={8}>
                     {user && user.learningTrees !== undefined
@@ -217,6 +217,7 @@ class UserProfile extends Component {
                 </Row>
               </Tab>
               <Tab eventKey="comments" title="Comments">
+                <br />
                 {user && user.comments !== undefined
                   ? user.comments.map(comment => {
                       return (
@@ -252,6 +253,7 @@ class UserProfile extends Component {
                   : 'No Comments Found'}
               </Tab>
               <Tab eventKey="submissions" title="Submitted Resources">
+                <br />
                 {user && user.resources !== undefined
                   ? user.resources.map(resource => {
                       return (
@@ -276,6 +278,7 @@ class UserProfile extends Component {
               >
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                    <br />
                     {user &&
                     user.followers !== undefined &&
                     user.followers.length > 0
@@ -298,15 +301,18 @@ class UserProfile extends Component {
                     : 0
                 })`}
               >
-                <CardDeck>
-                  {user && user.following !== undefined
-                    ? user.following.map(follower => {
-                        return (
-                          <UserCard key={follower.id} follower={follower} />
-                        )
-                      })
-                    : 'Not Following Anybody'}
-                </CardDeck>
+                <Row>
+                  <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                    <br />
+                    {user && user.following !== undefined
+                      ? user.following.map(follower => {
+                          return (
+                            <UserCard key={follower.id} follower={follower} />
+                          )
+                        })
+                      : 'Not Following Anybody'}
+                  </Col>
+                </Row>
               </Tab>
             </Tabs>
           </Col>
