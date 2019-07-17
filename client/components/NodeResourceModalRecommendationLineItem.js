@@ -25,6 +25,11 @@ class NodeResourceModalRecommendationLineItem extends Component {
       score: this.props.recommendation.score,
       voteType: this.props.vote.voteType
     })
+    if (this.props.vote.voteType === undefined) {
+      this.setState({
+        voteType: 'none'
+      })
+    }
   }
 
   render() {
@@ -52,6 +57,9 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         voteType: 'none',
                         score: this.state.score - 1
                       })
+                      await this.props.getRecommendationVote(
+                        this.props.recommendation.link
+                      )
                     }}
                   >
                     +
@@ -78,6 +86,9 @@ class NodeResourceModalRecommendationLineItem extends Component {
                           score: this.state.score + 2
                         })
                       }
+                      await this.props.getRecommendationVote(
+                        this.props.recommendation.link
+                      )
                     }}
                   >
                     +
@@ -102,6 +113,9 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         voteType: 'none',
                         score: this.state.score + 1
                       })
+                      await this.props.getRecommendationVote(
+                        this.props.recommendation.link
+                      )
                     }}
                   >
                     -
@@ -128,6 +142,9 @@ class NodeResourceModalRecommendationLineItem extends Component {
                           score: this.state.score - 1
                         })
                       }
+                      await this.props.getRecommendationVote(
+                        this.props.recommendation.link
+                      )
                     }}
                   >
                     -

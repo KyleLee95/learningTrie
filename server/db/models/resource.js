@@ -31,7 +31,7 @@ const Resource = db.define('resource', {
   },
   score: {
     type: Sequelize.INTEGER,
-    defaultValue: 1
+    defaultValue: 0
   }
 })
 
