@@ -82,133 +82,139 @@ class UserProfile extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={12} sm={12} md={12} lg={3} xl={3}>
-            <Card border="light">
-              {/* <Card.Img variant="top" src={user ? user.avatar : ''} /> */}
-              <Card.Title>
-                <Row>
-                  <Col xs={{offset: 1, span: 11}}>
-                    <h2>{user !== undefined ? `${user.username} ` : null} </h2>
-                  </Col>
-                </Row>
-                <Row>
-                  {this.props.user && user && this.props.user.id !== user.id ? (
-                    user.followers &&
-                    user.followers.find(
-                      follower => this.props.user.id === follower.id
-                    ) !== undefined ? (
-                      <Button
-                        onClick={() =>
-                          this.props.removeFollower(
-                            Number(this.props.match.params.id)
-                          )
-                        }
-                      >
-                        unfollow
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() =>
-                          this.props.addFollower(
-                            Number(this.props.match.params.id)
-                          )
-                        }
-                      >
-                        follow
-                      </Button>
-                    )
+          <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+            {/* <Card border="light"> */}
+            {/* <Card.Img variant="top" src={user ? user.avatar : ''} /> */}
+            {/* <Card.Title> */}
+            <Row>
+              <Col xs={12}>
+                <h2>{user !== undefined ? `${user.username} ` : null} </h2>
+                {this.props.user && user && this.props.user.id !== user.id ? (
+                  user.followers &&
+                  user.followers.find(
+                    follower => this.props.user.id === follower.id
+                  ) !== undefined ? (
+                    <Button
+                      onClick={() =>
+                        this.props.removeFollower(
+                          Number(this.props.match.params.id)
+                        )
+                      }
+                    >
+                      unfollow
+                    </Button>
                   ) : (
-                    ''
-                  )}
-                </Row>
-              </Card.Title>
+                    <Button
+                      onClick={() =>
+                        this.props.addFollower(
+                          Number(this.props.match.params.id)
+                        )
+                      }
+                    >
+                      follow
+                    </Button>
+                  )
+                ) : (
+                  ''
+                )}
+              </Col>
+            </Row>
+            {/* </Card.Title> */}
 
-              {/* <Card.Body>
+            {/* <Card.Body>
                 <Row>{this.props.user ? user.bio : ''}</Row>
               </Card.Body> */}
-            </Card>
-          </Col>
-          <Col xs={9}>
+            {/* </Card> */}
+
             <Tabs defaultActiveKey="trees">
               <Tab eventKey="trees" title="Learning Trees">
                 <br />
                 <br />
-                {user && user.learningTrees !== undefined
-                  ? user.learningTrees.map(tree => {
-                      return (
-                        <React.Fragment key={tree.id}>
-                          <Card>
-                            <Card.Body>
-                              <Card.Title>
-                                <Row>
-                                  <Col>
-                                    <React.Fragment>
-                                      <Link
-                                        to={`/learningTree/${tree.id}`}
-                                        style={{color: 'black'}}
-                                      >
-                                        {tree.title} | Score:{' '}
-                                        {tree.reviews !== undefined
-                                          ? tree.reviews.reduce(
-                                              (accumulator, review) => {
-                                                return (
-                                                  accumulator +
-                                                  review.rating /
-                                                    tree.reviews.length
-                                                )
-                                              },
-                                              0
-                                            )
-                                          : 0}
-                                        / 5 |
-                                      </Link>{' '}
-                                      created by:{' '}
-                                      <Link
-                                        to={`/user/${tree.ownerId}`}
-                                        style={{color: 'black'}}
-                                      >
-                                        {tree.users.filter(profile => {
-                                          return profile.id === tree.ownerId
-                                        })[0] !== undefined
-                                          ? tree.users.filter(profile => {
-                                              return profile.id === tree.ownerId
-                                            })[0].username
-                                          : null}
-                                      </Link>
-                                    </React.Fragment>
-                                  </Col>
-                                </Row>
-                              </Card.Title>
-                              <Card.Subtitle className="text-muted">
-                                {tree.description}
-                              </Card.Subtitle>
-                              <hr />
-                              <Row>
-                                <Col>
-                                  Tags:
-                                  {tree && tree.tags && tree.tags.length > 0
-                                    ? tree.tags.map(tag => {
-                                        return (
+                <Row>
+                  <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                    {user && user.learningTrees !== undefined
+                      ? user.learningTrees.map(tree => {
+                          return (
+                            <React.Fragment key={tree.id}>
+                              <Card>
+                                <Card.Body>
+                                  <Card.Title>
+                                    <Row>
+                                      <Col>
+                                        <React.Fragment>
                                           <Link
-                                            to={`/tag/${tag.id}`}
-                                            key={tag.id}
+                                            to={`/learningTree/${tree.id}`}
+                                            style={{color: 'black'}}
                                           >
-                                            <Button size="sm" variant="light">
-                                              {tag.title}{' '}
-                                            </Button>
+                                            {tree.title} | Score:{' '}
+                                            {tree.reviews !== undefined
+                                              ? tree.reviews.reduce(
+                                                  (accumulator, review) => {
+                                                    return (
+                                                      accumulator +
+                                                      review.rating /
+                                                        tree.reviews.length
+                                                    )
+                                                  },
+                                                  0
+                                                )
+                                              : 0}
+                                            / 5 |
+                                          </Link>{' '}
+                                          created by:{' '}
+                                          <Link
+                                            to={`/user/${tree.ownerId}`}
+                                            style={{color: 'black'}}
+                                          >
+                                            {tree.users.filter(profile => {
+                                              return profile.id === tree.ownerId
+                                            })[0] !== undefined
+                                              ? tree.users.filter(profile => {
+                                                  return (
+                                                    profile.id === tree.ownerId
+                                                  )
+                                                })[0].username
+                                              : null}
                                           </Link>
-                                        )
-                                      })
-                                    : null}
-                                </Col>
-                              </Row>
-                            </Card.Body>
-                          </Card>
-                          <br />
-                        </React.Fragment>
-                      )
-                    })
-                  : 'No Trees Found'}
+                                        </React.Fragment>
+                                      </Col>
+                                    </Row>
+                                  </Card.Title>
+                                  <Card.Subtitle className="text-muted">
+                                    {tree.description}
+                                  </Card.Subtitle>
+                                  <hr />
+                                  <Row>
+                                    <Col>
+                                      Tags:
+                                      {tree && tree.tags && tree.tags.length > 0
+                                        ? tree.tags.map(tag => {
+                                            return (
+                                              <Link
+                                                to={`/tag/${tag.id}`}
+                                                key={tag.id}
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="light"
+                                                >
+                                                  {tag.title}{' '}
+                                                </Button>
+                                              </Link>
+                                            )
+                                          })
+                                        : null}
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+                              <br />
+                            </React.Fragment>
+                          )
+                        })
+                      : 'No Trees Found'}
+                  </Col>
+                </Row>
               </Tab>
               <Tab eventKey="comments" title="Comments">
                 {user && user.comments !== undefined
@@ -268,20 +274,26 @@ class UserProfile extends Component {
                     : 0
                 })`}
               >
-                <CardDeck>
-                  {user && user.followers !== undefined
-                    ? user.followers.map(follower => {
-                        return (
-                          <UserCard key={follower.id} follower={follower} />
-                        )
-                      })
-                    : 'No Followers Found'}
-                </CardDeck>
+                <Row>
+                  <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                    {user &&
+                    user.followers !== undefined &&
+                    user.followers.length > 0
+                      ? user.followers.map(follower => {
+                          return (
+                            <UserCard key={follower.id} follower={follower} />
+                          )
+                        })
+                      : 'No Followers Found'}
+                  </Col>
+                </Row>
               </Tab>
               <Tab
                 eventKey="following"
                 title={`Following (${
-                  user && user.following !== undefined
+                  user &&
+                  user.following !== undefined &&
+                  user.following.length > 0
                     ? user.following.length
                     : 0
                 })`}

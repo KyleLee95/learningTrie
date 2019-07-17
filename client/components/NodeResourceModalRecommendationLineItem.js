@@ -156,7 +156,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                   {this.props.recommendation.title}
                 </Link>{' '}
                 ({this.props.recommendation.type}) by{' '}
-                <Link to={`/user/${this.props.recommendation.owner.id}`}>
+                <Link to={`/user/${this.props.recommendation.userId}`}>
                   {this.props.recommendation.owner}
                 </Link>
               </React.Fragment>

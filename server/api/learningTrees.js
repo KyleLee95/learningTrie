@@ -50,7 +50,8 @@ router.get('/search', async (req, res, next) => {
     //users
 
     const users = await User.findAll({
-      where: {dbUsername: {[Op.iLike]: `%${req.query.search}`}}
+      where: {dbUsername: {[Op.iLike]: `%${req.query.search}`}},
+      include: [{model: User, as: 'followers'}, {model: User, as: 'following'}]
     })
 
     let search = {

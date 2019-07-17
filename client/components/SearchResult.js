@@ -10,6 +10,7 @@ import {
   fetchSharedTrees,
   fetchFavoriteTrees
 } from '../store/learningTree'
+import {addFollower, removeFollower} from '../store/user'
 import {ConnectedResourceTagLineItem} from '.'
 class SearchResult extends Component {
   constructor(props, context) {
@@ -135,30 +136,55 @@ class SearchResult extends Component {
                     })
                   : 'No Results Found'}
               </Tab>
+
               <Tab eventKey="users" title="Users">
-                {this.props.trees !== undefined &&
-                this.props.trees.length > 0 &&
-                this.props.trees &&
-                this.props.trees[0] !== undefined &&
-                this.props.trees[0].users !== undefined &&
-                this.props.trees[0].users[0] !== undefined
-                  ? this.props.trees[0].users.map(user => {
-                      return (
-                        <Card key={user.id}>
-                          <Card.Header>
-                            <Link to={`/user/${user.id}`}>{user.username}</Link>
-                          </Card.Header>
-                          <Card.Body>
-                            <Card.Text>
-                              With supporting text below as a natural lead-in to
-                              additional content.
-                            </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
-                          </Card.Body>
-                        </Card>
-                      )
-                    })
-                  : 'No Results Found'}
+                <Row>
+                  <Col xs={{span: 7}}>
+                    {this.props.trees !== undefined &&
+                    this.props.trees.length > 0 &&
+                    this.props.trees &&
+                    this.props.trees[0] !== undefined &&
+                    this.props.trees[0].users !== undefined &&
+                    this.props.trees[0].users[0] !== undefined
+                      ? this.props.trees[0].users.map(user => {
+                          return (
+                            <Card key={user.id}>
+                              <Card.Body>
+                                <Row>
+                                  <Col xs={12} sm={12} md={12} lg={12} xl={10}>
+                                    <h4>
+                                      <Link
+                                        to={`/user/${user.id}`}
+                                        style={{color: 'black'}}
+                                      >
+                                        {user.username}
+                                      </Link>
+                                    </h4>
+                                  </Col>
+
+                                  {/* <Col xs={12} sm={12} md={12} lg={12} xl={2}>
+                                    {user.followers.includes(
+                                      this.props.user.id
+                                    ) ? (
+                                      <Button sz="sm" onClick={{}}>
+                                        Follow
+                                      </Button>
+                                    ) : (
+                                      <Button sz="sm">unfollow</Button>
+                                    )}
+                                  </Col> */}
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col xs={12}>{user.bio.slice(0, 255)}...</Col>
+                                </Row>
+                              </Card.Body>
+                            </Card>
+                          )
+                        })
+                      : 'No Results Found'}
+                  </Col>
+                </Row>
               </Tab>
             </Tabs>
           </Col>
@@ -182,7 +208,9 @@ const mapDispatch = dispatch => {
     fetchMyTrees: userId => dispatch(fetchMyTrees(userId)),
     me: () => dispatch(me()),
     fetchSharedTrees: userId => dispatch(fetchSharedTrees(userId)),
-    fetchFavoriteTrees: () => dispatch(fetchFavoriteTrees())
+    fetchFavoriteTrees: () => dispatch(fetchFavoriteTrees()),
+    addFollower: userId => dispatch(addFollower(userId)),
+    removeFollower: userId => dispatch(removeFollower(userId))
   }
 }
 
