@@ -27,9 +27,12 @@ router.get('/recommendation/:link', async (req, res, next) => {
         link: req.params.link
       }
     })
-    const vote = await resource.getVotes()
+    let votes = await resource.getVotes()
+    let vote = votes.filter(userVote => {
+      return userVote.userId === req.user.id
+    })
 
-    res.send(vote).status(200)
+    res.send(vote[0]).status(200)
   } catch (err) {
     next(err)
   }
@@ -80,6 +83,7 @@ router.put('/recommendation/upvote', async (req, res, next) => {
   }
 })
 router.put('/recommendation/downvote', async (req, res, next) => {
+  console.log(req.body)
   try {
     const recommendation = await Recommendation.findByPk(
       req.body.recommendation.id
@@ -148,9 +152,12 @@ router.put('/upvote', async (req, res, next) => {
       await resource.update({
         score: resource.score + 1
       })
-      await recommendation.update({
-        score: recommendation.score + 1
-      })
+      if (recommendation !== null) {
+        await recommendation.update({
+          score: recommendation.score + 1
+        })
+      }
+
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'upvote') {
       const resource = await Resource.findByPk(req.body.resource.id)
@@ -170,9 +177,12 @@ router.put('/upvote', async (req, res, next) => {
       await resource.update({
         score: resource.score - 1
       })
-      await recommendation.update({
-        score: recommendation.score - 1
-      })
+      if (recommendation !== null) {
+        await recommendation.update({
+          score: recommendation.score - 1
+        })
+      }
+
       res.status(200).send(vote[0])
     }
   } catch (err) {
@@ -184,10 +194,21 @@ router.put('/downvote', async (req, res, next) => {
   try {
     if (req.body.voteType === 'none') {
       //sets vote status to 'downvote'
+
       const user = await User.findByPk(req.user.id)
       const vote = await Vote.findOrCreate({
         where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
+      const resource = await Resource.findByPk(req.body.resource.id)
+      const recommendation = await Recommendation.findOne({
+        where: {link: resource.link}
+      })
+      if (recommendation !== null) {
+        await recommendation.update({
+          score: recommendation.score - 1
+        })
+      }
+
       await vote[0].update({
         voteType: 'downvote'
       })
@@ -200,6 +221,16 @@ router.put('/downvote', async (req, res, next) => {
       const vote = await Vote.findOrCreate({
         where: {resourceId: req.body.resource.id, userId: req.user.id}
       })
+      const resource = await Resource.findByPk(req.body.resource.id)
+      const recommendation = await Recommendation.findOne({
+        where: {link: resource.link}
+      })
+      if (recommendation !== null) {
+        await recommendation.update({
+          score: recommendation.score - 1
+        })
+      }
+
       await vote[0].update({
         voteType: 'none'
       })

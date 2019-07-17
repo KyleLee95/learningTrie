@@ -10,16 +10,22 @@ import {
 } from '../store/recommendation'
 import {getLink} from '../store/link'
 import {getComments} from '../store/comment'
-import {getRecommendationVote} from '../store/vote'
+import {
+  getRecommendationVote,
+  downvoteRecommendation,
+  upvoteRecommendation
+} from '../store/vote'
 import {ConnectedComment, ConnectedResourceCommentForm} from '.'
 import {Link} from 'react-router-dom'
-
+let voteType = 'none'
 let auth = false
 class Recommendation extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      show: false
+      show: false,
+      score: 0,
+      voteType: 'none'
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -29,11 +35,14 @@ class Recommendation extends Component {
 
   async componentDidMount() {
     await this.props.getSingleRecommendation(Number(this.props.match.params.id))
-
+    await this.props.getRecommendationVote(this.props.recommendation[0].link)
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
-    if (this.props.recommendation && this.props.recommendation[0])
-      await this.props.getRecommendationVote(this.props.recommendation[0].link)
+    this.setState({
+      score: this.props.recommendation[0].score,
+      voteType: this.props.vote.voteType
+    })
+    console.log(this.state)
   }
 
   handleShow() {
@@ -126,78 +135,10 @@ class Recommendation extends Component {
     ) {
       auth = true
     }
+
     return (
       <div>
         <Row>
-          {/* <Col xs={12}>
-            <Col xs={5}>
-              <Row>
-                {' '}
-                <strong>Title:</strong>{' '}
-                {this.props.recommendation[0] &&
-                this.props.recommendation[0].title !== undefined
-                  ? this.props.recommendation[0].title
-                  : ''}
-              </Row>
-            </Col>
-            <Col xs={5}>
-              <Row>
-                {' '}
-                <strong>Description:</strong>
-                {this.props.recommendation[0]
-                  ? this.props.recommendation[0].description
-                  : ''}
-              </Row>
-            </Col>
-            <Row>
-              <Col xs={5}>
-                {' '}
-                <strong>Type:</strong>{' '}
-                {this.props.recommendation[0]
-                  ? this.props.recommendation[0].type
-                  : ''}
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={5}>
-                {' '}
-                <strong>Link:</strong>{' '}
-                <a
-                  href={
-                    this.props.recommendation[0] &&
-                    this.props.recommendation[0].link !== undefined
-                      ? this.props.recommendation[0].link
-                      : ''
-                  }
-                  target="_blank"
-                >
-                  {this.props.recommendation[0] &&
-                  this.props.recommendation[0].link
-                    ? this.props.recommendation[0].link
-                    : ''}
-                </a>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={5}>
-                <strong>Tags:</strong>
-                {this.props.recommendation[0] !== undefined &&
-                this.props.recommendation[0].ResourceTags
-                  ? this.props.recommendation[0].ResourceTags.map(tag => {
-                      return (
-                        <Link to={`/ResourceTag/${tag.id}`} key={tag.id}>
-                          <Button variant="light" size="sm" type="submit">
-                            {' '}
-                            {tag.title}
-                          </Button>
-                        </Link>
-                      )
-                    })
-                  : null}
-              </Col>
-            </Row>
-          </Col> */}
-
           <Col xs={12}>
             <Row>
               <Col xs={5}>
@@ -231,11 +172,13 @@ class Recommendation extends Component {
                                         variant="success"
                                         sz="sm"
                                         onClick={async () => {
-                                          await this.props.upvote({
-                                            recommendation: this.props
-                                              .recommendation[0],
-                                            voteType: 'upvote'
-                                          })
+                                          await this.props.upvoteRecommendation(
+                                            {
+                                              recommendation: this.props
+                                                .recommendation[0],
+                                              voteType: 'upvote'
+                                            }
+                                          )
                                           this.setState({
                                             voteType: 'none',
                                             score: this.state.score - 1
@@ -251,19 +194,19 @@ class Recommendation extends Component {
                                         variant="outline-secondary"
                                         sz="sm"
                                         onClick={async () => {
-                                          await this.props.upvote({
-                                            resource: this.props
-                                              .recommendation[0],
-                                            voteType: 'none'
-                                          })
-                                          if (this.state.voteType === 'none') {
+                                          await this.props.upvoteRecommendation(
+                                            {
+                                              recommendation: this.props
+                                                .recommendation[0],
+                                              voteType: 'none'
+                                            }
+                                          )
+                                          if (voteType === 'none') {
                                             this.setState({
                                               voteType: 'upvote',
                                               score: this.state.score + 1
                                             })
-                                          } else if (
-                                            this.state.voteType === 'downvote'
-                                          ) {
+                                          } else if (voteType === 'downvote') {
                                             this.setState({
                                               voteType: 'upvote',
                                               score: this.state.score + 2
@@ -287,11 +230,13 @@ class Recommendation extends Component {
                                         variant="danger"
                                         sz="sm"
                                         onClick={async () => {
-                                          await this.props.downvote({
-                                            resource: this.props
-                                              .recommendation[0],
-                                            voteType: 'downvote'
-                                          })
+                                          await this.props.downvoteRecommendation(
+                                            {
+                                              recommendation: this.props
+                                                .recommendation[0],
+                                              voteType: 'downvote'
+                                            }
+                                          )
                                           this.setState({
                                             voteType: 'none',
                                             score: this.state.score + 1
@@ -307,21 +252,19 @@ class Recommendation extends Component {
                                         variant="outline-secondary"
                                         sz="sm"
                                         onClick={async () => {
-                                          await this.props.downvote({
-                                            resource: this.props
-                                              .recommendation[0],
-                                            voteType: 'none'
-                                          })
-                                          if (
-                                            this.state.voteType === 'upvote'
-                                          ) {
+                                          await this.props.downvoteRecommendation(
+                                            {
+                                              recommendation: this.props
+                                                .recommendation[0],
+                                              voteType: 'none'
+                                            }
+                                          )
+                                          if (voteType === 'upvote') {
                                             this.setState({
                                               voteType: 'downvote',
                                               score: this.state.score - 2
                                             })
-                                          } else if (
-                                            this.state.voteType === 'none'
-                                          ) {
+                                          } else if (voteType === 'none') {
                                             this.setState({
                                               voteType: 'downvote',
                                               score: this.state.score - 1
@@ -521,7 +464,11 @@ const mapDispatch = dispatch => {
     getComments: resourceId => dispatch(getComments(resourceId)),
     getLink: resourceId => dispatch(getLink(resourceId)),
     getRecommendationVote: recommendationId =>
-      dispatch(getRecommendationVote(recommendationId))
+      dispatch(getRecommendationVote(recommendationId)),
+    downvoteRecommendation: recommendation =>
+      dispatch(downvoteRecommendation(recommendation)),
+    upvoteRecommendation: recommendation =>
+      dispatch(upvoteRecommendation(recommendation))
   }
 }
 

@@ -70,6 +70,31 @@ export const getRecommendationVote = link => async dispatch => {
     console.error(err)
   }
 }
+
+export const upvoteRecommendation = recommendation => async dispatch => {
+  try {
+    const res = await axios.put(
+      '/api/votes/recommendation/upvote',
+      recommendation
+    )
+    dispatch(upvoteResource(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const downvoteRecommendation = recommendation => async dispatch => {
+  try {
+    const res = await axios.put(
+      '/api/votes/recommendation/downvote',
+      recommendation
+    )
+    dispatch(downvoteResource(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */

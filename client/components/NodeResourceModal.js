@@ -115,8 +115,7 @@ const GraphConfig = {
 }
 
 const NODE_KEY = 'id' // Allows D3 to correctly update DOM
-let auth = false
-let disable = true
+
 class NodeResourceModal extends Component {
   constructor(props, context) {
     super(props, context)
@@ -388,25 +387,6 @@ class NodeResourceModal extends Component {
       'Exercise'
     ]
 
-    let authId = []
-    if (
-      this.props.trees !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0] !== undefined &&
-      this.props.trees[0].users !== undefined &&
-      this.props.trees[0].users[0] !== undefined &&
-      this.props.trees[0].users[0].id !== undefined
-    ) {
-      this.props.trees[0].users.forEach(user => {
-        return authId.push(user.id)
-      })
-    }
-    if (
-      authId.includes(this.props.user.id) === true ||
-      this.props.user.rank === 'admin'
-    ) {
-      auth = true
-    }
     //disable check
 
     return (
@@ -634,7 +614,8 @@ class NodeResourceModal extends Component {
                     // Conditionally render add/remove button based on if the resource is added to the node
                     return (
                       <li key={result.id}>
-                        {auth === true ? (
+                        {this.props.canEdit === true ||
+                        this.props.isMod === true ? (
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
@@ -654,8 +635,49 @@ class NodeResourceModal extends Component {
                             >
                               Add to Node
                             </Button>
+                            {this.props.user.rank === 'admin' ||
+                            this.props.user.rank === 'mod' ? (
+                              <Button
+                                variant="submit"
+                                sz="sm"
+                                onClick={async () => {
+                                  await this.props.postRecommendation({
+                                    id: result.id,
+                                    link: result.link,
+                                    title: result.title,
+                                    type: result.type,
+                                    ResourceTags: result.ResourceTags,
+                                    description: result.description,
+                                    nodeId: this.props.selected.id,
+                                    nodeTitle: this.props.selected.title,
+                                    treeName: this.props.trees[0].title,
+                                    ownerId: this.props.trees[0].ownerId
+                                  })
+
+                                  await this.props.recommendMessage({
+                                    id: result.id,
+                                    link: result.link,
+                                    title: result.title,
+                                    type: result.type,
+                                    ResourceTags: result.ResourceTags,
+                                    description: result.description,
+                                    nodeId: this.props.selected.id,
+                                    nodeTitle: this.props.selected.title,
+                                    isSender: true,
+                                    messageType: 'recommendation',
+                                    tree: this.props.trees[0].title,
+                                    treeId: this.props.trees[0].id,
+                                    treeName: this.props.trees[0].title,
+                                    ownerId: this.props.trees[0].ownerId
+                                  })
+                                }}
+                              >
+                                Recommend
+                              </Button>
+                            ) : null}
                           </React.Fragment>
-                        ) : auth === true ? (
+                        ) : this.props.canEdit === true ||
+                        this.props.isMod === true ? (
                           <React.Fragment>
                             <Link to={`/resource/${result.id}`}>
                               {result.title}{' '}
@@ -709,6 +731,7 @@ class NodeResourceModal extends Component {
                                   nodeId: this.props.selected.id,
                                   nodeTitle: this.props.selected.title,
                                   isSender: true,
+                                  treeName: this.props.trees[0].title,
                                   messageType: 'recommendation',
                                   tree: this.props.trees[0].title,
                                   treeId: this.props.trees[0].id,
@@ -950,7 +973,8 @@ class NodeResourceModal extends Component {
                           <Link to={`/resource/${result.id}`}>
                             {result.title}
                           </Link>
-                          {this.props.selected.id !== result.nodeId ? (
+                          {this.props.canEdit === true ||
+                          this.props.isMod === true ? (
                             <Button
                               variant="submit"
                               sz="sm"
