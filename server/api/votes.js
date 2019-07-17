@@ -53,27 +53,44 @@ router.put('/recommendation/upvote', async (req, res, next) => {
       where: {resourceId: resource.id, userId: req.user.id}
     })
     const user = await User.findByPk(req.user.id)
-
+    await vote[0].setUser(user)
     if (req.body.voteType === 'none') {
-      await vote[0].update({
-        voteType: 'upvote'
-      })
-      await vote[0].setUser(user)
-      await resource.update({
-        score: resource.score + 1
-      })
-      await recommendation.update({
-        score: recommendation.score + 1
-      })
+      if (vote[0].voteType === 'downvote') {
+        //NOT CORRECT
+
+        await vote[0].update({
+          voteType: 'upvote'
+        })
+
+        await resource.update({
+          score: resource.score + 2
+        })
+        await recommendation.update({
+          score: recommendation.score + 2
+        })
+      } else if (vote[0].voteType === 'none') {
+        await vote[0].update({
+          voteType: 'upvote'
+        })
+
+        await resource.update({
+          score: resource.score + 1
+        })
+        await recommendation.update({
+          score: recommendation.score + 1
+        })
+      }
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'upvote') {
+      //flip to none
       await vote[0].update({
         voteType: 'none'
       })
       await vote[0].setUser(user)
-      await resource.update({
-        score: resource.score - 1
-      })
+      if (vote)
+        await resource.update({
+          score: resource.score - 1
+        })
       await recommendation.update({
         score: recommendation.score - 1
       })
@@ -99,16 +116,31 @@ router.put('/recommendation/downvote', async (req, res, next) => {
     const user = await User.findByPk(req.user.id)
 
     if (req.body.voteType === 'none') {
-      await vote[0].update({
-        voteType: 'downvote'
-      })
-      await vote[0].setUser(user)
-      await resource.update({
-        score: resource.score - 1
-      })
-      await recommendation.update({
-        score: recommendation.score - 1
-      })
+      //flip to downvote
+      if (vote[0].voteType === 'upvote') {
+        await vote[0].update({
+          voteType: 'downvote'
+        })
+        await vote[0].setUser(user)
+        await resource.update({
+          score: resource.score - 2
+        })
+        await recommendation.update({
+          score: recommendation.score - 2
+        })
+      } else if (vote[0].voteType === 'none') {
+        await vote[0].update({
+          voteType: 'downvote'
+        })
+        await vote[0].setUser(user)
+        await resource.update({
+          score: resource.score - 1
+        })
+        await recommendation.update({
+          score: recommendation.score - 1
+        })
+      }
+
       res.status(200).send(vote[0])
     } else if (req.body.voteType === 'downvote') {
       await vote[0].update({
