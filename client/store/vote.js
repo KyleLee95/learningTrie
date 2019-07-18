@@ -62,9 +62,9 @@ export const getVote = resource => async dispatch => {
   }
 }
 
-export const getRecommendationVote = link => async dispatch => {
+export const getRecommendationVote = title => async dispatch => {
   try {
-    const res = await axios.get(`/api/votes/recommendation/${link}`)
+    const res = await axios.get(`/api/votes/recommendation/${title}`)
     dispatch(fetchVote(res.data))
   } catch (err) {
     console.error(err)

@@ -35,7 +35,7 @@ class Recommendation extends Component {
 
   async componentDidMount() {
     await this.props.getSingleRecommendation(Number(this.props.match.params.id))
-    await this.props.getRecommendationVote(this.props.recommendation[0].link)
+    await this.props.getRecommendationVote(this.props.recommendation[0].title)
     await this.props.getLink(Number(this.props.match.params.id))
     await this.props.getComments(Number(this.props.link.id))
     this.setState({

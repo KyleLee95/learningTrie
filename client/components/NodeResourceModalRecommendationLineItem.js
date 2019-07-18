@@ -20,7 +20,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getRecommendationVote(this.props.recommendation.link)
+    await this.props.getRecommendationVote(this.props.recommendation.title)
     this.setState({
       score: this.props.recommendation.score,
       voteType: this.props.vote.voteType
@@ -59,7 +59,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         score: this.state.score - 1
                       })
                       await this.props.getRecommendationVote(
-                        this.props.recommendation.link
+                        this.props.recommendation.title
                       )
                     }}
                   >
@@ -88,7 +88,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         })
                       }
                       await this.props.getRecommendationVote(
-                        this.props.recommendation.link
+                        this.props.recommendation.title
                       )
                     }}
                   >
@@ -115,7 +115,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         score: this.state.score + 1
                       })
                       await this.props.getRecommendationVote(
-                        this.props.recommendation.link
+                        this.props.recommendation.title
                       )
                     }}
                   >
@@ -144,7 +144,7 @@ class NodeResourceModalRecommendationLineItem extends Component {
                         })
                       }
                       await this.props.getRecommendationVote(
-                        this.props.recommendation.link
+                        this.props.recommendation.title
                       )
                     }}
                   >

@@ -145,13 +145,13 @@ router.put('/recommendation/downvote', async (req, res, next) => {
   }
 })
 
-router.get('/recommendation/:link', async (req, res, next) => {
+router.get('/recommendation/:title', async (req, res, next) => {
   try {
     //Do this for the rendering logic of the buttons on the front end
     console.log(req.params)
     const resource = await Resource.findOne({
       where: {
-        link: req.params.link
+        title: req.params.title
       }
     })
     let votes = await resource.getVotes()
@@ -177,10 +177,6 @@ router.put('/upvote', async (req, res, next) => {
         where: {
           link: resource.link
         }
-      })
-
-      await recommendation.update({
-        score: resource.score
       })
 
       const vote = await Vote.findOrCreate({
