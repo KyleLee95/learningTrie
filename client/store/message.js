@@ -6,6 +6,7 @@ import axios from 'axios'
 const GET_MESSAGES = 'GET_MESSAGES'
 const CREATE_MESSAGE = 'CREATE_MESSAGE'
 const RECOMMEND_MESSAGE = 'RECOMMEND_MESSAGE'
+const ADD_RESOURCE_MESSAGE = 'ADD_RESOURCE_MESSAGE'
 
 /**
  * INITIAL STATE
@@ -27,6 +28,11 @@ const createMessage = message => ({
 
 const postReccMessage = message => ({
   type: RECOMMEND_MESSAGE,
+  message
+})
+
+const postResourceMessage = message => ({
+  type: ADD_RESOURCE_MESSAGE,
   message
 })
 
@@ -61,6 +67,15 @@ export const recommendMessage = message => async dispatch => {
   }
 }
 
+export const resourceMessage = message => async dispatch => {
+  try {
+    const res = await axios.post('/api/messages/addedResource', message)
+    dispatch(postResourceMessage(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -73,6 +88,8 @@ export default function(state = defaultMessages, action) {
         return new Date(a.createdAt) - new Date(b.createdAt)
       })
     case RECOMMEND_MESSAGE:
+      return action.message
+    case ADD_RESOURCE_MESSAGE:
       return action.message
     default:
       return state

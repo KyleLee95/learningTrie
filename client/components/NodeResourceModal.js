@@ -44,7 +44,7 @@ import {
   unAssociateResourceFromNode,
   getResourcesByNode
 } from '../store/resource'
-import {recommendMessage} from '../store/message'
+import {recommendMessage, resourceMessage} from '../store/message'
 import {upvote, downvote, getVote} from '../store/vote'
 import axios from 'axios'
 import {
@@ -227,6 +227,12 @@ class NodeResourceModal extends Component {
       link: this.state.link,
       nodeId: this.props.selected.id,
       tags: tags
+    })
+    await this.props.resourceMessage({
+      title: this.state.title,
+      treeName: this.props.trees[0].title,
+      nodeName: this.state.selected.title,
+      treeId: this.props.trees[0].id
     })
 
     this.setState({
@@ -604,9 +610,13 @@ class NodeResourceModal extends Component {
                                   node: this.props.selected,
                                   resource: result
                                 })
-                                // await this.props.getResourcesByNode(
-                                //   this.props.selected
-                                // )
+                                await this.props.resourceMessage({
+                                  title: result.title,
+                                  id: result.id,
+                                  treeName: this.props.trees[0].title,
+                                  nodeName: this.state.selected.title,
+                                  treeId: this.props.trees[0].id
+                                })
                               }}
                             >
                               Add to Node
@@ -1041,7 +1051,8 @@ const mapDispatch = dispatch => {
     getVote: resource => dispatch(getVote(resource)),
     convertRecommendationToResource: recommendation =>
       dispatch(convertRecommendationToResource(recommendation)),
-    recommendMessage: message => dispatch(recommendMessage(message))
+    recommendMessage: message => dispatch(recommendMessage(message)),
+    resourceMessage: message => dispatch(resourceMessage(message))
   }
 }
 
