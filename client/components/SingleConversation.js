@@ -75,11 +75,47 @@ class Conversation extends Component {
                   </Card>
                   <br />
                 </React.Fragment>
-              ) : (
+              ) : message.messageType === 'recommendation' ? (
                 <React.Fragment key={message.id}>
                   <Card>
                     <Card.Header>
-                      <Link to={`/user/${message.user.id}`}>
+                      <Link
+                        to={`/user/${message.user.id}`}
+                        style={{color: 'black'}}
+                      >
+                        {message.user.username}
+                      </Link>{' '}
+                      {moment(message.createdAt).format('MMMM Do YYYY, h:mma')}
+                    </Card.Header>
+
+                    {/* <hr /> */}
+                    <Card.Body>
+                      <Link
+                        to={`/user/${message.user.id}`}
+                        style={{color: 'black'}}
+                      >
+                        {message.user.username}
+                      </Link>{' '}
+                      recommended the resource{' '}
+                      <Link to={`/recommendation/${message.recommendationId}`}>
+                        {message.recommendation}
+                      </Link>{' '}
+                      to the node {message.content} in the learning tree{' '}
+                      <Link to={`/learningTree/${message.treeId}`}>
+                        {message.tree}
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                  <br />
+                </React.Fragment>
+              ) : message.messageType === 'resource' ? (
+                <React.Fragment key={message.id}>
+                  <Card>
+                    <Card.Header>
+                      <Link
+                        to={`/user/${message.user.id}`}
+                        style={{color: 'black'}}
+                      >
                         {message.user.username}
                       </Link>{' '}
                       {moment(message.createdAt).format('MMMM Do YYYY, h:mma')}
@@ -101,7 +137,7 @@ class Conversation extends Component {
                   </Card>
                   <br />
                 </React.Fragment>
-              )
+              ) : null
             })}
 
             <Card>

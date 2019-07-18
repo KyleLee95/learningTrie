@@ -19,26 +19,6 @@ router.get('/resource/:resourceId', async (req, res, next) => {
   }
 })
 
-router.get('/recommendation/:link', async (req, res, next) => {
-  try {
-    //Do this for the rendering logic of the buttons on the front end
-
-    const resource = await Resource.findOne({
-      where: {
-        link: req.params.link
-      }
-    })
-    let votes = await resource.getVotes()
-    let vote = votes.filter(userVote => {
-      return userVote.userId === req.user.id
-    })
-
-    res.send(vote[0]).status(200)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.put('/recommendation/upvote', async (req, res, next) => {
   try {
     const recommendation = await Recommendation.findOne({
@@ -160,6 +140,26 @@ router.put('/recommendation/downvote', async (req, res, next) => {
       })
       res.status(200).send(vote[0])
     }
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/recommendation/:link', async (req, res, next) => {
+  try {
+    //Do this for the rendering logic of the buttons on the front end
+    console.log(req.params)
+    const resource = await Resource.findOne({
+      where: {
+        link: req.params.link
+      }
+    })
+    let votes = await resource.getVotes()
+    let vote = votes.filter(userVote => {
+      return userVote.userId === req.user.id
+    })
+
+    res.send(vote[0]).status(200)
   } catch (err) {
     next(err)
   }

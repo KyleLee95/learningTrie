@@ -276,6 +276,7 @@ class NodeResourceModal extends Component {
       nodeTitle: this.props.selected.title,
       ownerId: this.props.trees[0].ownerId,
       isSender: true,
+
       tree: this.props.trees[0].title,
       treeId: this.props.trees[0].id
     })
@@ -445,36 +446,6 @@ class NodeResourceModal extends Component {
           <Modal.Body>
             {/* Recommendation*/}
             <strong>Resources Recommended by other Users:</strong>
-            {/* <ul> */}
-            {/* <li key={recommendation.id}>
-                       <Link to={`/recommendation/${recommendation.id}`}>
-                      {recommendation.title}
-                    </Link>{' '}
-                    ({recommendation.type}) by{' '}
-                    <Link to={`/user/${recommendation.owner.id}`}>
-                     {recommendation.owner}
-                     </Link>
-                    {this.props.canEdit === true ? (
-                          <Button
-                            variant="submit"
-                            sz="sm"
-                            onClick={async () => {
-                              await this.props.convertRecommendationToResource({
-                                id: recommendation.id,
-                                link: recommendation.link,
-                                title: recommendation.title,
-                                type: recommendation.type,
-                                ResourceTags: recommendation.ResourceTags,
-                                description: recommendation.description,
-                                nodeId: this.props.selected.id
-                              })
-                              await this.props.getResourcesByNode(
-                                this.props.selected
-                              )
-                            }}
-                          >
-                            Add to Node
-                          </Button> */}
             {this.props.recommendations &&
             this.props.recommendations[0] &&
             this.props.recommendations[0].id !== undefined
@@ -669,6 +640,7 @@ class NodeResourceModal extends Component {
                                     nodeId: this.props.selected.id,
                                     nodeTitle: this.props.selected.title,
                                     isSender: true,
+
                                     messageType: 'recommendation',
                                     tree: this.props.trees[0].title,
                                     treeId: this.props.trees[0].id,

@@ -8,6 +8,7 @@ const GET_USERS = 'GET_USERS'
 const REMOVE_USER = 'REMOVE_USER'
 const FOLLOW_USER = 'FOLLOW_USER'
 const UNFOLLOW_USER = 'UNFOLLOW_USER'
+const UPDATE_PROFILE = 'UPDATE_PROFILE'
 
 // const ADD_USER_TO_TREE = 'ADD_USER_TO_TREE'
 
@@ -23,13 +24,25 @@ const getSingleUser = users => ({type: GET_USERS, users})
 const followUser = users => ({type: FOLLOW_USER, users})
 const unfollowUser = users => ({type: UNFOLLOW_USER, users})
 const getUsers = users => ({type: GET_USERS, users})
-
+const updateProfile = users => ({
+  type: UPDATE_PROFILE,
+  users
+})
 // const removeUser = () => ({type: REMOVE_USER})
 // const addUserToTree = () => ({type: ADD_USER_TO_TREE})
 
 /**
  * THUNK CREATORS
  */
+
+export const putProfile = user => async dispatch => {
+  try {
+    const res = await axios.put(`/api/users/update/${user.id}`, user)
+    return dispatch(updateProfile(res.data))
+  } catch (err) {
+    console.error(err)
+  }
+}
 export const fetchSingleUser = userId => async dispatch => {
   try {
     const res = await axios.get(`/api/users/${userId}`)
@@ -77,6 +90,8 @@ export default function(state = defaultUsers, action) {
     case FOLLOW_USER:
       return action.users
     case UNFOLLOW_USER:
+      return action.users
+    case UPDATE_PROFILE:
       return action.users
     default:
       return state

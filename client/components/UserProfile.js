@@ -1,23 +1,14 @@
 /* eslint-disable complexity */
 import React, {Component} from 'react'
-import {
-  Row,
-  Col,
-  Modal,
-  Button,
-  Form,
-  Card,
-  CardDeck,
-  Tabs,
-  Tab
-} from 'react-bootstrap'
+import {Row, Col, Modal, Button, Form, Card, Tabs, Tab} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {
   fetchSingleUser,
   addFollower,
   removeFollower,
-  getResourcesByUser
+  getResourcesByUser,
+  putProfile
 } from '../store/user'
 import {UserCard} from '.'
 import {upvote, downvote, getVote} from '../store/vote'
@@ -29,8 +20,13 @@ class UserProfile extends Component {
     super(props, context)
     this.state = {
       score: 0,
-      voteType: 'none'
+      voteType: 'none',
+      show: false
     }
+    this.handleShow = this.handleShow.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   async componentDidMount() {
@@ -73,6 +69,33 @@ class UserProfile extends Component {
     }
   }
 
+  handleShow() {
+    this.setState({
+      show: true
+    })
+  }
+
+  handleClose() {
+    this.setState({
+      show: false
+    })
+  }
+  async handleSubmit(e) {
+    e.preventDefault()
+
+    await this.props.putProfile({
+      bio: this.state.bio,
+      id: Number(this.props.match.params.id)
+    })
+    this.handleClose()
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     let user = []
     if (this.props.users !== undefined && this.props.users[0] !== undefined) {
@@ -82,50 +105,43 @@ class UserProfile extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-            {/* <Card border="light"> */}
-            {/* <Card.Img variant="top" src={user ? user.avatar : ''} /> */}
-            {/* <Card.Title> */}
-            <Row>
-              <Col xs={12}>
-                <h2>{user !== undefined ? `${user.username} ` : null} </h2>
-                {this.props.user && user && this.props.user.id !== user.id ? (
-                  user.followers &&
-                  user.followers.find(
-                    follower => this.props.user.id === follower.id
-                  ) !== undefined ? (
-                    <Button
-                      onClick={() =>
-                        this.props.removeFollower(
-                          Number(this.props.match.params.id)
-                        )
-                      }
-                    >
-                      unfollow
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() =>
-                        this.props.addFollower(
-                          Number(this.props.match.params.id)
-                        )
-                      }
-                    >
-                      follow
-                    </Button>
-                  )
+          <Col xs={12} sm={12} md={12} lg={3} xl={3}>
+            <h2>
+              {user !== undefined ? `${user.username} ` : null}{' '}
+              {this.props.user && user && this.props.user.id !== user.id ? (
+                user.followers &&
+                user.followers.find(
+                  follower => this.props.user.id === follower.id
+                ) !== undefined ? (
+                  <Button
+                    onClick={() =>
+                      this.props.removeFollower(
+                        Number(this.props.match.params.id)
+                      )
+                    }
+                  >
+                    unfollow
+                  </Button>
                 ) : (
-                  ''
-                )}
-              </Col>
-            </Row>
-            {/* </Card.Title> */}
+                  <Button
+                    onClick={() =>
+                      this.props.addFollower(Number(this.props.match.params.id))
+                    }
+                  >
+                    follow
+                  </Button>
+                )
+              ) : null}
+              {this.props.user &&
+              Number(this.props.user.id) !==
+                Number(this.props.match.params.id) ? null : (
+                <Button onClick={() => this.handleShow()}>Edit</Button>
+              )}
+            </h2>
+            {user.bio}
+          </Col>
 
-            {/* <Card.Body>
-                <Row>{this.props.user ? user.bio : ''}</Row>
-              </Card.Body> */}
-            {/* </Card> */}
-
+          <Col xs={12} sm={12} md={12} lg={9} xl={9}>
             <Tabs defaultActiveKey="trees">
               <Tab eventKey="trees" title="Learning Trees">
                 <br />
@@ -317,6 +333,38 @@ class UserProfile extends Component {
             </Tabs>
           </Col>
         </Row>
+
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Form onSubmit={this.handleSubmit}>
+            <Modal.Header>Edit Profile</Modal.Header>
+
+            <Modal.Body>
+              <Form.Group>
+                <Form.Label>Bio</Form.Label>
+
+                {this.props.users &&
+                this.props.users[0] === undefined ? null : (
+                  <Form.Control
+                    name="bio"
+                    type="bio"
+                    as="textarea"
+                    rows="10"
+                    onChange={this.handleChange}
+                    defaultValue={this.props.users[0].bio}
+                  />
+                )}
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="submit" onClick={() => this.props.handleClose}>
+                Cancel
+              </Button>
+              <Button variant="submit" type="submit">
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
       </React.Fragment>
     )
   }
@@ -330,7 +378,8 @@ const mapDispatch = dispatch => {
     upvote: resource => dispatch(upvote(resource)),
     downvote: resource => dispatch(downvote(resource)),
     getVote: resource => dispatch(getVote(resource)),
-    getResourcesByUser: user => dispatch(getResourcesByUser(user))
+    getResourcesByUser: user => dispatch(getResourcesByUser(user)),
+    putProfile: user => dispatch(putProfile(user))
   }
 }
 

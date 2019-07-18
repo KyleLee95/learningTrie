@@ -14,6 +14,18 @@ const Message = db.define('message', {
   },
   treeId: {
     type: Sequelize.STRING
+  },
+  resource: {
+    type: Sequelize.STRING
+  },
+  resourceId: {
+    type: Sequelize.STRING
+  },
+  recommendation: {
+    type: Sequelize.STRING
+  },
+  recommendationId: {
+    type: Sequelize.STRING
   }
 })
 

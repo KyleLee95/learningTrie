@@ -117,6 +117,9 @@ router.post('/', async (req, res, next) => {
     await user.addRecommendation(recommendation[0])
     await node.addRecommendation(recommendation[0])
     await resource[0].addLink(link[0])
+    if (resource[0].userId === null) {
+      await user.addResource(resource[0])
+    }
 
     res.status(201).json(recommendation[0])
   } catch (err) {

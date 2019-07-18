@@ -53,7 +53,7 @@ class NodeResourceModalLineItem extends Component {
     return (
       <li style={{listStyleType: 'none'}}>
         <Row>
-          <Col xs={4}>
+          <Col xs={12}>
             {this.props.user.id === undefined ? (
               ({
                 /* Shows Score */
@@ -118,7 +118,6 @@ class NodeResourceModalLineItem extends Component {
 
                 {this.state.voteType === 'downvote' ? (
                   //deletes downvote
-
                   <Button
                     variant="danger"
                     sz="sm"
@@ -137,7 +136,6 @@ class NodeResourceModalLineItem extends Component {
                   </Button>
                 ) : (
                   //posts a downvote
-
                   <Button
                     variant="outline-secondary"
                     sz="sm"
@@ -163,9 +161,7 @@ class NodeResourceModalLineItem extends Component {
                   </Button>
                 )}
               </React.Fragment>
-            )}
-          </Col>
-          <Col xs={8}>
+            )}{' '}
             <Link to={`/resource/${this.props.resource.id}`}>
               {this.props.resource.title}
             </Link>{' '}
