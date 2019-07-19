@@ -231,7 +231,7 @@ class NodeResourceModal extends Component {
     await this.props.resourceMessage({
       title: this.state.title,
       treeName: this.props.trees[0].title,
-      nodeName: this.state.selected.title,
+      nodeName: this.props.selected.title,
       treeId: this.props.trees[0].id
     })
 
@@ -282,7 +282,6 @@ class NodeResourceModal extends Component {
       nodeTitle: this.props.selected.title,
       ownerId: this.props.trees[0].ownerId,
       isSender: true,
-
       tree: this.props.trees[0].title,
       treeId: this.props.trees[0].id
     })
@@ -614,7 +613,8 @@ class NodeResourceModal extends Component {
                                   title: result.title,
                                   id: result.id,
                                   treeName: this.props.trees[0].title,
-                                  nodeName: this.state.selected.title,
+                                  nodeName: this.props.selected.title,
+
                                   treeId: this.props.trees[0].id
                                 })
                               }}

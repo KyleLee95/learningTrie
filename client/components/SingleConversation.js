@@ -129,7 +129,11 @@ class Conversation extends Component {
                       >
                         {message.user.username}
                       </Link>{' '}
-                      {message.content} in{' '}
+                      added resource{' '}
+                      <Link to={`/resource/${message.resourceId}`}>
+                        {message.resource}
+                      </Link>{' '}
+                      to node {message.content} in{' '}
                       <Link to={`/learningTree/${message.treeId}`}>
                         {message.tree}
                       </Link>

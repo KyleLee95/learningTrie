@@ -112,6 +112,7 @@ router.post('/addedResource', async (req, res, next) => {
   //if the resource already exists we send the ID and title with it
   //if the resource did not already exist, we created it and hope that order of operations doesn't fuck us
   //and we can find it
+  console.log(req.body)
   try {
     const sender = await User.findByPk(req.user.id)
     const tree = await LearningTree.findByPk(req.body.treeId)
@@ -125,8 +126,8 @@ router.post('/addedResource', async (req, res, next) => {
 
     const createMessage = await Message.create({
       messageType: 'resource',
-      content: `${req.body.nodeTitle}`,
-      tree: req.body.tree,
+      content: `${req.body.nodeName}`,
+      tree: req.body.treeName,
       treeId: req.body.treeId,
       resource: resource.title,
       resourceId: resource.id
