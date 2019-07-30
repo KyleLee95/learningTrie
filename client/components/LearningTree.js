@@ -341,18 +341,19 @@ class LearningTree extends Component {
 
     return canSee === true ? (
       <React.Fragment>
-        <Row>
+        <Row style={{padding: 0}}>
           <Col xs={12}>
             <Row>
               <Col xs={12}>
                 <Row
-                  // className="justify-content-space-evenly"
                   style={{
+                    paddingLeft: '3%',
                     backgroundColor: '#F9F9F9',
                     border: '1px solid #24292e',
                     justifyContent: 'space-evenly'
                   }}
                 >
+                  {/* <Col xs={12}> */}
                   {this.props.trees && this.props.trees[0] ? (
                     <h3>{this.props.trees[0].title} </h3>
                   ) : null}
@@ -365,6 +366,8 @@ class LearningTree extends Component {
                   this.props.trees[0].users !== undefined &&
                   this.props.trees[0].users[0] !== undefined &&
                   isMod === false ? (
+                    // // <Row>
+                    //   <Col lg={12}>
                     <React.Fragment>
                       <Button variant="submit">
                         <Link
@@ -496,7 +499,10 @@ class LearningTree extends Component {
                         <Button variant="submit">Controls Info</Button>
                       </OverlayTrigger>
                     </React.Fragment>
-                  ) : null}
+                  ) : //   </Col>
+                  // </Row>
+                  null}
+                  {/* </Col> */}
                 </Row>
               </Col>
             </Row>

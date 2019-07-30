@@ -8,8 +8,8 @@ import {ConnectedSearch} from '.'
 
 const Nav = ({handleClick, isLoggedIn, user}) => (
   <Row>
-    <Col xs={12}>
-      <Navbar style={{backgroundColor: '#24292e', width: '100vw'}}>
+    <Col xs={12} style={{padding: 0}}>
+      <Navbar style={{backgroundColor: '#24292e'}}>
         <NavLink to="/" style={{color: 'white', textDecoration: 'none'}}>
           <h2>🌎pen Source Ed</h2>
         </NavLink>
