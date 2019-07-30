@@ -333,9 +333,8 @@ class UserProfile extends Component {
             </Tabs>
           </Col>
         </Row>
-
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
+          <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header>Edit Profile</Modal.Header>
 
             <Modal.Body>
@@ -363,8 +362,8 @@ class UserProfile extends Component {
                 Submit
               </Button>
             </Modal.Footer>
-          </Form>
-        </Modal>
+          </Modal>
+        </Form>
       </React.Fragment>
     )
   }

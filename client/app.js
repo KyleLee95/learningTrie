@@ -5,9 +5,8 @@ import Routes from './routes'
 
 const App = () => {
   return (
-    <div className="container-fluid" style={{height: '100%'}}>
+    <div>
       <ConnectedNav />
-
       <Routes />
     </div>
   )

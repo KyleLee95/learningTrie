@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {} from '.'
 import {connect} from 'react-redux'
 import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
