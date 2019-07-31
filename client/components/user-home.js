@@ -32,7 +32,14 @@ class UserHome extends Component {
     return (
       <div>
         <Row>
-          <Col xs={12} sm={12} md={2} lg={2} xl={2} style={{paddingTop: '5vh'}}>
+          <Col
+            xs={12}
+            sm={12}
+            md={2}
+            lg={2}
+            xl={2}
+            style={{paddingTop: '5vh', paddingLeft: '2vw'}}
+          >
             <React.Fragment>
               <Card>
                 <Button

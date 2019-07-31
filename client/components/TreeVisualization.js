@@ -741,14 +741,14 @@ class TreeVisualization extends Component {
       <ScrollLock>
         {/* TABS */}
 
-        <div id="graph" style={{width: '110vw', height: '84vh'}}>
+        <div id="graph" style={{width: '120vw', height: '90vh'}}>
           {this.props.nodes &&
           this.props.nodes[0] !== undefined &&
           this.props.edges &&
           this.props.edges[0] !== undefined ? (
             <GraphView
               ref="GraphView"
-              style={{width: '100vw', height: '45vh'}}
+              style={{width: '100vw', height: '200vh'}}
               nodeKey={NODE_KEY}
               nodes={this.props.nodes}
               edges={this.props.edges}
@@ -771,7 +771,7 @@ class TreeVisualization extends Component {
           ) : (
             <GraphView
               ref="GraphView"
-              style={{width: '100vw', height: '45vh'}}
+              style={{width: '100vw', height: '200vh'}}
               nodeKey={NODE_KEY}
               nodes={this.props.nodes}
               edges={this.props.edges}

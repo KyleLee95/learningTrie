@@ -24,18 +24,11 @@ class SignUp extends Component {
     const {name, displayName, handleSubmit, error} = this.props
     return (
       <div>
-        <Row style={{padding: '0'}}>
+        <Row style={{padding: '0', justifyContent: 'space-around'}}>
           <Col xs={12} style={{padding: '0'}}>
-            <Jumbotron style={{height: '100vh', margin: '0'}}>
+            <Jumbotron style={{height: '110vh', margin: '0'}}>
               <Row>
-                <Col
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={6}
-                  xl={6}
-                  style={{paddLeft: '5%'}}
-                >
+                <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                   <Carousel style={{paddingTop: '10%'}}>
                     <Carousel.Item>
                       <img
