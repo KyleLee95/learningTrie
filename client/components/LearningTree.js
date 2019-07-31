@@ -347,16 +347,18 @@ class LearningTree extends Component {
               <Col xs={12}>
                 <Row
                   style={{
-                    paddingLeft: '3%',
+                    paddingLeft: '2%',
                     backgroundColor: '#F9F9F9',
                     border: '1px solid #24292e',
-                    justifyContent: 'space-evenly'
+                    justifyContent: 'left'
                   }}
                 >
                   {/* <Col xs={12}> */}
-                  {this.props.trees && this.props.trees[0] ? (
-                    <h3>{this.props.trees[0].title} </h3>
-                  ) : null}
+                  <Button variant="submit" sz="lg">
+                    {this.props.trees && this.props.trees[0] ? (
+                      <strong>{this.props.trees[0].title}</strong>
+                    ) : null}
+                  </Button>
                   {this.props.trees !== undefined &&
                   this.props.trees[0] &&
                   this.props.trees[0] &&
